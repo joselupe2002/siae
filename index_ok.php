@@ -19,7 +19,7 @@
 		<link rel="stylesheet" href="assets/css/jquery-ui.min.css" />
 
 	</head>
-	<?php // include("./includes/Seguridad.php"); $miSeg = new Seguridad();  echo $miSeg->encriptar("JOSE"); ?>
+	<?php  //include("./includes/Seguridad.php"); $miSeg = new Seguridad();  echo $miSeg->encriptar(""); ?>
 	
 	<body class="login-layout light-login">
 		<div class="main-container">
