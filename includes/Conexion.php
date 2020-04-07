@@ -31,8 +31,8 @@ class Conexion {
 		//$this->password='878667768788667786788787887867878767878A'; //Base de datos Local
 	
 
-		$this->user='nJnJYJgEfJvE^HhJmGmEdDfBgFpH868786688776O';
-		$this->password='MGkC`HkGfGrJ[E:I+F4D5D877688678888668688L';
+		$this->user='kHsEjFyF87777887776886878887887878768667E';
+		$this->password='DJfFgHfCpCiIeGmI6BAJ#B877778787867868768L';
 		$this->db='sigea';
 		
 		$entre=false;
