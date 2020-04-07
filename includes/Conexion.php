@@ -29,10 +29,11 @@ class Conexion {
 		$this->server='localhost';
 		//$this->user='uDjFvHnG8786887868768778888887888877766E';   //Base de datos Local
 		//$this->password='878667768788667786788787887867878767878A'; //Base de datos Local
-	
-
+		
 		$this->user='kHsEjFyF87777887776886878887887878768667E';
 		$this->password='DJfFgHfCpCiIeGmI6BAJ#B877778787867868768L';
+		$this->password='7878867688866778678788767678786786878788A'; //base de datos local
+
 		$this->db='sigea';
 		
 		$entre=false;
