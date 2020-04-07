@@ -1,0 +1,46 @@
+.gritter-center{
+position:absolute;
+left:10px;
+top:10px;
+}
+
+.mycheck{ 
+	transform: scale(1);
+	margin-left: 50px;
+	 } 
+
+.imgRedonda {
+    width:35px;
+    height:35px;
+    border-radius:150px;
+    margin-top: 5px;
+}
+
+.et {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+
+}
+
+label.error{
+    background: #ff2828 center left 2px no-repeat; 
+    border: 2px solid #804040;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #333;
+    color: #ffffff;
+    font-weight: bold;
+    display: none;
+    font-size: 0.7em;
+    padding: 5px 5px 5px 5px;
+    max-width: 6000px;
+    position: absolute; 
+    z-index: 100; 
+}
+
+
+input.error{
+  background: #fff0f4; 
+  color: #c51244;
+  border: 1px solid #c51244 !important; 
+}
