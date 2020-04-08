@@ -97,8 +97,8 @@ function addComentarios(modulo,usuario,essuper){
 		   "                 </div>"+		   
 		   "             </div>"+		   
 		   "          </div>"+
-		   "          <div id=\"frmdocumentos\" class=\"modal-body\"  style=\"max-height: calc(100vh - 210px); overflow-y: auto;\">"+	
-	       "                           <table id=\"tabHorarios\" class= \"table table-hover\">"+
+		   "          <div id=\"frmdocumentos\" class=\"modal-body\"  style=\"height:360px; overflow-y: auto;\">"+	
+	       "                           <table id=\"tabHorarios\" class= \"table table-hover\" style=\"table.dataTable tbody tr.selected {color: blue; font-weight:bold; }\" > "+
 	   	   "                              <thead>  "+
 		   "                                  <tr>"+
 		   "                             	     <th>Op</th> "+
