@@ -761,7 +761,7 @@ if (tipo=="SELECT_MULTIPLE") {
 	
 	
 	if (tipo=="SELECT_DEPENDE_BUSQUEDA") {		
-		alert ("entre:"+nombre);
+	
 		xsql=sql;		
 		xdatos = xsql.split("|");		
 		xsql=xdatos[1];
