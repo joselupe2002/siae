@@ -760,8 +760,7 @@ if (tipo=="SELECT_MULTIPLE") {
 	}
 	
 	
-	
-	if (tipo=="SELECT_DEPENDE_BUSQUEDA") {
+	if (tipo=="SELECT_DEPENDE_BUSQUEDA") {		
 		
 		xsql=sql;		
 		xdatos = xsql.split("|");		
@@ -793,7 +792,7 @@ if (tipo=="SELECT_MULTIPLE") {
  				 $.ajax({
                       type: "GET",
                       url: 'dameselect.php?sql='+encodeURI(param2[1])+"&sel=0&bd="+param2[0], 
-                      success: function(data){     
+                      success: function(data){     						  
                            $("#"+nombre).html(data);                                 
                            quitarEspera("imggif_"+nombre,ico);                           
                            $("#"+nombre).val(dato);  

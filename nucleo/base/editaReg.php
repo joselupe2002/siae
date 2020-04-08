@@ -233,13 +233,14 @@
 /*========================================================================================================*/		
 
 		$(document).ready(function(){	
-
+			
              cargarElementos(function(evento, valor) { });
           
 		});
 
 
-		function cambioSelect(nombre){				 	 
+		function cambioSelect(nombre){	
+			 
              jQuery.each(campos, function(clave, valor){	                     
             	   var elsql="";
                    if (!(valor.sql==null)) {elsql=valor.sql;}
@@ -253,7 +254,8 @@
             				 $.ajax({
                                  type: "GET",
                                  url: 'dameselect.php?sql='+encodeURI(param[1])+"&sel=0&bd="+param[0], 
-                                 success: function(data){                                          
+                                 success: function(data){   
+								                                       
                                       $("#"+valor.colum_name).html(data);                                                                 
                                       $("#"+valor.colum_name).trigger("chosen:updated");
                                       $('.chosen-select').chosen({allow_single_deselect:true}); 			                              		 
