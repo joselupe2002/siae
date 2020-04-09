@@ -75,8 +75,6 @@ function dameVentana(nombre,contenedor,titulo,tam,colorfondohead,imaico, alto){
 }
 
 
-
-
 /*================================================FUNCION PARA AGREGAR DIALOGO DE ESPERA =================================================*/
 
 function mostrarEspera (nombre,contenedor, mensaje){

@@ -103,7 +103,6 @@ function getResultados(){
 }
 
 
-
 function recursiva (arreglo,elindice,elmax) {
 	$.ajax({		
 		type: "GET",
