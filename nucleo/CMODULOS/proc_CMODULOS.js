@@ -243,6 +243,7 @@ function addComentarios(modulo,usuario,essuper){
 		   "                             	     <th>Título</th> "+
 		   "                             	     <th>Descripción</th> "+
 		   "                             	     <th>Orden</th> "+
+		   "                             	     <th>Sección</th> "+
 		   "                             	     <th>LLave</th> "+
 		   "                             	     <th>Tipo</th> "+
 		   "                             	     <th>Grid</th> "+
@@ -250,7 +251,7 @@ function addComentarios(modulo,usuario,essuper){
 		   "                             	     <th>Validación</th> "+
 		   "                             	     <th>Mensaje_Val</th> "+
 		   "                             	     <th>SQL</th> "+
-		   "                             	     <th>Sección</th> "+
+		  
 		   "                             	     <th>Gif</th> "+
 		   "                             	     <th>Autoincremento</th> "+	   
 		   "                      			</tr> "+
@@ -342,6 +343,7 @@ function generaTabla(grid_data){
 		$("#row"+c).append("<td>"+dameElemento('INPUT','c_'+c+'_2',utf8Decode(valor.comments),'',110));
 		$("#row"+c).append("<td>"+dameElemento('INPUT','c_'+c+'_3',utf8Decode(valor.comentario),'',180));
 		$("#row"+c).append("<td>"+dameElemento('INPUT','c_'+c+'_4',valor.numero,'',60));
+		$("#row"+c).append("<td>"+dameElemento('INPUT','c_'+c+'_12',valor.seccion,'',110));
 		$("#row"+c).append("<td>"+dameElemento('SELECT_SN','c_'+c+'_5',valor.keys,'',60));
 		$("#c_"+c+"_5").val(valor.keys);		     
 		$("#row"+c).append("<td>"+dameElemento('SELECT_TIPO','c_'+c+'_6',valor.tipo,'',80));
@@ -354,7 +356,7 @@ function generaTabla(grid_data){
 		$("#row"+c).append("<td>"+dameElemento('TEXTAERA_BTN','c_'+c+'_9',valor.validacion,'helpvalida',100));
 		$("#row"+c).append("<td>"+dameElemento('TEXTAREA','c_'+c+'_10',utf8Decode(valor.msjval),'',110));
 		$("#row"+c).append("<td>"+dameElemento('TEXTAERA_BTNSQL','c_'+c+'_11',valor.sql,'helpsql',160));
-		$("#row"+c).append("<td>"+dameElemento('INPUT','c_'+c+'_12',valor.seccion,'',110));
+		
 		$("#row"+c).append("<td>"+dameElemento('INPUT_BTN','c_'+c+'_13',valor.gif,'helpgif',110));
 		$("#row"+c).append("<td>"+dameElemento('TEXTAERA_BTN','c_'+c+'_14',valor.autoinc,'helpauto',110));
 			
@@ -397,6 +399,7 @@ function agregarCampo(){
 			$("#row"+global).append("<td>"+dameElemento('INPUT','c_'+global+'_2',$("#campos").val(),'',110));
 			$("#row"+global).append("<td>"+dameElemento('INPUT','c_'+global+'_3','','',180));
 			$("#row"+global).append("<td>"+dameElemento('INPUT','c_'+global+'_4','','',60));
+			$("#row"+global).append("<td>"+dameElemento('INPUT','c_'+global+'_12','','',110));
 			$("#row"+global).append("<td>"+dameElemento('SELECT_SN','c_'+global+'_5','N','',60));	     
 			$("#row"+global).append("<td>"+dameElemento('SELECT_TIPO','c_'+global+'_6','','',80));
 			$("#c_"+global+"_6").html(lostipos);
@@ -404,8 +407,7 @@ function agregarCampo(){
 			$("#row"+global).append("<td>"+dameElemento('SELECT_SN','c_'+global+'_8','','',60));
 			$("#row"+global).append("<td>"+dameElemento('TEXTAERA_BTN','c_'+global+'_9','','helpvalida',110));
 			$("#row"+global).append("<td>"+dameElemento('TEXTAREA','c_'+global+'_10','','',110));
-			$("#row"+global).append("<td>"+dameElemento('TEXTAERA_BTNSQL','c_'+global+'_11','','helpsql',160));
-			$("#row"+global).append("<td>"+dameElemento('INPUT','c_'+global+'_12','','',110));
+			$("#row"+global).append("<td>"+dameElemento('TEXTAERA_BTNSQL','c_'+global+'_11','','helpsql',160));			
 			$("#row"+global).append("<td>"+dameElemento('INPUT_BTN','c_'+global+'_13','','helpgif',110));
 			$("#row"+global).append("<td>"+dameElemento('TEXTAERA_BTN','c_'+global+'_14','','helpauto',110));
 			
