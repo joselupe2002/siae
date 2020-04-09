@@ -59,6 +59,141 @@ function entre (nombre){
 }
 
 
+function execSQL (modulo,usuario,essuper) {
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+		 dameVentana("modalSQL","grid_"+modulo,"Manejador SQL","lg","bg-success","blue fa-2x fa fa-gears","370");
+		 $("#body_modalSQL").append("<div class=\"row\">"+
+										"<div class=\"col-sm-12\">"+
+											"<textarea id=\"elsql\" class=\"form-control\" style=\"font-size:10px; width:100%; height:260px;\"></textarea>"+
+										"</div>"+
+									"</div>"+
+									"<div class=\"row\">"+
+										"<div id=\"elselect\" class=\"col-sm-4\">"+	
+										     "<span class=\"label label-success\">Base de Datos</span>"+										
+										"</div>"+
+										"<div  class=\"col-sm-4\" style=\"padding-top:20px;\">"+				
+										"   <button class=\"btn btn-white btn-success btn-bold\" "+
+										"                   onclick=\"dameSQL('elsql','"+table.rows('.selected').data()[0][0]+"');\">"+
+										"     <i class=\"ace-icon fa fa-magic bigger-120 green\"></i>Obtener SQL"+
+										"   </button>"+	
+										"</div>"+															
+										"<div  class=\"col-sm-4\" style=\"padding-top:20px;\">"+				
+										"   <button class=\"btn btn-white btn-danger btn-bold\" "+
+										"                   onclick=\"ejecutaSQL('elsql');\">"+
+										"     <i class=\"ace-icon fa  fa-play bigger-120 red\"></i>Ejecutar SQL"+
+								        "   </button>"+											
+										"</div>"+
+									"</div"
+
+		 );
+		 var bases=[{id:"Mysql",opcion:"Mysql"},{id:"SQLite",opcion:"SQLite"}];
+		 addSELECTJSON("labase","elselect",bases);
+	}
+	else {
+       alert ("Por favor seleccione un módulo")
+
+	}
+}
+
+function getResultados(){
+	dameVentana("modalRes","grid_CMODULOS","Resultados","sm","bg-danger","blue fa-2x fa fa-gears","370");
+	$("#body_modalRes").append("<textarea row=\"70\" id=\"elsqlRes\" class=\"form-control\" "+
+											"style=\"font-size:10px; width:100%; height:100%;\"></textarea>");
+}
+
+
+function recursiva (arreglo,elindice,elmax) {
+	$.ajax({		
+		type: "GET",
+		url:  "../base/ejecutasqlDin.php?bd="+$("#labase").val()+"&sql="+encodeURI(arreglo[elindice]),
+		success: function(data){           	     
+			$("#elsqlRes").val($("#elsqlRes").val()+"Lin: "+elindice+":"+data+"\n");
+			if (elindice++<elmax) { recursiva (arreglo,elindice++,elmax); }
+		},
+		error: function(data) {
+			$("#elsqlRes").val($("#elsqlRes").val()+"Lin: "+elindice+":"+data+"\n");
+			if (elindice++<elmax) { recursiva (arreglo,elindice++,elmax); }
+		 }		
+	});
+}
+
+function ejecutaSQL(elsql){
+	if (!($("#labase").val()=='0')) {
+		datos=$("#"+elsql).val().split("<;>");
+		getResultados();
+		$("#elsqlRes").val("");
+        recursiva(datos,0,datos.length-1);
+	}
+	else {alert ("Debe elegir la base de datos");}
+}
+
+function dameSQL (elsql,modulo) {
+			$.ajax({
+				type: "GET",
+				url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from cmodulos where modu_modulo='"+modulo+"'")+"&bd="+$("#labase").val(),
+				success: function(data){
+					alert (data);
+					losdatos=JSON.parse(data); 
+					jQuery.each(losdatos, function(clave, valor) { 
+						cad="INSERT INTO CMODULOS (modu_modulo,modu_pred,modu_descrip,"+
+							                             "modu_aplicacion,modu_version,modu_ejecuta,modu_tabla,"+
+							                             "modu_icono, modu_imaico,modu_cancel,modu_teclarap,"+
+							                             "modu_auxiliar, modu_automatico, modu_pagina, modu_tablagraba,"+
+							                             "modu_bd,_INSTITUCION, _CAMPUS)VALUES ("+
+														  "'"+valor.modu_modulo+"',"+"'"+valor.modu_pred+"',"+"'"+valor.modu_descrip+
+														  "',"+"'"+valor.modu_aplicacion+"',"+"'"+valor.modu_version+"',"+"'"+valor.modu_ejecuta+"',"+"'"+valor.modu_tabla+"',"+
+														  "'"+valor.modu_icono+"',"+"'"+valor.modu_imaico+"',"+"'"+valor.modu_cancel+"',"+"'"+valor.modu_teclarap+"',"+
+														  "'"+valor.modu_auxiliar+"',"+"'"+valor.modu_automatico+"',"+"'"+valor.modu_pagina+"',"+"'"+valor.modu_tablagraba+"',"+
+														  "'"+valor.modu_bd+"',"+"'"+valor._INSTITUCION+"',"+"'"+valor._CAMPUS+"')";
+					   $("#"+elsql).append(cad+"<;>\n");
+					   latabla=valor.modu_tabla;
+				   });   	
+				   
+			        $.ajax({
+							type: "GET",
+							url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from all_col_comment where table_name='"+latabla+"'")+"&bd="+$("#labase").val(),
+							success: function(data){
+								losdatos=JSON.parse(data);  
+								alert (data);	        	      
+								jQuery.each(losdatos, function(clave, valor) { 
+									cadSQL=valor.sql;
+									cadVal=valor.validacion;
+									if (!(valor.sql==null)) {cadSQL=valor.sql.replace(/'/g,"''");}
+									if (!(valor.validacion==null)) {cadVal=valor.validacion.replace(/&/g,"<*>");}
+									cad="INSERT INTO ALL_COL_COMMENT (owner,table_name,colum_name,comments,"+
+																	"width, numero,comentario,keys,"+
+																	"tipo,visgrid,visfrm,validacion,"+
+																	"msjval,sql,seccion,gif,autoinc,"+
+																	"_INSTITUCION,_CAMPUS) values ("+
+																	"'"+valor.owner+"',"+"'"+valor.table_name+"',"+"'"+valor.colum_name+"',"+"'"+valor.comments+
+																	"',"+"'"+valor.width+"',"+"'"+valor.numero+"',"+"'"+valor.comentario+"',"+"'"+valor.keys+"',"+
+																	"'"+valor.tipo+"',"+"'"+valor.visgrid+"',"+"'"+valor.visfrm+"',"+"'"+cadVal+"',"+
+																	"'"+valor.msjval+"',"+"'"+cadSQL+"',"+"'"+valor.seccion+"',"+"'"+valor.gif+"',"+"'"+valor.autoinc+"',"+
+																	"'"+valor._INSTITUCION+"',"+"'"+valor._CAMPUS+"')";
+									$("#"+elsql).append(cad+"<;>\n");
+					      	    });				
+			                }
+					});
+					
+					$.ajax({
+						type: "GET",
+						url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from sprocesos where proc_modulo='"+modulo+"'")+"&bd="+$("#labase").val(),
+						success: function(data){
+							losdatos=JSON.parse(data);  
+							alert (data);	        	      
+							jQuery.each(losdatos, function(clave, valor) { 
+								cad="INSERT INTO SPROCESOS (proc_modulo, proc_proceso,proc_descrip) VALUES ("+
+									 "'"+valor.proc_modulo+"',"+"'"+valor.proc_proceso+"',"+"'"+valor.proc_descrip+"')";
+								$("#"+elsql).append(cad+"<;>\n");
+							  });				
+						}
+			 	    });
+
+		        } //del SUCCEES DEL AJAX
+	        });
+}
+
 function addComentarios(modulo,usuario,essuper){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {

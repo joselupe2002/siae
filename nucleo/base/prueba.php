@@ -30,10 +30,11 @@
 	</head>
 
 <body id="cuerpo" style="background-color: white;">
-             
+  <button onclick="dameFechasEval();"> Materias</button>      
   <textarea id="sql" cols="160" rows="10"></textarea>
   <textarea id="sql2" cols="160" rows="10"></textarea>
   <button onclick="agregar();"> Ejecutar</button>
+
 
 <div style="padding: 0; width: 100px;">	
   <div class="row">
@@ -223,7 +224,102 @@ function ver(){
        	 
 	   }
    }
-   
+
+
+   function pad(n, width, z) {
+	   z = z || '0';
+	   n = n + '';
+	   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+	 }
+	 
+
+
+   function dameMaterias(){
+	   $.ajax({
+	       type: "GET",
+	       url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * from dmateria3 ",
+	       success: function(data){  
+	    	      losdatos=JSON.parse(data);	 
+	    	      		    	   
+	    	      jQuery.each(losdatos, function(clave, valor) { 
+	    	    	   for (x=1; x<=valor.MATUNI; x++) {
+		    	    	     cad="insert into eunidades (unid_materia,unid_pred,unid_numero,unid_descrip, _INSTITUCION,_CAMPUS) values ('"+
+		    	    	     valor.MATCVE+"','','"+pad(x,2)+"','"+valor[10+x].replace(/\n|\r/g, " ").replace(";","")+"','ITSM','0');\n";		    	    	     
+                             $("#sql").append(cad);
+		    	    	   }
+	    	    	 
+	    	      });		    
+	
+	
+	             },
+	       error: function(data) {	                  
+	                  alert('ERROR: '+data);
+	              }
+	});
+
+	   
+	   }
+
+
+
+  
+
+
+   function dameFechasEval(){
+	   $.ajax({
+	       type: "GET",
+	       url:  "../base/getdatossql.php?bd=Mysql&sql=select a.MATCVE, a.GPOCVE, b.MATUNI, UNI01P,UNI02P,UNI03P,UNI04P,UNI05P,UNI06P,UNI07P,"+
+	    	   "UNI08P,UNI09P,UNI10P,UNI11P,UNI12P,UNI13P,UNI14P,UNI15P, "+
+	    	   "UNI01R,UNI02R,UNI03R,UNI04R,UNI05R,UNI06R,UNI07R,"+
+	    	   "UNI08R,UNI09R,UNI10R,UNI11R,UNI12R,UNI13R,UNI14R,UNI15R"+
+	    	   " from dgrupo a, dmateria3 b  where PDOCVE=2201 and a.MATCVE=b.MATCVE order by MATCVE,GPOCVE",
+	    	   
+	       success: function(data){  
+	    	      losdatos=JSON.parse(data);	 
+	    	      		    	   
+	    	      jQuery.each(losdatos, function(clave, valor) { 
+	    	    	   for (x=1; x<=valor.MATUNI; x++) {
+		    	    	     cad="insert into eplaneacion (MATERIA,PROFESOR,GRUPO,IDUNIDAD,NUMUNIDAD,FECHA,FECHAR,_INSTITUCION,_CAMPUS) values ('"+
+		    	    	     valor.MATCVE+"','','"+valor.GPOCVE+"','','"+pad(x,2)+"','"+valor[2+x].replace(/\n|\r/g, " ").replace(";","")+"','"+valor[17+x].replace(/\n|\r/g, " ").replace(";","")+"','ITSM','0');\n";		    	    	     
+                             $("#sql").append(cad);
+		    	    	   }
+	    	    	 
+	    	      });		    
+	
+	
+	             },
+	       error: function(data) {	                  
+	                  alert('ERROR: '+data);
+	              }
+	});
+
+	   
+	   }
+
+
+   function damesubtemas(){
+	   $.ajax({
+	       type: "GET",
+	       url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * from smater  order by MATCVE,TMACVE LIMIT 15000,5000",
+	       success: function(data){  
+	    	      losdatos=JSON.parse(data);	
+	    	      alert (data); 
+	    	      		    	   
+	    	      jQuery.each(losdatos, function(clave, valor) { 
+		    	    	     cad="insert into eunidades (unid_materia,unid_pred,unid_numero,unid_descrip, _INSTITUCION,_CAMPUS) values ('"+
+		    	    	     valor.MATCVE+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.SMADES.replace(/\n|\r/g, " ").replace(";","")+"','ITSM','0');\n";		    	    	     
+                             $("#sql").append(cad);
+	    	      });		    
+	
+	
+	             },
+	       error: function(data) {	                  
+	                  alert('ERROR: '+data);
+	              }
+	});
+
+	   
+	   }
 
 
    function guardar(){
