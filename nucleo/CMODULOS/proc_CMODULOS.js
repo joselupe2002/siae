@@ -132,8 +132,7 @@ function dameSQL (elsql,modulo) {
 			$.ajax({
 				type: "GET",
 				url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from cmodulos where modu_modulo='"+modulo+"'")+"&bd="+$("#labase").val(),
-				success: function(data){
-					alert (data);
+				success: function(data){					
 					losdatos=JSON.parse(data); 
 					jQuery.each(losdatos, function(clave, valor) { 
 						cad="INSERT INTO CMODULOS (modu_modulo,modu_pred,modu_descrip,"+
@@ -154,8 +153,7 @@ function dameSQL (elsql,modulo) {
 							type: "GET",
 							url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from all_col_comment where table_name='"+latabla+"'")+"&bd="+$("#labase").val(),
 							success: function(data){
-								losdatos=JSON.parse(data);  
-								alert (data);	        	      
+								losdatos=JSON.parse(data);  							      	      
 								jQuery.each(losdatos, function(clave, valor) { 
 									cadSQL=valor.sql;
 									cadVal=valor.validacion;
@@ -180,8 +178,7 @@ function dameSQL (elsql,modulo) {
 						type: "GET",
 						url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from sprocesos where proc_modulo='"+modulo+"'")+"&bd="+$("#labase").val(),
 						success: function(data){
-							losdatos=JSON.parse(data);  
-							alert (data);	        	      
+							losdatos=JSON.parse(data);  							
 							jQuery.each(losdatos, function(clave, valor) { 
 								cad="INSERT INTO SPROCESOS (proc_modulo, proc_proceso,proc_descrip) VALUES ("+
 									 "'"+valor.proc_modulo+"',"+"'"+valor.proc_proceso+"',"+"'"+valor.proc_descrip+"')";

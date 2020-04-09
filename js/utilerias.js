@@ -816,13 +816,15 @@ if (tipo=="SELECT_MULTIPLE") {
                       type: "GET",
                       url: 'dameselect.php?sql='+encodeURI(param2[1])+"&sel=0&bd="+param2[0], 
                       success: function(data){     						  
-                           $("#"+nombre).html(data);                                 
-                           quitarEspera("imggif_"+nombre,ico);                           
-                           $("#"+nombre).val(dato);  
-                           $('#'+nombre).trigger("chosen:updated");
+						   $("#"+nombre).html(data);   
+						   $('#'+nombre).trigger("chosen:updated");                              
+                           quitarEspera("imggif_"+nombre,ico);                                                                                  
                            $('.chosen-select').chosen({allow_single_deselect:true}); 			
                    		   $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
-                   		   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width':"100%"});})});
+						   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width':"100%"});})});
+						   $("#"+nombre).val(dato); 
+						   $('#'+nombre).trigger("chosen:updated");  						   
+						   
                    		   
                    },
                    error: function(data) {
