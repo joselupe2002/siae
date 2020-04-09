@@ -50,8 +50,6 @@ function Burbuja(lista) {
     return lista;
 }
 
-
-
 /*================================================FUNCION PARA CREAR VENTANAS BOOTSTRAP ==============================*/
 function dameVentana(nombre,contenedor,titulo,tam,colorfondohead,imaico, alto){
 	script="<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
