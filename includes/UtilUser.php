@@ -12,7 +12,9 @@ require 'phpmailer/src/Exception.php';
 
 
 class UtilUser {
-	
+
+
+
 	public function enviarCorreo($receptor,$asunto,$cuerpo,$adj1) {
 		$res="";
 		$emisor="sigeli.webcore@gmail.com";
@@ -155,7 +157,7 @@ class UtilUser {
 		$pdf->Image('../../imagenes/empresa/pie2.png',$left2,$top2,15);
 		$pdf->SetFont('Montserrat-Medium','',8);
 		$pdf->SetY(-25);
-		$pdf->Cell(0,10,"Av. Tecnológico S/N, Lerdo de Tejada 1ª Secc. Macuspana, Tabasco, C.P. 86719",0,0,'C');
+		$pdf->Cell(0,10,"Av. Tecnolï¿½gico S/N, Lerdo de Tejada 1ï¿½ Secc. Macuspana, Tabasco, C.P. 86719",0,0,'C');
 		$pdf->SetY(-22);
 		$pdf->Cell(0,10,"Tels. 9363623330 y 9363623323 Ext. 101, e-mail: direccion@macuspana.tecnm.mx",0,0,'C');
 		$pdf->SetY(-19);
@@ -185,11 +187,11 @@ class UtilUser {
 		
 		$pdf->SetFont('Montserrat-Black','B',9);
 		$pdf->Ln(6);
-		$pdf->Cell(0,0,'Instituto Tecnológico Superior de Macuspana',0,0,'R');
+		$pdf->Cell(0,0,'Instituto Tecnolï¿½gico Superior de Macuspana',0,0,'R');
 		
 		$pdf->SetFont('Montserrat-Medium','B',8);
 		$pdf->Ln(6);
-		$pdf->Cell(0,0,'"2020, Año de Leona Vicario, Benemérita Madre de la Patria”',0,0,'C');
+		$pdf->Cell(0,0,'"2020, Aï¿½o de Leona Vicario, Benemï¿½rita Madre de la Patriaï¿½',0,0,'C');
 		
 	}
 	
@@ -199,7 +201,7 @@ class UtilUser {
 		foreach ($datos as $row) {
 			if (($row['tipo']=='IMAGEN')||($row['tipo']=='IMAGEN_DRIVE')||($row['tipo']=='PDF')||($row['tipo']=='PDF_DRIVE')){
 		 	echo "$('#file_".$row['colum_name']."').ace_file_input({
-		                 no_file:'Sin selección ...',
+		                 no_file:'Sin selecciï¿½n ...',
 		                 btn_choose:'Elegir',
 		                 btn_change:'Cambiar',
 		                 droppable:false,
@@ -224,7 +226,7 @@ class UtilUser {
 		foreach ($datos as $row) {
 			if (($row['TIPO']=='IMAGEN')||($row['TIPO']=='IMAGEN_DRIVE')||($row['TIPO']=='PDF')||($row['TIPO']=='PDF_DRIVE')){
 				echo "$('#file_".$row['CLAVE']."').ace_file_input({
-		                 no_file:'Sin selección ...',
+		                 no_file:'Sin selecciï¿½n ...',
 		                 btn_choose:'Elegir',
 		                 btn_change:'Cambiar',
 		                 droppable:false,
@@ -298,9 +300,9 @@ class UtilUser {
 		 		         " var validator = this; var datePat = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/; var fechaCompleta = value.match(datePat);".
 		 		         " if (fechaCompleta == null) { $.validator.messages.fechaESP = \"OLA K ASE, ESA FECHA NO ES VALIDA O K ASE?\";return false;}".		 		
 		 		         " dia = fechaCompleta[1]; mes = fechaCompleta[3]; anio = fechaCompleta[5];".		 		
-		 		         " if (dia < 1 || dia > 31) { $.validator.messages.fechaESP = \"El valor del día debe estar comprendido entre 1 y 31.\";return false;}".
+		 		         " if (dia < 1 || dia > 31) { $.validator.messages.fechaESP = \"El valor del dï¿½a debe estar comprendido entre 1 y 31.\";return false;}".
 		 		         " if (mes < 1 || mes > 12) { $.validator.messages.fechaESP = \"El valor del mes debe estar comprendido entre 1 y 12.\";return false;}".
-		 		         " if ((mes==4 || mes==6 || mes==9 || mes==11) && dia==31) { $.validator.messages.fechaESP = \"El mes \"+mes+\" no tiene 31 días!\";return false;}".
+		 		         " if ((mes==4 || mes==6 || mes==9 || mes==11) && dia==31) { $.validator.messages.fechaESP = \"El mes \"+mes+\" no tiene 31 dï¿½as!\";return false;}".
 		 		         " if (mes == 2) { var bisiesto = (anio % 4 == 0 && (anio % 100 != 0 || anio % 400 == 0)); ".
 		 			     " if (dia > 29 || (dia==29 && !bisiesto)) { $.validator.messages.fechaESP = \"Febrero del \" + anio + \" no contiene \" + dia + \" dias!\";return false;}".
 		 		         " } return true; }, \"OLA K ASE, ESA FECHA NO ES VALIDA O K ASE?\"); });";
@@ -1032,7 +1034,7 @@ class UtilUser {
 				$losCampos[1][0]=":"; };
 				
 		} catch (PDOException $e) {
-			print "¡Error!: " . $e->getMessage() . "<br/>";
+			print "ï¿½Error!: " . $e->getMessage() . "<br/>";
 			die();
 		}
 		$link = null;

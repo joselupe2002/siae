@@ -52,6 +52,33 @@ function Burbuja(lista) {
 
 
 
+/*================================================FUNCION PARA CREAR VENTANAS BOOTSTRAP ==============================*/
+function dameVentana(nombre,contenedor,titulo,tam,colorfondohead,imaico, alto){
+	script="<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	"   <div class=\"modal-dialog modal-"+tam+"\"  role=\"document\">"+
+	"      <div class=\"modal-content\">"+
+	"          <div class=\"modal-header "+colorfondohead+"\" >"+
+	"             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\">"+
+	"                  <span aria-hidden=\"true\">&times;</span>"+
+	"             </button>"+
+	"             <span><i class=\"menu-icon "+imaico+"\"></i><span class=\"text-success lead \"> <strong>"+titulo+"</strong></span></span>"+	   
+	"          </div>"+
+	"          <div id=\"body_"+nombre+"\" class=\"modal-body\"  style=\"height:"+alto+"px; overflow-y: auto;\">"+	
+	"          </div>"+
+	"      </div>"+
+	"   </div>"+
+	"</div>";
+	$("#"+nombre).remove();
+    if (! ( $("#"+nombre).length )) {
+	        $("#"+contenedor).append(script);	     
+	    }	    
+    $('#'+nombre).modal({show:true, backdrop: 'static'});
+
+}
+
+
+
+
 /*================================================FUNCION PARA AGREGAR DIALOGO DE ESPERA =================================================*/
 
 function mostrarEspera (nombre,contenedor, mensaje){

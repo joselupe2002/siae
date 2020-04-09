@@ -7,7 +7,5 @@
        $miConex = new Conexion();
        $res=$miConex->afectaSQL($_SESSION["bd"],$_GET["sql"]);
        echo $res;
-
-
    } else {header("Location: index.php");}
 ?>
