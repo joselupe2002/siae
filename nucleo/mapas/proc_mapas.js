@@ -3,7 +3,7 @@
 function verMapa(modulo,usuario,essuper){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
-		location.href="../mapas/mapagrafico.php?mapa="+table.rows('.selected').data()[0]["Clave"];
+		location.href="../mapas/mapagrafico.php?mapa="+table.rows('.selected').data()[0]["Clave"]+"&descrip="+table.rows('.selected').data()[0]["Descripcion"];
 	}
 	else {
 		alert ("Debe seleccionar un Mapa Curricular");

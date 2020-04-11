@@ -37,21 +37,36 @@
        
 	      <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
                 
-            <div class="row" style=" overflow-x: auto;">	
-                <div class="col-sm-12" >
-	                 <div id="carta" style="width: 289mm; height: 226mm; border: 0px solid; overflow-x: auto;"">
-	                      <div id="mihoja" style="position: absolute; left: 5mm; top: 5mm; width: 279mm; height: 206mm;"> </div>	
-	                 </div>
-                 </div>
-           </div>
-           
-           
-    <div style="position: absolute; top: 10px; left: 10px; ">
-	    <button title="Imprimir avance curricular" onclick="imprimir('mihoja');" class="btn  btn-white btn-primary" value="Agregar"> 
-	        <i class="ace-icon blue fa fa-print bigger-80"></i><span class="btn-small"></span>            
-	     </button>
-   </div>	
-		         
+		  <div class="widget-box widget-color-green">
+			  <div class="widget-header widget-header-small" style="padding:0px;">
+			      <div class="row" >		                    		
+						<div class="col-sm-2" style="text-align: center;">				              										
+							<button title="Imprimir avance curricular" onclick="imprimir('mihoja');" class="btn  btn-white btn-primary" value="Agregar"> 
+								<i class="ace-icon blue fa fa-print bigger-160"></i><span class="btn-small"></span>            
+							</button>
+						</div>			
+						<div class="col-sm-8"  style="text-align:center; vertical-align:center;">
+						    <span class="text-white lead" id="lacarrera">
+								<strong><?php echo $_GET["descrip"];?></strong>
+						    </span>							    
+						</div>       			 
+						<div class="col-sm-2" ></div>
+		            </div> 
+		      </div>
+
+              <div class="widget-body">
+				   <div class="widget-main">
+				       <div class="row" style=" overflow-x: scroll;">	
+                           <div class="col-sm-12" >
+                               <div id="carta" style="width: 289mm; height: 226mm; border: 0px solid;  overflow-x: scroll; padding:0px; margin:0px; ">
+                               <div id="mihoja" style="position: absolute; left: 2mm; top: 1mm; width: 269mm; height: 206mm; border: 0px solid;">             
+                           </div>
+                       </div>
+                    </div>
+			   </div>
+		</div>
+
+      
          
 <div class="modal fade" id="modalDocument" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
       <div class="modal-dialog modal-lg "  role="document">
@@ -223,8 +238,8 @@ var matser="";
 			           losdatos=JSON.parse(data);  
 
 						left=5; ancho=Math.round(((305-10)/10))-5;
-						arriba=20;
-						alto=Math.round(((206-60)/elmax))-5;
+						arriba=8;
+						alto=Math.round(((206-60)/elmax))-2;
 						eltam=Math.round(ancho/3);				
 						tamfin=ancho-(eltam*2);
 						
@@ -232,16 +247,14 @@ var matser="";
 
 						periodo=losdatos[0]["CICL_CUATRIMESTRE"];
 						mapa=losdatos[0]["CICL_MAPAD"];
+                        $("#lacarrera").html(mapa);
+		
+                        // Para colocar el primero 1 
+                        cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; "+
+												"top:1mm; width:5mm; height:5mm;\"><span id =\"periodo_"+periodo+"\""+
+												"class=\"pull-right badge badge-info classper\" Style=\"cursor:pointer;\">"+periodo+"</span></div>";
+							   $("#mihoja").append(cad);	 
 
-                        
-						
-						cad="<div style=\"font-size:12px; text-align:center; color:#003F89; font-weight:bold; position: absolute; top:7mm; width:269mm; height:5mm;\">"+mapa+"</div>";
-						$("#mihoja").append(cad);
-						
-						cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; top:13mm; width:5mm; height:5mm;\">"+periodo+"</div>";
-						$("#mihoja").append(cad);
-				
-                   
 			        	jQuery.each(losdatos, function(clave, valor) { 
 				           et="";
 				           if (valor.numseriada>0){et="background-color:red;";}
@@ -249,9 +262,11 @@ var matser="";
 
 				           if (!(periodo==valor.CICL_CUATRIMESTRE)) { 
 					           left+=ancho+4; 
-					           arriba=20;
+					           arriba=8;
 					           periodo=valor.CICL_CUATRIMESTRE;
-					           cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; top:13mm; width:5mm; height:5mm;\">"+periodo+"</div>";
+							   cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm;"+
+							   " top:1mm; width:5mm; height:5mm;\"><span id =\"periodo_"+periodo+"\""+
+							   " class=\"pull-right badge badge-info classper\" Style=\"cursor:pointer;\">"+periodo+"</span></div>";
 							   $("#mihoja").append(cad);
 
 					           }
@@ -274,7 +289,7 @@ var matser="";
 
                         if (valor.RUTA=='') {$('#'+valor.CICL_MATERIA+"_ENL").remove(); $('#'+valor.CICL_MATERIA+"_PDF").attr('src', "..\\..\\imagenes\\menu\\pdfno.png");}
                         $('[data-rel=popover]').popover({html:true});
-                        arriba+=alto+5;
+                        arriba+=alto+2;
 			             });
 			
 			          }

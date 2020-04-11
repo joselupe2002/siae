@@ -48,7 +48,7 @@
 							</button>
 						</div>			
 						<div class="col-sm-5">
-						    <span class="label label-info" id="lacarrera"></span>	
+						    <span class="label label-info" id="lacarrera"><?php echo $_GET["descrip"];?></span>	
 						    <span class="label label-warning">Especialidad</span>							
 						    <select class="form-control" id="especialidad"></select>
 						</div>       			 
@@ -190,8 +190,7 @@ var matser="";
 						altoasig=(alto*0.70);
 
 						periodo=losdatos[0]["CICL_CUATRIMESTRE"];
-						mapa=losdatos[0]["CICL_MAPAD"];
-						$("#lacarrera").html(mapa);
+						mapa=losdatos[0]["CICL_MAPAD"];		
 						
 						// Para colocar el primero 1 
                         cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; "+
