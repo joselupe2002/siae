@@ -380,7 +380,7 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
 function actualizaSelect(nombre,sql,tipoSelect){
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
 	 $("#"+nombre).empty();
-	 $("#"+nombre).append("<option value=\"0\">Elija Unidad</option>");
+	 $("#"+nombre).append("<option value=\"0\">Elija una opci&oacute;n</option>");
 	 $.ajax({
         type: "GET",
         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),

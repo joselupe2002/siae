@@ -33,53 +33,52 @@
 
 
 	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
-	   
-	    
+	   	    
 	      <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
 	      
-	       <div class="row">	
-	         <div class="col-sm-1"></div>		
-	
-			<div class="col-sm-2" style="text-align: center;">				              
-				  <a href="../base/grid.php?modulo=mapas&bd=Mysql&nombre=03) Conf. Mapas Curr.&automatico=S&padre=SIGEA"
-				   class="btn  btn-white btn-warning" role="button" style="width: 150px; height: 40px;">
-				   <i class="ace-icon red fa fa-arrow-left bigger-160 "></i><span class="btn-lg">Regresar</span></a>
-				   <br/>
-	        </div>				       
-			<div class="col-sm-2" style="text-align: center;">
-				  <button  onclick="imprimir('mihoja');" class="btn  btn-white btn-primary" value="Agregar" style="width: 150px; height: 40px;">
-				   <i class="ace-icon blue fa fa-print bigger-160"></i><span class="btn-lg">Imprimir</span>            
-				   </button>
-			 </div>	
-			 
-			 <div class="col-sm-6" >
-			    <div class="ace-settings-container" id="panelser">
-					<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
-						<i class="ace-icon fa fa-cog bigger-130"></i>
-					</div>
-				
-					<div class="ace-settings-box"   id="ace-settings-box">
-						
-					</div><!-- /.ace-settings-box -->
-				</div><!-- /.ace-settings-container -->
-				<!-- /section:settings.box -->
-				 
-		        <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5" />
-		        
-			 </div>	
-			 			               		           
-		  </div> 
-        
-         <div class="row" style=" overflow-x: scroll;">	
-             <div class="col-sm-12" >
-                 <div id="carta" style="width: 289mm; height: 226mm; border: 0px solid;  overflow-x: scroll;">
-                 <div id="mihoja" style="position: absolute; left: 10mm; top: 15mm; width: 269mm; height: 206mm; border: 1px solid;"> 
-             
-                  </div>
-             </div>
-         </div>
-         
-         </div>
+		  <div class="widget-box widget-color-green">
+			  <div class="widget-header widget-header-small" style="padding:0px;">
+			      <div class="row" >		                    		
+						<div class="col-sm-2" style="text-align: center;">				              				
+							<button title="Regresar a listado de planes" onclick="regresar();" class="btn  btn-white btn-primary" value="Agregar"> 
+								<i class="ace-icon green fa fa-arrow-left bigger-160"></i><span class="btn-small"></span>            
+							</button>
+							<button title="Imprimir avance curricular" onclick="imprimir('mihoja');" class="btn  btn-white btn-primary" value="Agregar"> 
+								<i class="ace-icon blue fa fa-print bigger-160"></i><span class="btn-small"></span>            
+							</button>
+						</div>			
+						<div class="col-sm-5">
+						    <span class="label label-info" id="lacarrera"></span>	
+						    <span class="label label-warning">Especialidad</span>							
+						    <select class="form-control" id="especialidad"></select>
+						</div>       			 
+						<div class="col-sm-4" >
+							<div class="ace-settings-container" id="panelser">
+								<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+									<i class="ace-icon fa fa-cog bigger-130"></i>
+								</div>				
+								<div class="ace-settings-box"   id="ace-settings-box">						
+								</div><!-- /.ace-settings-box -->
+							</div><!-- /.ace-settings-container -->
+							<!-- /section:settings.box -->				 
+							<input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5" />		        
+						</div>	
+						<div class="col-sm-1">	</div>		 			               		           
+		            </div> 
+		      </div>
+
+              <div class="widget-body">
+				   <div class="widget-main">
+				       <div class="row" style=" overflow-x: scroll;">	
+                           <div class="col-sm-12" >
+                               <div id="carta" style="width: 289mm; height: 226mm; border: 0px solid;  overflow-x: scroll; padding:0px; margin:0px; ">
+                               <div id="mihoja" style="position: absolute; left: 2mm; top: 1mm; width: 269mm; height: 206mm; border: 0px solid;">             
+                           </div>
+                       </div>
+                    </div>
+			   </div>
+		</div>
+
     
 
  
@@ -133,6 +132,8 @@
 <script type="text/javascript">
 
 var id_unico="";
+var estacambiandoperiodo=false;
+var elperiodosel=0;
 var estaseriando=false;
 var matser="";
 
@@ -142,8 +143,16 @@ var matser="";
 
 
     jQuery(function($) { 
+		actualizaSelect("especialidad","SELECT ID, DESCRIP FROM especialidad i where i.MAPA='<?php echo $_GET['mapa'];?>'"+
+					   "ORDER BY DESCRIP");
+		$("#especialidad").append("<option value=\"0\">Mapa curricular</option>");		   
+		$("#especialidad").change(function(){cargaMapa();}); 	      
+	});
+	
 
-       $.ajax({
+	function cargaMapa () {
+		$("#mihoja").empty();
+		$.ajax({
     		   type: "GET",
     		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT MAX(N) as N FROM (select CICL_CUATRIMESTRE,count(*) as N "+
     	    		   "from veciclmate where CICL_MAPA='<?php echo $_GET['mapa'];?>' group by CICL_CUATRIMESTRE) as miscuat "),
@@ -163,53 +172,54 @@ var matser="";
 				       }
     		       });
 
-    
+	
+				 
 			       $.ajax({
 			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select veciclmate.*, (SELECT COUNT(*) from `eseriacion` where seri_materia=cicl_materia and seri_mapa=CICL_MAPA) as numseriada from veciclmate where CICL_MAPA='<?php echo $_GET['mapa'];?>' ORDER BY cicl_cuatrimestre, cicl_materia"),
-			           success: function(data){  
+					   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select veciclmate.*, (SELECT COUNT(*) from `eseriacion` "+
+					   " where seri_materia=cicl_materia and seri_mapa=CICL_MAPA) as numseriada from veciclmate "+
+					   " where CICL_MAPA='<?php echo $_GET['mapa'];?>' and (ifnull(CVEESP,0)=0 or ifnull(CVEESP,0)="+$("#especialidad").val()+") ORDER BY cicl_cuatrimestre, cicl_materia"),
+			           success: function(data){						
 			           losdatos=JSON.parse(data);  
 
 						left=5; ancho=Math.round(((305-10)/10))-5;
-						arriba=25;
-						alto=Math.round(((206-60)/elmax))-5;
+						arriba=8;
+						alto=Math.round(((206-60)/elmax))-2;
 						eltam=Math.round(ancho/3);				
 						tamfin=ancho-(eltam*2);
-						
 						altoasig=(alto*0.70);
 
 						periodo=losdatos[0]["CICL_CUATRIMESTRE"];
 						mapa=losdatos[0]["CICL_MAPAD"];
+						$("#lacarrera").html(mapa);
+						
+						// Para colocar el primero 1 
+                        cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; "+
+												"top:1mm; width:5mm; height:5mm;\"><span id =\"periodo_"+periodo+"\" ondblclick=\"cambiarPeriodo('"+periodo+"');\""+
+												"title=\"Doble click para cambiar materias de periodos\" "+
+												"class=\"pull-right badge badge-info classper\" Style=\"cursor:pointer;\">"+periodo+"</span></div>";
+							   $("#mihoja").append(cad);	
 
-						cad="<div style=\"font-size:14px; text-align:center; font-weight:bold; position: absolute;  top:2mm; width:269mm; height:5mm;\">"+elcampus+"</div>";
-						$("#mihoja").append(cad);
-						
-						cad="<div style=\"font-size:14px; text-align:center;  font-weight:bold; position: absolute; top:7mm; width:269mm; height:5mm;\">"+mapa+"</div>";
-						$("#mihoja").append(cad);
-						
-						cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; top:20mm; width:5mm; height:5mm;\">"+periodo+"</div>";
-						$("#mihoja").append(cad);
-				
-                      
 			        	jQuery.each(losdatos, function(clave, valor) { 
 				           et="";
 				           if (valor.numseriada>0){et="background-color:red;";}
-				           
-
+				                                      
 				           if (!(periodo==valor.CICL_CUATRIMESTRE)) { 
 					           left+=ancho+4; 
-					           arriba=25;
+					           arriba=8;
 					           periodo=valor.CICL_CUATRIMESTRE;
-					           cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; top:20mm; width:5mm; height:5mm;\">"+periodo+"</div>";
-							   $("#mihoja").append(cad);
-
+							   cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; "+
+												"top:1mm; width:5mm; height:5mm;\"><span id =\"periodo_"+periodo+"\" ondblclick=\"cambiarPeriodo('"+periodo+"');\""+
+												"title=\"Doble click para cambiar materias de periodos\" "+
+												"class=\"pull-right badge badge-info classper\" Style=\"cursor:pointer;\">"+periodo+"</span></div>";
+							   $("#mihoja").append(cad);							  
 					           }
                            
 			        	   estiloPadre="style= \"background-color: "+valor.CICL_COLOR+"; position: absolute; left: "+left+"mm; top: "+arriba+"mm; width: "+ancho+"mm; height:"+alto+"mm; border: 0.1mm solid;\"";
-			               estiloAsignatura="style=\"font-size:8px; font-weight:bold; text-align: center; word-wrap: break-word;  "+
+			               estiloAsignatura="style=\"font-size:7px; font-weight:bold; text-align: center; word-wrap: break-word;  "+
 			                                        "cursor:pointer; position:absolute; left: 0mm; top: 0mm; width:100%; height:"+altoasig+"mm; border: 0.1mm solid;\""+ 
 			                                        "id=\""+valor.CICL_MATERIA+"\" elcolor=\""+valor.CICL_COLOR+"\" seleccionado=\"0\" onclick=\"seriacionver('"+valor.CICL_MATERIA+"','"+valor.CICL_MATERIAD+"');\" "+
-			                                        " ondblclick=\"seriacionhacer('"+valor.CICL_MATERIA+"','"+valor.CICL_MATERIAD+"');\" ";
+			                                        " ondblclick=\"seriacionhacer('"+valor.CICL_MATERIA+"','"+valor.CICL_MATERIAD+"','"+valor.CICL_ID+"');\" ";
 			 			        		
                             cad="<div "+estiloPadre+">"+ 
 		                            "<div "+estiloAsignatura+">"+valor.CICL_MATERIAD+" ("+valor.CICL_CLAVEMAPA+")"+"</div>"+
@@ -219,7 +229,7 @@ var matser="";
 		                          "</div>";
 		                   //console.log(cad);
                            $("#mihoja").append(cad);
-                           arriba+=alto+5;
+                           arriba+=alto+2;
 
 			             });
 			
@@ -231,10 +241,26 @@ var matser="";
 		      } //success del primer ajax
 	   
            });//ajax del semestre que mas asignaturas tiene
-	      
-    });
+	}
 
 
+	function cambiarPeriodo(per){
+		if (!estaseriando) {
+			if (!estacambiandoperiodo) {
+		       $("#periodo_"+per).removeClass("badge-info");
+			   $("#periodo_"+per).addClass("badge-danger");
+			   elperiodosel=per;
+			   estacambiandoperiodo=true;
+			}
+			else {
+			   $(".classper").removeClass("badge-danger");
+			   $(".classper").addClass("badge-info");
+			   estacambiandoperiodo=false;
+			   elperiodosel=0;
+			}
+		}
+		else  {alert ("No puede cambiar de semestre si esta en modo seriación");	}
+	}
 
     
     function imprimir(nombreDiv) {
@@ -280,27 +306,59 @@ var matser="";
         }
     
 
-    function seriacionhacer(id,descrip){
-        if (!estaseriando) {
-            estaseriando=true;
-            matser=id;
-            $("#"+id).css("background-color","#BB0000");
-            $("#"+id).css("color","white");
+    function seriacionhacer(id,descrip,idReg){
+		
+		if (!estacambiandoperiodo) {
+				if(!estaseriando) {
+					estaseriando=true;
+					matser=id;
+					$("#"+id).css("background-color","#BB0000");
+					$("#"+id).css("color","white");
 
-			$("#ace-settings-btn").click();
-			
-			 $("#ace-settings-box").append("<strong><span class=\"text-warning bigger-60\"><div>"+id+"-"+descrip+"<div></span></strong>"+
-				      "<div id=\"titser_"+id+"\"><div>"+
-				      "<div style=\"text-align:center\"> "+
-					  "     <button  onclick=\"cancelarSeriacion();\" class=\"btn btn-warning\"  style=\"width: 100px; height: 40px;\">"+
-					  "     <i class=\"ace-icon white fa fa-save bigger-120\"></i><span class=\"btn-small\">Cancelar</span></button>"+
-					  "     <button  onclick=\"guardarSeriaciones();\" class=\"btn btn-success\" value=\"Agregar\" style=\"width: 100px; height: 40px;\">"+
-					  "     <i class=\"ace-icon white fa fa-save bigger-120\"></i><span class=\"btn-small\">Guardar</span></button>"+
-				      "<div>");
-			 getSeriadas();
+					$("#ace-settings-btn").click();
+					
+					$("#ace-settings-box").append("<strong><span class=\"text-warning bigger-60\"><div>"+id+"-"+descrip+"<div></span></strong>"+
+							"<div id=\"titser_"+id+"\"><div>"+
+							"<div style=\"text-align:center\"> "+
+							"     <button  onclick=\"cancelarSeriacion();\" class=\"btn btn-warning\"  style=\"width: 100px; height: 40px;\">"+
+							"     <i class=\"ace-icon white fa fa-save bigger-120\"></i><span class=\"btn-small\">Cancelar</span></button>"+
+							"     <button  onclick=\"guardarSeriaciones();\" class=\"btn btn-success\" value=\"Agregar\" style=\"width: 100px; height: 40px;\">"+
+							"     <i class=\"ace-icon white fa fa-save bigger-120\"></i><span class=\"btn-small\">Guardar</span></button>"+
+							"<div>");
+					getSeriadas();
 
-	     }
-        else { alert ("Ya se encuentra en modo seriacion"); }
+				}
+				else { alert ("Ya se encuentra en modo seriacion"); }
+		}
+		
+		// ===============================================Cambio del periodo =================================
+		if (estacambiandoperiodo) {			
+			parametros={
+					tabla:"eciclmate",
+					campollave:"CICL_ID",
+					bd:"Mysql",
+					valorllave:idReg,
+					CICL_CUATRIMESTRE: elperiodosel
+				};
+				$.ajax({
+				type: "POST",
+				url:"../base/actualiza.php",
+				data: parametros,
+				success: function(data){
+					$('#dlgproceso').modal("hide"); 
+					$('#modalDocument').modal("hide");
+					if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}
+					else {						
+						$(".classper").removeClass("badge-danger");
+			            $(".classper").addClass("badge-info");
+			            estacambiandoperiodo=false;
+						elperiodosel=0;
+						cargaMapa();
+					}
+										
+				}					     
+				});    	   
+		}
 
         
         }
@@ -392,7 +450,9 @@ function guardarSeriaciones(){
     	    });    	         
 }
     
-
+function regresar(){
+	window.history.back();
+}
  
 </script>
 
