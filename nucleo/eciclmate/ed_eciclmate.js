@@ -1,5 +1,20 @@
 
 
+function changeCVEESP(DATO, usuario, institucion, campus){
+   elsql="SELECT CLAVE FROM especialidad o where ID='"+$("#CVEESP").val()+"'";      
+   $.ajax({
+      type: "GET",
+      url: 'getdatossql.php?sql='+encodeURI(elsql)+"&bd=Mysql", 
+      success: function(data){ 
+         jQuery.each(JSON.parse(data), function(clave, valor) { 	
+           $("#CVEESPSIE").val(valor.CLAVE);
+           $("#CVEESPSIE").prop('disabled', true);
+                                   
+         });
+      }
+   });
+}
+
 function changeCICL_MAPA(DATO, usuario, institucion, campus){
 	elsql="SELECT MATE_CLAVE, CONCAT(MATE_DESCRIP,' ',MATE_CLAVE) FROM cmaterias WHERE MATE_CLAVE NOT IN "+
 	         "(SELECT CICL_MATERIA FROM eciclmate WHERE CICL_MAPA='"+$("#CICL_MAPA").val()+"') ORDER BY MATE_DESCRIP";
@@ -12,7 +27,41 @@ function changeCICL_MAPA(DATO, usuario, institucion, campus){
               $("#CICL_MATERIA").html(data);                               
         	  $('#CICL_MATERIA').trigger("chosen:updated"); 
         	          	 
-             quitarEspera("imggif_CICL_MATERIA",null);
+           quitarEspera("imggif_CICL_MATERIA",null);
+
+           elsql="SELECT o.MAPA_CARRERA, o.CVESIE FROM mapas o where MAPA_CLAVE='"+$("#CICL_MAPA").val()+"'";            
+           $.ajax({
+            type: "GET",
+            url: 'getdatossql.php?sql='+encodeURI(elsql)+"&bd=Mysql", 
+            success: function(data){ 
+               jQuery.each(JSON.parse(data), function(clave, valor) { 	
+                 $("#CARRERASIE").val(valor.MAPA_CARRERA);
+                 $("#CARRERASIE").prop('disabled', true);
+                 $("#CVEMAPASIE").val(valor.CVESIE); 
+                 $("#CVEMAPASIE").prop('disabled', true);                                  
+           
+               });
+
+               agregarEspera("imggif_CVEESP",null);
+               elsql="SELECT ID, CONCAT(CLAVE,' ',DESCRIP) FROM especialidad u where u.MAPA='"+$("#CICL_MAPA").val()+"'";   
+            
+               $.ajax({
+                type: "GET",
+                url: 'dameselect.php?sql='+encodeURI(elsql)+"&sel=0&bd=Mysql", 
+                success: function(data){ 
+                   $("#CVEESP").empty();
+                   $("#CVEESP").html(data);                               
+                   $('#CVEESP').trigger("chosen:updated");                   
+                   quitarEspera("imggif_CVEESP",null);
+                  }
+               });
+
+         },
+         error: function(data) {
+            alert('ERROR: '+data);
+         }
+       });     
+
 
      },
      error: function(data) {
@@ -20,6 +69,7 @@ function changeCICL_MAPA(DATO, usuario, institucion, campus){
      }
    });     
 }
+
 
 
 function changeCICL_CICLO(DATO, usuario, institucion, campus){

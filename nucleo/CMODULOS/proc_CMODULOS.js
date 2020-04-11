@@ -157,8 +157,11 @@ function dameSQL (elsql,modulo) {
 								jQuery.each(losdatos, function(clave, valor) { 
 									cadSQL=valor.sql;
 									cadVal=valor.validacion;
+									cadmsj=valor.msjval;
 									if (!(valor.sql==null)) {cadSQL=valor.sql.replace(/'/g,"''");}
 									if (!(valor.validacion==null)) {cadVal=valor.validacion.replace(/&/g,"<*>");}
+									if (!(valor.msjval==null)) {cadmsj=valor.msjval.replace(/'/g,"''");}
+									
 									cad="INSERT INTO ALL_COL_COMMENT (owner,table_name,colum_name,comments,"+
 																	"width, numero,comentario,keys,"+
 																	"tipo,visgrid,visfrm,validacion,"+
@@ -167,7 +170,7 @@ function dameSQL (elsql,modulo) {
 																	"'"+valor.owner+"',"+"'"+valor.table_name+"',"+"'"+valor.colum_name+"',"+"'"+valor.comments+
 																	"',"+"'"+valor.width+"',"+"'"+valor.numero+"',"+"'"+valor.comentario+"',"+"'"+valor.keys+"',"+
 																	"'"+valor.tipo+"',"+"'"+valor.visgrid+"',"+"'"+valor.visfrm+"',"+"'"+cadVal+"',"+
-																	"'"+valor.msjval+"',"+"'"+cadSQL+"',"+"'"+valor.seccion+"',"+"'"+valor.gif+"',"+"'"+valor.autoinc+"',"+
+																	"'"+cadmsj+"',"+"'"+cadSQL+"',"+"'"+valor.seccion+"',"+"'"+valor.gif+"',"+"'"+valor.autoinc+"',"+
 																	"'"+valor._INSTITUCION+"',"+"'"+valor._CAMPUS+"')";
 									$("#"+elsql).append(cad+"<;>\n");
 					      	    });				

@@ -30,7 +30,9 @@
         
 			
 
-        <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }
+        <style type="text/css">
+		       table.dataTable tbody tr.selected {color: blue; font-weight:bold;}
+			   table.dataTable tbody td {padding:4px;}
                th, td { white-space: nowrap; }
         
         </style>
@@ -45,7 +47,7 @@
         <div class="main-content"  style="margin-left: 10px; margin-right: 10px; width: 98%;">
           <div class="row">
 		     <div class="col-xs-12"> 
-                <div class="row"> 
+                <div class="row" > 
                      <div class="col-sm-4"> 
                             <div class="clearfix">
 					            <div class="pull-left tableTools-container"></div>
@@ -216,7 +218,8 @@
 	                        });              
 	                    colsql=colsql.substring(0,colsql.length-1);
 	                    
-	                    $("#tablaind").append("<table id=\"G_<?php echo $_GET["modulo"]; ?>\" class=\"display table-condensed table-striped table-sm table-bordered table-hover nowrap \" style=\"width:100%\">"); 
+						$("#tablaind").append("<table id=\"G_<?php echo $_GET["modulo"]; ?>\" class=\"display table-condensed "+
+						"table-striped table-sm table-bordered table-hover nowrap \" style=\"width:100%;  font-size:12px; \">"); 
 	                   
 	                    	               
 	                  
@@ -258,13 +261,13 @@
 	                     				"zeroRecords":			"No se han encontrado coincidencias.",
 	                     				"paginate": {
 	                     					"first":			"Primera",
-	                     					"last":				"Última",
+	                     					"last":				"ï¿½ltima",
 	                     					"next":				"Siguiente",
 	                     					"previous":			"Anterior"
 	                     				},
 	                     				"aria": {
-	                     					"sortAscending":	"Ordenación ascendente",
-	                     					"sortDescending":	"Ordenación descendente"
+	                     					"sortAscending":	"Ordenaciï¿½n ascendente",
+	                     					"sortDescending":	"Ordenaciï¿½n descendente"
 	                     				}
 	                     			},
 
@@ -442,10 +445,10 @@
 		function modificar(){
 			
 
-			ruta="editaReg.php?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=N&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca más abajo este debe ser siempre el ultimo parametros
+			ruta="editaReg.php?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=N&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca mï¿½s abajo este debe ser siempre el ultimo parametros
 		   <?php                  
 	             if (file_exists("../".$_GET["modulo"]."/editaReg.php")) {?>
-	                 ruta="<?php echo "../".$_GET["modulo"]."/editaReg.php"?>?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&campollave=<?php echo $campoLlave; ?>&gridpropio=N&valorllave=";  //El valor llave se coloca más abajo este debe ser siempre el ultimo parametros
+	                 ruta="<?php echo "../".$_GET["modulo"]."/editaReg.php"?>?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&campollave=<?php echo $campoLlave; ?>&gridpropio=N&valorllave=";  //El valor llave se coloca mï¿½s abajo este debe ser siempre el ultimo parametros
 	       <?php }?>
 	              
 			
