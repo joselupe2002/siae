@@ -30,7 +30,7 @@ function horarios(modulo,usuario,institucion, campus,essuper){
 		   "                                 </div>"+
 		   "                           </div>"+		   
 		   "          </div>"+
-		   "          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto; height:300px;\">"+	
+		   "          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto; height:370px;\">"+	
 	       "                           <table id=\"tabHorarios\" class= \"table table-condensed table-bordered table-hover\">"+
 	   	   "                              <thead>  "+
 		   "                                  <tr>"+

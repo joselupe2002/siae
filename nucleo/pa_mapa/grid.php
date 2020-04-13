@@ -90,10 +90,6 @@
 
 
 
-			                 			
-			
-			
- 
 		 							
 <!-- -------------------Primero ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
@@ -202,19 +198,19 @@ var matser="";
    function verAvance(matricula) {
 	   $.ajax({
   		   type: "GET",
-  		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ALUM_MAPA "+
+  		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ALUM_MAPA, ALUM_ESPECIALIDAD "+
   		  		   " FROM falumnos where ALUM_MATRICULA='"+matricula+"'"),
   		   success: function(data){  
   			   losdatos=JSON.parse(data);  
-		       jQuery.each(losdatos, function(clave, valor) { elmapa=valor.ALUM_MAPA });
-  			   cargaMapa(elmapa,matricula);
+		       jQuery.each(losdatos, function(clave, valor) { elmapa=valor.ALUM_MAPA; laespecialidad=valor.ALUM_ESPECIALIDAD;});
+  			   cargaMapa(elmapa,laespecialidad,matricula);
   		   }
     	});
 
 	    }
    
 
-    function cargaMapa(elmapa,elalumno){
+    function cargaMapa(elmapa,laespecialidad,elalumno){
     	$("#mihoja").empty();
 
     	$("#fondo").css("display","block");
@@ -233,7 +229,7 @@ var matser="";
 			       $.ajax({
 			           type: "GET",
 			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select veciclmate.*, (SELECT COUNT(*) from `eseriacion` where seri_materia=cicl_materia "+
-					           " and seri_mapa=CICL_MAPA) as numseriada from veciclmate where CICL_MAPA='"+elmapa+"' ORDER BY cicl_cuatrimestre, cicl_materia"),
+					           " and seri_mapa=CICL_MAPA) as numseriada from veciclmate where CICL_MAPA='"+elmapa+"' and (ifnull(CVEESP,0)=0 or ifnull(CVEESP,0)='"+laespecialidad+"') ORDER BY cicl_cuatrimestre, cicl_materia"),
 			           success: function(data){  
 			           losdatos=JSON.parse(data);  
 
@@ -298,57 +294,55 @@ var matser="";
 			    }); //Ajax de busqueda de las materias 
 
 
-			    
-			    
 			    //buscamos las asignaturas que ya aprobo 
 
 				 $.ajax({
 			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE FROM dlista a, cmaterias b "+
+			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE, IFNULL(a.LISTC15,'0') AS LISTC15 FROM dlista a, cmaterias b "+
 			        		   " where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.LISCAL>=70"),
 			           success: function(data){  
 			               losdatos=JSON.parse(data);                            
 			               jQuery.each(losdatos, function(clave, valor) { 
-                                 $("#"+valor.MATCVE).css("background-color","#6EF2AE");
+							     if (valor.LISTC15=='9999') { 
+									 $("#"+valor.MATCVE).prop("title","Asignatura Aprobada por (Revalidación o Equivalencia)"); 
+									 $("#"+valor.MATCVE).css("background-color","#F2F899"); }
+                                 else {
+									 $("#"+valor.MATCVE).prop("title","Asignatura Aprobada en curso normal"); 
+									 $("#"+valor.MATCVE).css("background-color","#CFFCE9");}
                                  $("#"+valor.MATCVE+"_CAL").html(valor.LISCAL);
-                                 $("#"+valor.MATCVE+"_BAN").html(valor.PDOCVE);
-				               });
-			           }
-				 });
-
-
-				//buscamos las asignaturas que cursa actualmente
-				 $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL FROM dlista a, cmaterias b "+
-			        		   " where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.PDOCVE=getciclo()"),
-			           success: function(data){   
-			               losdatos=JSON.parse(data);                          
-			               jQuery.each(losdatos, function(clave, valor) { 
-                               $("#"+valor.MATCVE).css("background-color","#77B5FF");
+                                 $("#"+valor.MATCVE+"_BAN").html(valor.PDOCVE);								 
 				               });
 
-			               
-			           }
+							//buscamos las asignaturas que cursa actualmente
+							$.ajax({
+								type: "GET",
+								url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL FROM dlista a, cmaterias b "+
+										" where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.PDOCVE=getciclo()"),
+								success: function(data){   
+									losdatos=JSON.parse(data);                          
+									jQuery.each(losdatos, function(clave, valor) { 
+										$("#"+valor.MATCVE).prop("title","Asignatura que cursa actualmente"); 
+										$("#"+valor.MATCVE).css("background-color","#CBF899");
+										});	
+								}
+							});
+
+							//numero de veces que ha cursado la asignatura
+							$.ajax({
+								type: "GET",
+								url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, count(*) as N FROM dlista a"+
+										" where a.ALUCTR='"+elalumno+"' GROUP BY MATCVE"),
+								success: function(data){   
+									losdatos=JSON.parse(data);                          
+									jQuery.each(losdatos, function(clave, valor) { 
+										$("#"+valor.MATCVE+"_NVE").html(valor.N);
+										});			               
+								}
+							});
+							$('#dlgproceso').modal("hide");  
+			           } // Fin del success
 				 });
 
-
-				//numero de veces que ha cursado la asignatura
-				 $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, count(*) as N FROM dlista a"+
-			        		   " where a.ALUCTR='"+elalumno+"' GROUP BY MATCVE"),
-			           success: function(data){   
-			               losdatos=JSON.parse(data);                          
-			               jQuery.each(losdatos, function(clave, valor) { 
-                               $("#"+valor.MATCVE+"_NVE").html(valor.N);
-				               });
-
-			               
-			           }
-				 });
-				
-				 $('#dlgproceso').modal("hide");  
 
 		      } //success del primer ajax
 	   

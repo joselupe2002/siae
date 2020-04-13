@@ -332,7 +332,6 @@ function generaTabla(nombreTabla,contenedor, sql, titulos, campos) {
 
 function getSQLTipo(tipo,otrascondiciones){
 	elsql="";
-	if (tipo=='PROPIO') {elsql=sql;}
 	if (tipo=='CICLOS') {elsql="SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) from ciclosesc where 1=1 "+otrascondiciones+ " order by CICL_CLAVE DESC";}
 	if (tipo=='MATERIAS') {elsql="SELECT MATE_CLAVE, CONCAT(MATE_CLAVE,' ',MATE_DESCRIP) from cmaterias where 1=1 "+otrascondiciones+ " order by MATE_DESCRIP";}
 	return elsql;
@@ -342,7 +341,6 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
 
 	elsql=getSQLTipo(tipo,otrascondiciones);
 	if (tipo=='PROPIO') {elsql=sql;}
-
 	$.ajax({
         type: "GET",
         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
@@ -353,7 +351,7 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
        	       $("#"+contenedor).append("<select class=\" "+eltipo+" form-control text-success\"  id=\""+nombre+"\"> </select>");
        	    $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
                jQuery.each(JSON.parse(data), function(clave, valor) { 	
-	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+losdatos[clave][0]+"-"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  		
+	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  		
 	  				   	  }); 
                if (tipoSelect=='BUSQUEDA') {               
 		         	   $('.chosen-select').chosen({allow_single_deselect:true}); 			
@@ -369,6 +367,35 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
        });
 }
 
+function addSELECT_ST(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect,estilo) {
+
+	elsql=getSQLTipo(tipo,otrascondiciones);
+	if (tipo=='PROPIO') {elsql=sql;}
+	$.ajax({
+        type: "GET",
+        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+        success: function(data){
+       	       losdatos=JSON.parse(data);   
+       	       eltipo="";
+				  if (tipoSelect=='BUSQUEDA') {eltipo="chosen-select";}			   
+       	       $("#"+contenedor).append("<select style=\""+estilo+"\"class=\" "+eltipo+" form-control text-success\"  id=\""+nombre+"\"> </select>");
+       	    $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
+               jQuery.each(JSON.parse(data), function(clave, valor) { 	
+	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  		
+	  				   	  }); 
+               if (tipoSelect=='BUSQUEDA') {               
+		         	   $('.chosen-select').chosen({allow_single_deselect:true}); 			
+			     	   $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+			     	   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+			  		   $("#"+nombre).trigger("chosen:updated");		}
+               
+	  		   $("#"+nombre).change(function(){change_SELECT(nombre);});                   	   
+              },
+        error: function(data) {	                  
+                   alert('ERROR: '+data);
+               }
+       });
+}
 
 
 
