@@ -61,9 +61,6 @@
                     </div>
 			   </div>
 		</div>
-
-      
-         
 		 							
 <!-- -------------------Primero ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>

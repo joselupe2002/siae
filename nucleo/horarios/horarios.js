@@ -15,7 +15,6 @@ var matser="";
 		$("#info").css("display","none");
 		$("#losciclos").append("<span class=\"label label-info\">Ciclo Escolar</span>");
 		addSELECT("selCiclos","losciclos","CICLOS", "", "","BUSQUEDA");
-
 		$("#lascarreras").append("<span class=\"label label-warning\">Carrera</span>");
 		addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'", "","");  			      
 		
@@ -33,6 +32,7 @@ var matser="";
 		lin=$(this).attr("id").split("_")[1];
 		$("#guardar_"+lin).removeClass("btn-success");
 		$("#guardar_"+lin).addClass("btn-warning");
+		$(this).css("border-color",""); 
 	 });
 	 
 	});
@@ -98,7 +98,7 @@ var matser="";
 	           type: "GET",
 			   url:  "../base/getdatossql.php?bd=Mysql&sql="+elsql,
 	           success: function(data){  
-					  generaTabla(JSON.parse(data));        	      
+					  generaTablaHorarios(JSON.parse(data));        	      
 					  					  
 	            },
 	        	error: function(data) {	                  
@@ -230,7 +230,7 @@ function agregarAsignaturaGrid(lamateria,materiad,semestre, ht, hp){
 }
 
 
-function generaTabla(grid_data){
+function generaTablaHorarios(grid_data){
 	c=1; global=1;
 	$("#cuerpo").empty();
 	$("#tabHorarios").append("<tbody id=\"cuerpo\">");
@@ -253,13 +253,13 @@ function generaTabla(grid_data){
 		$("#row"+c).append("<td>"+valor.ht+"</td>");
 		$("#row"+c).append("<td>"+valor.hp+"</td>");
 		
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_3B\"></select>"+parte1+" id=\"c_"+c+"_3\" value=\""+valor.lunes+"\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_4B\"></select>"+parte1+" id=\"c_"+c+"_4\" value=\""+valor.martes+"\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_5B\"></select>"+parte1+" id=\"c_"+c+"_5\" value=\""+valor.miercoles+"\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_6B\"></select>"+parte1+" id=\"c_"+c+"_6\" value=\""+valor.jueves+"\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_7B\"></select>"+parte1+" id=\"c_"+c+"_7\" value=\""+valor.viernes+"\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_8B\"></select>"+parte1+" id=\"c_"+c+"_8\" value=\""+valor.sabado+"\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_9B\"></select>"+parte1+" id=\"c_"+c+"_9\" value=\""+valor.domingo+"\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_3B\" ondblclick=\"horarioAulas('"+c+"','3B','LUNES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_3\" value=\""+valor.lunes+"\" ondblclick=\"horarioAulas('"+c+"','3B','LUNES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_4B\" ondblclick=\"horarioAulas('"+c+"','4B','MARTES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_4\" value=\""+valor.martes+"\" ondblclick=\"horarioAulas('"+c+"','3B','MARTES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_5B\" ondblclick=\"horarioAulas('"+c+"','5B','MIERCOLES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_5\" value=\""+valor.miercoles+"\" ondblclick=\"horarioAulas('"+c+"','3B','MIERCOLES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_6B\" ondblclick=\"horarioAulas('"+c+"','6B','JUEVES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_6\" value=\""+valor.jueves+"\" ondblclick=\"horarioAulas('"+c+"','3B','JUEVES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_7B\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','AULA');\></select>"+parte1+" id=\"c_"+c+"_7\" value=\""+valor.viernes+"\" ondblclick=\"horarioAulas('"+c+"','3B','VIERNES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_8B\" ondblclick=\"horarioAulas('"+c+"','8B','SABADO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_8\" value=\""+valor.sabado+"\" ondblclick=\"horarioAulas('"+c+"','3B','SABADO','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_9B\" ondblclick=\"horarioAulas('"+c+"','9B','DOMINGO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_9\" value=\""+valor.domingo+"\" ondblclick=\"horarioAulas('"+c+"','3B','DOMINGO','PROFESOR');\">"+parte2);
 		
 		//AGREGAMOS LA CLASE EDIT A TODOS LOS ELEMENTOS 
 		$("#c_"+c+"_2").addClass("edit");
@@ -295,6 +295,38 @@ function generaTabla(grid_data){
 	ocultarEspera("esperahor");
 } 
 
+function horarioAulas (linea,id,dia,tipo){
+   
+   if (tipo=="AULA") {
+   sql="SELECT PROFESORD AS PROF,MATERIAD AS MATERIA,SIE AS GRUPO,"+dia+"_A AS AULA,"+dia+"_1 AS HORARIO"+
+	   " FROM vedgrupos b where b.CICLO='"+$("#selCiclos").val()+"' and "+dia+"_A='"+$("#c_"+linea+"_"+id).val()+"' ORDER BY "+dia;
+	   descrip=$("#c_"+linea+"_"+id).val();
+	}
+   if (tipo=="PROFESOR") {
+		sql="SELECT PROFESORD AS PROF,MATERIAD AS MATERIA,SIE AS GRUPO,"+dia+"_A AS AULA,"+dia+"_1 AS HORARIO"+
+			" FROM vedgrupos b where b.CICLO='"+$("#selCiclos").val()+"' and PROFESOR='"+$("#c_"+linea+"_2").val()+"' ORDER BY "+dia;
+		descrip=$("#c_"+linea+"_2 option:selected").text();
+		}
+	
+	
+   dameVentana("ventaulas", "grid_horarios","HORARIO DE "+tipo+":<span class=\"text-info small\">"+descrip+"</span> DIA: <span class=\"text-danger small\">"+dia+"</span>","lg","bg-successs","fa fa-cog","370");
+ 		
+ 
+   titulos=[{titulo:"PROF",estilo:""},{titulo:"MATERIA",estilo:""},
+			{titulo:"GRUPO",estilo:""},{titulo:"AULA",estilo:""},
+			{titulo:"HORARIO",estilo:""}];
+
+   var campos = [{campo: "PROF",estilo:"",antes:"<span clasS=\"text-success\">",despues:"</span>"}, 
+   {campo: "MATERIA",estilo: "",antes:"",despues:""},
+   {campo: "GRUPO",estilo: "",antes:"<span class=\"badge badge-success\">",despues:"</span>"},
+   {campo: "AULA",estilo: "",antes:"",despues:""},
+   {campo: "HORARIO",estilo: "font-size:14px;",antes:"<span clasS=\"text-danger\"><strong>", despues:"</span></strong>"}];
+
+   $("#body_ventaulas").append("<table id=tabaulas class=\"display table-condensed table-striped table-sm table-bordered "+
+                               "table-hover nowrap\" style=\"overflow-y: auto;\"></table>");
+   generaTablaDin("tabaulas",sql,titulos,campos);
+}
+
 function eliminarFila(nombre,id,fila) {
 	var r = confirm("Seguro que desea eliminar del horario esta asignatura");
 	if (r == true) {
@@ -316,43 +348,92 @@ function eliminarFila(nombre,id,fila) {
 }
 
 
-function guardarFila(nombre,id,fila){
-	 parametros={
-			 tabla:"edgrupos",
-			 campollave:"DGRU_ID",
-			 valorllave:id,
-			 bd:"Mysql",			
-			 DGRU_MATERIA:$("#c_"+fila+"_1").val(),
-			 DGRU_PROFESOR:$("#c_"+fila+"_2").val(),			 
-			 LUNES:$("#c_"+fila+"_3").val(),
-			 MARTES:$("#c_"+fila+"_4").val(),
-			 MIERCOLES:$("#c_"+fila+"_5").val(),
-			 JUEVES:$("#c_"+fila+"_6").val(),
-			 VIERNES:$("#c_"+fila+"_7").val(),
-			 SABADO:$("#c_"+fila+"_8").val(),
-			 DOMINGO:$("#c_"+fila+"_9").val(),
-			 A_LUNES:$("#c_"+fila+"_3").val(),
-			 A_MARTES:$("#c_"+fila+"_4").val(),
-			 A_MIERCOLES:$("#c_"+fila+"_5").val(),
-			 A_JUEVES:$("#c_"+fila+"_6").val(),
-			 A_VIERNES:$("#c_"+fila+"_7").val(),
-			 A_SABADO:$("#c_"+fila+"_8").val(),
-			 A_DOMINGO:$("#c_"+fila+"_9").val(),
-			 CUPO:$("#c_"+fila+"_10").val(),
-			 SIE:$("#c_"+fila+"_2SIE").val()
-			};
+function validarFormatoHorarios(){
+	error=false;
+	$(".input-mask-horario").each(function(){
+		   hor=$(this).val();
+		   if (hor==":-:") {$(this).val(""); hor="";}
+		   if (hor!=="") {			   
+			   tam=hor.length;
+			   var horario=[];  
+			   horario=decodificaHora(hor); //datos[hora1,min1,hora2,min2,minutot1,minutot2];
+ 
+			   if ((!((parseInt(horario[0])>=1) && (parseInt(horario[0])<=23))) || (!((parseInt(horario[2])>=1) && (parseInt(horario[2])<=23)))) {
+				   $(this).css("border-color","red");
+				   error=true;
+					}
+			   if ((!((parseInt(horario[1])>=0) && (parseInt(horario[1])<=59))) || (!((parseInt(horario[3])>=0) && (parseInt(horario[3])<=59)))) {
+				   $(this).css("border-color","red");
+				   error=true;
+					}			   
+			   if (horario[4]>=horario[5]) {$(this).css("border-color","red"); error=true;}			   
+			   $(this).val(pad(horario[0],2)+":"+pad(horario[1],2)+"-"+pad(horario[2],2)+":"+pad(horario[3],2));
+		   }	
+	});
+	return error;  
+}
 
-	 $.ajax({
-         type: "POST",
-         url:"../base/actualiza.php",
-         data: parametros,
-         success: function(data){		                                	                      
-             if (!(data.substring(0,1)=="0"))	
-					 {$("#guardar_"+fila).removeClass("btn-warning");
-					  $("#guardar_"+fila).addClass("btn-success");					  
-					 }	
-             else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
-         }					     
-     });      
-     
+
+function validarDatos(fila,id){
+	var todobien=true;
+	if ($("#c_"+fila+"_2SIE").val().length<=0) {
+		 alert ("Debe capturar la letra del grupo"); 
+		 $("#c_"+fila+"_2SIE").css("border-color","red"); 
+		 todobien=false;
+		 return false; }
+	if (($("#c_"+fila+"_2").val()=="0") || ($("#c_"+fila+"_2").val()==null)) {
+	    alert ("Debe capturar el nombre del profesor"); 
+		$("#c_"+fila+"_2").css("border-color","red"); 
+		todobien=false;
+		return false; }
+	if (!validarFormatoHorarios) {
+		alert ("Existen horarios que no tienen el formato HH:MM-HH:MM");
+		todobien=false;
+		return false;
+	}
+	cruces=obtenerHorarios(id,$("#selCiclos").val(),fila);
+	
+    return todobien;
+}
+
+function guardarFila(nombre,id,fila){
+     if (validarDatos(fila,id)) {
+			parametros={
+					tabla:"edgrupos",
+					campollave:"DGRU_ID",
+					valorllave:id,
+					bd:"Mysql",			
+					DGRU_MATERIA:$("#c_"+fila+"_1").val(),
+					DGRU_PROFESOR:$("#c_"+fila+"_2").val(),			 
+					LUNES:$("#c_"+fila+"_3").val(),
+					MARTES:$("#c_"+fila+"_4").val(),
+					MIERCOLES:$("#c_"+fila+"_5").val(),
+					JUEVES:$("#c_"+fila+"_6").val(),
+					VIERNES:$("#c_"+fila+"_7").val(),
+					SABADO:$("#c_"+fila+"_8").val(),
+					DOMINGO:$("#c_"+fila+"_9").val(),
+					A_LUNES:$("#c_"+fila+"_3B").val(),
+					A_MARTES:$("#c_"+fila+"_4B").val(),
+					A_MIERCOLES:$("#c_"+fila+"_5B").val(),
+					A_JUEVES:$("#c_"+fila+"_6B").val(),
+					A_VIERNES:$("#c_"+fila+"_7B").val(),
+					A_SABADO:$("#c_"+fila+"_8B").val(),
+					A_DOMINGO:$("#c_"+fila+"_9B").val(),
+					CUPO:$("#c_"+fila+"_10B").val(),
+					SIE:$("#c_"+fila+"_2SIE").val()
+					};
+
+			$.ajax({
+				type: "POST",
+				url:"../base/actualiza.php",
+				data: parametros,
+				success: function(data){		                                	                      
+					if (!(data.substring(0,1)=="0"))	
+							{$("#guardar_"+fila).removeClass("btn-warning");
+							$("#guardar_"+fila).addClass("btn-success");					  
+							}	
+					else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
+				}					     
+			});      
+		}
 }

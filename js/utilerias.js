@@ -32,6 +32,108 @@
 		    return unicodeString;
 		}
 			
+/*=====================================FUNCIONES PARA DECODIFICAR LAS HORAS HH:MM-HH:MM ============================*/
+function decodificaHora(horario) {
+	var datos=[];
+	if (horario.indexOf("-")>0){ 
+	    horario1=horario.split("-")[0].trim();
+		horario2=horario.split("-")[1].trim();	  
+	} else {horario1="00"; horario2="00";} 
+	
+	hora1=horario1.substr(0,horario1.indexOf(":"));
+	min1=horario1.substr(horario1.indexOf(":")+1,horario1.length);			   
+	
+	hora2=horario2.substr(0,horario2.indexOf(":"));
+	min2=horario2.substr(horario2.indexOf(":")+1,horario2.length);			   
+	
+	mintot1=parseInt(hora1)*60+parseInt(min1);
+	mintot2=parseInt(hora2)*60+parseInt(min2);	
+	
+	datos[0]=hora1;datos[1]=min1;datos[2]=hora2;datos[3]=min2;datos[4]=mintot1;datos[5]=mintot2;
+	return datos;
+}
+
+function obtenerHorarios(id,elciclo,linea){
+	var cadFin="";
+	res=true;
+	elsql="SELECT PROFESOR,PROFESORD,MATERIA,MATERIAD,SIE,LUNES_1,MARTES_1,MIERCOLES_1,JUEVES_1,VIERNES_1,SABADO_1,DOMINGO_1,"+
+	       "LUNES_A,MARTES_A,MIERCOLES_A,JUEVES_A, VIERNES_A, SABADO_A, DOMINGO_A "+
+		   " FROM `vedgrupos` b where b.`CICLO`='"+elciclo+"' and  IDDETALLE<>"+id;
+	$.ajax({
+		type: "GET",
+		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		success: function(data){  
+			
+			   for (x=3; x<=9; x++) { 
+				   if ($("#c_"+linea+"_"+x).val().length>0) {
+					   cadFin+=validaCruceHorario("PROFESOR",0,$("#c_"+linea+"_2").val(),$("#c_"+linea+"_2 option:selected").text(),
+					                       JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}   	      				 	
+			   }
+		
+			   for (x=3; x<=9; x++) { 
+				if ($("#c_"+linea+"_"+x).val().length>0) {
+					cadFin+=validaCruceHorario("AULA",x+9,$("#c_"+linea+"_"+x+"B").val(),$("#c_"+linea+"_"+x+"B option:selected").text(),
+										JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}   	      				 	
+			   }
+			   cadFin+="\n";
+			   if (cadFin.trim().length>0) {alert (cadFin); res=false; return false;}
+		 },
+		 error: function(data) {	                  
+					alert('ERROR: '+data);
+					res=false;
+					return false;
+								  }
+	});	     
+	return res;
+}
+
+
+function validarCruce (arreglo,horariodia){
+	arreglo=Burbuja(arreglo);
+	renglonInicial=[];	renglonInicial=arreglo[0].split("|");
+	renglonFinal=[]; renglonFinal=arreglo[arreglo.length-1].split("|");	
+	hordia=decodificaHora(horariodia);
+
+	if (hordia[5]<=renglonInicial[0]) { return true;} //en caso de que el horario sea antes de todo el inicio 
+	if (hordia[4]>=renglonFinal[1]) { return true;} //en caso de que el horario sea despues del final 
+	 
+	var encontre=false;
+	terant=renglonInicial[1];
+	for (i=1;i<arreglo.length;i++){
+		renglonNuevo=arreglo[i].split("|");
+		if ((parseInt(hordia[4]) >= parseInt(terant)) && (parseInt(hordia[5])<=parseInt (renglonNuevo[0]))) {
+		   encontre=true;
+		}  
+		terant=renglonNuevo[1];
+	}
+	return encontre;
+}
+
+  	      				 
+function validaCruceHorario(tipo,indiceComparar,valorComparar,valorComparard,loshorarios,indiceDia,horariodia,linea) {
+	var eldia=[];
+	var cad="";
+	j=0;
+    eldia=[];
+	jQuery.each(loshorarios, function(clave, valor) { 
+	    if (loshorarios[clave][indiceComparar]==valorComparar) {
+			if (loshorarios[clave][indiceDia].length>0) {
+  			    horariodec=decodificaHora(loshorarios[clave][indiceDia]);
+				eldia[j]=horariodec[4]+"|"+horariodec[5];		
+			    j++;
+			}
+		}
+	});
+	todobien=true;
+	if (eldia.length>0) {todobien=validarCruce(eldia,horariodia);}
+	if (!todobien) { 
+		cad+="Error: "+tipo+" "+valorComparard+ " No disponible en el horario "+horariodia+"\n";
+		$("#c_"+linea+"_"+(indiceDia-2)).css("border-color","red");}
+
+	return cad;
+}
+
+/*=================================================================================================================*/
 
 function Burbuja(lista) {
 
@@ -292,32 +394,32 @@ function generaTablaBus(modulo,contenedor, sql, titulos) {
 
 
 /*================================================FUNCION PAR AGENERA TABLA DE TADOTS=================================================*/
-function generaTabla(nombreTabla,contenedor, sql, titulos, campos) {
+function generaTablaDin(nombreTabla, sql, titulos, campos) {
 	$.ajax({
         type: "GET",
         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
         success: function(data){
-       	       losdatos=JSON.parse(data);
-       	       c=0;
+			  
+       	       losdatos=JSON.parse(data);	  
+				c=0;
+			   var linea="";
                $("#cuerpo"+nombreTabla).empty();
                
                cadTit="";
-               jQuery.each(titulos, function(clave,valor) { 
-            	   
+               jQuery.each(titulos, function(clave,valor) {             	   
             	   cadTit+="<th style=\""+valor.estilo+"\">"+valor.titulo+"</th>";
                });
              
                $("#"+nombreTabla).append("<thead><tr id=\"titulo\">"+cadTit+"</tr>"); 
-               $("#"+nombreTabla).append("<tbody id=\"cuerpo"+nombreTabla+"\">");
-
-               jQuery.each(losdatos, function(clave, valor) { 	             	    
-         	         $("#cuerpo"+nombreTabla).append("<tr id=\"row"+c+"\">");   
+			   $("#"+nombreTabla).append("<tbody id=\"cuerpo"+nombreTabla+"\">");
+			   
+               jQuery.each(losdatos, function(clave, valor) { 	
+				     linea="";             	             	            
          	         jQuery.each(campos, function(claveC,valorC) {
          	        	dato=losdatos[clave][valorC.campo]; 
-         	        	$("#row"+c).append("<td style=\""+valorC.estilo+"\">"+valorC.antes+dato+valorC.despues+"</td>");   
-         	        	
-         	         });         	                 	              	   
-         	         $("#row"+c).append("</tr>");
+         	        	linea+="<td style=\""+valorC.estilo+"\">"+valorC.antes+dato+valorC.despues+"</td>";            	        	
+					  });    	                 	              	   
+         	         $("#cuerpo"+nombreTabla).append("<tr id=\"row"+c+"\">"+linea+"</tr>");
          	         c++;
                 });                   	    
               },

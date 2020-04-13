@@ -140,7 +140,7 @@ var matser="";
 
     jQuery(function($) { 
 
-    	sql="SELECT MATE_CLAVE, MATE_DESCRIP, MATE_TIPO FROM CMATERIAS limit 10";
+    	sql="SELECT MATE_CLAVE, MATE_DESCRIP, MATE_TIPO FROM cmaterias limit 10";
         var titulos = [{titulo: "CLAVE",estilo: "text-align: center;"}, 
                        {titulo: "DESCRIPCION",estilo: "text-align: left;"},
                        {titulo: "TIPO",estilo: "color:red;"}];
@@ -149,7 +149,7 @@ var matser="";
                       {campo: "MATE_DESCRIP",estilo: "font-size:10px;",antes:"<strong>",despues:"</strong>"},
                       {campo: "MATE_TIPO",estilo: "",antes:"<span class=\"pull-right badge badge-info\">",despues:"</span>"}];
         
-       // generaTabla("tabHorarios","",sql,titulos,campos);
+       generaTablaDin("tabHorarios","",sql,titulos,campos);
        
        
       
