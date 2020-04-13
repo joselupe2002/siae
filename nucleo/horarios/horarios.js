@@ -71,13 +71,13 @@ var matser="";
 		   "                <th>Cupo</th> "+			   
 		   "                <th>HT</th> "+
 		   "                <th>HP</th> "+
-		   "                <th>Lunes</th> "+
-		   "                <th>Martes</th> "+
-		   "                <th>Miercoles</th> "+
-		   "                <th>Jueves</th> "+
-		   "                <th>Viernes</th> "+
-		   "                <th>Sabado</th> "+
-		   "                <th>Domingo</th> "+	  
+		   "                <th style=\"text-align:center\">Lunes</th> "+
+		   "                <th style=\"text-align:center\">Martes</th> "+
+		   "                <th style=\"text-align:center\">Miercoles</th> "+
+		   "                <th style=\"text-align:center\">Jueves</th> "+
+		   "                <th style=\"text-align:center\">Viernes</th> "+
+		   "                <th style=\"text-align:center\">Sabado</th> "+
+		   "                <th style=\"text-align:center\">Domingo</th> "+	  
 		   
 		   "             </tr> "+
 		   "            </thead>" +
@@ -206,8 +206,8 @@ function agregarasignaturasemestre() {
 function agregarAsignaturaGrid(lamateria,materiad,semestre, ht, hp){	
 	parametros={tabla:"edgrupos",
 			    bd:"Mysql",
-			    _INSTITUCION:"<?php echo $_SESSION['INSTITUCION'];?>",
-			    _CAMPUS:"<?php echo $_SESSION['CAMPUS'];?>",
+			    _INSTITUCION:"ITSM",
+			    _CAMPUS:"0",
 			    DGRU_MATERIA:lamateria,
 			    DGRU_HT:ht,
 			    DGRU_HP:hp, 
@@ -254,12 +254,12 @@ function generaTablaHorarios(grid_data){
 		$("#row"+c).append("<td>"+valor.hp+"</td>");
 		
 	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_3B\" ondblclick=\"horarioAulas('"+c+"','3B','LUNES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_3\" value=\""+valor.lunes+"\" ondblclick=\"horarioAulas('"+c+"','3B','LUNES','PROFESOR');\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_4B\" ondblclick=\"horarioAulas('"+c+"','4B','MARTES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_4\" value=\""+valor.martes+"\" ondblclick=\"horarioAulas('"+c+"','3B','MARTES','PROFESOR');\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_5B\" ondblclick=\"horarioAulas('"+c+"','5B','MIERCOLES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_5\" value=\""+valor.miercoles+"\" ondblclick=\"horarioAulas('"+c+"','3B','MIERCOLES','PROFESOR');\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_6B\" ondblclick=\"horarioAulas('"+c+"','6B','JUEVES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_6\" value=\""+valor.jueves+"\" ondblclick=\"horarioAulas('"+c+"','3B','JUEVES','PROFESOR');\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_7B\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','AULA');\></select>"+parte1+" id=\"c_"+c+"_7\" value=\""+valor.viernes+"\" ondblclick=\"horarioAulas('"+c+"','3B','VIERNES','PROFESOR');\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_8B\" ondblclick=\"horarioAulas('"+c+"','8B','SABADO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_8\" value=\""+valor.sabado+"\" ondblclick=\"horarioAulas('"+c+"','3B','SABADO','PROFESOR');\">"+parte2);
-	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_9B\" ondblclick=\"horarioAulas('"+c+"','9B','DOMINGO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_9\" value=\""+valor.domingo+"\" ondblclick=\"horarioAulas('"+c+"','3B','DOMINGO','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_4B\" ondblclick=\"horarioAulas('"+c+"','4B','MARTES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_4\" value=\""+valor.martes+"\" ondblclick=\"horarioAulas('"+c+"','4B','MARTES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_5B\" ondblclick=\"horarioAulas('"+c+"','5B','MIERCOLES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_5\" value=\""+valor.miercoles+"\" ondblclick=\"horarioAulas('"+c+"','5B','MIERCOLES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_6B\" ondblclick=\"horarioAulas('"+c+"','6B','JUEVES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_6\" value=\""+valor.jueves+"\" ondblclick=\"horarioAulas('"+c+"','6B','JUEVES','PROFESOR');\">"+parte2);
+		$("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_7B\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_8\" value=\""+valor.viernes+"\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_8B\" ondblclick=\"horarioAulas('"+c+"','8B','SABADO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_8\" value=\""+valor.sabado+"\" ondblclick=\"horarioAulas('"+c+"','8B','SABADO','PROFESOR');\">"+parte2);
+	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_9B\" ondblclick=\"horarioAulas('"+c+"','9B','DOMINGO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_9\" value=\""+valor.domingo+"\" ondblclick=\"horarioAulas('"+c+"','9B','DOMINGO','PROFESOR');\">"+parte2);
 		
 		//AGREGAMOS LA CLASE EDIT A TODOS LOS ELEMENTOS 
 		$("#c_"+c+"_2").addClass("edit");
@@ -334,7 +334,7 @@ function eliminarFila(nombre,id,fila) {
 			               "tabla" : "edgrupos",
 						    "campollave" : "DGRU_ID",
 							"valorllave" : id,
-							"bd":"<?php echo $_SESSION['bd'];?>",
+							"bd":"Mysql",
 						  };
 						   
 		 $.ajax({ data:  parametros,
