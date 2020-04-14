@@ -109,6 +109,29 @@ function validarCruce (arreglo,horariodia){
 	return encontre;
 }
 
+
+function getEspacio (arreglo,horariodia){	
+	cad="";
+	renglonInicial=[];	renglonInicial=arreglo[0].split("|");
+	renglonFinal=[]; renglonFinal=arreglo[arreglo.length-1].split("|");	
+	hordia=decodificaHora(horariodia);
+	//cad=""; for (i=0;i<arreglo.length;i++){cad+=arreglo[i]+"\n";} alert ("EL ARREGLO: \n"+cad);
+
+	if (hordia[5]<=renglonInicial[0]) {cad=renglonInicial[2]; return cad;} //en caso de que el horario sea antes de todo el inicio 
+	if (hordia[4]>=renglonFinal[1]) { cad=renglonFinal[2]; return cad;} //en caso de que el horario sea despues del final 
+	 
+	terant=renglonInicial[1];
+	for (i=1;i<arreglo.length;i++){
+		renglonNuevo=arreglo[i].split("|");
+		if ((parseInt(hordia[4]) >= parseInt(terant)) && (parseInt(hordia[5])<=parseInt (renglonNuevo[0]))) {
+		   	cad=renglonNuevo[2];
+		   return cad;
+		}  
+		terant=renglonNuevo[1];
+	}
+	return cad;
+}
+
   	      				 
 function validaCruceHorario(tipo,indiceComparar,valorComparar,valorComparard,loshorarios,indiceDia,horariodia,linea) {
 	var eldia=[];
@@ -451,7 +474,7 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
        	       eltipo="";
        	       if (tipoSelect=='BUSQUEDA') {eltipo="chosen-select";}
        	       $("#"+contenedor).append("<select class=\" "+eltipo+" form-control text-success\"  id=\""+nombre+"\"> </select>");
-       	    $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
+       	       $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
                jQuery.each(JSON.parse(data), function(clave, valor) { 	
 	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  		
 	  				   	  }); 
@@ -502,6 +525,25 @@ function addSELECT_ST(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect,
 
 
 /*=====================================================================================================================================*/
+
+
+/*==================================================DATOS DE LA SESSION EN JAVASCRIPT=============================================*/
+
+function getSesion(campo){
+   var cad="";
+	$.ajax({
+	   type: "GET",
+	   url:  "../base/getSesion.php?bd=Mysql&campo="+campo,
+	   success: function(data){  
+		    cad=data; 
+		   },
+	   error: function(data) {	                  
+				  alert('ERROR: '+data);
+				  $('#dlgproceso').modal("hide");  
+			  }
+	  });
+	return cad;
+}
 
 
 /*==================================================ACTUALIZA LOS DATOS DE UN SELECT =============================================*/
