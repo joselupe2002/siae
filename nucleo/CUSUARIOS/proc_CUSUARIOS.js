@@ -540,7 +540,7 @@ function dameSQL (elsql,usuario) {
 									if (!(valor.validacion==null)) {cadVal=valor.validacion.replace(/&/g,"<*>");}
 									if (!(valor.msjval==null)) {cadmsj=valor.msjval.replace(/'/g,"''");}
 									
-									cad="INSERT INTO SDERMODU (derp_proceso,derp_usuario,derp_modulo) VALUES ("+
+									cad="INSERT INTO SDERPROCESO (derp_proceso,derp_usuario,derp_modulo) VALUES ("+
 														  "'"+valor.derp_proceso+"',"+"'"+valor.derp_usuario+"',"+"'"+valor.derp_modulo+"')";
 									$("#"+elsql).append(cad+"<;>\n");
 					      	    });				
