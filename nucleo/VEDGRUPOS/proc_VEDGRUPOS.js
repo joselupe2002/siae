@@ -68,6 +68,12 @@ function grupoBase(modulo,usuario,institucion, campus,essuper){
 	
 }
 
+function verPlanea(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	verPlaneacion(table.rows('.selected').data()[0]["CVE_MAT"],table.rows('.selected').data()[0]["MATERIA"],
+	table.rows('.selected').data()[0]["GRUPO"],table.rows('.selected').data()[0]["CICLO"],"grid_VEDGRUPOS");
+}
+
 
 function asignarbase(){
 	

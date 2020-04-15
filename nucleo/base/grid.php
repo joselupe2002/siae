@@ -33,8 +33,7 @@
         <style type="text/css">
 		       table.dataTable tbody tr.selected {color: blue; font-weight:bold;}
 			   table.dataTable tbody td {padding:4px;}
-               th, td { white-space: nowrap; }
-        
+               th, td { white-space: nowrap; }        
         </style>
 	</head>
 

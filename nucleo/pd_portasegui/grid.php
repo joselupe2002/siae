@@ -151,7 +151,7 @@
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIAD+"</td>");
 
-    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"verPlaneacion('"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"');\" title=\"Fechas de planeaci&oacute;n de unidades\" "+
+    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"verPlaneacion('"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','grid_pd_portasegui');\" title=\"Fechas de planeaci&oacute;n de unidades\" "+
                     "class=\"btn btn-white btn-warning btn-bold\">"+
              "<i class=\"ace-icon fa fa-calendar-o bigger-160 red \"></i>"+
              "</a></td>");
@@ -357,7 +357,7 @@ function impEncuadre(id, materia, descrip){
 			   "                             </thead>" +
 			   "                          </table>"+				   
 			   "                      </div> "+ //div del row
-			   "                   </div>"+	//div de la pestaña		   			   
+			   "                   </div>"+	//div de la pestaï¿½a		   			   
 			   "                   <div id=\"tabAdd\" class=\"tab-pane fade\">"+	
 			   "                        <div class=\"row\"> "+		
 			   "                            <div class=\"col-md-12\">"+
@@ -382,7 +382,7 @@ function impEncuadre(id, materia, descrip){
 			   "                            </div>"+ 
 			   "                        </div> "+ //div del row
 			   "                   </div>"+ 
-			   "               </div>"+ //div de las pestañas gral 			   	  
+			   "               </div>"+ //div de las pestaï¿½as gral 			   	  
 			   "          </div>"+ //div del modal-body		 
 		       "          </div>"+ //div del modal content		  
 			   "      </div>"+ //div del modal dialog
@@ -494,7 +494,7 @@ function impEncuadre(id, materia, descrip){
 	    		    		$("#elid").val()+"|"+ //id del detalle del grupo
 	    		    		$("#a_"+i+"_1").val()+"|"+    //fecha
 	    		    		$("#a_"+i+"_2").val()+"|"+    //evidencia de producto
-	    		    		$("#a_"+i+"_3").val()+"|"+    //evidencia de desempeño
+	    		    		$("#a_"+i+"_3").val()+"|"+    //evidencia de desempeï¿½o
 	    		            $("#a_"+i+"_4").val()+"|"+    //evidencia de conocimiento
 	    		            $("#a_"+i+"_5").val()+"|"+    //evidencia de actitud	    		            
 	    		            fechacap+"|<?php echo $_SESSION["usuario"];?>|<?php echo $_SESSION["INSTITUCION"];?>|<?php echo $_SESSION["CAMPUS"];?>";    //fechaCaptura +
@@ -668,7 +668,7 @@ function impEncuadre(id, materia, descrip){
 				     	 		                " </a>"+eliminarEP+"</div>"+
 				  	    	                  "</td>");
 
-						 //==========================EVIDENCIA DE DESEMPEÑO ==========================	
+						 //==========================EVIDENCIA DE DESEMPEï¿½O ==========================	
 						  $("#rowUni"+c).append("<td width=\"20%\">"+
 	 	    		                "<input class=\"fileSigea\" type=\"file\" id=\"file2_"+c+"_"+valor.ENCU_ID+"\" name=\"file2_"+c+"_"+valor.ENCU_ID+"\""+
 	 	    	                    "onchange=\"subirPDFDriveSave('file2_"+c+"_"+valor.ENCU_ID+"','EVIDENCIAS_"+$("#elciclo").html()+"','pdf2_"+c+"_"+valor.ENCU_ID+"','"+valor.ENCU_ID+"2_"+c+"','pdf','S','ID','"+valor.ENCU_ID+"','"+valor.UNID_DESCRIP+" - EV. DESEMP.','eadjuntos','alta','ED');\">"+
@@ -789,147 +789,8 @@ function impEncuadre(id, materia, descrip){
 					   }
 
 /*==========================================FECHAS DE PLANEACION ===================================*/
-    function verPlaneacion(materia,materiad, grupo, ciclo){
-    	    
-    	
-    		script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
-    	       "   <div class=\"modal-dialog modal-lg \" role=\"document\">"+
-    		   "      <div class=\"modal-content\">"+
-    		   "          <div class=\"modal-header bg-info\" >"+
-    		   "             <span><i class=\"menu-icon green fa-2x fa fa-book\"></i>"+
-    		   "                   <span class=\"text-success \"><strong>"+materiad+"</strong><i class=\"menu-icon green fa fa-angle-double-right\"></i></span>"+    		   
-    		   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\"  aria-label=\"Cancelar\">"+
-    		   "                  <span aria-hidden=\"true\">&times;</span>"+
-    		   "             </button>"+
-    		   "          </div>"+
-    		   "          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto; height:300px;\">"+
-    		   "               <ul class=\"nav nav-tabs\" > "+
-    		   "                  <li class=\"active\"><a data-toggle=\"tab\" href=\"#tabTemas\"><i class=\"menu-icon green fa fa-thumbs-down\"></i><span class=\"menu-text\">Temas</span></a></li> "+
-    		   "                  <li><a data-toggle=\"tab\" href=\"#tabEval\"><i class=\"menu-icon blue fa fa-group\"></i><span class=\"menu-text\"> Evaluaciones</span></a></li> "+
-    		   "               </ul> "+
-
-    		   "               <div class=\"tab-content\">"+
-    		   "                   <div id=\"tabTemas\" class=\"tab-pane fade in active\">"+		
-    		   "                        <div class=\"row\">"+
-    	       "                             <div class=\"col-sm-1\"></div> "+
-    	       "                             <div class=\"col-sm-10\" id=\"laTabla\"></div> "+
-    		   "                             <div class=\"col-sm-1\"></div> "+
-    	       "                        </div>"+	
-    	       "                   </div>"+
-    	       "                   <div id=\"tabEval\" class=\"tab-pane fade\">"+		
-    		   "                        <div class=\"row\">"+
-    	       "                             <div class=\"col-sm-1\"></div> "+
-    	       "                             <div class=\"col-sm-10\" id=\"laTablaEval\"></div> "+
-    		   "                             <div class=\"col-sm-1\"></div> "+
-    	       "                        </div>"+	
-    	       "                   </div>"+
-    	       "              </div>"+ 	     
-    	       "          </div>"+
-    		   "      </div>"+
-    		   "   </div>"+
-    		   " <select id=\"aulas\" style=\"visibility:hidden\"></select> "
-    		   "</div>";
-    	 
-    		$("#modalDocument").remove();
-    	    if (! ( $("#modalDocument").length )) {
-    	        $("#grid_<?php echo $_GET['modulo']; ?>").append(script); }
-    	    
-    	    
-    	    $('#modalDocument').modal({show:true, backdrop: 'static'});
-    	    cargarFechas(materia,grupo,ciclo);	
-    	    cargarFechasEval  (materia,grupo,ciclo);	  
-    	   	
-    }
-
-    function cargarFechas(materia,grupo,ciclo) {
-   	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";	
-   	 $.ajax({
-           type: "GET",
-           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from  vfechasmateria a where a.MATCVE='"+materia+
-                   "' and GPOCVE='"+grupo+"' and PDOCVE='"+ciclo+"' order by TMACVE,SMACVE "),
-           success: function(data){    
-          	   $("#laTabla").empty();
-          	   $("#laTabla").append("<table id=tabFechas class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-                         "<thead><tr><th>SUBTEMA</th><th>INICIA</th><th>TERMINA</th></tr>"+ 
-                         "</thead></table> ");
-      
-          	 $("#cuerpoFechas").empty();
-        	     $("#tabFechas").append("<tbody id=\"cuerpoFechas\">");
-        	     c=0; 
-        	     
-        	     elTema=JSON.parse(data)[0]["TMACVE"];
-
-   
-           		 $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
-      		     $("#row"+c).append("<td colspan=\"3\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
-      		     $("#row"+c).append("</tr>");
-      		     c++;
-
-        	     
-         	     jQuery.each(JSON.parse(data), function(clave, valor) { 
-             	  if (!(elTema==valor.TMACVE)) {
-             		 $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
-          		     $("#row"+c).append("<td colspan=\"3\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.TMACVE+" "+utf8Decode(valor.TEMA)+"</span></td>");
-          		     $("#row"+c).append("</tr>");
-          		     elTema=valor.TMACVE;
-          		     c++;
-                 	  }
-         	    		
-   		          $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");   		          
-   		          $("#row"+c).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.SMACVE+" "+utf8Decode(valor.SUBTEMA)+"</span></td>");	   		          	             		         
-   		          $("#row"+c).append("<td><span class=\"label label-success label-white middle\">"+valor.FECHAINIPROG+"</span></td>");
-   		          $("#row"+c).append("<td><span class=\"label label-danger label-white middle\">"+valor.FECHAFINPROG+"</span></td>");
-   		          $("#row"+c).append("</tr>");    	
-   		          c++;	         
-                });
-         	    
-              },
-          error: function(data) {	  
-          	      $('#dlgproceso').modal("hide");                 
-                     alert('ERROR: '+data);  
-                 }
-         });
-      }
-
-
-
-
-
-    function cargarFechasEval(materia,grupo,ciclo) {
-      	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";	
-      	 $.ajax({
-              type: "GET",
-              url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from  eplaneacion a, eunidades b where a.MATERIA='"+materia+
-                      "' and (a.NUMUNIDAD=b.UNID_NUMERO and a.MATERIA=b.UNID_MATERIA AND UNID_PRED='') and GRUPO='"+grupo+"' and CICLO='"+ciclo+"' order by NUMUNIDAD "),
-              success: function(data){    
- 
-             	   $("#laTablaEval").empty();
-             	   $("#laTablaEval").append("<table id=tabFechasEval class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-                            "<thead><tr><th>UNIDAD</th><th>PROGRAMADA</th><th>REAL</th></tr>"+ 
-                            "</thead></table> ");
-         
-             	 $("#cuerpoFechasEval").empty();
-           	     $("#tabFechasEval").append("<tbody id=\"cuerpoFechasEval\">");
-           	  
-           	     c=0;
-            	     jQuery.each(JSON.parse(data), function(clave, valor) { 
-                		 $("#cuerpoFechasEval").append("<tr id=\"rowEval"+c+"\">");
-             		     $("#rowEval"+c).append("<td><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.UNID_NUMERO+" "+utf8Decode(valor.UNID_DESCRIP)+"</span></td>");             	    		      		             	   		          	             		       
-      		             $("#rowEval"+c).append("<td><span class=\"label label-success label-white middle\">"+valor.FECHA+"</span></td>");
-      		             $("#rowEval"+c).append("<td><span class=\"label label-danger label-white middle\">"+valor.FECHAR+"</span></td>");
-      		             $("#rowEval"+c).append("</tr>");    	
-      		          c++;	         
-                   });
-            	    
-                 },
-             error: function(data) {	  
-             	      $('#dlgproceso').modal("hide");                 
-                        alert('ERROR: '+data);  
-                    }
-            });
-         }
        
-
+/*============================================================================================*/
 
 
 	   function impCotejo(materia, materiad, grupo, unidad,unidadd) {

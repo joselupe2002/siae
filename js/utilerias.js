@@ -1082,6 +1082,145 @@ if (tipo=="SELECT_MULTIPLE") {
 }
 
 
+/*=====================================CARGA DE LAS FECHAS DE PLANEACION =====================================*/
+function verPlaneacion(materia,materiad, grupo, ciclo, contenedor){
+	script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	   "   <div class=\"modal-dialog modal-lg \" role=\"document\">"+
+	   "      <div class=\"modal-content\">"+
+	   "          <div class=\"modal-header bg-info\" >"+
+	   "             <span><i class=\"menu-icon green fa-2x fa fa-book\"></i>"+
+	   "                   <span class=\"text-success \"><strong>"+materiad+"</strong><i class=\"menu-icon green fa fa-angle-double-right\"></i></span>"+    		   
+	   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\"  aria-label=\"Cancelar\">"+
+	   "                  <span aria-hidden=\"true\">&times;</span>"+
+	   "             </button>"+
+	   "          </div>"+
+	   "          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto; height:300px;\">"+
+	   "               <ul class=\"nav nav-tabs\" > "+
+	   "                  <li class=\"active\"><a data-toggle=\"tab\" href=\"#tabTemas\"><i class=\"menu-icon green fa fa-thumbs-down\"></i><span class=\"menu-text\">Temas</span></a></li> "+
+	   "                  <li><a data-toggle=\"tab\" href=\"#tabEval\"><i class=\"menu-icon blue fa fa-group\"></i><span class=\"menu-text\"> Evaluaciones</span></a></li> "+
+	   "               </ul> "+
+
+	   "               <div class=\"tab-content\">"+
+	   "                   <div id=\"tabTemas\" class=\"tab-pane fade in active\">"+		
+	   "                        <div class=\"row\">"+
+	   "                             <div class=\"col-sm-1\"></div> "+
+	   "                             <div class=\"col-sm-10\" id=\"laTabla\"></div> "+
+	   "                             <div class=\"col-sm-1\"></div> "+
+	   "                        </div>"+	
+	   "                   </div>"+
+	   "                   <div id=\"tabEval\" class=\"tab-pane fade\">"+		
+	   "                        <div class=\"row\">"+
+	   "                             <div class=\"col-sm-1\"></div> "+
+	   "                             <div class=\"col-sm-10\" id=\"laTablaEval\"></div> "+
+	   "                             <div class=\"col-sm-1\"></div> "+
+	   "                        </div>"+	
+	   "                   </div>"+
+	   "              </div>"+ 	     
+	   "          </div>"+
+	   "      </div>"+
+	   "   </div>"+
+	   " <select id=\"aulas\" style=\"visibility:hidden\"></select> "
+	   "</div>";
+ 
+	$("#modalDocument").remove();
+	if (! ( $("#modalDocument").length )) {
+		$("#"+contenedor).append(script); }
+	
+	
+	$('#modalDocument').modal({show:true, backdrop: 'static'});
+	cargarFechas(materia,grupo,ciclo);	
+	cargarFechasEval  (materia,grupo,ciclo);	  
+	   
+}
+
+function cargarFechas(materia,grupo,ciclo) {
+
+$.ajax({
+   type: "GET",
+   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from  vfechasmateria a where a.MATCVE='"+materia+
+		   "' and GPOCVE='"+grupo+"' and PDOCVE='"+ciclo+"' order by TMACVE,SMACVE "),
+   success: function(data){    
+		 $("#laTabla").empty();
+		 $("#laTabla").append("<table id=tabFechas class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
+				 "<thead><tr><th>SUBTEMA</th><th>INICIA</th><th>TERMINA</th></tr>"+ 
+				 "</thead></table> ");
+
+	   $("#cuerpoFechas").empty();
+		 $("#tabFechas").append("<tbody id=\"cuerpoFechas\">");
+		 c=0; 
+		 
+		 elTema=JSON.parse(data)[0]["TMACVE"];
+
+
+		   $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
+		   $("#row"+c).append("<td colspan=\"3\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
+		   $("#row"+c).append("</tr>");
+		   c++;
+
+		 
+		  jQuery.each(JSON.parse(data), function(clave, valor) { 
+		   if (!(elTema==valor.TMACVE)) {
+			  $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
+			   $("#row"+c).append("<td colspan=\"3\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.TMACVE+" "+utf8Decode(valor.TEMA)+"</span></td>");
+			   $("#row"+c).append("</tr>");
+			   elTema=valor.TMACVE;
+			   c++;
+			   }
+				 
+			 $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");   		          
+			 $("#row"+c).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold; white-space: normal;\">"+valor.SMACVE+" "+utf8Decode(valor.SUBTEMA)+"</span></td>");	   		          	             		         
+			 $("#row"+c).append("<td><span class=\"label label-success label-white middle\">"+valor.FECHAINIPROG+"</span></td>");
+			 $("#row"+c).append("<td><span class=\"label label-danger label-white middle\">"+valor.FECHAFINPROG+"</span></td>");
+			 $("#row"+c).append("</tr>");    	
+			 c++;	         
+		});
+		 
+	  },
+  error: function(data) {	  
+			$('#dlgproceso').modal("hide");                 
+			 alert('ERROR: '+data);  
+		 }
+ });
+}
+
+
+
+
+
+function cargarFechasEval(materia,grupo,ciclo) {
+   var ladefault="..\\..\\imagenes\\menu\\pdf.png";	
+   $.ajax({
+	  type: "GET",
+	  url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from  eplaneacion a, eunidades b where a.MATERIA='"+materia+
+			  "' and (a.NUMUNIDAD=b.UNID_NUMERO and a.MATERIA=b.UNID_MATERIA AND UNID_PRED='') and GRUPO='"+grupo+"' and CICLO='"+ciclo+"' order by NUMUNIDAD "),
+	  success: function(data){    
+
+			$("#laTablaEval").empty();
+			$("#laTablaEval").append("<table id=tabFechasEval class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
+					"<thead><tr><th>UNIDAD</th><th>PROGRAMADA</th><th>REAL</th></tr>"+ 
+					"</thead></table> ");
+ 
+		  $("#cuerpoFechasEval").empty();
+			$("#tabFechasEval").append("<tbody id=\"cuerpoFechasEval\">");
+		 
+			c=0;
+			 jQuery.each(JSON.parse(data), function(clave, valor) { 
+				 $("#cuerpoFechasEval").append("<tr id=\"rowEval"+c+"\">");
+				  $("#rowEval"+c).append("<td><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.UNID_NUMERO+" "+utf8Decode(valor.UNID_DESCRIP)+"</span></td>");             	    		      		             	   		          	             		       
+				   $("#rowEval"+c).append("<td><span class=\"label label-success label-white middle\">"+valor.FECHA+"</span></td>");
+				   $("#rowEval"+c).append("<td><span class=\"label label-danger label-white middle\">"+valor.FECHAR+"</span></td>");
+				   $("#rowEval"+c).append("</tr>");    	
+				c++;	         
+		   });
+			
+		 },
+	 error: function(data) {	  
+			   $('#dlgproceso').modal("hide");                 
+				alert('ERROR: '+data);  
+			}
+	});
+ }
+/*==============================================================================================*/
 
 
 

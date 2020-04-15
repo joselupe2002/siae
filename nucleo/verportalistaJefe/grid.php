@@ -206,7 +206,7 @@
 			  		         $("#profesor").append("<option value=\"0\">Elija Profesor</option>");
 			  		          $("#unidades").append("<option value=\"0\">Elija Unidad</option>");
 			  			     jQuery.each(JSON.parse(data), function(clave, valor) { 	
-			  				     $("#profesor").append("<option value=\""+valor.PROFESOR+"\">"+valor.PROFESOR+"-"+utf8Decode(valor.PROFESORD)+"</option>");			  				     			  		
+			  				     $("#profesor").append("<option value=\""+valor.PROFESOR+"\">"+valor.PROFESOR+" "+utf8Decode(valor.PROFESORD)+"</option>");			  				     			  		
 			  				   	  }); 
 			  			      $('#profesor').trigger("chosen:updated");		
 			  			      $('#dlgproceso').modal("hide"); 	 			      	    
