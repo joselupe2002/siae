@@ -103,7 +103,6 @@
                                                     "</li>";} ?>																													
 									</ul>
 								</li>
-
 							</ul>
 						</li>
 					   
@@ -132,7 +131,7 @@
 			<script type="text/javascript"> try{ace.settings.loadState('main-container')}catch(e){} </script>
 			<div id="sidebar" class="sidebar responsive ace-save-state">
 				<script type="text/javascript"> try{ace.settings.loadState('sidebar')}catch(e){} </script>				
-				<ul id="miMenu" class="nav nav-list" ></ul>
+				<ul id="miMenu" class="nav nav-list" ></ul> <!--*********************** MENU PRINCIPAL *************************-->
 				<div class="sidebar-toggle sidebar-collapse"  id="sidebar-collapse">
 					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
 				</div>
@@ -238,8 +237,11 @@
 	   	                  }
 	   	          });	
 
+					 $("#sidebar").append("<div class=\"space-8\"></div><div class=\"md-form active-purple active-purple-2 mb-3\">"+				    
+                    "<input id=\"filtrar\"  onkeyup=\"filtrarMenu();\"class=\"form-control\" type=\"text\" placeholder=\"Filtrar...\" aria-label=\"Search\">"+
+				   "</div>");
 				 		 
-			 jQuery.each(data, function(clave, valor){
+			 jQuery.each(data, function(clave, valor){				   
 				   cad=""; cadsm="";
 				   
 				   laimg="menu-icon fa fa-caret-right";
@@ -248,17 +250,19 @@
 				   if (valor.modu_ejecuta=="1") {
 					    laClase_a="opExec"; 
 				        elclick="onclick=\"abrirPagina('"+valor.modu_modulo+"','"+valor.modu_pagina+"','"+valor.modu_descrip+"','"+valor.modu_automatico+"','"+valor.modu_bd+"');\"";
-				        laClase_b="arrow";
+						laClase_b="arrow";
+						laClaseli="liejecutable";
 				        submenu="";}
 				   else {laClase_a="dropdown-toggle"; 
 				         elclick="";
 				         submenu=" <b class='arrow fa fa-angle-down'></b>"; 
-                         cadsm="<ul class='submenu'  id='S_"+valor.modu_modulo+"'></ul>";				        	      
+						 cadsm="<ul class='submenufil submenu'  id='S_"+valor.modu_modulo+"'></ul>";
+						 laClaseli="limenu";				        	      
 				   }
 
 				   if (valor.modu_pred==" ") {estilo="menu-text"; padre="style=\"font-weight:bold;\""} else {estilo=""; padre="";} 
 				   
-				           cad="<li descrip='"+valor.modu_descrip+"' id='"+valor.modu_modulo+"' class=''>\n"+
+				           cad="<li descrip='"+valor.modu_descrip+"' id='"+valor.modu_modulo+"' class='"+laClaseli+"'>\n"+
 				                    "<a class='"+laClase_a+"' "+elclick+" style='cursor: pointer;'>\n"+
 				                         "<i class='"+laimg+"'></i> \n"+
                                          "<span class='"+estilo+"' "+padre+">"+valor.modu_descrip+"</span>"+
@@ -271,9 +275,36 @@
                             else {$("#S_"+valor.modu_pred).append(cad);} 
                                 					          
 				});
+				
+				
+
 
 		});
-		
+	
+		jQuery.expr[':'].contains = function(a, i, m) {
+           return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+        };
+
+       function filtrarMenu() {
+				var input = $('#filtrar').val();
+				var filter = input.toUpperCase();
+				var contenidoMenu="";
+				
+				if (filter.length == 0) { // show all if filter is empty	
+					    $("#miMenuFil").remove();
+					    $("#miMenu").show();
+					return;
+				} else {														
+					$("#miMenu").hide();
+					$("#miMenuFil").remove();
+					$("#sidebar").append("<div id=\"miMenuFil\" style=\"background-color:#FFFFFF;\" ></div>");
+					$('li .liejecutable:contains("' + filter + '")').each(function() {					
+					   $("#miMenuFil").append($(this).html()+"<br/>");
+					});
+					
+				}
+		}
+
 
 		function existeUrl(url) {
 			   var http = new XMLHttpRequest();
