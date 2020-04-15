@@ -1,5 +1,5 @@
 <!-- ====================================================================================
-       GRID MODIFICADO DE CUSUARIOS, SE LE AÑADE UNA VENTA MODAL PARA LOS PERMISOS DE USUARIO 
+       GRID MODIFICADO DE CUSUARIOS, SE LE Aï¿½ADE UNA VENTA MODAL PARA LOS PERMISOS DE USUARIO 
   ====================================================================================
    -->
 
@@ -95,7 +95,7 @@
 
 <!-- DIALOGO PARA LOS PERMISOS DE USUARIOS -->     
 <div class="modal fade" id="modalPermisos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-    <div class="modal-dialog modal-lg "  role="document">
+    <div class="modal-dialog modal-lg"  role="document">
 	     <div class="modal-content">
 	           <div class="modal-header">
 	              <button type="button" class="close" data-dismiss="modal" aria-label="Cancelar">
@@ -103,7 +103,7 @@
 	              </button>
                   <button title="Guardar todos los cambios" type="button" class="btn btn-white btn-warning btn-bold" onclick="guardarPermisos();">Guardar Cambios</button>	              
 	           </div>
-              <div id="frmdocumentos" class="modal-body"  style="max-height: calc(100vh - 210px); overflow-y: auto;">
+              <div id="frmdocumentos" class="modal-body"  style="height:380px;">
                    <div class="widget-box widget-color-green2">
 		              <div class="widget-header"><h4 class="widget-title lighter smaller">Permisos</h4></div>
                       <div class="widget-body" style=" max-height: calc(100vh - 210px); overflow-y: auto;">
@@ -171,7 +171,7 @@
 <script src="<?php echo $nivel; ?>assets/js/ace.min.js"></script>
 <script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
 <script src="<?php echo $nivel; ?>js/sha/sha512.js"></script>
-
+<script src="<?php echo $nivel; ?>js/utilerias.js"></script>
 
 
 <?php if ($tieneProc=='S') {?>
@@ -198,7 +198,7 @@
 
 
 
-
+		    mostrarEspera("esperaDatos","grid_CUSUARIOS","Cargando la informaciÃ³n solicitada");
 			 $.ajax({
 	               type: "GET",
 	               url: "../base/ind_getCampos.php?tabla=<?php echo $laTabla;?>",
@@ -266,13 +266,13 @@
 	                     				"zeroRecords":			"No se han encontrado coincidencias.",
 	                     				"paginate": {
 	                     					"first":			"Primera",
-	                     					"last":				"Última",
+	                     					"last":				"ï¿½ltima",
 	                     					"next":				"Siguiente",
 	                     					"previous":			"Anterior"
 	                     				},
 	                     				"aria": {
-	                     					"sortAscending":	"Ordenación ascendente",
-	                     					"sortDescending":	"Ordenación descendente"
+	                     					"sortAscending":	"Ordenaciï¿½n ascendente",
+	                     					"sortDescending":	"Ordenaciï¿½n descendente"
 	                     				}
 	                     			},
 
@@ -409,7 +409,8 @@
 	             				   
 	             				});      
 	 
-	                        	  $('#dlgproceso').modal("hide");              
+								  $('#dlgproceso').modal("hide");   
+								  ocultarEspera("esperaDatos");           
 	                        },
 	                         error: function(data) {
 	                             $('#dlgproceso').modal("hide");      
@@ -428,10 +429,10 @@
 		function modificar(){
 			
 
-			ruta="../base/editaReg.php?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo "N";?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=S&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca más abajo este debe ser siempre el ultimo parametros
+			ruta="../base/editaReg.php?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo "N";?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=S&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca mï¿½s abajo este debe ser siempre el ultimo parametros
 		   <?php                  
 	             if (file_exists("../".$_GET["modulo"]."/editaReg.php")) {?>
-	                 ruta="<?php echo "../".$_GET["modulo"]."/editaReg.php"?>?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo "N";?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=S&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";  //El valor llave se coloca más abajo este debe ser siempre el ultimo parametros
+	                 ruta="<?php echo "../".$_GET["modulo"]."/editaReg.php"?>?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo "N";?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=S&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";  //El valor llave se coloca mï¿½s abajo este debe ser siempre el ultimo parametros
 	       <?php }?>
 	              
 			

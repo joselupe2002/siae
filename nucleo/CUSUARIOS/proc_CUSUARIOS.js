@@ -219,20 +219,20 @@ if (table.rows('.selected').data().length>0) {
 		       			        elclick="";
 		       			        laClase_b="arrow";
 		       			        submenu="";
-		       			        cadFiltro= "<div class= \"row\">"+
-		       			                       "<div class=\"col-sm-12\">"+
-		       			                          "<button title=\"Filtros sobre campos\" type=\"button\" class=\"btn btn-white btn-success btn-bold\" "+
+		       			        cadFiltro= "<div id=\"btn_"+valor.modu_modulo+"\" class= \"row\">"+
+		       			                       "<div class=\"col-sm-3\">"+
+		       			                          "<button  title=\"Filtros sobre campos\" type=\"button\" class=\"btn btn-minier btn-white btn-success  btn-round\" "+
 		       			                                   "onclick=\"agregarFiltros('"+modulo+"','"+valor.modu_descrip+"','"+valor.modu_tabla+"','"+table.rows('.selected').data()[0][0]+"');\">"+
-                                                           "<i class=\"ace-icon fa fa-lock bigger-120 blue\"></i>Agregar Filtros"+
+                                                           "<i class=\"ace-icon fa fa-lock bigger-60 blue\">Filtros</i>"+
                                                   "</button>"+
                                                "</div>"+
                                             "</div>";
 		       			        check= "<strong><label class=\"text-success\" style=\"Font-weight:bold\" for=\"c_"+valor.modu_modulo+"\">"+valor.modu_descrip+"</label></strong>"+
 		       				           "<div class= \"row\">"+
-		       				           "<div class=\"col-sm-3\"><input id=\"d_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\">Detalle</div>"+
-		       			               "<div class=\"col-sm-3\"><input id=\"i_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\">Insertar</div>"+
-		       			               "<div class=\"col-sm-3\"><input id=\"m_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\">Modificar</div>"+
-		       			               "<div class=\"col-sm-3\"><input id=\"e_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\">Eliminar</div>"+
+		       				           "<div class=\"col-sm-3\"><input id=\"d_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\"><strong><span class=\"small text-info\">Detalle</span></strong></div>"+
+		       			               "<div class=\"col-sm-3\"><input id=\"i_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\"><strong><span class=\"small text-primary\">Insertar</span></strong></div>"+
+		       			               "<div class=\"col-sm-3\"><input id=\"m_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\"><strong><span class=\"small text-warning\">Modificar</span></strong></div>"+
+		       			               "<div class=\"col-sm-3\"><input id=\"e_"+valor.modu_modulo+"\" pred=\""+valor.modu_pred+"\" modulo=\""+valor.modu_modulo+"\" type=\"checkbox\"><strong><span class=\"small text-danger\">Eliminar</span></strong></div>"+
 		       			               "</div>"+cadFiltro;
 		       			              
 		                            descrip="";
@@ -270,13 +270,11 @@ if (table.rows('.selected').data().length>0) {
 			   	                    	    	                    	  
 			   	                          misProcesos=JSON.parse(data);  
 			   	                          	
-			   	                         
+						                  //$("#SPAN_"+valor.modu_modulo).append("<div id=\"sproc_"+valor.modu_modulo+"\" class= \"row\"></div>");
 			   	                           jQuery.each(misProcesos, function(claveproc, valorproc) {
-			   	                        	  
-			   	                        	 
-			   	                        	  $("#SPAN_"+valor.modu_modulo).append("<div class= \"row\">"+
-				       				                                              "<div class=\"col-sm-12\"><input class=\"proceso\" id=\""+valorproc.proc_proceso+"\"  modulo=\""+valor.modu_modulo+"\" type=\"checkbox\">"+valorproc.proc_descrip+"</div>"+
-				       				                                          "</div>");
+                                                $("#btn_"+valor.modu_modulo).append("<div class=\"col-sm-3\"><input class=\"proceso\" id=\""+valorproc.proc_proceso+"\""+
+																					"modulo=\""+valor.modu_modulo+"\" type=\"checkbox\"><strong><span class=\"small text-success\">"+
+																					valorproc.proc_descrip+"</span></strong></div>");
 
 			   	                           });
 			   	                          
@@ -440,3 +438,116 @@ function guardarPermisos(){
 		});    	         
 
 }
+
+/*=========================================PROCESO PARA SACAR EL SQL DE LOS MODULOS ===================*/
+function sacaPermisos (modulo,usuario,essuper) {
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+		 dameVentana("modalSQL","grid_"+modulo,"Manejador SQL","lg","bg-success","blue fa-2x fa fa-gears","370");
+		 $("#body_modalSQL").append("<div class=\"row\">"+
+										"<div class=\"col-sm-12\">"+
+											"<textarea id=\"elsql\" class=\"form-control\" style=\"font-size:10px; width:100%; height:260px;\"></textarea>"+
+										"</div>"+
+									"</div>"+
+									"<div class=\"row\">"+
+										"<div id=\"elselect\" class=\"col-sm-4\">"+	
+										     "<span class=\"label label-success\">Base de Datos</span>"+										
+										"</div>"+
+										"<div  class=\"col-sm-4\" style=\"padding-top:20px;\">"+				
+										"   <button class=\"btn btn-white btn-success btn-bold\" "+
+										"                   onclick=\"dameSQL('elsql','"+table.rows('.selected').data()[0][0]+"');\">"+
+										"     <i class=\"ace-icon fa fa-magic bigger-120 green\"></i>Obtener SQL"+
+										"   </button>"+	
+										"</div>"+															
+										"<div  class=\"col-sm-4\" style=\"padding-top:20px;\">"+				
+										"   <button class=\"btn btn-white btn-danger btn-bold\" "+
+										"                   onclick=\"ejecutaSQL('elsql');\">"+
+										"     <i class=\"ace-icon fa  fa-play bigger-120 red\"></i>Ejecutar SQL"+
+								        "   </button>"+											
+										"</div>"+
+									"</div"
+
+		 );
+		 var bases=[{id:"Mysql",opcion:"Mysql"},{id:"SQLite",opcion:"SQLite"}];
+		 addSELECTJSON("labase","elselect",bases);
+	}
+	else {
+       alert ("Por favor seleccione un Usuario");
+
+	}
+}
+
+function getResultados(){
+	dameVentana("modalRes","grid_CUSUARIOS","Resultados","sm","bg-danger","blue fa-2x fa fa-gears","370");
+	$("#body_modalRes").append("<textarea row=\"70\" id=\"elsqlRes\" class=\"form-control\" "+
+											"style=\"font-size:10px; width:100%; height:100%;\"></textarea>");
+}
+
+
+function recursiva (arreglo,elindice,elmax) {
+	$.ajax({		
+		type: "GET",
+		url:  "../base/ejecutasqlDin.php?bd="+$("#labase").val()+"&sql="+encodeURI(arreglo[elindice]),
+		success: function(data){       	     
+			$("#elsqlRes").val($("#elsqlRes").val()+"Lin: "+elindice+":"+data+"\n");
+			if (elindice++<elmax) { recursiva (arreglo,elindice++,elmax); }
+		},
+		error: function(data) {
+			$("#elsqlRes").val($("#elsqlRes").val()+"Lin: "+elindice+":"+data+"\n");
+			if (elindice++<elmax) { recursiva (arreglo,elindice++,elmax); }
+		 }		
+	});
+}
+
+function ejecutaSQL(elsql){
+	if (!($("#labase").val()=='0')) {
+		datos=$("#"+elsql).val().split("<;>");
+		getResultados();
+		$("#elsqlRes").val("");
+        recursiva(datos,0,datos.length-1);
+	}
+	else {alert ("Debe elegir la base de datos");}
+}
+
+function dameSQL (elsql,usuario) {
+			$.ajax({
+				type: "GET",
+				url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from SDERMODU where derm_usuario='"+usuario+"'")+"&bd="+$("#labase").val(),
+				success: function(data){					
+					losdatos=JSON.parse(data); 
+					jQuery.each(losdatos, function(clave, valor) { 
+						cad="INSERT INTO SDERMODU (derm_usuario,derm_modulo,derm_manten,"+
+							                      "derm_detalle,derm_reporte,derm_inserta,"+
+							                      "derm_edita,derm_borra)VALUES ("+
+														  "'"+valor.derm_usuario+"',"+"'"+valor.derm_modulo+"',"+"'"+valor.derm_manten+
+														  "','"+valor.derm_detalle+"',"+"'"+valor.derm_reporte+"',"+"'"+valor.derm_inserta+
+														  "','"+valor.derm_edita+"',"+"'"+valor.derm_borra+"')";
+					   $("#"+elsql).append(cad+"<;>\n");
+					   latabla=valor.modu_tabla;
+				   });   	
+				   
+			        $.ajax({
+							type: "GET",
+							url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from all_col_comment where table_name='"+latabla+"'")+"&bd="+$("#labase").val(),
+							success: function(data){
+								losdatos=JSON.parse(data);  							      	      
+								jQuery.each(losdatos, function(clave, valor) { 
+									cadSQL=valor.sql;
+									cadVal=valor.validacion;
+									cadmsj=valor.msjval;
+									if (!(valor.sql==null)) {cadSQL=valor.sql.replace(/'/g,"''");}
+									if (!(valor.validacion==null)) {cadVal=valor.validacion.replace(/&/g,"<*>");}
+									if (!(valor.msjval==null)) {cadmsj=valor.msjval.replace(/'/g,"''");}
+									
+									cad="INSERT INTO SDERMODU (derp_proceso,derp_usuario,derp_modulo) VALUES ("+
+														  "'"+valor.derp_proceso+"',"+"'"+valor.derp_usuario+"',"+"'"+valor.derp_modulo+"')";
+									$("#"+elsql).append(cad+"<;>\n");
+					      	    });				
+			                }
+					});				
+
+		        } //del SUCCEES DEL AJAX
+	        });
+}
+
+/*==================================================================================================*/
