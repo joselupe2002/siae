@@ -522,16 +522,17 @@ function dameSQL (elsql,usuario) {
 														  "'"+valor.derm_usuario+"',"+"'"+valor.derm_modulo+"',"+"'"+valor.derm_manten+
 														  "','"+valor.derm_detalle+"',"+"'"+valor.derm_reporte+"',"+"'"+valor.derm_inserta+
 														  "','"+valor.derm_edita+"',"+"'"+valor.derm_borra+"')";
-					   $("#"+elsql).append(cad+"<;>\n");
-					   latabla=valor.modu_tabla;
+					   $("#"+elsql).append(cad+"<;>\n");					  
 				   });   	
 				   
 			        $.ajax({
 							type: "GET",
-							url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from all_col_comment where table_name='"+latabla+"'")+"&bd="+$("#labase").val(),
+							url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from SDERPROCESOS where derp_usuario='"+usuario+"'")+"&bd="+$("#labase").val(),
 							success: function(data){
+								
 								losdatos=JSON.parse(data);  							      	      
 								jQuery.each(losdatos, function(clave, valor) { 
+									
 									cadSQL=valor.sql;
 									cadVal=valor.validacion;
 									cadmsj=valor.msjval;
