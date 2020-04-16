@@ -164,7 +164,7 @@
 			 $.ajax({
 		         type: "GET",
 		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select UNID_ID, UNID_NUMERO, UNID_DESCRIP"+		        		
-		        		 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''"),
+		        		 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED='' order by UNID_NUMERO"),
 		         success: function(data){    		        	 
 		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 			        	 
 		        		 $("#unidades").append("<option value=\""+valor.UNID_ID+"\">"+utf8Decode(valor.UNID_NUMERO+ " "+valor.UNID_DESCRIP)+"</option>");       	     
@@ -230,7 +230,7 @@
 
 		         	        botonSubir= "<div class=\"col-sm-4\">"+
                             "                 <input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.ID+"\""+
-                            "                        onchange=\"subirPDFDriveSave('file_"+valor.ID+"','ENLINEAALUM_<?php echo $_GET["ciclo"]; ?>','pdf_"+valor.ID+"','RUTA_"+valor.ID+"','pdf','S','ID','"+valor.ID+"',' ACTIVIDAD  "+utf8Decode(valor.ACTIVIDAD)+" ','lintareas','alta','"+valor.ID+"_<?php echo $_SESSION['usuario'];?>');\">"+
+                            "                        onchange=\"subirPDFDriveSave('file_"+valor.ID+"','ENLINEAALUM_<?php echo $_GET["ciclo"]; ?>','pdf_"+valor.ID+"','RUTA_"+valor.ID+"','pdf','S','ID','"+valor.ID+"',' ACTIVIDAD  "+utf8Decode(valor.ID)+" ','lintareas','alta','"+valor.ID+"_<?php echo $_SESSION['usuario'];?>');\">"+
                             "                 <input  type=\"hidden\" value=\""+valor.RUTA2+"\"  name=\"RUTA_"+valor.ID+"\" id=\"RUTA_"+valor.ID+"\"  placeholder=\"\" />"+
                             "           </div>"+
                             "           <div class=\"col-sm-1\">"+
