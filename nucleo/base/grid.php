@@ -548,15 +548,15 @@
 			    }
 			    $('#modalDocument').modal({show:true});
 
-			    $("#cuerpo").empty();
-        	    $("#tabCampos").append("<tbody id=\"cuerpo\">");
+			    $("#cuerpoFiltro").empty();
+        	    $("#tabCampos").append("<tbody id=\"cuerpoFiltro\">");
 
         	    c=0;
 
         	    inp="<input class= \"small form-control\" autocomplete=\"off\" style=\"width:200px;\" type=\"text\"";
 			    jQuery.each(todasColumnas, function(clave, valor){	
                   colsql+=valor.colum_name+",";                   
-                  $("#cuerpo").append("<tr id=\"row"+c+"\">");
+                  $("#cuerpoFiltro").append("<tr id=\"row"+c+"\">");
                   $("#row"+c).append("<td class=\"text-primary\"><strong>"+valor.comments+"</strong></td>");
                   $("#row"+c).append("<td>"+inp+" id =\""+valor.colum_name+"\"></input></td>");   
                    
