@@ -276,7 +276,8 @@
 		    	    $.ajax({
 		    	        type: "POST",
 		    	        url:"actualizaCal.php?valorllave="+id+"&numeroUni="+numeroUni+"&c="+$("#SEL"+campo+"_"+id).val()+"&materia="+materia+
-		    	            "&materia="+materia+"&profesor="+profesor+"&ciclo="+ciclo+"&matricula="+matricula+"&grupo="+grupo+"&tipo="+tipo,		    
+							"&materia="+materia+"&profesor="+profesor+"&ciclo="+ciclo+"&matricula="+matricula+"&grupo="+grupo+"&tipo="+tipo+
+							"&idcorte=<?php echo $_GET["idcorte"];?>&tipocorte=<?php echo $_GET["tipocorte"];?>",		    
 		    	        success: function(data){
 		    	        		
 		    	        	if (data.substring(0,2)=='0:') {alert ("Ocurrio un error: "+data);}	 

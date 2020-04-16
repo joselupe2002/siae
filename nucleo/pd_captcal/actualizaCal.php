@@ -18,15 +18,22 @@
        {$msj="1:Registro actualizado satisfactoriamente";}
        
        if ($_GET["tipo"]=='CAL') {
-       $res=$miConex->afectaSQL($_SESSION["bd"],"INSERT INTO wa_bitacora (usuario,ciclo,materia,grupo,profesor,unidad,matricula,calificacion,fecha_reg) values (".
+       $res=$miConex->afectaSQL($_SESSION["bd"],"INSERT INTO wa_bitacora (usuario,ciclo,materia,grupo,profesor".
+                                                ",unidad,matricula,calificacion, ruser, rhost,_INSTITUCION,_CAMPUS,fecha_reg) values (".
        		"'".$_SESSION["usuario"]."',".
        		"'".$_GET["ciclo"]."',".
        		"'".$_GET["materia"]."',".
        		"'".$_GET["grupo"]."',".
        		"'".$_GET["profesor"]."',".
        		"'".$_GET["numeroUni"]."',".
-       		"'".$_GET["matricula"]."',".
-       		"'".$_GET["c"]."',now())");
+            "'".$_GET["matricula"]."',".
+            "'".$_GET["c"]."',".
+            "'".$_GET["idcorte"]."',".
+            "'".$_GET["tipocorte"]."',".
+            "'".$_SESSION["INSTITUCION"]."',".
+            "'".$_SESSION["CAMPUS"]."',".
+            "now())");
+
 	       $msj="";
 	       if (!($res=='')) { $msj= "0: ".$res."\n";}
 	       else {$msj="1:Registro actualizado satisfactoriamente";}

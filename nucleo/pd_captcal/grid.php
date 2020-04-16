@@ -120,7 +120,8 @@
 <script type="text/javascript">
         var todasColumnas;
         var haycorte;
-        var idcorte=0;
+		var idcorte=0;
+		var tipocorte="";
         var inicia_corte="";
         var termina_corte="";  
         
@@ -165,10 +166,11 @@ function verificarCorte(){
         	        $("#stCorte").html("Corte Cerrado");                  
         	        jQuery.each(JSON.parse(data), function(clave, valor) { 	
                           haycorte=true; 
-                          idcorte=valor.ID;
+						  idcorte=valor.ID;
+						  tipocorte=valor.TIPO;
                           inicia_corte=valor.INICIA;
                           termina_corte=valor.TERMINA;
-                          $("#stCorte").html("Corte Abierto");
+                          $("#stCorte").html("Corte Abierto "+valor.DESCRIPCION);
             	        });         	      
         	        cargarAct();        	      
                  },
@@ -199,7 +201,9 @@ function cargarAct(){
 
 
 function evaluar(id,profesor,materia,materiad,grupo,ciclo, base){
-	 window.location="evaluar.php?base="+base+"&termina_corte="+termina_corte+"&inicia_corte="+inicia_corte+"&idcorte="+idcorte+"&id="+id+"&ciclo="+ciclo+"&profesor="+profesor+"&grupo="+grupo+"&materia="+materia+"&materiad="+materiad+"&modulo=<?php echo $_GET["modulo"];?>";
+	 window.location="evaluar.php?base="+base+"&termina_corte="+termina_corte+"&inicia_corte="+inicia_corte+"&idcorte="+
+								  idcorte+"&tipocorte="+tipocorte+"&id="+id+"&ciclo="+ciclo+"&profesor="+profesor+"&grupo="+
+								  grupo+"&materia="+materia+"&materiad="+materiad+"&modulo=<?php echo $_GET["modulo"];?>";
 }
 
 
