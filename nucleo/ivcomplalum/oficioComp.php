@@ -246,8 +246,8 @@
 
 		
 		$pdf->MultiCell(0,5,'La(El) que suscribe : '.utf8_decode($dataDepto[0]["NOMBRE"])." ".utf8_decode($dataDepto[0]["EMPL_FIRMAOF"]). ", por este medio se permite hacer de su ".
-				"conocimiento que lo(s) estudiantes que se enlistan a continuación de la carrera de ".$_GET["carrerad"]." han cumplido un total de ".
-				" CINCO créditos.",0,'J', false);
+		utf8_decode("conocimiento que lo(s) estudiantes que se enlistan a continuaciÃ³n de la carrera de ").$_GET["carrerad"]." han cumplido un total de ".
+		utf8_decode(" CINCO crÃ©ditos."),0,'J', false);
 		$pdf->ln();
 		
 		
@@ -261,7 +261,7 @@
 			$pdf->SetFont('Montserrat-SemiBold','',10);
 			$pdf->MultiCell(0,5,$rowdes["MATRICULA"]." ".$rowdes["NOMBRE"],0,'J', false);
 			$dataCompl=$pdf->lasComplementarias($rowdes["MATRICULA"]);			
-			$header = array('ACTIVIDAD', 'RESPONSABLE', 'CRÉDITOS','CAL.','LETRA');
+			$header = array('ACTIVIDAD', 'RESPONSABLE', utf8_decode('CREDITOS'),'CAL.','LETRA');
 			
 			$pdf->SetFont('Montserrat-ExtraBold','B',8);
 			$pdf->SetWidths(array(60,60,15,15,18));
@@ -273,7 +273,7 @@
 			$w = array(60,60,15,15,18);
 			for($i=0;$i<count($header);$i++) {$pdf->Cell($w[$i],7,$header[$i],1,0,'C',true);}
 			$pdf->Ln();
-			// Restauración de colores y fuentes
+			// Restauraciï¿½n de colores y fuentes
 			$pdf->SetFillColor(255,255,255);
 			$pdf->SetTextColor(0);
 			$pdf->SetFont('');
@@ -304,7 +304,7 @@
 		
 		$pdf->Ln(5);
 		$pdf->SetFont('Montserrat-ExtraLight','I',8);
-		$pdf->Cell(0,0,'Excelencia en Educación Tecnológica',0,1,'L');
+		$pdf->Cell(0,0,utf8_decode('Excelencia en EducaciÃ³n TecnolÃ³gica'),0,1,'L');
 		
 		$pdf->Ln(25);
 		$pdf->SetFont('Montserrat-ExtraBold','B',10);

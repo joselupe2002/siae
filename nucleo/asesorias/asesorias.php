@@ -12,9 +12,7 @@
 
 	
    class PDF extends FPDF {
-   	
-   	
-   	
+
    	var $widths;
    	var $aligns;
    	
@@ -166,7 +164,7 @@
 		
 				$this->SetY(-37);				
 				$this->SetX(209);
-				$this->Cell(60,4,'JEFE DIVISIÓN','',0,'C',false);
+				$this->Cell(60,4,'JEFE DIVISIï¿½N','',0,'C',false);
 				
 				
 			}
@@ -199,7 +197,7 @@
 			function imprimeAsesorias($header, $data)
 			{
 				$this->Ln(5);
-				// Colores, ancho de línea y fuente en negrita
+				// Colores, ancho de lï¿½nea y fuente en negrita
 				$this->SetFillColor(172,31,6);
 				$this->SetTextColor(255);
 				$this->SetDrawColor(0,0,0);
@@ -212,7 +210,7 @@
 				for($i=0;$i<count($header);$i++)
 					$this->Cell($w[$i],7,$header[$i],1,0,'C',true);
 					$this->Ln();
-					// Restauración de colores y fuentes
+					// Restauraciï¿½n de colores y fuentes
 					$this->SetFillColor(255,255,255);
 					$this->SetTextColor(0);
 					$this->SetFont('');

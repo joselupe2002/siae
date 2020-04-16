@@ -87,7 +87,7 @@
 		$pdf->SetFont('Montserrat-ExtraBold','B',24);
 		$pdf->SetTextColor(177,125,4);
 		$pdf->setY(50);
-		$pdf->Cell(0,0,"El Instituto Tecnológico Superior de Macuspana",0,1,'C');
+		$pdf->Cell(0,0,utf8_decode("El Instituto TecnolÃ³gico Superior de Macuspana"),0,1,'C');
 		$pdf->SetTextColor(5,27,149);
 		$pdf->setY(60);
 		$pdf->Cell(0,0,"Otorga la Presente:",0,1,'C');
@@ -114,56 +114,12 @@
 		$pdf->SetTextColor(177,125,4);
 
 		$pdf->setX(160); $pdf->setY(180);
-		$pdf->Cell(40,0,"MATI. L. Rafael Bojorges Güereña",0,'C', false);
+		$pdf->Cell(40,0,utf8_decode("MATI. L. Rafael Bojorges GÃ¼ereÃ±a"),0,'C', false);
 
 		$pdf->setX(177); $pdf->setY(185);
 		$pdf->Cell(40,0,"Director General",0,'C', false);
 		
 		$pdf->Output();
-		
-		/*
-			
-		if ($_GET["tipo"]=='0') { $pdf->Output(); }
-		
-		if ($_GET["tipo"]=='2') {
-			$doc = $pdf->Output('', 'S');
-			?>
-		       <html lang="en">
-	               <head>
-						<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-						<meta charset="utf-8" />
-						<link rel="icon" type="image/gif" href="imagenes/login/sigea.ico">
-						<title>Sistema de Gesti&oacute;n Escolar-Administrativa</title>
-						<meta name="description" content="User login page" />
-						<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-						<link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
-						<link rel="stylesheet" href="../../assets/font-awesome/4.5.0/css/font-awesome.min.css" />
-						<link rel="stylesheet" href="../../assets/css/select2.min.css" />
-						<link rel="stylesheet" href="../../assets/css/fonts.googleapis.com.css" />
-					    <link rel="stylesheet" href="../../assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
-						<link rel="stylesheet" href="../../assets/css/ace-rtl.min.css" />		
-						<script src="../../assets/js/ace-extra.min.js"></script>		
-						<link rel="stylesheet" href="../../assets/css/jquery-ui.min.css" />
-	                </head>
-	      <?php 
-					foreach($dataProf as $rowdes)
-					{
-						$res=$miutil->enviarCorreo($rowdes[2],'Comisión '.utf8_decode($data[0]["COMI_ID"]),
-								'Por medio de la presente se le asigna  la siguiente comisión:  '.utf8_decode($data[0]["COMI_ACTIVIDAD"]).
-								', del:  '.utf8_decode($data[0]["COMI_FECHAINI"]).' al:  '.utf8_decode($data[0]["COMI_FECHAFIN"]).
-							    ' Lugar: '.utf8_decode($data[0]["COMI_LUGAR"]).
-								' <br/> En adjunto encontrará el Oficio debidamente firmado y sellado. '
-								,$doc);	
-						if ($res=="") {echo "<span class=\"label label-success arrowed\">Correo Eviado a: ". $rowdes[1]." ". $rowdes[2]."</span><br/><br/>"; }
-						else { echo "<span class=\"label label-danger arrowed-in\">".$res."</span><br/><br/>"; }
-						
-					}
-		}
-		if ($_GET["tipo"]=='1') {
-			$pdf->Output(); 
-		}
-		
-		*/
 
  
  ?>

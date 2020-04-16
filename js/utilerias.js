@@ -1222,7 +1222,80 @@ function cargarFechasEval(materia,grupo,ciclo) {
  }
 /*==============================================================================================*/
 
+/*===============================CALCULO DE LAS CALIFICACIONES POR GRUPOS ===================================*/
+function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
+	mostrarEspera("esperacalculo","grid_"+modulo,"Calculando...");
+	sqlUni="select count(*) as N  from eunidades where UNID_MATERIA='"+materia+"' and UNID_PRED=''";
+	$.ajax({
+		type: "GET",
+		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlUni),
+		success: function(data){    
+			   jQuery.each(JSON.parse(data), function(clave, valor) { 
+				     numUni=valor.N;
+			 });
+			 sqlLista="select ID, "+
+						"IFNULL(LISPA1,'0') AS LISPA1,IFNULL(LISPA2,'0') AS LISPA2,IFNULL(LISPA3,'0') AS LISPA3,"+
+						"IFNULL(LISPA4,'0') AS LISPA4,IFNULL(LISPA5,'0') AS LISPA5,IFNULL(LISPA6,'0') AS LISPA6,"+
+						"IFNULL(LISPA7,'0') AS LISPA7,IFNULL(LISPA8,'0') AS LISPA8,IFNULL(LISPA9,'0') AS LISPA9,"+
+						"IFNULL(LISPA10,'0') AS LISPA10,IFNULL(LISPA11,'0') AS LISPA11,IFNULL(LISPA12,'0') AS LISPA12,"+
+						"IFNULL(LISPA13,'0') AS LISPA13,IFNULL(LISPA14,'0') AS LISPA14,IFNULL(LISPA15,'0') AS LISPA15,"+
+						"IFNULL(LISFA1,'0') AS LISFA1,IFNULL(LISFA2,'0') AS LISFA2,IFNULL(LISFA3,'0') AS LISFA3,"+
+                        "IFNULL(LISFA4,'0') AS LISFA4,IFNULL(LISFA5,'0') AS LISFA5,IFNULL(LISFA6,'0') AS LISFA6,"+
+						"IFNULL(LISFA7,'0') AS LISFA7,IFNULL(LISFA8,'0') AS LISFA8,IFNULL(LISFA9,'0') AS LISFA9,"+
+						"IFNULL(LISFA10,'0') AS LISFA10,IFNULL(LISFA11,'0') AS LISFA11,IFNULL(LISFA12,'0') AS LISFA12,"+
+						"IFNULL(LISFA13,'0') AS LISFA13,IFNULL(LISFA14,'0') AS LISFA14,IFNULL(LISFA15,'0') AS LISFA15"+
+						" from dlista a where a.PDOCVE='"+ciclo+"' and a.MATCVE='"+materia+"'"+
+						" and a.GPOCVE='"+grupo+"'";		
+			 
+			 $.ajax({
+				type: "GET",
+				url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlLista),
+				success: function(dataLista){  
+					   laLista=JSON.parse(dataLista);  
+					   jQuery.each(laLista, function(clave, valor) { 
+						   suma=0; sumaF=0;
+						   promedio=0;
+						   for (x=1;x<=numUni;x++) {
+							   if (laLista[clave][x]<=70) {suma=(numUni*60); break; }
+							   suma+=parseFloat(laLista[clave][x]);
+						   }	
+						   for (y=1;y<=numUni;y++) {sumaF+=parseFloat(laLista[clave][y+15]);}		    	 
+						   promedio=Math.round((suma/numUni));
+						  
+						   parametros={
+							tabla:"dlista",
+							campollave:"ID",
+							valorllave:valor.ID,
+							bd:"Mysql",
+							LISCAL:promedio, 
+							TCACVE:"1",
+							LISFALT:sumaF							
+							};
+				            $.ajax({
+					               type: "POST",
+					               url:"../base/actualiza.php",
+					               data: parametros,
+					               success: function(data){			                                	                      
+									if ((data.substring(0,1)=="0"))	
+											{alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
+					  			 }					     
+				   			});      
+					 });
 
+					 ocultarEspera("esperacalculo");
+					 					  
+				   },
+			   error: function(data) {	  				
+						  alert('ERROR: '+data);  
+					  }
+			  });
+			  
+		   },
+	   error: function(data) {	  				
+				  alert('ERROR: '+data);  
+			  }
+	  });
+}
 
 
 

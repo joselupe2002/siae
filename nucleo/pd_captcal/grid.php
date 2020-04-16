@@ -47,6 +47,8 @@
 			    <thead>  
                       <tr>
                           <th style="text-align: center;">Evaluar</th> 
+						  <th style="text-align: center;">Promediar</th> 
+						  <th style="text-align: center;">Boleta</th> 
                           <th style="text-align: center;">Id</th> 
                           <th style="text-align: center;">Sem</th> 
                           <th style="text-align: center;">Grupo</th> 
@@ -113,7 +115,7 @@
 <script src="<?php echo $nivel; ?>assets/js/ace.min.js"></script>
 <script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
 <script src="<?php echo $nivel; ?>js/sha/sha512.js"></script>
-
+<script src="<?php echo $nivel; ?>js/utilerias.js"></script>
 
 
 
@@ -142,10 +144,21 @@
        jQuery.each(grid_data, function(clave, valor) { 	
     	    
     	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
-    	    $("#row"+valor.ID).append("<td><button title=\"Evaluar a los alumnos inscritos\" onclick=\"evaluar('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
+    	    $("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Evaluar a los alumnos inscritos\" onclick=\"evaluar('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
     	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"');\""+
-    	    	                              " class=\"btn btn-xs btn-white btn-primary\"><i class=\"ace-icon fa fa-building bigger-120\"></i></button></td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
+											  " class=\"btn btn-xs btn-white btn-default btn-round\"><i class=\"ace-icon fa fa-building bigger-120\"></i></button></td>");
+			
+			//Boton de Promediar
+			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Calcula Calificación Final\" onclick=\"calcularFinal('<?php echo $_SESSION["usuario"]?>','"+
+    	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','pd_captcal');\""+
+											  " class=\"btn btn-xs btn-white btn-success btn-round\"><i class=\"ace-icon fa blue fa-wrench bigger-140\"></i></button></td>");								  
+											  
+			//Boton de Boleta
+			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Imprimir boleta de calificaciones\" onclick=\"imprimirBoleta('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
+    	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"','"+valor.SEM+"');\""+
+    	    	                              " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon green fa fa-print bigger-140\"></i></button></td>");								  
+    	    
+			$("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SEM+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SIE+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
@@ -207,6 +220,10 @@ function evaluar(id,profesor,materia,materiad,grupo,ciclo, base){
 }
 
 
+function imprimirBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
+	window.open("boleta.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor=<?php echo $_SESSION["usuario"];?>&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre, '_blank'); 
+}
 
 	
 

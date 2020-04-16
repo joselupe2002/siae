@@ -57,7 +57,7 @@
 				
 				$this->SetX(10);$this->SetY(-55);
 				$this->SetFont('Montserrat-ExtraLight','I',8);
-				$this->Cell(0,0,'Excelencia en EducaciÛn TecnolÛgica',0,1,'L');
+				$this->Cell(0,0,utf8_decode('Excelencia en Educaci√≥n Tecnol√≥gica'),0,1,'L');
 				
 				$this->SetX(10);$this->SetY(-45);
 				$this->SetFont('Montserrat-ExtraBold','B',10);
@@ -124,7 +124,7 @@
 		
 		$dataGen = $pdf->LoadDatosGen();
 		$nombre=$miutil->getJefe('302');//Nombre del puesto de Recursos Humanos
-		$elpsto="SUBDIRECTOR DE ADMINISTRACI”N Y PLANEACI”N";
+		$elpsto=utf8_decode("SUBDIRECTOR DE ADMINISTRACI√ìN Y PLANEACI√ìN");
 		
 		//Para el numero de oficio 
 		$depto=$miUtil->getDatoEmpl($data[0]["COMI_AUTORIZO"],"EMPL_DEPTO");
@@ -160,10 +160,10 @@
 		
 		$pdf->SetFont('Montserrat-SemiBold','',10);
 		
-		$laetfecha ='del '.$fechaini.' al '.$fechafin; $etfin=" en fechas y horas seÒaladas.";
-		if ($fechaini==$fechafin) {$laetfecha="el ".$fechaini; $etfin=" en fecha y hora seÒalada.";}
+		$laetfecha ='del '.$fechaini.' al '.$fechafin; $etfin=utf8_decode(" en fechas y horas se√±aladas.");
+		if ($fechaini==$fechafin) {$laetfecha="el ".$fechaini; $etfin=utf8_decode(" en fecha y hora se√±alada.");}
 		
-		$pdf->MultiCell(0,5,'Por medio de la presente, le informÛ a usted que el(los) Profesor(es): ',0,'J', false);
+		$pdf->MultiCell(0,5,utf8_decode('Por medio de la presente, le inform√≥ a usted que el(los) Profesor(es): '),0,'J', false);
 		$pdf->ln();
 		
 		$losProfes=$pdf->losComisionados($data[0]["COMI_ID"],$data[0]["COMI_GRUPO"]);
@@ -174,11 +174,11 @@
 		$pdf->ln();
 		
 		$pdf->MultiCell(0,5,'Ha(n) sido comisionado para la siguiente actividad: "'.utf8_decode($data[0]["COMI_ACTIVIDAD"]).
-				'", la cual se llevar· a cabo '.$laetfecha.', en horario de '.utf8_decode($data[0]["COMI_HORAINI"]).
+		utf8_decode('", la cual se llevar√° a cabo ').$laetfecha.', en horario de '.utf8_decode($data[0]["COMI_HORAINI"]).
 				' a '.$data[0]["COMI_HORAFIN"].', en '.utf8_decode($data[0]["COMI_LUGAR"]).$etfin,0,'J', false);
 		$pdf->Ln(5);
 		$pdf->Ln(5);
-		$pdf->MultiCell(0,8,'Sin m·s por el momento aprovecho para enviarle un cordial saludo.',0,'J', false);
+		$pdf->MultiCell(0,8,utf8_decode('Sin m√°s por el momento aprovecho para enviarle un cordial saludo.'),0,'J', false);
 		
 		$pdf->eljefe=$data[0]["COMI_AUTORIZOABREVIA"]." ".$data[0]["COMI_AUTORIZOD"];
 		$pdf->eljefepsto=$data[0]["COMI_AUTORIZOFIRMAOF"];
@@ -210,11 +210,11 @@
 	      <?php 
 					foreach($dataProf as $rowdes)
 					{
-						$res=$miutil->enviarCorreo($rowdes[2],'ComisiÛn '.utf8_decode($data[0]["COMI_ID"]),
-								'Por medio de la presente se le asigna  la siguiente comisiÛn:  '.utf8_decode($data[0]["COMI_ACTIVIDAD"]).
+						$res=$miutil->enviarCorreo($rowdes[2],utf8_decode('Comisi√≥n ').utf8_decode($data[0]["COMI_ID"]),
+						utf8_decode('Por medio de la presente se le asigna  la siguiente comisi√≥n:  ').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
 								', del:  '.utf8_decode($data[0]["COMI_FECHAINI"]).' al:  '.utf8_decode($data[0]["COMI_FECHAFIN"]).
 							    ' Lugar: '.utf8_decode($data[0]["COMI_LUGAR"]).
-								' <br/> En adjunto encontrar· el Oficio debidamente firmado y sellado. '
+								utf8_decode(' <br/> En adjunto encontrar√° el Oficio debidamente firmado y sellado. ')
 								,$doc);	
 						if ($res=="") {echo "<span class=\"label label-success arrowed\">Correo Eviado a: ". $rowdes[1]." ". $rowdes[2]."</span><br/><br/>"; }
 						else { echo "<span class=\"label label-danger arrowed-in\">".$res."</span><br/><br/>"; }
