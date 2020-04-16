@@ -163,27 +163,27 @@
 				$this->SetY(20);$this->SetX(25);
 				$this->Cell(40,15,"",1,0,'L',false);
 				$this->SetFont('Times','B',9);
-				$this->Cell(90,3,"FORMATO DE AUTORIZACIÓN DE PLANEACIÓN E","TRL",0,'C',false);
+				$this->Cell(90,3,utf8_decode("FORMATO DE AUTORIZACIÃ“N DE PLANEACIÃ“N E"),"TRL",0,'C',false);
 				$this->Cell(40,15,"",1,0,'L',false);
 				
 				$this->SetY(23);$this->SetX(65);
-				$this->Cell(90,3,"INSTRUMENTACIÓN DIDÁCTICA","B",0,'C',false);
+				$this->Cell(90,3,utf8_decode("INSTRUMENTACIÃ“N DIDÃCTICA"),"B",0,'C',false);
 				$this->SetY(26);$this->SetX(65);
 				$this->SetFillColor(242,242,242);
-				$this->Cell(90,9,"P–ACA–02-F-01",1,0,'C',true);
+				$this->Cell(90,9,utf8_decode("P-ACA-02-F-01"),1,0,'C',true);
 				$this->Image('../../imagenes/empresa/pie1.png',28,22,23,11);
 				
 				$this->SetFont('Times','',9);
 				$this->SetY(20);$this->SetX(155);
-				$this->Cell(40,3,"PÁG. 1 DE 1","TRL",0,'C',false);
+				$this->Cell(40,3,utf8_decode("PÃG. 1 DE 1"),"TRL",0,'C',false);
 				$this->SetY(23);$this->SetX(155);
-				$this->Cell(40,3,"REVISIÓN NO. 01","B",0,'C',false);
+				$this->Cell(40,3,utf8_decode("REVISIÃ“N NO. 01"),"B",0,'C',false);
 				$this->SetY(26);$this->SetX(155);
 				$this->Cell(40,3,"VIGENTE A PARTIR DEL","",0,'C',false);
 				$this->SetY(29);$this->SetX(155);
 				$this->Cell(40,3,"8 DE ENERO 2020","",0,'C',false);
 				$this->SetY(32);$this->SetX(155);
-				$this->Cell(40,3,"VERSIÓN 2015","",0,'C',false);
+				$this->Cell(40,3,utf8_decode("VERSIÃ“N 2015"),"",0,'C',false);
 				
 				
 			}
@@ -208,7 +208,7 @@
 				
 				
 				$this->SetX(130);
-				$this->Cell(60,4,'JEFE DIVISIÓN','',0,'C',false);
+				$this->Cell(60,4,utf8_decode('JEFE DIVISIÃ“N'),'',0,'C',false);
 				
 				
 			}
@@ -254,13 +254,13 @@
 		$pdf->SetY(50);
 		
 		$pdf->SetFont('Times','',11);
-		$pdf->Cell(0,0,"SUBDIRECCIÓN ACADÉMICA","",0,'C',false);
+		$pdf->Cell(0,0,utf8_decode("SUBDIRECCIÃ“N ACADÃ‰MICA"),"",0,'C',false);
 		$pdf->Ln(5);
-		$pdf->Cell(0,0,"INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA","",0,'C',false);
+		$pdf->Cell(0,0,utf8_decode("INSTITUTO TECNOLÃ“GICO SUPERIOR DE MACUSPANA"),"",0,'C',false);
 		$pdf->Ln(5);
 		
-		$pdf->MultiCell(0,5,"REVISIÓN Y VALIDACIÓN DE LA  INSTRUMENTACIÓN DIDÁCTICA PARA LA FORMACIÓN Y DESARROLLO DE ".
-				            "COMPETENCIAS PROFESIONALES DIGITAL Y REGISTRO DE PLANEACIÓN DIDÁCTICA EN EL SIE",0,'C', false);
+		$pdf->MultiCell(0,5,utf8_decode("REVISIÃ“N Y VALIDACIÃ“N DE LA  INSTRUMENTACIÃ“N DIDÃCTICA PARA LA FORMACIÃ“N Y DESARROLLO DE ").
+		utf8_decode("COMPETENCIAS PROFESIONALES DIGITAL Y REGISTRO DE PLANEACIÃ“N DIDÃCTICA EN EL SIE"),0,'C', false);
 		
 		$pdf->Ln(5);
 		$pdf->SetX(100);$pdf->SetY(90);
@@ -280,51 +280,7 @@
 		
 		
 	
-		/*
-		$dataEmpl = $pdf->getDatosPersona($_GET["ID"]);
-
-		$pdf->Image($dataEmpl[0]["EMPL_FOTO"],10,40,20);
 		
-		$pdf->Ln(10);
-		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"NOMBRE: ",0,0,'L');	
-		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_NOMBREC"]),0,1,'L');
-		
-		$pdf->setX(180); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"RFC: ",0,0,'L');
-		$pdf->setX(190); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_RFC"]),0,1,'L');
-		
-		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"HORARIO DEL PERSONAL ",0,0,'L');
-		
-		$pdf->Ln(4);
-		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"GRADO MÁXIMO DE ESTUDIOS: ",0,0,'L');
-		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_ULTIGRAD"]),0,1,'L');
-		
-		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"PERIODO:",0,0,'L');
-		$pdf->setX(238); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($_GET["ciclod"]),0,1,'L');
-		
-		
-		$pdf->Ln(4);
-		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"ES EGRESADO: ",0,0,'L');
-		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_EGRESADODED"]),0,1,'L');
-		$pdf->setX(180); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"CURP: ",0,0,'L');
-		$pdf->setX(190); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_CURP"]),0,1,'L');
-		$pdf->Ln(4);
-		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"DEPARTAMENTO O ACADEMÍA: ",0,0,'L');
-		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_DEPTOD"]),0,1,'L');
-		
-		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"INGRESO:",0,0,'L');
-		$pdf->setX(238); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_FECING"]),0,1,'L');
-		
-		$pdf->eljefe=$dataEmpl[0]["EMPL_JEFEABREVIA"]." ".$dataEmpl[0]["EMPL_JEFED"];
-		
-		$header = array('I. Carga Académica', 'Paq.', 'Grupo','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado','Domingo', 'TH');
-		
-		$data = $pdf->cargaAcademica();
-		$pdf->imprimeCargaAcad($header,$data);
-		
-		$headerdes = array('II. Otras Actividades', 'Cve.', 'Descripción','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado','Domingo', 'TH');		
-		$datades = $pdf->descarga();
-		if (!($datades[0]==null)) { $pdf->imprimeDescarga($headerdes,$datades);}
-		*/
 			
 		$pdf->Output();
 

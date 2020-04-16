@@ -69,20 +69,20 @@
 				$this->SetY(-40);
 				$this->Cell(60,4,"INTERESADO",'T',0,'C',false);
 				$this->SetX(78);
-				$this->Cell(60,4,utf8_decode($subdir),'T',0,'C',false);
-				$this->SetX(141);
 				$this->Cell(60,4,utf8_decode($this->eljefe),'T',0,'C',false);
+				$this->SetX(141);
+				$this->Cell(60,4,utf8_decode($subdir),'T',0,'C',false);
 				$this->SetX(209);
 				$this->Cell(55,4,utf8_decode($dir),'T',0,'C',false);
 				
 		
 				$this->SetY(-37);
 				$this->SetX(80);
-				$this->Cell(60,4,'JEFE DIVISIÓN','',0,'C',false);
-				$this->SetX(150);
-				$this->Cell(60,4,'SUBDIRECTOR ACADÉMICO','',0,'C',false);
-				$this->SetX(220);
-				$this->Cell(60,4,'DIRECTOR ACADÉMICO','',0,'C',false);
+				$this->Cell(60,4,utf8_decode('JEFE DIVISIÃ“N'),'',0,'C',false);
+				$this->SetX(140);
+				$this->Cell(60,4,utf8_decode('SUBDIRECTOR ACADÃ‰MICO'),'',0,'C',false);
+				$this->SetX(210);
+				$this->Cell(60,4,utf8_decode('DIRECTOR ACADÃ‰MICO'),'',0,'C',false);
 				
 				
 			}
@@ -109,7 +109,7 @@
 			function imprimeCargaAcad($header, $data)
 			{
 				$this->Ln(5);
-				// Colores, ancho de línea y fuente en negrita
+				// Colores, ancho de lï¿½nea y fuente en negrita
 				$this->SetFillColor(172,31,6);
 				$this->SetTextColor(255);
 				$this->SetDrawColor(181,57,35);
@@ -121,7 +121,7 @@
 				for($i=0;$i<count($header);$i++)
 					$this->Cell($w[$i],7,$header[$i],1,0,'C',true);
 					$this->Ln();
-					// Restauración de colores y fuentes
+					// Restauraciï¿½n de colores y fuentes
 					$this->SetFillColor(255,254,174);
 					$this->SetTextColor(0);
 					$this->SetFont('');
@@ -154,7 +154,7 @@
 					$this->Cell(10,4,$suma,'LR',0,'C',$fill);
 					$this->Ln();
 					$this->Cell(array_sum($w),0,'','T');
-					// Línea de cierre
+					// Lï¿½nea de cierre
 			}
 			
 			
@@ -177,7 +177,7 @@
 			function imprimeDescarga($headerdes, $datades)
 			{
 				$this->Ln(5);
-				// Colores, ancho de línea y fuente en negrita
+				// Colores, ancho de lï¿½nea y fuente en negrita
 				$this->SetFillColor(172,31,6);
 				$this->SetTextColor(255);
 				$this->SetDrawColor(181,57,35);
@@ -189,7 +189,7 @@
 				for($i=0;$i<count($headerdes);$i++)
 					$this->Cell($w[$i],7,$headerdes[$i],1,0,'C',true);
 					$this->Ln();
-					// Restauración de colores y fuentes
+					// Restauraciï¿½n de colores y fuentes
 					$this->SetFillColor(255,254,174);
 					$this->SetTextColor(0);
 					$this->SetFont('');
@@ -229,7 +229,7 @@
 					$this->Cell(10,4,$suma,'LR',0,'C',$fill);
 					$this->Ln();
 					$this->Cell(array_sum($w),0,'','T');
-					// Línea de cierre
+					// Lï¿½nea de cierre
 			}
 			
 		}
@@ -258,7 +258,7 @@
 		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"HORARIO DEL PERSONAL ",0,0,'L');
 		
 		$pdf->Ln(4);
-		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"GRADO MÁXIMO DE ESTUDIOS: ",0,0,'L');
+		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"GRADO Mï¿½XIMO DE ESTUDIOS: ",0,0,'L');
 		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_ULTIGRAD"]),0,1,'L');
 		
 		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"PERIODO:",0,0,'L');
@@ -271,7 +271,7 @@
 		$pdf->setX(180); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"CURP: ",0,0,'L');
 		$pdf->setX(190); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_CURP"]),0,1,'L');
 		$pdf->Ln(4);
-		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"DEPARTAMENTO O ACADEMÍA: ",0,0,'L');
+		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"DEPARTAMENTO O ACADEMï¿½A: ",0,0,'L');
 		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_DEPTOD"]),0,1,'L');
 		
 		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"INGRESO:",0,0,'L');
@@ -279,12 +279,12 @@
 		
 		$pdf->eljefe=$dataEmpl[0]["EMPL_JEFEABREVIA"]." ".$dataEmpl[0]["EMPL_JEFED"];
 		
-		$header = array('I. Carga Académica', 'Paq.', 'Grupo','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado','Domingo', 'TH');
+		$header = array(utf8_decode('I. Carga AcadÃ©mica'), 'Paq.', 'Grupo','Lunes','Martes',utf8_decode('MiÃ©rcoles'),'Jueves','Viernes','Sabado','Domingo', 'TH');
 		
 		$data = $pdf->cargaAcademica();
 		$pdf->imprimeCargaAcad($header,$data);
 		
-		$headerdes = array('II. Otras Actividades', 'Cve.', 'Descripción','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado','Domingo', 'TH');		
+		$headerdes = array('II. Otras Actividades', 'Cve.', utf8_decode('DescripciÃ³n'),'Lunes','Martes',utf8_decode('MiÃ©rcoles'),'Jueves','Viernes','Sabado','Domingo', 'TH');		
 		$datades = $pdf->descarga();
 		if (!($datades[0]==null)) { $pdf->imprimeDescarga($headerdes,$datades);}
 		

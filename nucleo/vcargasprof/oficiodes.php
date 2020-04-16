@@ -107,7 +107,7 @@
 			for($i=0;$i<count($headerdes);$i++) 
 				$this->Cell($w[$i],7,$headerdes[$i],1,0,'C',true);
 				$this->Ln();
-				// RestauraciÛn de colores y fuentes
+				// RestauraciÔøΩn de colores y fuentes
 				$this->SetFillColor(255,254,174);
 				$this->SetTextColor(0);
 				$this->SetFont('');
@@ -139,7 +139,7 @@
 				$this->Cell(13,4,$suma,'LR',0,'C',$fill);
 				$this->Ln();
 				$this->Cell(array_sum($w),0,'','T');
-				// LÌnea de cierre
+				// LÔøΩnea de cierre
 		    }
 		
          
@@ -178,7 +178,7 @@
 			$pdf->Cell(0,0,'OFICIO No. '.utf8_decode($dataof[0]["CONT_NUMOFI"]),0,1,'R');
 			$pdf->Ln(5);
 		    $pdf->SetFont('Montserrat-ExtraBold','B',9);
-			$pdf->Cell(0,0,'ASUNTO: DESCARGA ACAD…MICA.',0,1,'R');
+			$pdf->Cell(0,0,utf8_decode('ASUNTO: DESCARGA ACAD√âMICA.'),0,1,'R');
 			$pdf->SetFont('Montserrat-ExtraBold','B',9);
 			$pdf->Ln(20);
 			$pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_ABREVIA"])." ".utf8_decode($dataEmpl[0]["EMPL_NOMBREC"]),0,1,'L');
@@ -190,15 +190,15 @@
 			$pdf->MultiCell(0,8,"Por este medio me permito informarle a usted, que le han sido asignadas en su carga horaria correspondiente al semestre ".
 					$_GET["ciclo"]." ".$_GET["ciclod"]. ", las siguientes actividades:",0,'J', false);
 			$pdf->Ln(5);			
-			$headerdes = array('CLAVE','ACTIVIDAD','DESCRIPCI”N','HORAS');
+			$headerdes = array('CLAVE','ACTIVIDAD',utf8_decode('DESCRIPCI√ìN'),'HORAS');
 			$pdf->imprimeDescarga($headerdes,$datades);
 			$pdf->Ln(5);
 			$pdf->SetFont('Montserrat-SemiBold','',10);
-			$pdf->MultiCell(0,8,"Mismas que para su liberaciÛn quedar·n sujetas a la entrega de las evidencias correspondientes, ".
-					            "las cu·les deber·n apegarse a los procedimientos e instructivo de trabajo alojados en el SGC del ".
-					            "cual forma parte y que le fueron difundidos con anterioridad.",0,'J', false);
+			$pdf->MultiCell(0,8,utf8_decode("Mismas que para su liberaci√ìn quedar√°n sujetas a la entrega de las evidencias correspondientes, ").
+			utf8_decode("las cu√°les deber√°n apegarse a los procedimientos e instructivo de trabajo alojados en el SGC del ").
+			utf8_decode("cual forma parte y que le fueron difundidos con anterioridad."),0,'J', false);
 			$pdf->Ln(5);
-			$pdf->MultiCell(0,8,"Sin m·s por el momento enviÛ un cordial saludo.",0,'J', false);
+			$pdf->MultiCell(0,8,utf8_decode("Sin m√°s por el momento envi√≥ un cordial saludo."),0,'J', false);
 
 			
 			$firmaof=$miutil->getDatoEmpl($dataEmpl[0]["EMPL_JEFE"],"EMPL_FIRMAOF");
@@ -210,7 +210,7 @@
 			$pdf->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
 			$pdf->setX(25);$pdf->setY(225);
 			$pdf->SetFont('Montserrat-ExtraLight','I',8);
-			$pdf->Cell(0,0,'Excelencia en EducaciÛn TecnolÛgica',0,1,'L');
+			$pdf->Cell(0,0,utf8_decode('Excelencia en Educaci√≥n Tecnol√≥gica'),0,1,'L');
 			$pdf->setX(25);$pdf->setY(235);
 			$pdf->SetFont('Montserrat-ExtraBold','B',10);
 			$pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_JEFED"]),0,1,'L');
@@ -220,7 +220,7 @@
 			$subdir=$miutil->getJefe('304');
 			$pdf->setX(25);$pdf->setY(250);
 			$pdf->SetFont('Montserrat-Medium','',7);
-			$pdf->Cell(0,0,"C.c.p. ".utf8_decode($subdir)."; SubdirecciÛn acadÈmica.",0,1,'L');
+			$pdf->Cell(0,0,"C.c.p. ".utf8_decode($subdir)."; Subdirecci√≥n acad√©mica.",0,1,'L');
 			
 			
 		}
