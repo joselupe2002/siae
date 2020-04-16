@@ -24,7 +24,7 @@ function cargarCalificaciones(unidad,grupo,ciclo, profesor, materia) {
 	launidad=unidad;  
 	dameVentana("venCal","grid_vbitacoracal","Calificaciones","lg","bg-success","fa blue bigger-160 fa-list-ul","360");
 	$("#body_venCal").append("<div  class=\"table-responsive\" style=\"overflow-y: auto; height: 300px;\" >"+
-								  "<table id=\"latabla\" class= \"display table-condensed table-striped table-sm "+
+								  "<table id=\"latablaCal\" class= \"display table-condensed table-striped table-sm "+
 								          "table-bordered table-hover nowrap\" ></table>"+
                              "</div>");
 
@@ -36,20 +36,20 @@ function cargarCalificaciones(unidad,grupo,ciclo, profesor, materia) {
 				 " and PDOCVE='"+ciclo+"' and LISTC15='"+profesor+"'"+
 				 " and MATCVE='"+materia+"' order by 2"),
 		success: function(data){    
-			$("#latabla").empty();
-			$("#latabla").append("<thead><tr id=\"titulo\"><th style=\"text-align: center;\">No. Control</th>"+ 
+			$("#latablaCal").empty();
+			$("#latablaCal").append("<thead><tr id=\"titulo\"><th style=\"text-align: center;\">No. Control</th>"+ 
 											 "<th style=\"text-align: center;\">Nombre</th><th colspan=\"2\" style=\"text-align: center;\">Calif.</th><th style=\"text-align: center;\">Faltas.</th></tr></thead>"); 
 		
-			$("#latabla").append("<tbody id=\"cuerpo\">");		        	 
+			$("#latablaCal").append("<tbody id=\"cuerpoCal\">");		        	 
 			jQuery.each(JSON.parse(data), function(clave, valor) { 
-				   $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");				
-				   $("#row"+valor.ID).append("<td id=\"matricula_"+valor.ID+"\">"+valor.ALUM_MATRICULA+"</td>");
-				   $("#row"+valor.ID).append("<td id=\"nombre_"+valor.ID+"\">"+utf8Decode(valor.NOMBRE)+"</td>");
-                   $("#row"+valor.ID).append("<td id=\"cal_"+valor.ID+"\">"+valor.CAL+"</td>");
+				   $("#cuerpoCal").append("<tr id=\"rowCal"+valor.ID+"\">");				
+				   $("#rowCal"+valor.ID).append("<td id=\"matricula_"+valor.ID+"\">"+valor.ALUM_MATRICULA+"</td>");
+				   $("#rowCal"+valor.ID).append("<td id=\"nombre_"+valor.ID+"\">"+utf8Decode(valor.NOMBRE)+"</td>");
+                   $("#rowCal"+valor.ID).append("<td id=\"cal_"+valor.ID+"\">"+valor.CAL+"</td>");
 				   laruta="..\\..\\imagenes\\menu\\mal.png";
 				   if (valor.CAL>=70) {laruta="..\\..\\imagenes\\menu\\bien.png"; }  			    	                                 
-				   $("#row"+valor.ID).append("<td><img id=\"SELIMG_"+valor.ID+"\" width=\"20px\" height=\"20px\" src=\""+laruta+"\"></td>");
-				   $("#row"+valor.ID).append("<td id=\"calf_"+valor.ID+"\">"+valor.FALTA+"</td>");								
+				   $("#rowCal"+valor.ID).append("<td><img id=\"SELIMG_"+valor.ID+"\" width=\"20px\" height=\"20px\" src=\""+laruta+"\"></td>");
+				   $("#rowCal"+valor.ID).append("<td id=\"calf_"+valor.ID+"\">"+valor.FALTA+"</td>");								
 			  });
 			},
 		error: function(data) {	                  
