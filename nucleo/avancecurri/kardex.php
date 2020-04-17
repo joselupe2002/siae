@@ -192,7 +192,7 @@
                 " getPromedio('".$_GET["matricula"]."','N') as PROMEDIO_SR,".
                 " getPromedio('".$_GET["matricula"]."','S') as PROMEDIO_CR, ".
                 " getPeriodos('".$_GET["matricula"]."',getciclo()) AS PERIODOS,".
-                " (select SUM(A.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='".$_GET["matricula"]."') AS CRECUR ".
+                " (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='".$_GET["matricula"]."') AS CRECUR ".
                 " from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where ".
                 " CARR_CLAVE=ALUM_CARRERAREG".
                 " and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='".$_GET["matricula"]."'";
