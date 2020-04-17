@@ -439,7 +439,7 @@ var matser="";
 
 
 			    
-			    /*
+			    
 			    //buscamos las asignaturas que ya aprobo 
 
 				 $.ajax({
@@ -488,6 +488,7 @@ var matser="";
 			           }
 				 });
 
+				 /*
 				 $("#elpromedio").html(laespera);
 				 $("#loscreditost").html(laespera);
 				 $("#loscreditos").html(laespera);
