@@ -558,7 +558,7 @@ function actualizaSelect(nombre,sql,tipoSelect){
         success: function(data){  
         	losdatos=JSON.parse(data);
        	 jQuery.each(JSON.parse(data), function(clave, valor) { 	
-       		 $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+losdatos[clave][0]+"-"+utf8Decode(losdatos[clave][1])+"</option>");       	     
+       		 $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");       	     
               });
        	
        	 if (tipoSelect=='BUSQUEDA') {               
@@ -1224,6 +1224,7 @@ function cargarFechasEval(materia,grupo,ciclo) {
 
 /*===============================CALCULO DE LAS CALIFICACIONES POR GRUPOS ===================================*/
 function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
+
 	mostrarEspera("esperacalculo","grid_"+modulo,"Calculando...");
 	sqlUni="select count(*) as N  from eunidades where UNID_MATERIA='"+materia+"' and UNID_PRED=''";
 	$.ajax({

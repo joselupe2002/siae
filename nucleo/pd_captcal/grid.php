@@ -45,15 +45,15 @@
 	<div  class="table-responsive">
 		  <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 			    <thead>  
-                      <tr>
-                          <th style="text-align: center;">Evaluar</th> 
-						  <th style="text-align: center;">Promediar</th> 
-						  <th style="text-align: center;">Boleta</th> 
+                      <tr>                          
                           <th style="text-align: center;">Id</th> 
                           <th style="text-align: center;">Sem</th> 
                           <th style="text-align: center;">Grupo</th> 
                           <th style="text-align: center;">Cve. Asig.</th> 
-                          <th style="text-align: center;">Asignatura</th> 	
+						  <th style="text-align: center;">Asignatura</th> 
+						  <th style="text-align: center;">Evaluar</th> 
+						  <th style="text-align: center;">Promediar</th> 
+						  <th style="text-align: center;">Reporte</th> 	
                                                             	   	  
 					   </tr> 
 			     </thead> 
@@ -143,10 +143,16 @@
 	   $("#tabHorarios").append("<tbody id=\"cuerpo\">");
        jQuery.each(grid_data, function(clave, valor) { 	
     	    
-    	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
+			$("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
+			$("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
+    	    $("#row"+valor.ID).append("<td>"+valor.SEM+"</td>");
+    	    $("#row"+valor.ID).append("<td>"+valor.SIE+"</td>");
+    	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
+			$("#row"+valor.ID).append("<td>"+valor.MATERIAD+"</td>");
+			
     	    $("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Evaluar a los alumnos inscritos\" onclick=\"evaluar('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
     	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"');\""+
-											  " class=\"btn btn-xs btn-white btn-default btn-round\"><i class=\"ace-icon fa fa-building bigger-120\"></i></button></td>");
+											  " class=\"btn btn-xs btn-white btn-primary btn-round\"><i class=\"ace-icon fa red fa-building bigger-120\"></i></button></td>");
 			
 			//Boton de Promediar
 			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Calcula Calificación Final\" onclick=\"calcularFinal('<?php echo $_SESSION["usuario"]?>','"+
@@ -154,15 +160,11 @@
 											  " class=\"btn btn-xs btn-white btn-success btn-round\"><i class=\"ace-icon fa blue fa-wrench bigger-140\"></i></button></td>");								  
 											  
 			//Boton de Boleta
-			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Imprimir boleta de calificaciones\" onclick=\"imprimirBoleta('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
+			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Reporte de Unidades\" onclick=\"imprimirBoleta('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
     	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"','"+valor.SEM+"');\""+
     	    	                              " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon green fa fa-print bigger-140\"></i></button></td>");								  
     	    
-			$("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.SEM+"</td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.SIE+"</td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.MATERIAD+"</td>");
+			
 
         });
 }		
@@ -173,7 +175,7 @@ function verificarCorte(){
     $('#dlgproceso').modal({show:true, backdrop: 'static'});
     $.ajax({
            type: "GET",
-           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from `ecortescal` where  CICLO=getciclo() and ABIERTO='S' order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 0,1"),
+           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from ecortescal where  CICLO=getciclo() and ABIERTO='S' order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 0,1"),
            success: function(data){
         	        haycorte=false;
         	        $("#stCorte").html("Corte Cerrado");                  
@@ -200,7 +202,8 @@ function cargarAct(){
 	    $.ajax({
 	           type: "GET",
 	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE "+                
-	          		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>' and CICLO=getciclo() "),
+					   " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>' and CICLO=getciclo() "+
+					   " and CERRADOCAL='N'"),
 	           success: function(data){
 	        	     generaTabla(JSON.parse(data));	 
 	        	     $('#dlgproceso').modal("hide");        	     
@@ -221,7 +224,7 @@ function evaluar(id,profesor,materia,materiad,grupo,ciclo, base){
 
 
 function imprimirBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
-	window.open("boleta.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor=<?php echo $_SESSION["usuario"];?>&materia="+
+	window.open("repUni.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor=<?php echo $_SESSION["usuario"];?>&materia="+
 								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre, '_blank'); 
 }
 

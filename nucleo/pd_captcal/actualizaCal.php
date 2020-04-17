@@ -8,8 +8,7 @@
        
        if ($_GET["tipo"]=='CAL') {$campo="LISPA";}
        if ($_GET["tipo"]=='FALTA') {$campo="LISFA";}
-       $res=$miConex->afectaSQL($_SESSION["bd"],"UPDATE dlista SET ".$campo.$_GET["numeroUni"]."=".$_GET["c"]." WHERE ID='".$_GET["valorllave"]."'");   
-       
+       $res=$miConex->afectaSQL($_SESSION["bd"],"UPDATE dlista SET ".$campo.$_GET["numeroUni"]."=".$_GET["c"].", TCACVE='".$_GET["tipocal"]."' WHERE ID='".$_GET["valorllave"]."'");   
        $msj="";
        if (!($res=='')) {
        	    $msj= "0: ".$res."\n";

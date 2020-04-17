@@ -38,18 +38,48 @@
 	    
 	      <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
 	      
-	     
-	
-         <div class="row" style=" overflow-x: scroll;">	
-             <div class="col-sm-12" >
-                 <div id="carta" style="width: 289mm; height: 226mm; border: 0px solid;  overflow-x: scroll;">
-                      <div id="mihoja" style="position: absolute; left: 5mm; top: 5mm; width: 279mm; height: 206mm;"> 
-             
-                      </div>
-             </div>
-         </div>
-         
-         </div>
+		  <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
+	      
+		  <div class="widget-box widget-color-green">
+			  <div class="widget-header widget-header-small" style="padding:0px;">
+			      <div class="row" >		                    		
+				        <div class="col-sm-1">	</div>			
+						<div class="col-sm-6">						   
+							<span class="label label-warning">Alumno</span>														
+							<span class="label label-info" id="lacarrera"></span>		
+						    <select onchange="verAvance();" class="chosen-select form-control" id="alumnos"></select>
+						</div>     
+						<div class="col-sm-3" style="text-align: center; padding-top:10px;">				              										
+							<button title="Imprimir avance curricular" onclick="imprimir('mihoja');" class="btn btn-xs btn-white btn-primary btn-round"> 
+								<i class="ace-icon blue fa fa-print bigger-160"></i><span class="btn-small"></span>            
+							</button>
+							<button title="Informaci&oacute;n del alumno" onclick="verInfo();" class="btn btn-xs btn-white btn-primary btn-round"> 
+								<i class="ace-icon warning glyphicon glyphicon-info-sign bigger-150"></i><span class="btn-small"></span>            
+							</button>
+							<button title="Kardex del alumno" onclick="imprimirKardex();" class="btn btn-xs btn-white btn-primary btn-round"> 
+								<i class="ace-icon green glyphicon glyphicon-list-alt bigger-150"></i><span class="btn-small"></span>            
+							</button>
+						</div>	  			 
+						<div class="col-sm-2">	
+						    <span class="label label-warning" id="elmapa">Alumno</span>														
+							<span class="label label-info" id="laespecialidad"></span>	
+						</div>		 			               		           
+		            </div> 
+		      </div>
+
+              <div class="widget-body">
+				   <div class="widget-main">
+				       <div class="row" style=" overflow-x: scroll;">	
+                           <div class="col-sm-12" >
+                               <div id="carta" style="width: 289mm; height: 226mm; border: 0px solid;  overflow-x: scroll; padding:0px; margin:0px; ">
+                               <div id="mihoja" style="position: absolute; left: 2mm; top: 1mm; width: 269mm; height: 206mm; border: 0px solid;">             
+                           </div>
+                       </div>
+                    </div>
+			   </div>
+		</div>
+ 
+    </div>
          
          
          
@@ -77,40 +107,32 @@
 
 
 			                  
-
- <div id="right-menu" class="modal aside" data-body-scroll="false" data-offset="true" data-placement="left" data-fixed="true" data-backdrop="false" tabindex="-1">
-     <div class="modal-dialog" style="width: 400px;">
+<!-- ===============================VENTANA DE INFORMACION=================================================================-->
+ <div id="info" class="modal fade" role="dialog" >
+     <div class="modal-dialog modal-sm">
 		   <div class="modal-content">
-		        <div class="modal-header no-padding">
-					<div class="table-header">
+		        <div class="modal-header bg-primary">	
 						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 								 <span class="white">&times;</span>
 						 </button>
-						 Alumnos - Avances
-					</div>
+						<span class="lead text-white">Información General</span>
 				 </div>
 				 <div class="modal-body container">
-
-						 <div class="row">								         
-			                  <div class="col-sm-5">
-			                       <span class="text-primary"><strong>Alumno</strong></span>				              
-				                   <div><select  onchange="verAvance();" class="chosen-select form-control" name="alumnos" id="alumnos" > </select></div>
-	                          </div>	
-	                     </div>
-	                     <div class="row">	
-	                        <div id="fondo" class="col-sm-5" ><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
-	                        <div id="info" class="col-sm-5" >
-	                          
-	                           
-	                           <div class="space-10"></div>
-	                           <table class="table table-sm table-condensed table-bordered" >
-	                               <tr><td  style="background-color: #0D47A1; color: white;">Nombre</td></tr>
-	                               <tr><td  id="elnombre" class="text-success"></td></tr>
-	                               <tr><td  style="background-color: #0D47A1; color: white;">Programa Educativo</td></tr>
-	                               <tr><td  id="lacarrera" class="text-success"></td></tr>	                                    
-	                           </table>	
-	                           
-	                           <div class="center">
+				
+	                     <div class="row">
+						      <div class="col-sm-12">
+						           <i class="ace-icon fa fa-user icon-animated-hand-pointer blue bigger-160"></i>	
+								   <strong><span class="lighter text-success " id="elnombre"></span> </strong> 							       
+							   </div>
+						 </div>
+						 <div class="row">
+	                           <div class="col-sm-12">  
+							       <i class="ace-icon fa fa-book icon-animated-hand-pointer green bigger-160"></i>	
+								   <strong><span class="lighter text-info " id="lacarrerainfo"></span> </strong> 		                               
+                               </div>	
+						 </div>   
+						 <div class="row">   
+							   <div class="col-sm-12" >
 									<span class="btn btn-app btn-sm btn-light no-hover">
 										 <span id="prom_cr" class="line-height-1 bigger-170 blue"></span><br />
 										  <span class="line-height-1 smaller-90"> Prom.Rep. </span>
@@ -118,8 +140,12 @@
 									<span class="btn btn-app btn-sm btn-yellow no-hover">
 									      <span id="prom_sr" class="line-height-1 bigger-170">  </span><br />
 										  <span class="line-height-1 smaller-90"> Promedio </span>
-									</span>
-									<span class="btn btn-app btn-sm btn-pink  no-hover">
+									</span>									
+							   </div>
+						 </div>
+						 <div class="row">   
+							   <div class="col-sm-12">
+							        <span class="btn btn-app btn-sm btn-pink no-hover">
 									      <span id="loscreditost"  class="line-height-1 bigger-170">  </span><br />
 										  <span class="line-height-1 smaller-90"> Cr&eacute;ditos </span>
 									</span>
@@ -127,59 +153,46 @@
 									      <span id="loscreditos" class="line-height-1 bigger-170">  </span><br />
 										  <span class="line-height-1 smaller-90"> Cursados </span>
 									</span>
-							</div>
+							   </div>
+						</div>
 	                           
-	                          <div class="space-10"></div>  
-	                            
-	                           
-	                          <div class="infobox infobox-blue2">
-								   <div class="infobox-progress">
-									    <div id="elavance"  class="easy-pie-chart percentage" data-percent="0" data-size="50">
-											  <span id="etelavance"  class="percent"></span>%
-										</div>
-								   </div>
-                                   <div class="infobox-data">
-									    <span class="infobox-text">Avance Cr&eacute;ditos</span>
-                                               <div class="infobox-content">
-												   <span id="credpen" class=" text-danger bigger-60"></span>
-													    
-											    </div>
-								   </div>
-							  </div>
-							  
-							  <div class="infobox infobox-green">
-								   <div class="infobox-icon"><i class="ace-icon fa fa-sitemap"></i></div>
-                                   <div class="infobox-data">
-									    <span id="matcur" class="infobox-data-number"></span>
-										<div class="infobox-content">Mat. Aprobadas</div>
-								   </div>
-                                   <div id="matavance" class="stat stat-success"></div>
-                              </div>
-											                           					 
-	                        </div>
-	                        
-	                        
-	                       
-										
-	                        
-	                        
-	                     </div>
+	                    <div class="space-10"></div>  
+						<div class="row">   
+							 <div class="col-sm-12">       	                           
+								<div class="infobox infobox-blue2">
+									<div class="infobox-progress">
+											<div id="elavance"  class="easy-pie-chart percentage" data-percent="0" data-size="50">
+												<span id="etelavance"  class="percent"></span>%
+											</div>
+									</div>
+									<div class="infobox-data">
+											<span class="infobox-text">Avance Cr&eacute;ditos</span>
+												<div class="infobox-content">
+													<span id="credpen" class=" text-danger bigger-60"></span>
+															
+													</div>
+									</div>
+								</div>
+							 </div>
+						</div>
+						<div class="row">   
+							 <div class="col-sm-12">   	  
+								<div class="infobox infobox-green">
+									<div class="infobox-icon"><i class="ace-icon fa fa-sitemap"></i></div>
+									<div class="infobox-data">
+											<span id="matcur" class="infobox-data-number"></span>
+											<div class="infobox-content">Mat. Aprobadas</div>
+									</div>
+									<div id="matavance" class="stat stat-success"></div>
+								</div>
+							  </div>				                           					 
+	                     </div>	                    
                  </div><!-- /.modal-body -->
-		   </div><!-- /.modal-content -->
-          <button class="aside-trigger btn btn-info btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal" type="button">
-				<i data-icon1="fa-plus" data-icon2="fa-minus" class="ace-icon fa fa-plus bigger-110 icon-only"></i>
-		  </button>
+		   </div><!-- /.modal-content -->         
 	 </div><!-- /.modal-dialog -->
 </div>
 			
-			
-			
- <div style="position:absolute; top: 1px; left: 1px;">
-              <button title="Imprimir avance curricular" onclick="imprimir('mihoja');" class="btn  btn-white btn-primary" value="Agregar"> 
-                   <i class="ace-icon blue fa fa-print bigger-80"></i><span class="btn-small"></span>            
-              </button>
-</div>	
-		 
+<!-- ============================================================================================================-->			
 		 							
 <!-- -------------------Primero ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
@@ -259,13 +272,6 @@ var matser="";
 			}).css('color', barColor);
 			});
 
-		  
-
-    	$('.modal.aside').ace_aside();		
-		$('#aside-inside-modal').addClass('aside').ace_aside({container: '#my-modal > .modal-dialog'});
-		$(document).one('ajaxloadstart.page', function(e) {$('.modal.aside').remove();$(window).off('.aside')});
-		$('.modal.aside').modal('show')
-		
 
           $('.chosen-select').chosen({allow_single_deselect:true}); 			
 		  $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
@@ -326,12 +332,21 @@ var matser="";
    function verAvance() {
 	   $.ajax({
   		   type: "GET",
-  		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ALUM_MAPA "+
-  		  		   " FROM falumnos where ALUM_MATRICULA='"+$("#alumnos").val()+"'"),
+  		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CARR_DESCRIP, ALUM_MAPA, CLAVEOF, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE "+
+					   " FROM falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), "+
+					   " ccarreras b where ALUM_CARRERAREG=CARR_CLAVE and ALUM_MATRICULA='"+$("#alumnos").val()+"'"),
   		   success: function(data){  
   			   losdatos=JSON.parse(data);  
-		       jQuery.each(losdatos, function(clave, valor) { elmapa=valor.ALUM_MAPA });
-  			  cargaMapa(elmapa,$("#alumnos").val());
+			   jQuery.each(losdatos, function(clave, valor) { 
+				   elmapa=valor.ALUM_MAPA;
+				   laespecialidad=valor.ALUM_ESPECIALIDAD;
+				   $("#lacarrera").html(valor.CARR_DESCRIP);
+				   $("#lacarrerainfo").html(valor.CARR_DESCRIP);
+				   $("#elmapa").html(valor.ALUM_MAPA);
+				   $("#laespecialidad").html(valor.CLAVEOF);
+			   });
+				   
+  			       cargaMapa(elmapa,$("#alumnos").val());
   		   }
     	});
 
@@ -340,10 +355,10 @@ var matser="";
 
     function cargaMapa(elmapa,elalumno){
     	$("#mihoja").empty();
-
+        laespera="<img src=\"../../imagenes/menu/esperar.gif\" style=\"background: transparent; width: 30%; height:30%;\"/>"
     	$("#fondo").css("display","block");
     	$("#fondo").empty();
-    	$("#fondo").append("<img src=\"../../imagenes/menu/esperar.gif\" style=\"background: transparent; width: 100px; height: 80px\"/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");
+    	$("#fondo").append("<img src=\"../../imagenes/menu/esperar.gif\" style=\"background: transparent; width: 100px; height: 80px\"/>");
     	
         $("#info").css("display","none");
     	$.ajax({
@@ -356,14 +371,15 @@ var matser="";
 
 			       $.ajax({
 			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select veciclmate.*, (SELECT COUNT(*) from `eseriacion` where seri_materia=cicl_materia "+
-					           " and seri_mapa=CICL_MAPA) as numseriada from veciclmate where CICL_MAPA='"+elmapa+"' ORDER BY cicl_cuatrimestre, cicl_materia"),
+			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select veciclmate.*, (SELECT COUNT(*) from `eseriacion` "+
+					   " where seri_materia=cicl_materia and seri_mapa=CICL_MAPA) as numseriada from veciclmate "+
+					   " where CICL_MAPA='"+elmapa+"' and (ifnull(CVEESP,0)=0 or ifnull(CVEESP,0)='"+laespecialidad+"') ORDER BY cicl_cuatrimestre, cicl_materia"),
 			           success: function(data){  
 			           losdatos=JSON.parse(data);  
 
 						left=5; ancho=Math.round(((305-10)/10))-5;
-						arriba=20;
-						alto=Math.round(((206-60)/elmax))-5;
+						arriba=8;
+						alto=Math.round(((206-60)/elmax))-2;
 						eltam=Math.round(ancho/3);				
 						tamfin=ancho-(eltam*2);
 						
@@ -372,31 +388,33 @@ var matser="";
 						periodo=losdatos[0]["CICL_CUATRIMESTRE"];
 						mapa=losdatos[0]["CICL_MAPAD"];
 
-                        
+                        // Para colocar el primero 1 
+                        cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; "+
+												"top:1mm; width:5mm; height:5mm;\"><span id =\"periodo_"+periodo+"\" ondblclick=\"cambiarPeriodo('"+periodo+"');\""+
+												"title=\"Doble click para cambiar materias de periodos\" "+
+												"class=\"pull-right badge badge-info classper\" Style=\"cursor:pointer;\">"+periodo+"</span></div>";
+						$("#mihoja").append(cad);	
 						
-						cad="<div style=\"font-size:12px; text-align:center; color:#003F89; font-weight:bold; position: absolute; top:7mm; width:269mm; height:5mm;\">"+mapa+"</div>";
-						$("#mihoja").append(cad);
-						
-						cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; top:13mm; width:5mm; height:5mm;\">"+periodo+"</div>";
-						$("#mihoja").append(cad);
-				
+					
                    
 			        	jQuery.each(losdatos, function(clave, valor) { 
 				           et="";
 				           if (valor.numseriada>0){et="background-color:red;";}
 				           
-
 				           if (!(periodo==valor.CICL_CUATRIMESTRE)) { 
 					           left+=ancho+4; 
-					           arriba=20;
+					           arriba=8;
 					           periodo=valor.CICL_CUATRIMESTRE;
-					           cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; top:13mm; width:5mm; height:5mm;\">"+periodo+"</div>";
-							   $("#mihoja").append(cad);
+							   cad="<div style=\"font-size:12px; font-weight:bold; position: absolute; left: "+(left+(Math.round(ancho/2)))+"mm; "+
+												"top:1mm; width:5mm; height:5mm;\"><span id =\"periodo_"+periodo+"\" ondblclick=\"cambiarPeriodo('"+periodo+"');\""+
+												"title=\"Doble click para cambiar materias de periodos\" "+
+												"class=\"pull-right badge badge-info classper\" Style=\"cursor:pointer;\">"+periodo+"</span></div>";
+							   $("#mihoja").append(cad);	
 
 					           }
                         
 			        	   estiloPadre="style= \"background-color:white; position: absolute; left: "+left+"mm; top: "+arriba+"mm; width: "+ancho+"mm; height:"+alto+"mm; border: 0.1mm solid;\"";
-			               estiloAsignatura="style=\"font-size:8px; font-weight:bold; text-align: center; word-wrap: break-word;  "+
+			               estiloAsignatura="style=\"font-size:7px; font-weight:bold; text-align: center; word-wrap: break-word;  "+
 			                                        "cursor:pointer; position:absolute; left: 0mm; top: 0mm; width:100%; height:"+altoasig+"mm; border-bottom: 0.1mm solid;\""+ 
 			                                        "id=\""+valor.CICL_MATERIA+"\" elcolor=\""+valor.CICL_COLOR+"\" seleccionado=\"0\" onclick=\"getInfo('"+valor.CICL_MATERIA+"','"+elalumno+"');\"";
 			 			        		
@@ -410,7 +428,7 @@ var matser="";
 		                   //console.log(cad);
                         $("#mihoja").append(cad);
                         $('[data-rel=popover]').popover({html:true});
-                        arriba+=alto+5;
+                        arriba+=alto+2;
 
 			             });
 			
@@ -470,7 +488,12 @@ var matser="";
 			           }
 				 });
 
-
+				 $("#elpromedio").html(laespera);
+				 $("#loscreditost").html(laespera);
+				 $("#loscreditos").html(laespera);
+				 $("#prom_cr").html(laespera);
+                 $("#prom_sr").html(laespera);
+				
 				//LLenamos datos del Perfil del Alumno 
 				 $.ajax({
 			           type: "GET",
@@ -480,10 +503,9 @@ var matser="";
 			        		   " where a.ALUM_MATRICULA='"+elalumno+"' and a.ALUM_CARRERAREG=b.CARR_CLAVE"),
 			           success: function(data){   
 			               losdatos=JSON.parse(data);                          
-			               jQuery.each(losdatos, function(clave, valor) { 
-				               
+			               jQuery.each(losdatos, function(clave, valor) { 				               
                                 $("#elnombre").html(valor.NOMBRE);
-                                $("#lacarrera").html(valor.CARRERA);
+                                $("#lacarrerainfo").html(valor.CARRERA);
                                 $("#elpromedio").html(valor.PROMEDIO);
                                 $("#loscreditost").html(valor.CREDITOS.split('|')[0]);
                                 $("#loscreditos").html(valor.CREDITOS.split('|')[1]);
@@ -527,7 +549,14 @@ var matser="";
    }
 
 
+   function verInfo(){
+	$('#info').modal({show:true, backdrop: 'static'});
+   }
 
+
+   function imprimirKardex(){
+	   window.open("kardex.php?matricula="+$("#alumnos").val(), '_blank'); 
+   }
 
  
 </script>

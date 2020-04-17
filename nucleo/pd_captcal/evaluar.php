@@ -271,15 +271,20 @@
 			campo='';
 			if (tipo=="FALTA"){campo='F';}
 			
-            
+			if ("<?php echo $_GET["tipocorte"];?>"=='CCO1'){tipocal="1";}
+			if ("<?php echo $_GET["tipocorte"];?>"=='CCO2'){tipocal="1";}
+			if ("<?php echo $_GET["tipocorte"];?>"=='CCO3'){tipocal="1";}
+			if ("<?php echo $_GET["tipocorte"];?>"=='CCC1'){tipocal="2";}
+			if ("<?php echo $_GET["tipocorte"];?>"=='CCC2'){tipocal="3";}
+
 			$("#SELIMG_"+id).attr("src","..\\..\\imagenes\\menu\\esperar.gif");
 		    	    $.ajax({
 		    	        type: "POST",
 		    	        url:"actualizaCal.php?valorllave="+id+"&numeroUni="+numeroUni+"&c="+$("#SEL"+campo+"_"+id).val()+"&materia="+materia+
-							"&materia="+materia+"&profesor="+profesor+"&ciclo="+ciclo+"&matricula="+matricula+"&grupo="+grupo+"&tipo="+tipo+
+							"&tipocal="+tipocal+"&materia="+materia+"&profesor="+profesor+"&ciclo="+ciclo+"&matricula="+matricula+"&grupo="+grupo+"&tipo="+tipo+
 							"&idcorte=<?php echo $_GET["idcorte"];?>&tipocorte=<?php echo $_GET["tipocorte"];?>",		    
-		    	        success: function(data){
-		    	        		
+		    	        success: function(data){	
+								    	        		
 		    	        	if (data.substring(0,2)=='0:') {alert ("Ocurrio un error: "+data);}	 
 
 		    	        	 laruta="..\\..\\imagenes\\menu\\mal.png";

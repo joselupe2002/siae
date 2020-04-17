@@ -135,6 +135,7 @@
 			{
 				$miutil = new UtilUser();
 				$miutil->getEncabezado($this,'H');		
+				//Para que cuando se cambie a la otra pagina empiece a la derecha y la stablas no se descuadren
 				$this->SetX(10);
 				$this->Ln(5);
 				
@@ -164,7 +165,7 @@
 		
 				$this->SetY(-37);				
 				$this->SetX(209);
-				$this->Cell(60,4,'JEFE DIVISI�N','',0,'C',false);
+				$this->Cell(60,4,utf8_decode('JEFE DIVISIÓN'),'',0,'C',false);
 				
 				
 			}

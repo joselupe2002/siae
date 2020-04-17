@@ -54,7 +54,7 @@ var matser="";
 		 
 	function change_SELECT(elemento) {
         if (elemento=='selCarreras') {
-			actualizaSelect("selPlanes","select MAPA_CLAVE, MAPA_DESCRIP from mapas l where "+
+			actualizaSelect("selPlanes","select MAPA_CLAVE, CONCAT(MAPA_CLAVE, ' ', MAPA_DESCRIP) from mapas l where "+
 		                    "l.MAPA_CARRERA='"+$("#selCarreras").val()+"' AND l.MAPA_ACTIVO='S'");
 			}
 		if ((elemento=='selCiclos')||(elemento=='selCarreras')) {	

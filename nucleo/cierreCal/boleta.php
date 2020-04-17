@@ -28,7 +28,7 @@
             $nb=0;
             for($i=0;$i<count($data);$i++)
                 $nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
-                $h=5*$nb;
+                $h=4*$nb;
                 //Issue a page break first if needed
                 $this->CheckPageBreak($h);
                 //Draw the cells of the row
@@ -116,22 +116,17 @@
 			function LoadData()
 			{				
                 $miConex = new Conexion();
-                $sql="select ID, ".
-                "IFNULL(LISPA1,'0') AS LISPA1,IFNULL(LISPA2,'0') AS LISPA2,IFNULL(LISPA3,'0') AS LISPA3,".
-                "IFNULL(LISPA4,'0') AS LISPA4,IFNULL(LISPA5,'0') AS LISPA5,IFNULL(LISPA6,'0') AS LISPA6,".
-                "IFNULL(LISPA7,'0') AS LISPA7,IFNULL(LISPA8,'0') AS LISPA8,IFNULL(LISPA9,'0') AS LISPA9,".
-                "IFNULL(LISPA10,'0') AS LISPA10,IFNULL(LISPA11,'0') AS LISPA11,IFNULL(LISPA12,'0') AS LISPA12,".
-                "IFNULL(LISPA13,'0') AS LISPA13,IFNULL(LISPA14,'0') AS LISPA14,IFNULL(LISPA15,'0') AS LISPA15,".
-                "IFNULL(LISFA1,'0') AS LISFA1,IFNULL(LISFA2,'0') AS LISFA2,IFNULL(LISFA3,'0') AS LISFA3,".
-                "IFNULL(LISFA4,'0') AS LISFA4,IFNULL(LISFA5,'0') AS LISFA5,IFNULL(LISFA6,'0') AS LISFA6,".
-                "IFNULL(LISFA7,'0') AS LISFA7,IFNULL(LISFA8,'0') AS LISFA8,IFNULL(LISFA9,'0') AS LISFA9,".
-                "IFNULL(LISFA10,'0') AS LISFA10,IFNULL(LISFA11,'0') AS LISFA11,IFNULL(LISFA12,'0') AS LISFA12,".
-                "IFNULL(LISFA13,'0') AS LISFA13,IFNULL(LISFA14,'0') AS LISFA14,IFNULL(LISFA15,'0') AS LISFA15,".
-                "concat(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) as NOMBRE, ALUM_MATRICULA, IF (LISCAL<70,'NA',LISCAL) as LISCAL".
-                " from dlista a, falumnos b  where ALUCTR=ALUM_MATRICULA and a.PDOCVE='".$_GET["ciclo"].
-                "' and a.MATCVE='".$_GET["materia"]."' and a.GPOCVE='".$_GET["grupo"]."'";
-                //echo $sql;
-				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
+
+                $sql="select ID, LISCAL, (CASE WHEN EXTRA>0 THEN 'NA' ELSE LISCAL END) AS LISCAL1, ".
+                                "(CASE WHEN EXTRA>0 AND EXTRA2=0 THEN LISCAL ELSE '' END) AS LISCAL2,".
+                                "(CASE WHEN EXTRA2>0  THEN LISCAL ELSE '' END) AS LISCAL3,".
+                       "LISFALT, (CASE WHEN NUMREP=1 THEN 'R' WHEN NUMREP>1 THEN 'E' ELSE '' END) AS REP, ".               
+                "MATRICULA, NOMBRE, EXTRA".
+                " from vboleta a  where  a.CICLO='".$_GET["ciclo"].
+                "' and a.MATERIA='".$_GET["materia"]."' and a.GRUPO='".$_GET["grupo"]."'";
+               // echo $sql;
+
+        		$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
 					$data[] = $row;
 				}
@@ -197,7 +192,10 @@
 			function Header()
 			{
 				$miutil = new UtilUser();
-				$miutil->getEncabezado($this,'V');			
+                $miutil->getEncabezado($this,'V');	
+                //Para que cuando se cambie a la otra pagina empiece a la derecha y la stablas no se descuadren
+                $this->SetX(10);
+				$this->Ln(5);		
 			}
 			
 			
@@ -207,25 +205,10 @@
 				$miutil = new UtilUser();
 				$miutil->getPie($this,'V');
 				
-				$this->SetX(10);$this->SetY(-60);
-				$this->SetFont('Montserrat-ExtraBold','B',10);
-				$this->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
-				
-				$this->SetX(10);$this->SetY(-55);
-				$this->SetFont('Montserrat-ExtraLight','I',8);
-				$this->Cell(0,0,utf8_decode('Excelencia en Educación Tecnológica'),0,1,'L');
-				
-				$this->SetX(10);$this->SetY(-45);
-				$this->SetFont('Montserrat-ExtraBold','B',10);
-				$this->Cell(0,0,utf8_decode($this->eljefe),0,1,'L');
-				
-				$this->SetX(10);$this->SetY(-40);
-				$this->Cell(0,0,utf8_decode($this->eljefepsto),0,1,'L');
-				
-				
 				$this->SetX(10);$this->SetY(-30);
-				$this->SetFont('Montserrat-Medium','',8);
-				$this->Cell(0,0,"c.c.p. Archivo.",0,1,'L');
+				$this->SetFont('Montserrat-ExtraBold','B',10);
+				$this->Cell(60,5,'Firma del Docente','T',1,'L');
+				
 				
 			}
 			
@@ -248,7 +231,7 @@
 		
 		$pdf->SetFont('Arial','',10);
 		$pdf->SetMargins(25, 25 , 25);
-		$pdf->SetAutoPageBreak(true,30); 
+		$pdf->SetAutoPageBreak(true,40); 
 		$pdf->AddPage();
 		 
 		$data = $pdf->LoadData();
@@ -302,59 +285,72 @@
         $pdf->SetFont('Montserrat-ExtraBold','B',9);$pdf->Cell(0,0,'CARRERA: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(50);$pdf->Cell(0,0,utf8_decode($dataGrupo[0]["CARRERAD"]." ".$dataGrupo[0]["MAPA"]),0,1,'L');
        
-        $pdf->Ln(10);
+        $pdf->Ln(3);
 
         $pdf->SetFillColor(172,31,6);
         $pdf->SetTextColor(255);  
         $pdf->SetFont('Montserrat-ExtraBold','B',9);
-        $pdf->Cell(7,5,'No ',1,0,'C',true);
-        $pdf->Cell(17,5,'Control',1,0,'C',true);
-        $pdf->Cell(60,5,'Nombre',1,0,'C',true);
-        
-        for ($i=1;$i<=10; $i++) {     
-            $pdf->SetFillColor(172,31,6);
-            $pdf->SetTextColor(255);       
-            if ($i<=$numUni) {
-                $pdf->SetFillColor(23,5,124);
-                $pdf->SetTextColor(255);
-            }
-            $pdf->Cell(8,5,'U'.$i,1,0,'C',true); 
-        }
+        $pdf->Cell(7,5,'','TLR',0,'C',true);
+        $pdf->Cell(17,5,'','TLR',0,'C',true);
+        $pdf->Cell(70,5,'','TLR',0,'C',true);
+        $pdf->Cell(15,5,'','TLR',0,'C',true);
+        $pdf->Cell(45,5,'CALIFICACIONES','TLR',0,'C',true);
+        $pdf->Cell(10,5,'','TLR',1,'C',true);
 
-        $pdf->SetFillColor(23,5,124);
-        $pdf->SetTextColor(255);
-        $pdf->Cell(8,5,'CF',1,0,'C',true);
+        $pdf->Cell(7,5,'NO.','LRB',0,'C',true);
+        $pdf->Cell(17,5,'CONTROL','LRB',0,'C',true);
+        $pdf->Cell(70,5,'NOMBRE','LRB',0,'C',true);
+        $pdf->Cell(15,5,'FALTAS','LRB',0,'C',true);
+        $pdf->Cell(15,5,utf8_decode('1RA'),1,0,'C',true);
+        $pdf->Cell(15,5,utf8_decode('2DA'),1,0,'C',true);
+        $pdf->Cell(15,5,utf8_decode('3RA'),1,0,'C',true);
+        $pdf->Cell(10,5,'REP','LRB',0,'C',true);
+        
 
         $pdf->Ln();
-        $pdf->SetFont('Montserrat-Medium','',8);
+        $pdf->SetFont('Montserrat-Medium','',7);
         $pdf->SetFillColor(172,31,6);
         $pdf->SetTextColor(0);
-        $pdf->SetWidths(array(7,17, 60, 8,8,8,8,8,8,8,8,8,8,8));
+        $pdf->SetWidths(array(7,17, 70, 15,15,15,15,10));
+        $pdf->SetAligns(array("L","L", "L", "C","C","C","C","C"));
         $n=1;
 
-
+        $apr=0;
         foreach($data as $row) {
             //$pdf->Cell(70,5,$row["NOMBRE"],1,0,'L');            
             $pdf->Row(array($n,
-                             utf8_decode($row["ALUM_MATRICULA"]),
+                             utf8_decode($row["MATRICULA"]),
                              utf8_decode($row["NOMBRE"]),
-                             utf8_decode($row[1]),
-                             utf8_decode($row[2]),
-                             utf8_decode($row[3]),
-                             utf8_decode($row[4]),
-                             utf8_decode($row[5]),
-                             utf8_decode($row[6]),
-                             utf8_decode($row[7]),
-                             utf8_decode($row[8]),
-                             utf8_decode($row[9]),
-                             utf8_decode($row[10]),
-                             utf8_decode($row["LISCAL"])
+                             utf8_decode($row["LISFALT"]),
+                             utf8_decode($row["LISCAL1"]),
+                             utf8_decode($row["LISCAL2"]),
+                             utf8_decode($row["LISCAL3"]),
+                             utf8_decode($row["REP"])                            
                              )
                       );
+            if ($row["LISCAL"]>=70) {$apr++; }
             $n++;
         }
         
-    
+        $porapr=round(($apr/($n-1)),2);
+        $porrep=(100-$porapr);
+
+        $pdf->SetFont('Montserrat-ExtraBold','B',9);
+       // $pdf->SetFillColor(240, 249, 170);
+        $pdf->SetTextColor(0);
+        $pdf->SetTextColor(0, 9, 193);
+        $pdf->Cell(94,5,utf8_decode('% DE APROBACIÓN'),1,0,'R',false);
+        $pdf->Cell(15,5,$apr,1,0,'C',false);
+        $pdf->Cell(55,5,$porapr." %",1,1,'L',false);
+       
+        $pdf->SetTextColor(193, 12, 0);
+        $pdf->Cell(94,5,utf8_decode('% DE REPROBACIÓN'),1,0,'R',false);
+        $pdf->Cell(15,5,($n-1)-$apr,1,0,'C',false);
+        $pdf->Cell(55,5,$porrep." %",1,0,'L',false);
+ 
+        $pdf->SetTextColor(0);
+     
+        
 
             $pdf->Output(); 
 
