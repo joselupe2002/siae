@@ -489,44 +489,7 @@ var matser="";
 				 });
 
 				 /*
-				 $("#elpromedio").html(laespera);
-				 $("#loscreditost").html(laespera);
-				 $("#loscreditos").html(laespera);
-				 $("#prom_cr").html(laespera);
-                 $("#prom_sr").html(laespera);
-				
-				//LLenamos datos del Perfil del Alumno 
-				 $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
-					           " CARR_DESCRIP as CARRERA, getavance('"+elalumno+"') as CREDITOS, getAvanceMat('"+elalumno+"') as MATERIAS, "+
-					           " getPromedio('"+elalumno+"','N') as PROMEDIO_SR, getPromedio('"+elalumno+"','S') as PROMEDIO_CR   FROM falumnos a, ccarreras b"+
-			        		   " where a.ALUM_MATRICULA='"+elalumno+"' and a.ALUM_CARRERAREG=b.CARR_CLAVE"),
-			           success: function(data){   
-			               losdatos=JSON.parse(data);                          
-			               jQuery.each(losdatos, function(clave, valor) { 				               
-                                $("#elnombre").html(valor.NOMBRE);
-                                $("#lacarrerainfo").html(valor.CARRERA);
-                                $("#elpromedio").html(valor.PROMEDIO);
-                                $("#loscreditost").html(valor.CREDITOS.split('|')[0]);
-                                $("#loscreditos").html(valor.CREDITOS.split('|')[1]);
-                                $("#etelavance").html(valor.CREDITOS.split('|')[2]);                               
-                                $('#elavance').data('easyPieChart').update(valor.CREDITOS.split('|')[2]);
-                                $("#credpen").html(valor.CREDITOS.split('|')[0]-valor.CREDITOS.split('|')[1]+" Cr&eacute;ditos pend."); 
-                                $("#matcur").html(valor.MATERIAS.split('|')[1]);
- 
-                                $("#matavance").html(valor.MATERIAS.split('|')[2]);
-                                $("#prom_cr").html(valor.PROMEDIO_CR);
-                                $("#prom_sr").html(valor.PROMEDIO_SR);
-
-                                $("#fondo").css("display","none");
-                                $("#info").css("display","block");
-                                
-				               });
-
-			               
-			           }
-				 });
+				 
 
 				 */
 				
@@ -553,7 +516,48 @@ var matser="";
 
 
    function verInfo(){
-	$('#info').modal({show:true, backdrop: 'static'});
+		$('#info').modal({show:true, backdrop: 'static'});
+		elalumno=$("#alumnos").val();
+		$("#elpromedio").html(laespera);
+				 $("#loscreditost").html(laespera);
+				 $("#loscreditos").html(laespera);
+				 $("#prom_cr").html(laespera);
+                 $("#prom_sr").html(laespera);
+				
+				//LLenamos datos del Perfil del Alumno 
+				misql="SELECT CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
+					           " CARR_DESCRIP as CARRERA, getavance('"+elalumno+"') as CREDITOS, getAvanceMat('"+elalumno+"') as MATERIAS, "+
+					           " getPromedio('"+elalumno+"','N') as PROMEDIO_SR, getPromedio('"+elalumno+"','S') as PROMEDIO_CR   FROM falumnos a, ccarreras b"+
+							   " where a.ALUM_MATRICULA='"+elalumno+"' and a.ALUM_CARRERAREG=b.CARR_CLAVE";				
+				 $.ajax({
+			           type: "GET",
+			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(misql),
+			           success: function(data){   
+						   losdatos=JSON.parse(data);   
+						                        
+			               jQuery.each(losdatos, function(clave, valor) { 				               
+                                $("#elnombre").html(valor.NOMBRE);
+                                $("#lacarrerainfo").html(valor.CARRERA);
+                                $("#elpromedio").html(valor.PROMEDIO);
+                                $("#loscreditost").html(valor.CREDITOS.split('|')[0]);
+                                $("#loscreditos").html(valor.CREDITOS.split('|')[1]);
+                                $("#etelavance").html(valor.CREDITOS.split('|')[2]);                               
+                                $('#elavance').data('easyPieChart').update(valor.CREDITOS.split('|')[2]);
+                                $("#credpen").html(valor.CREDITOS.split('|')[0]-valor.CREDITOS.split('|')[1]+" Cr&eacute;ditos pend."); 
+                                $("#matcur").html(valor.MATERIAS.split('|')[1]);
+ 
+                                $("#matavance").html(valor.MATERIAS.split('|')[2]);
+                                $("#prom_cr").html(valor.PROMEDIO_CR);
+                                $("#prom_sr").html(valor.PROMEDIO_SR);
+
+                                $("#fondo").css("display","none");
+                                $("#info").css("display","block");
+                                
+				               });
+
+			               
+			           }
+				 });
    }
 
 
