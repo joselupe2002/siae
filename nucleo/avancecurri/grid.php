@@ -439,7 +439,7 @@ var matser="";
 
 
 			    
-			    
+			    /*
 			    //buscamos las asignaturas que ya aprobo 
 
 				 $.ajax({
@@ -526,6 +526,8 @@ var matser="";
 			               
 			           }
 				 });
+
+				 */
 				
 				 $('#dlgproceso').modal("hide");  
 
