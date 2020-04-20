@@ -89,6 +89,14 @@
 							  </div> 
 							  <div class="col-sm-2">
 								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span></span>
+							  </div> 
+							  <div class="col-sm-2">
+							        <div class="checkbox" style="padding:0px; margin: 0px;">
+										 <label>
+											   <input id="imprimirBoletaCheck" type="checkbox" class="ace ace-switch ace-switch-6" />
+												<span class="lbl"> Imp. Bol.</span>
+										</label>
+									</div>
 							  </div> 							  
 						</div>
 					</div>

@@ -112,20 +112,21 @@ var contFila=1;
 							url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlmapa,
 							success: function(dataMapa){  	
 								losdatos=JSON.parse(data);
-								losdatosMapa=JSON.parse(dataMapa);				
-								generaTablaHorarios(losdatos,"INSCRITAS");   
-								
-								cargaMateriasDer(losdatosMapa[0]["ALUM_MAPA"],losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
-								$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
-								$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
-								$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);	
-								$("#CMA").html(losdatosMapa[0]["PLACMA"]);
-								$("#CMI").html(losdatosMapa[0]["PLACMI"]);	
-								$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
-								$("#CM1").html(losdatosMapa[0]["PLACM1"]);
-
-								
-								validarCondiciones(false);	
+								losdatosMapa=JSON.parse(dataMapa);
+								jQuery.each(losdatosMapa, function(clave, valor) { 
+													
+									generaTablaHorarios(losdatos,"INSCRITAS");   
+									
+									cargaMateriasDer(losdatosMapa[0]["ALUM_MAPA"],losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
+									$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
+									$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
+									$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);	
+									$("#CMA").html(losdatosMapa[0]["PLACMA"]);
+									$("#CMI").html(losdatosMapa[0]["PLACMI"]);	
+									$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
+									$("#CM1").html(losdatosMapa[0]["PLACM1"]);									
+									validarCondiciones(false);	
+								});
 
 								ocultarEspera("esperahor");     	      					  					  
 							},
@@ -163,7 +164,16 @@ function generaTablaHorarios(grid_data, tipo){
     
 	    $("#cuerpoReins").append("<tr id=\"rowR"+contFila+"\">");
 	   		
-		$("#rowR"+contFila).append("<td><input id=\"c_"+contFila+"_99\" type=\"checkbox\" onclick=\"checkOp('"+contFila+"')\" class=\"selMateria\" "+valorcheck+" /></td>");
+		$("#rowR"+contFila).append("<td>"+
+		                           "<div class=\"checkbox\" style=\"padding:0px; margin: 0px;\">"+
+		                           "<label> "+
+									  "<input id=\"c_"+contFila+"_99\" onclick=\"checkOp('"+contFila+"')\" type=\"checkbox\" "+
+									  "class=\"selMateria ace ace-switch ace-switch-6\""+valorcheck+" />"+
+			                          "<span class=\"lbl\"></span>"+
+	                                "</label> "+
+                                    "</div> "+
+		"</td>");
+		//<input id=\"c_"+contFila+"_99\" type=\"checkbox\" onclick=\"checkOp('"+contFila+"')\" class=\"selMateria\" "+valorcheck+" /></td>");
 		$("#rowR"+contFila).append("<td>"+contFila+"</td>");		
 		$("#rowR"+contFila).append("<td  class=\"hidden\">"+ "<label id=\"c_"+contFila+"_0\" class=\"small text-info font-weight-bold\">"+valor.IDDETALLE+"</label</td>");
 		
@@ -480,6 +490,7 @@ function validarCondiciones(mensaje) {
 	if (($("#selRepitiendo").html()>1) && ($("#selCreditos").html()>$("#CM1").html())) {
 		res+="Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créitos \n";}
 	
+	
 	res+=validarcrucesReins();
 	return (res);
 }
@@ -525,16 +536,45 @@ function guardarRegistros(){
 		data: parametros,
 		success: function(data){
 			if (data.length>0) {alert ("Ocurrio un error: "+data);}
-			else {alert ("Registros guardados")}	
-			ocultarEspera("guardandoReins");	
-			window.open("boletaMat.php?matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank');                                 	                                        					          
+			ocultarEspera("guardandoReins");
+			
+			if ($("#imprimirBoletaCheck").prop("checked")) {
+				window.open("boletaMat.php?matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank');                                 	                                        					          
+			}
+			$("#tabHorariosReins").empty();
 		}					     
 	});    	         
+}
+
+function hayRepetidas(){
+
+	var listaMat=[];
+	var matRep="";
+	j=0;
+	for (i=1; i<contFila; i++){
+		cad="";
+		if ($("#c_"+i+"_99").prop("checked")) {
+			listaMat[j]=$("#c_"+i+"_13").html();	 
+			j++;
+		}
+	}
+
+	listaMat=Burbuja(listaMat);
+	materiaant=listaMat[0];
+	for (i=1; i<listaMat.length; i++){
+		if (materiaant==listaMat[i]) {matRep+="La materia "+listaMat[i]+" Se encuentra repetida\n";}
+		materiaant=listaMat[i];
+	}
+	
+	return matRep;
+
 }
 
 function guardarTodos(){
 	mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
 	res=validarCondiciones(false);
+	cadMat=hayRepetidas();
+	if (cadMat.length>0) {alert ("ERROR CRITICO:\n"+cadMat); ocultarEspera("guardandoReins"); return 0;}
 	if (res.length>0) {
 		if(confirm("Existen los siguientes Errores:\n "+res+"¿Desea Grabar de todas formas?")) {
 			      guardarRegistros();       	 

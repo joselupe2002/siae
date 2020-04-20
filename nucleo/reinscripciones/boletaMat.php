@@ -340,10 +340,11 @@
                 $this->SetFont('Montserrat-SemiBold','',8);
                 $this->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",'',0,'L');
 
-
+               /*
                 $this->setX(0);$this->setY(140);
                 $this->SetFont('Montserrat-SemiBold','',10);
                 $this->Cell(0,1,"",'B',0,'L');
+                */
 
      
 
