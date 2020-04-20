@@ -76,7 +76,7 @@
 						   </div>
                        </div>
 					</div>
-					<div class="widget-footer bg-primary" style="height: 30px; padding-top:5px;">
+					<div class="widget-footer bg-primary" style="padding-top:5px;">
 					     <div class='row'>
 						      <div class="col-sm-2">
 								  <span class="text-white">Créditos:  <span id="selCreditos" class="badge badge-primary">0</span></span>
