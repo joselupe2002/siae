@@ -46,13 +46,16 @@
 						</div>
 						<div id="losplanes" class="col-sm-3" style="padding-top:14px;">
 						    <button title="Agregar Asignaturas" onclick="agregarAsignatura();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-book bigger-80"></i><span class="btn-small"></span>            
+								<i class="ace-icon green fa fa-book bigger-140"></i><span class="btn-small"></span>            
 							</button>
 							<button title="Buscar Espacios en aulas" onclick="buscarEspacios();" class="btn btn-white btn-warning btn-round" value="Agregar"> 
-								<i class="ace-icon blue fa fa-trello bigger-80"></i><span class="btn-small"></span>            
+								<i class="ace-icon blue fa fa-trello bigger-140"></i><span class="btn-small"></span>            
 							</button>
 							<button title="Filtrar Horarios" disabled="disabled" id="btnfiltrar" onclick="filtrarHorarios();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-								<i class="ace-icon red fa fa-filter bigger-80"></i><span class="btn-small"></span>            
+								<i class="ace-icon red fa fa-filter bigger-140"></i><span class="btn-small"></span>            
+							</button>
+							<button title="Guardar Todos los registros" onclick="guardarTodos();" class="btn btn-white btn-purple  btn-round"> 
+								<i class="ace-icon purple fa fa-save bigger-140"></i><span class="btn-small"></span>            
 							</button>
 						</div>
 		            </div> 

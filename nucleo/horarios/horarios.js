@@ -255,10 +255,10 @@ function generaTablaHorarios(grid_data){
 	//$("#btnfiltrar").attr("disabled","disabled");
 	jQuery.each(grid_data, function(clave, valor) { 	        			
 	    $("#cuerpo").append("<tr id=\"row"+c+"\">");
-	    $("#row"+c).append("<td><button onclick=\"eliminarFila('row"+c+"','"+valor.id+"','"+c+"');\" class=\"btn btn-xs btn-danger\"> " +
+	    $("#row"+c).append("<td><button onclick=\"eliminarFila('row"+c+"','"+valor.id+"','"+c+"');\" class=\" btn btn-xs btn-danger\"> " +
 			                     "    <i class=\"ace-icon fa fa-trash-o bigger-120\"></i>" +
 								 "</button></td>");
-		$("#row"+c).append("<td><button id=\"guardar_"+c+"\" onclick=\"guardarFila('row"+c+"','"+valor.id+"','"+c+"');\" class=\"btn btn-xs btn-success\"> " +
+		$("#row"+c).append("<td><button id=\"guardar_"+c+"\" onclick=\"guardarFila('row"+c+"','"+valor.id+"','"+c+"');\" class=\"btnGuardar btn btn-xs btn-success\"> " +
 			                     "    <i class=\"ace-icon fa fa-save bigger-120\"></i>" +
 			                     "</button></td>");
 		$("#row"+c).append("<td>"+c+"</td>");		
@@ -276,7 +276,7 @@ function generaTablaHorarios(grid_data){
 	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_4B\" ondblclick=\"horarioAulas('"+c+"','4B','MARTES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_4\" value=\""+valor.martes+"\" ondblclick=\"horarioAulas('"+c+"','4B','MARTES','PROFESOR');\">"+parte2);
 	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_5B\" ondblclick=\"horarioAulas('"+c+"','5B','MIERCOLES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_5\" value=\""+valor.miercoles+"\" ondblclick=\"horarioAulas('"+c+"','5B','MIERCOLES','PROFESOR');\">"+parte2);
 	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_6B\" ondblclick=\"horarioAulas('"+c+"','6B','JUEVES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_6\" value=\""+valor.jueves+"\" ondblclick=\"horarioAulas('"+c+"','6B','JUEVES','PROFESOR');\">"+parte2);
-		$("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_7B\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_8\" value=\""+valor.viernes+"\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','PROFESOR');\">"+parte2);
+		$("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_7B\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','AULA');\"></select>"+parte1+" id=\"c_"+c+"_7\" value=\""+valor.viernes+"\" ondblclick=\"horarioAulas('"+c+"','7B','VIERNES','PROFESOR');\">"+parte2);
 	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_8B\" ondblclick=\"horarioAulas('"+c+"','8B','SABADO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_8\" value=\""+valor.sabado+"\" ondblclick=\"horarioAulas('"+c+"','8B','SABADO','PROFESOR');\">"+parte2);
 	    $("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_9B\" ondblclick=\"horarioAulas('"+c+"','9B','DOMINGO','AULA');\"></select>"+parte1+" id=\"c_"+c+"_9\" value=\""+valor.domingo+"\" ondblclick=\"horarioAulas('"+c+"','9B','DOMINGO','PROFESOR');\">"+parte2);
 		
@@ -513,11 +513,11 @@ function validarFormatoHorarios(){
 	$(".input-mask-horario").each(function(){
 		   hor=$(this).val();
 		   if (hor==":-:") {$(this).val(""); hor="";}
-		   if (hor!=="") {			   
+		   if ((hor!=="")) {			   
 			   tam=hor.length;
 			   var horario=[];  
 			   horario=decodificaHora(hor); //datos[hora1,min1,hora2,min2,minutot1,minutot2];
- 
+               //alert (horario[0]+" "+horario[1]+" "+horario[2]+" "+horario[3]+" "+horario[4]);
 			   if ((!((parseInt(horario[0])>=1) && (parseInt(horario[0])<=23))) || (!((parseInt(horario[2])>=1) && (parseInt(horario[2])<=23)))) {
 				   $(this).css("border-color","red");
 				   error=true;
@@ -546,17 +546,18 @@ function validarDatos(fila,id){
 		$("#c_"+fila+"_2").css("border-color","red"); 
 		todobien=false;
 		return false; }
-	if (!validarFormatoHorarios) {
+	valfor=validarFormatoHorarios();
+	if (valfor) {
 		alert ("Existen horarios que no tienen el formato HH:MM-HH:MM");
 		todobien=false;
 		return false;
 	}
 	cruces=obtenerHorarios(id,$("#selCiclos").val(),fila);
-	
     return todobien;
 }
 
 function guardarFila(nombre,id,fila){
+
      if (validarDatos(fila,id)) {
 			parametros={
 					tabla:"edgrupos",
@@ -596,4 +597,11 @@ function guardarFila(nombre,id,fila){
 				}					     
 			});      
 		}
+}
+
+function guardarTodos() {
+	$(".btnGuardar").each(function(){
+		
+		$(this).trigger("click");
+     });
 }

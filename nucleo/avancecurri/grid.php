@@ -58,7 +58,7 @@
 							</button>
 							<button title="Kardex del alumno" onclick="imprimirKardex();" class="btn btn-xs btn-white btn-primary btn-round"> 
 								<i class="ace-icon green glyphicon glyphicon-list-alt bigger-150"></i><span class="btn-small"></span>            
-							</button>
+							</button>							
 						</div>	  			 
 						<div class="col-sm-2">	
 						    <span class="label label-warning" id="elmapa">Alumno</span>														
@@ -565,6 +565,10 @@ var matser="";
 	   window.open("kardex.php?matricula="+$("#alumnos").val(), '_blank'); 
    }
 
+
+   function guardarTodos(){
+
+   }
  
 </script>
 

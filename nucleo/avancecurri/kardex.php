@@ -124,7 +124,9 @@
 			function LoadDatosCursadas()
 			{				
                 $miConex = new Conexion();
-                $sql="SELECT * FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 ORDER BY SEMESTRE, MATERIAD";
+                $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,". 
+                "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,".
+                "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 ORDER BY SEMESTRE, MATERIAD";
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -159,14 +161,23 @@
 			}
 
             function LoadDatosporCursar($ciclo)
-			{				
+			{	
+                $data=[];			
                 $miConex = new Conexion();
                 $sql="select p.VMAT_MATERIA AS MATERIA, p.VMAT_MATERIAD AS MATERIAD, p.VMAT_CUATRIMESTRE AS SEMESTRE,".
-                "p.`VMAT_CREDITO` AS CREDITO from falumnos o, vmatciclo p ".
-                " where o.ALUM_MAPA=p.VMAT_MAPA and ifnull(p.CVEESP,o.`ALUM_ESPECIALIDAD`)=o.ALUM_ESPECIALIDAD ".
+                " p.`VMAT_CREDITO` AS CREDITO from falumnos o, vmatciclo p ".
+                " where o.ALUM_MAPA=p.VMAT_MAPA and  ifnull(p.CVEESP,'')='' ".
                 " and o.ALUM_MATRICULA='".$_GET["matricula"]."' and VMAT_TIPOMAT NOT IN ('T') ".
                 " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where ".
-                " h.ALUCTR='".$_GET["matricula"]."' and (LISCAL>=70 or PDOCVE='".$ciclo."'))";
+                " h.ALUCTR='".$_GET["matricula"]."' and (LISCAL>=70 or PDOCVE='".$ciclo."'))".
+                " UNION ".
+                " select p.VMAT_MATERIA AS MATERIA, p.VMAT_MATERIAD AS MATERIAD,p.VMAT_CUATRIMESTRE AS SEMESTRE,".
+                " p.`VMAT_CREDITO` AS CREDITO from falumnos o, vmatciclo p ".
+                " where o.ALUM_MAPA=p.VMAT_MAPA  and o.ALUM_MATRICULA='".$_GET["matricula"]."' ".
+                " and VMAT_TIPOMAT NOT IN ('T') AND ifnull(p.CVEESP,'')=ALUM_ESPECIALIDAD ".
+                " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_GET["matricula"]."' ".
+                " and (LISCAL>=70 or PDOCVE='".$ciclo."'))";
+               // echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
 					$data[] = $row;

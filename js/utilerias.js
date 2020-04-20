@@ -65,26 +65,26 @@ function obtenerHorarios(id,elciclo,linea){
 		success: function(data){  
 			
 			   for (x=3; x<=9; x++) { 
-				   if ($("#c_"+linea+"_"+x).val().length>0) {
+				   if (!($("#c_"+linea+"_"+x).val()==null) && !($("#c_"+linea+"_"+x).val()=='')) {
 					   cadFin+=validaCruceHorario("PROFESOR",0,$("#c_"+linea+"_2").val(),$("#c_"+linea+"_2 option:selected").text(),
 					                       JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}   	      				 	
 			   }
 		
 			   for (x=3; x<=9; x++) { 
-				if ($("#c_"+linea+"_"+x).val().length>0) {
+				if (!($("#c_"+linea+"_"+x).val()==null) && !($("#c_"+linea+"_"+x).val()==''))  {
 					cadFin+=validaCruceHorario("AULA",x+9,$("#c_"+linea+"_"+x+"B").val(),$("#c_"+linea+"_"+x+"B option:selected").text(),
 										JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}   	      				 	
 			   }
 			   cadFin+="\n";
-			   if (cadFin.trim().length>0) {alert (cadFin); res=false; return false;}
+			   if (cadFin.trim().length>0) {alert (cadFin); res=false; return false;}			
 		 },
 		 error: function(data) {	                  
 					alert('ERROR: '+data);
 					res=false;
 					return false;
 								  }
-	});	     
-	return res;
+	});	  
+	return res;   
 }
 
 
@@ -151,7 +151,8 @@ function validaCruceHorario(tipo,indiceComparar,valorComparar,valorComparard,los
 	if (eldia.length>0) {todobien=validarCruce(eldia,horariodia);}
 	if (!todobien) { 
 		cad+="Error: "+tipo+" "+valorComparard+ " No disponible en el horario "+horariodia+"\n";
-		$("#c_"+linea+"_"+(indiceDia-2)).css("border-color","red");}
+		$("#c_"+linea+"_"+(indiceDia-2)).css("border-color","red");
+	}
 
 	return cad;
 }
@@ -453,6 +454,56 @@ function generaTablaDin(nombreTabla, sql, titulos, campos) {
 }
 
 
+function generaTablaDinBtn(nombreTabla, sql, titulos, campos) {
+	$.ajax({
+        type: "GET",
+        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+        success: function(data){
+       	       losdatos=JSON.parse(data);	  
+				c=0;
+			   var linea="";
+               $("#cuerpo"+nombreTabla).empty();
+               
+               cadTit="";
+               jQuery.each(titulos, function(clave,valor) {             	   
+            	   cadTit+="<th style=\""+valor.estilo+"\">"+valor.titulo+"</th>";
+               });
+             
+               $("#"+nombreTabla).append("<thead><tr id=\"titulo\">"+cadTit+"</tr>"); 
+			   $("#"+nombreTabla).append("<tbody id=\"cuerpo"+nombreTabla+"\">");
+			   
+               jQuery.each(losdatos, function(clave, valor) { 	
+					 linea="";          	             	            
+         	         jQuery.each(campos, function(claveC,valorC) {
+						
+						dato=losdatos[clave][valorC.campo];
+						if (valorC.tipo=='btn') {
+							parametros=valorC.parametros.split("|");
+							cadparam="";
+							for (i=0; i<parametros.length; i++){								
+								cadparam+="'"+losdatos[clave][parametros[i]]+"',";
+							}											
+							cadparam.substring(0,cadparam.length-1);
+                            linea+="<td><button title=\"Agregar asignatura al alumno\" "+
+										  "onclick=\""+valorC.nombreevento+"("+cadparam+");\" "+
+										  "class=\"btn btn-xs btn-white btn-info btn-round\"> "+ 
+										  "<i class=\"ace-icon green fa "+valorC.ico+" bigger-120\"></i>"+
+									"</button></td>";
+						}
+						if (valorC.tipo=='campo') {  
+							 linea+="<td style=\""+valorC.estilo+"\">"+valorC.antes+dato+valorC.despues+"</td>";            	        	
+						}
+					  });    				     	              	   
+         	         $("#cuerpo"+nombreTabla).append("<tr id=\"row"+c+"\">"+linea+"</tr>");
+         	         c++;
+                });                   	    
+              },
+        error: function(data) {	                  
+                   alert('ERROR: '+data);
+               }
+       });
+}
+
 /*================================================GENERAR SELECT EN UN CONTENEDOR CON DATOS=================================================*/
 
 function getSQLTipo(tipo,otrascondiciones){
@@ -546,6 +597,22 @@ function getSesion(campo){
 }
 
 
+function setSesion(contenedor,campo){
+	var cad="";
+	 $.ajax({
+		type: "GET",
+		url:  "../base/getSesion.php?bd=Mysql&campo="+campo,
+		success: function(data){  
+			 $("#"+contenedor).html(data); 
+			},
+		error: function(data) {	                  
+				   alert('ERROR: '+data);
+				   $('#dlgproceso').modal("hide");  
+			   }
+	   });
+	 return cad;
+ }
+
 /*==================================================ACTUALIZA LOS DATOS DE UN SELECT =============================================*/
 
 function actualizaSelect(nombre,sql,tipoSelect){
@@ -556,7 +623,8 @@ function actualizaSelect(nombre,sql,tipoSelect){
         type: "GET",
         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
         success: function(data){  
-        	losdatos=JSON.parse(data);
+			losdatos=JSON.parse(data);
+			$("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
        	 jQuery.each(JSON.parse(data), function(clave, valor) { 	
        		 $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");       	     
               });
@@ -1300,5 +1368,21 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 
 
 
-
+/*========================devuelve el ciclo escolar adtual =========================================*/
+function colocarCiclo(contenedor,tipo) {
+	ciclo="SIN CICLO";
+	sqlCiclo="SELECT CICL_CLAVE, CICL_DESCRIP FROM ciclosesc where CICL_CLAVE=getciclo()";		
+    $.ajax({
+         type: "GET",
+         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlCiclo),
+         success: function(data){            
+                jQuery.each(JSON.parse(data), function(clave, valor) { 
+					if (tipo=="CLAVE") {cad=valor.CICL_CLAVE;}
+					if (tipo=="DESCRIP") {cad=valor.CICL_DESCRIP;}
+					if (tipo=="AMBOS") {cad=ciclo=valor.CICL_CLAVE+"|"+valor.CICL_DESCRIP;}
+			        $("#"+contenedor).html(cad); 
+				});
+			}            
+    });
+}
 
