@@ -8,9 +8,9 @@ $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
 
 session_start();
 if ($_SESSION['inicio']==1) {   
-	if (($_FILES[$_GET['inputFile']]["error"] > 0)||($_FILES[$_GET['inputFile']]['size'] >4000000))
+	if (($_FILES[$_GET['inputFile']]["error"] > 0)||($_FILES[$_GET['inputFile']]['size'] >40000000))
 			{
-				echo "0|"."Extension no permitida o Archivo demasiado grande (".$_FILES[$_GET['inputFile']]['size'].")";
+				echo "0|"."Extension no permitida o Archivo demasiado grande (".$_FILES[$_GET['inputFile']]['size']." ".$_FILES[$_GET['inputFile']]['error'].")";
 		}
 		else
 		{     

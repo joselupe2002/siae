@@ -64,14 +64,16 @@ contMat=1;
 		   "             <tr id=\"headAvances\">"+
 		   "                <th>No.</th> "+
 		   "                <th>Control</th> "+	
-		   "                <th>Nombre</th> "+		
+		   "                <th>Nombre</th> "+	
+		   "                <th>Per</th> "+		
 		   "             </tr> "+
 		   "            </thead>" +
 		   "         </table>";
 		   $("#losAvances").empty();
 		   $("#losAvances").append(script);
 				
-		elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE FROM "+
+		elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE,"+
+		" getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"') as PERIODOS  FROM "+
 		" dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and PDOCVE='"+$("#elciclo").html()+"'"+
 		" and b.ALUM_CARRERAREG="+$("#selCarreras").val()+" and b.ALUM_MAPA='"+$("#selPlanes").val()+"' ORDER BY ALUM_MATRICULA";
 		mostrarEspera("esperahor","grid_horarios","Cargando Horarios...");
@@ -144,6 +146,7 @@ function generaTablaAvances(grid_data){
 		$("#rowA"+contAlum).append("<td>"+contAlum+"</td>");
 		$("#rowA"+contAlum).append("<td id=\"alum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.ALUM_MATRICULA+"</td>");
 		$("#rowA"+contAlum).append("<td id=\"Nalum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.NOMBRE+"</td>");
+		$("#rowA"+contAlum).append("<td style=\"font-size:10px;\"><span class=\"badge  badge-info\">"+valor.PERIODOS+"</span></td>");
 
 	    contAlum++;      			
 	});	
