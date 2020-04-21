@@ -42,9 +42,10 @@
 	      
 		  <div class="widget-box widget-color-green">
 			  <div class="widget-header widget-header-small" style="padding:0px;">
-			      <div class="row" >		                    		
-				        <div class="col-sm-1">	</div>			
-						<div class="col-sm-6">						   
+			      <div class="row" >		                    				
+						<div id="lascarreras" class="col-sm-3">
+						</div>  								
+						<div class="col-sm-4">						   
 							<span class="label label-warning">Alumno</span>														
 							<span class="label label-info" id="lacarrera"></span>		
 						    <select onchange="verAvance();" class="chosen-select form-control" id="alumnos"></select>
@@ -54,7 +55,10 @@
 								<i class="ace-icon blue fa fa-print bigger-160"></i><span class="btn-small"></span>            
 							</button>
 							<button title="Informaci&oacute;n del alumno" onclick="verInfo();" class="btn btn-xs btn-white btn-primary btn-round"> 
-								<i class="ace-icon warning glyphicon glyphicon-info-sign bigger-150"></i><span class="btn-small"></span>            
+								<i class="ace-icon pink glyphicon glyphicon-info-sign bigger-150"></i><span class="btn-small"></span>            
+							</button>
+							<button title="Informaci&oacute;n del cumplimiento del perfil de egreso" onclick="verInfoPerfil();" class="btn btn-xs btn-white btn-primary btn-round"> 
+								<i class="ace-icon red glyphicon glyphicon-education bigger-150"></i><span class="btn-small"></span>            
 							</button>
 							<button title="Kardex del alumno" onclick="imprimirKardex();" class="btn btn-xs btn-white btn-primary btn-round"> 
 								<i class="ace-icon green glyphicon glyphicon-list-alt bigger-150"></i><span class="btn-small"></span>            
@@ -62,7 +66,8 @@
 						</div>	  			 
 						<div class="col-sm-2">	
 						    <span class="label label-warning" id="elmapa">Alumno</span>														
-							<span class="label label-info" id="laespecialidad"></span>	
+							<span class="label label-info" id="laespecialidad"></span>
+							<span class="label label-info" id="cveespecialidad"></span>	
 						</div>		 			               		           
 		            </div> 
 		      </div>
@@ -117,7 +122,7 @@
 						 </button>
 						<span class="lead text-white">Información General</span>
 				 </div>
-				 <div class="modal-body container">
+				 <div class="modal-body">
 				
 	                     <div class="row">
 						      <div class="col-sm-12">
@@ -140,6 +145,10 @@
 									<span class="btn btn-app btn-sm btn-yellow no-hover">
 									      <span id="prom_sr" class="line-height-1 bigger-170">  </span><br />
 										  <span class="line-height-1 smaller-90"> Promedio </span>
+									</span>	
+									<span class="btn btn-app btn-sm btn-danger no-hover">
+									      <span id="periodos" class="line-height-1 bigger-170">  </span><br />
+										  <span class="line-height-1 smaller-90"> Periodos </span>
 									</span>									
 							   </div>
 						 </div>
@@ -192,6 +201,24 @@
 	 </div><!-- /.modal-dialog -->
 </div>
 			
+
+
+			<!-- ===============================VENTANA DE INFORMACION PERFIL DE EGRESO=================================================================-->
+ <div id="infoPerfil" class="modal fade" role="dialog" >
+     <div class="modal-dialog modal-lg">
+		   <div class="modal-content">
+		        <div class="modal-header bg-primary">	
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								 <span class="white">&times;</span>
+						 </button>
+						<span class="lead text-white">Cumplimiento Perfil de Egreso</span>
+				 </div>
+				 <div class="modal-body" id="bodyperfil">				
+
+                 </div><!-- /.modal-body -->
+		   </div><!-- /.modal-content -->         
+	 </div><!-- /.modal-dialog -->
+</div>
 <!-- ============================================================================================================-->			
 		 							
 <!-- -------------------Primero ----------------------->
@@ -278,11 +305,29 @@ var matser="";
 		  $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});
 
 		  $('[data-rel=popover]').popover({html:true});
+
+
+		  $("#lascarreras").append("<span class=\"label label-warning\">Carrera</span>");
+		 
+			$.ajax({
+				type: "GET",
+				url:  "../base/getSesion.php?bd=Mysql&campo=carrera",
+				success: function(data){  
+					addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
+					" and CARR_CLAVE IN ("+data+")", "",""); 
+					},
+				error: function(data) {	                  
+						alert('ERROR: '+data);
+						$('#dlgproceso').modal("hide");  
+					}
+			});
+		
+
 			
     	$.ajax({
   		   type: "GET",
   		   url:  "../base/dameselect.php?bd=Mysql&sel=0&nulcol=0&sql="+encodeURI("SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE, ' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
-  		  		   " FROM falumnos where ALUM_ACTIVO IN (1,2) order by ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT"),
+  		  		   " FROM falumnos where ALUM_CARRERAREG=0 order by ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT"),
   		   success: function(data){  
   			   $("#alumnos").empty();
   		       $("#alumnos").html(data);
@@ -293,6 +338,14 @@ var matser="";
 	      
     });
 
+	function change_SELECT(elemento) {
+        if (elemento=='selCarreras') {
+			actualizaSelect("alumnos","SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE, ' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
+  		  		   " FROM falumnos where ALUM_CARRERAREG='"+$("#selCarreras").val()+"' order by ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT","BUSQUEDA");
+			}
+        
+	}
+	
 
    function getInfo(materia,elalumno){
 	   $('#lositems').empty();
@@ -344,6 +397,7 @@ var matser="";
 				   $("#lacarrerainfo").html(valor.CARR_DESCRIP);
 				   $("#elmapa").html(valor.ALUM_MAPA);
 				   $("#laespecialidad").html(valor.CLAVEOF);
+				   $("#cveespecialidad").html(valor.ALUM_ESPECIALIDAD);
 			   });
 				   
   			       cargaMapa(elmapa,$("#alumnos").val());
@@ -523,9 +577,10 @@ var matser="";
 				 $("#loscreditos").html(laespera);
 				 $("#prom_cr").html(laespera);
                  $("#prom_sr").html(laespera);
-				
+				 $("#periodos").html(laespera);
 				//LLenamos datos del Perfil del Alumno 
 				misql="SELECT CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
+				               "getPeriodos('"+elalumno+"',getciclo()) as PERIODOS,"+
 					           " CARR_DESCRIP as CARRERA, getavance('"+elalumno+"') as CREDITOS, getAvanceMat('"+elalumno+"') as MATERIAS, "+
 					           " getPromedio('"+elalumno+"','N') as PROMEDIO_SR, getPromedio('"+elalumno+"','S') as PROMEDIO_CR   FROM falumnos a, ccarreras b"+
 							   " where a.ALUM_MATRICULA='"+elalumno+"' and a.ALUM_CARRERAREG=b.CARR_CLAVE";				
@@ -550,6 +605,8 @@ var matser="";
                                 $("#prom_cr").html(valor.PROMEDIO_CR);
                                 $("#prom_sr").html(valor.PROMEDIO_SR);
 
+								$("#periodos").html(valor.PERIODOS);
+
                                 $("#fondo").css("display","none");
                                 $("#info").css("display","block");
                                 
@@ -560,6 +617,64 @@ var matser="";
 				 });
    }
 
+
+ function verInfoPerfil(){
+
+		$('#infoPerfil').modal({show:true, backdrop: 'static'});
+		elalumno=$("#alumnos").val();
+		//$("#elpromedio").html(laespera);
+		$("#bodyperfil").empty();
+		
+	   $("#bodyperfil").append("<table id=tabPerfil class= \"display table-condensed table-striped "+
+	           "table-sm table-bordered table-hover nowrap \" style= \"overflow-y: auto;\">"+
+		"</table>");	
+		$("#tabPerfil").append("<thead><tr><th style=\"text-aling:center\">ID</th><th style=\"text-aling:center\">PERFIL</th><th style=\"text-aling:center\">%</th></tr></thead>");
+		$("#tabPerfil").append("<body id=\"tabbodyper\"></body>");
+			
+
+		misqlperfil="SELECT IDPER,DESCRIP,'100%' AS AVANCE FROM falumnos, perfilegreso where ALUM_MAPA=MAPA and ALUM_MATRICULA='"+elalumno+"' ORDER BY IDPER";				
+		$.ajax({type: "GET",
+			    url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(misqlperfil),
+			    success: function(dataperfil){   
+					losdatosperfil=JSON.parse(dataperfil);  
+					var cont=0; 
+					jQuery.each(losdatosperfil, function(clavep, valorp) { 				               
+						$("#tabPerfil").append("<tr id=\"row_"+cont+"\"></tr>");
+						$("#row_"+cont).append("<td id=\"idper_"+cont+"\">"+valorp.IDPER+"</td>"+
+												 "<td><span class=\"text-primary\">"+valorp.DESCRIP+"</span></td>"+
+												 "<td><span id=\"avance_"+valorp.IDPER+"\" class=\"badge badge-danger\">"+valorp.AVANCE+"</td>");
+						cont++;	
+					});
+
+					for (i=0; i<cont;i++) {
+						misqlav="SELECT  "+$("#idper_"+i).html()+" AS IDPER,"+
+								"(SELECT COUNT(*) FROM matperfil c,eciclmate d Where IDPERFIL="+$("#idper_"+i).html()+
+								" and (d.CICL_MAPA='"+$("#elmapa").html()+"' and IFNULL(d.CVEESP,'0')='0' and d.CICL_MATERIA=c.MATERIA)"+
+								") AS NUMMATMAPA,"+
+								"(SELECT COUNT(*) FROM matperfil c,eciclmate d Where IDPERFIL="+$("#idper_"+i).html()+
+								" and (d.CICL_MAPA='"+$("#elmapa").html()+"' and  d.CVEESP="+$("#cveespecialidad").html()+"  and d.CICL_MATERIA=c.MATERIA)"+
+								") AS NUMMATESP,"+
+								"(SELECT COUNT(*) FROM dlista e where e.ALUCTR='"+$("#alumnos").val()+"' and e.LISCAL>=70 and e.MATCVE IN "+
+								"	(SELECT MATERIA FROM vmatperfil WHERE MAPA='"+$("#elmapa").html()+"' and IDPERFIL="+$("#idper_"+i).html()+")) AS APROBADAS"+
+								" FROM DUAL ";		
+								
+						$.ajax({type: "GET",
+								url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(misqlav),
+								success: function(dataav){   
+									losdatosav=JSON.parse(dataav);  
+									jQuery.each(losdatosav, function(claveav, valorav) { 
+										total=parseInt(valorav.NUMMATMAPA)+parseInt(valorav.NUMMATESP);
+									    $("#avance_"+valorav.IDPER).html(Math.round((parseInt(valorav.APROBADAS)/total*100),2));
+									});
+									
+								}		
+							});
+
+                          
+					}
+				}		
+			});
+   }
 
    function imprimirKardex(){
 	   window.open("kardex.php?matricula="+$("#alumnos").val(), '_blank'); 

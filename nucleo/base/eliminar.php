@@ -22,7 +22,8 @@
        }
        $ins=substr($ins,0,strlen($ins)-1);    
              
-       $res=$miConex->afectaSQL($bd,"DELETE FROM ".$nombreTabla." WHERE ".$campoLLave."='".$valorLLave."'");       
+       $res=$miConex->afectaSQL($bd,"DELETE FROM ".$nombreTabla." WHERE ".$campoLLave."='".$valorLLave."'"); 
+             
        $msj="";
        if (!($res=='')) {
        	   $msj= "0: ".$res."\n";

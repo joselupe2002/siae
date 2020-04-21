@@ -54,7 +54,7 @@ var contFila=1;
 	function change_SELECT(elemento) {
         if (elemento=='selCarreras') {
 			actualizaSelect("selAlumnos","SELECT ALUM_MATRICULA,CONCAT(ALUM_MATRICULA,' ',ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) "+
-		                    " from falumnos where ALUM_CARRERAREG='"+$("#selCarreras").val()+"'","BUSQUEDA");
+		                    " from falumnos where ALUM_CARRERAREG='"+$("#selCarreras").val()+"' order by ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE","BUSQUEDA");
 			}
 		if (elemento=='selCarreras') {	
 			$("#selAlumnos").empty();
