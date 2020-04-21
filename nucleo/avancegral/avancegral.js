@@ -85,8 +85,8 @@ contMat=1;
 						 
 					   elsqlMat="select CICL_MATERIA as MATERIA, CICL_MATERIAD AS MATERIAD, CICL_CUATRIMESTRE AS SEMESTRE, "+
 								"IFNULL(CVEESP,0) as CVEESP from veciclmate a where a.CICL_MAPA='"+$("#selPlanes").val()+"'"+
-								" AND IFNULL(CICL_TIPOMAT,0) NOT IN ('T') "
-					            " order by CICL_CUATRIMESTRE, CICL_MATERIAD ";
+								" AND IFNULL(CICL_TIPOMAT,0) NOT IN ('T') "+
+								" order by IFNULL(CVEESP,0),CICL_CUATRIMESTRE, CICL_MATERIAD ";
 						$.ajax({
 							type: "GET",
 							url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlMat),
@@ -158,13 +158,19 @@ function generaTablaAvances(grid_data){
 function generaTablaMaterias(grid_data){
 	contMat=1;
 	//$("#btnfiltrar").attr("disabled","disabled");
-	
+	colorSem=["success","warning","danger","info","purple","inverse","pink","yellow","grey","success"];
+	fondos=["bg-success","bg-danger","bg-warning","bg-primary","bg-yellow","bg-purple","bg-info","bg-inverse","bg-grey","bg-pink"];
 	jQuery.each(grid_data, function(clave, valor) { 
 		if (valor.CVEESP=='0') {item=0; esplan='S';}
 		else {item=(valor.CVEESP%10)+1; esplan='N';}
-	    fondos=["bg-success","bg-danger","bg-warning","bg-primary","bg-yellow","bg-purple","bg-info"];	        			
-		$("#headAvances").append("<th style=\"font-size:8px;\" class=\""+fondos[item]+"\" title=\""+valor.MATERIAD+"\" "+
-								"class=\"materias\" id=\"mat_"+contMat+"\" esplan=\""+esplan+"\" fondo=\""+fondos[item]+"\" descrip=\""+valor.MATERIAD+"\" >"+valor.MATERIA+"</th>");	    
+	    	        			
+		$("#headAvances").append("<th style=\"font-size:8px;\" class=\""+fondos[item]+"\" title=\""+valor.MATERIAD+"\" >"+
+								"<span class=\"materias\" id=\"mat_"+contMat+"\" esplan=\""+esplan+"\" "+
+									   "fondo=\""+fondos[item]+"\" descrip=\""+valor.MATERIAD+"\" >"+valor.MATERIA+
+								"</span>"+
+								"<span class=\"badge badge-"+colorSem[valor.SEMESTRE]+"\" >"+valor.SEMESTRE+
+								"</span>"+								
+							     "</th>");	    
 	    contMat++;   			
 	});	
 	for (i=1;i<contAlum;i++) {
