@@ -53,7 +53,7 @@
 						</div>
 						<div class="col-sm-3" style="padding-top:14px;">
 						    <button title="Buscar Registros" onclick="cargarAvances();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-book bigger-140"></i><span class="btn-small"></span>            
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
 							</button>											
 						</div>
 		            </div> 

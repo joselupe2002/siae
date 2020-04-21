@@ -34,7 +34,7 @@ contMat=1;
 		addSELECT("selPlanes","losplanes","PROPIO", "SELECT MAPA_CLAVE,MAPA_DESCRIP FROM mapas where MAPA_CLAVE='0'", "","");  			      
 	 
 
-		$("#losperiodos").append("<span class=\"label label-danger\">Periodos</span>");
+		$("#losperiodos").append("<span class=\"label label-primary\">Periodos</span>");
 		var losper = [{id: "1",opcion: "1"},{id: "2",opcion: "2"}, {id: "3",opcion: "3"}, {id: "4",opcion: "4"},
         	{id: "5",opcion: "5"},{id: "6",opcion: "6"}, {id: "7",opcion: "7"}, {id: "8",opcion: "8"},  
 			{id: "9",opcion: "9"},{id: "10",opcion: "10"}, {id: "11",opcion: "11"}, {id: "12",opcion: "12"}
@@ -103,9 +103,10 @@ contMat=1;
 									generaTablaMaterias(JSON.parse(dataMat));  
 									
 									for (i=1;i<contAlum;i++) {
-										elsqlPaso="select ALUCTR,MATCVE, IF(PDOCVE='"+$("#elciclo"+i).html()+"','A','C') AS CICLO, max(LISCAL) AS LISCAL, count(*) as VECES "+
+										elsqlPaso="select ALUCTR,MATCVE, IF(MAX(PDOCVE)='"+$("#elciclo").html()+"','A','C') AS CICLO, max(LISCAL) AS LISCAL, count(*) as VECES "+
 										" from dlista n where ALUCTR='"+$("#alum_"+i).html()+"'"+ 
-										" group by ALUCTR,MATCVE";							
+										" group by ALUCTR,MATCVE";	
+														
 											$.ajax({
 												type: "GET",
 												url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,
@@ -113,12 +114,15 @@ contMat=1;
 													jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
 														for (j=1;j<contMat;j++) {														
 															if (valorPaso.MATCVE==$("#mat_"+j).html()) {
-																if (valorPaso.CICLO=='C') {
+																if  (valorPaso.CICLO=='A') { // asignaturas del ciclo A = Acctual 
 																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa green fa-thumbs-up bigger-160\"><i>"); 														
 																}
-																if (valorPaso.LISCAL>=70) {
+																if ((valorPaso.CICLO=='C') && (valorPaso.LISCAL>=70)) {
 																	  $("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa blue fa-check bigger-160\"><i>"); 															
-																}
+																} 
+																if ((valorPaso.CICLO=='C') && (valorPaso.LISCAL<70)) {
+																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa red fa-check bigger-160\"><i>"); 															
+															     }
 																$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).append("<span class=\"small text-danger\">"+valorPaso.VECES+"<span>"); 
 																//alert (valorPaso.ALUCTR+" "+ valorPaso.MATCVE+" "+$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html()+ " ");
 																break;
