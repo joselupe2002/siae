@@ -43,25 +43,18 @@
 	<div class="widget-box widget-color-green" id="principal">
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
-				         <div id="losciclos" class="col-sm-3">
+				         <div id="losciclos" class="col-sm-1">
 						</div> 	                    				
 						<div id="lascarreras" class="col-sm-3">
 						</div>       			 
 						<div id="losplanes" class="col-sm-3" >
 						</div>
-						<div id="losplanes" class="col-sm-3" style="padding-top:14px;">
-						    <button title="Agregar Asignaturas" onclick="agregarAsignatura();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+						<div id="losperiodos" class="col-sm-2" >
+						</div>
+						<div class="col-sm-3" style="padding-top:14px;">
+						    <button title="Buscar Registros" onclick="cargarAvances();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-book bigger-140"></i><span class="btn-small"></span>            
-							</button>
-							<button title="Buscar Espacios en aulas" onclick="buscarEspacios();" class="btn btn-white btn-warning btn-round" value="Agregar"> 
-								<i class="ace-icon blue fa fa-trello bigger-140"></i><span class="btn-small"></span>            
-							</button>
-							<button title="Filtrar Horarios" disabled="disabled" id="btnfiltrar" onclick="filtrarHorarios();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-								<i class="ace-icon red fa fa-filter bigger-140"></i><span class="btn-small"></span>            
-							</button>
-							<button title="Guardar Todos los registros" onclick="guardarTodos();" class="btn btn-white btn-purple  btn-round"> 
-								<i class="ace-icon purple fa fa-save bigger-140"></i><span class="btn-small"></span>            
-							</button>
+							</button>											
 						</div>
 		            </div> 
 		      </div>

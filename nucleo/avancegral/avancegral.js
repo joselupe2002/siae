@@ -33,6 +33,14 @@ contMat=1;
 		$("#losplanes").append("<span class=\"label label-danger\">Plan de estudios</span>");
 		addSELECT("selPlanes","losplanes","PROPIO", "SELECT MAPA_CLAVE,MAPA_DESCRIP FROM mapas where MAPA_CLAVE='0'", "","");  			      
 	 
+
+		$("#losperiodos").append("<span class=\"label label-danger\">Periodos</span>");
+		var losper = [{id: "1",opcion: "1"},{id: "2",opcion: "2"}, {id: "3",opcion: "3"}, {id: "4",opcion: "4"},
+        	{id: "5",opcion: "5"},{id: "6",opcion: "6"}, {id: "7",opcion: "7"}, {id: "8",opcion: "8"},  
+			{id: "9",opcion: "9"},{id: "10",opcion: "10"}, {id: "11",opcion: "11"}, {id: "12",opcion: "12"}
+			,{id: "13",opcion: "13"},{id: "14",opcion: "14"},{id: "99",opcion: "Todos"},];
+        addSELECTJSON("selPeriodos","losperiodos",losper);
+
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 		colocarCiclo("elciclo","CLAVE");
@@ -48,15 +56,15 @@ contMat=1;
 			}
 		if (elemento=='selCarreras') {	
 			$("#loshorarios").empty();	
-		}
-		if (elemento=='selPlanes') {
-			cargarAvances();		
-		}
-        
+		}  
     }
 
 
     function cargarAvances(){
+		if (!($("#selPeriodos").val()=='99')) {
+			cadPeriodo=" and getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"')="+$("#selPeriodos").val();}
+		else {cadPeriodo="";}
+			
 		
 		script="<table id=\"tabAvances\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
@@ -75,8 +83,9 @@ contMat=1;
 		elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE,"+
 		" getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"') as PERIODOS  FROM "+
 		" dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and PDOCVE='"+$("#elciclo").html()+"'"+
+		cadPeriodo+
 		" and b.ALUM_CARRERAREG="+$("#selCarreras").val()+" and b.ALUM_MAPA='"+$("#selPlanes").val()+"' ORDER BY ALUM_MATRICULA";
-		mostrarEspera("esperahor","grid_horarios","Cargando Horarios...");
+		mostrarEspera("esperahor","grid_avancegral","Cargando Datos...");
 	    $.ajax({
 	           type: "GET",
 			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
@@ -116,10 +125,12 @@ contMat=1;
 															}
 														}
 													}); 
-													ocultarEspera("esperahor");  
+													
 												}
 											});																				
-									}								
+									}
+									
+									ocultarEspera("esperahor");  
 									   	      					  					  
 								},
 								error: function(dataMat) {	                  

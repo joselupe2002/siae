@@ -250,7 +250,7 @@ function addSELECTJSONGRID(nombre,contenedor,eljson) {
 	  $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
 	  jQuery.each(eljson, function(clave, valor) { 			   
 		     $("#"+nombre).append("<option value=\""+clave+"\">"+valor.title+"</option>");			  				     			  		
-      }); 
+	  }); 
 }
 
 function addSELECTJSON(nombre,contenedor,eljson) {
