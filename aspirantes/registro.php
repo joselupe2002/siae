@@ -79,8 +79,10 @@
 				<ul class="steps">
 					<li data-step="1" class="active"><span class="step">1</span><span class="title">Registro</span></li>
 					<li data-step="2"><span class="step">2</span><span class="title">Personales</span></li>
-					<li data-step="3"><span class="step">3</span><span class="title">Payment Info</span></li>
-					<li data-step="4"><span class="step">4</span><span class="title">Other Info</span></li>
+					<li data-step="3"><span class="step">3</span><span class="title">Procedencia</span></li>
+					<li data-step="4"><span class="step">4</span><span class="title">Contacto</span></li>
+					<li data-step="5"><span class="step">5</span><span class="title">Padres</span></li>
+					<li data-step="6"><span class="step">6</span><span class="title">Tutor</span></li>					
 				</ul>
 			</div>
 			<hr />
@@ -101,11 +103,17 @@
 								</span>
 							</div>
 							<!--================ CARRERA  DEL ASPIRANTE ======================-->
-							<div class="col-sm-6"> 
+							<div class="col-sm-3"> 
 								<label class="text-primary">
-									<strong><span class="badge badge-danger">2</span> Programa Educativo</strong> 
+									<strong><span class="badge badge-danger">2</span> Carrera que desea</strong> 
 								</label>								
 							    <Select  class="UNO form-control width-100" name="CARRERA" id="CARRERA"></SELECT>
+							</div>
+							<div class="col-sm-3"> 
+								<label class="text-primary">
+									<strong><span class="badge badge-danger">2A</span> 2da Opción</strong> 
+								</label>								
+							    <Select  class="UNO form-control width-100" name="CARRERA2" id="CARRERA2"></SELECT>
 							</div>
 							<div class="col-sm-1"> </div>
 						</div>
@@ -148,6 +156,8 @@
 				</div><!-- Fin del panel 1-->
 
 				<div class="step-pane" data-step="2">
+				    <form style="width: 100%" method="post" id="frmReg2" name="frmReg">
+					<fieldset>
 					<!--================================LINEA 1 PANEL 2 ================================-->
 					<div class="row">
 					    <div class="col-sm-1"> </div>
@@ -169,7 +179,7 @@
 									<strong><span class="badge badge-info">7</span> Fecha Nacimiento</strong> 
 								</label>								
 							    <div class="input-group">
-    				                 <input class="form-control editandotabla date-picker" name="FECHANAC" id="FECHANAC" type="text" autocomplete="off" data-date-format="dd/mm/yyyy" /> 
+    				                 <input class="TRES form-control editandotabla date-picker" name="FECHANAC" id="FECHANAC" type="text" autocomplete="off" data-date-format="dd/mm/yyyy" /> 
 	                                 <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>	                                 
 	                            </div>
 						</div>
@@ -242,30 +252,325 @@
 						</div>
 						<div class="col-sm-3"> 
 								<label class="text-primary">
-									<strong><span class="badge badge-info">10</span> Cuentas con alguna Beca </strong> 
-								</label>								
-							    <Select  class="DOS form-control width-100" name="BECA" id="BECA">
-								    <OPTION value="N">NO</OPTION>
-									<OPTION value="S">SI</OPTION>									
-								</SELECT>
-								<label class=" hide text-primary" id="BECA_ET">
-									<strong><span class="badge badge-success">10</span>¿Quien la otorgo?</strong> 
+									<strong><span class="badge badge-info">11</span> RFC </strong> 
 								</label>
-								<input  class="hide DOS form-control width-100" name="BECA_ADD"   id="BECA_ADD" />
-						</div>
-					 </div>
-					 
+								<input  class="DOS form-control width-100" name="RFC"   id="RFC" />								
+							    
+					     </div>
+					 </div>	
+					</fieldset>
+				    </form>				 
 				</div><!-- Fin del panel 2-->
+
+				
 				<div class="step-pane" data-step="3">
-				</div><!-- Fin del panel 3-->
-				<div class="step-pane" data-step="4">
-					<div class="center">
-						<h3 class="green">Congrats!</h3>
-							Your product is ready to ship! Click finish to continue!
+				    <form style="width: 100%" method="post" id="frmReg3" name="frmReg">
+					<fieldset>
+					<!--================================LINEA 1 PANEL 3 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-5"> 
+								<label class="text-primary">
+									<strong><span class="badge badge-info">12</span> Estado Bachiller</strong> 
+								</label>								
+							    <Select  class="TRES form-control width-100" name="ESTESCPROC" id="ESTESCPROC">									
+								</select>								
+						</div>
+						<div class="col-sm-5"> 
+						       <label class="text-primary">
+									<strong><span class="badge badge-info">13</span> Escuela de Bachillerato</strong> 
+								</label>								
+							    <Select  class="TRES chosen-select form-control width-100" name="ESCPROC" id="ESCPROC">									
+								</select>	
+								<label class=" hide text-primary" id="ESCPROC_ET">
+									<strong><span class="badge badge-success">13</span> Especifique</strong> 									
+								</label>
+								<input  class="hide TRES form-control width-100" name="ESCPROC_ADD"   id="ESCPROC_ADD" />
+						</div>							
+						<div class="col-sm-1"> </div>
 					</div>
-						
-				</div>
+					
+					<!--================================LINEA 2 PANEL 3 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-5"> 
+								<label class="text-primary">
+									<strong><span class="badge badge-info">14</span> Promedio Bachiller</strong> 
+								</label>	
+								<input  class="TRES form-control width-100" name="PROMBAC"   id="PROMBAC" />							
+							   							
+						</div>
+						<div class="col-sm-5"> </div>
+						<div class="col-sm-1"> </div>
+
+					</div>
+
+					<!--================================LINEA 3 PANEL 3 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-5"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">15</span> Grupo índigena</strong> 
+							</label>															   
+							<Select  class="TRES form-control width-100" name="GRUPOIND" id="GRUPOIND">									
+							</select>															   							
+						</div>
+						<div class="col-sm-5"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">16</span> Lengua índigena</strong> 
+							</label>															   
+							<Select  class="TRES form-control width-100" name="LENIND" id="LENIND">									
+							</select>															   							
+						</div>	
+						<div class="col-sm-1"> </div>								
+					</div>	
+					</fieldset>
+				    </form>
+
+				</div><!-- Fin del panel 3-->
+				
+				<div class="step-pane" data-step="4">
+				    <form style="width: 100%" method="post" id="frmReg4" name="frmReg">
+					<fieldset>
+					<!--================================LINEA 1 PANEL 3 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-3"> 
+								<label class="text-primary">
+									<strong><span class="badge badge-info">17</span> Estado de Residencia</strong> 
+								</label>								
+							    <Select  class="CUATRO form-control width-100" name="ESTRES" id="ESTRES">									
+								</select>								
+						</div>
+						<div class="col-sm-3"> 
+								<label class="text-primary">
+									<strong><span class="badge badge-info">18</span> Municipio de Residencia</strong> 
+								</label>								
+							    <Select  class="CUATRO form-control width-100" name="MUNRES" id="MUNRES">									
+								</select>								
+						</div>
+						<div class="col-sm-3"> 
+						       <label class="text-primary">
+									<strong><span class="badge badge-info">19</span> Ciudad o Localidad</strong> 
+								</label>															   
+								<input  class="CUATRO form-control width-100" name="CIUDADRES"   id="CIUDADRES" />
+						</div>							
+						<div class="col-sm-1"> </div>
+					</div>
+					
+					<!--================================LINEA 2 PANEL 4 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">20</span> Calle</strong> 
+							</label>															   
+							<input  class="CUATRO form-control width-100" name="CALLE"   id="CALLE" />														   							
+						</div>
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">21</span> No.</strong> 
+							</label>															   
+							<input  class="CUATRO form-control width-100" name="NUMEROCALLE"   id="NUMEROCALLE" />														   							
+						</div>
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">22</span> COLONIA </strong> 
+							</label>															   
+							<input  class="CUATRO form-control width-100" name="COLONIA"   id="COLONIA" />														   							
+						</div>
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">23</span> C.P.</strong> 
+							</label>															   
+							<input  class="CUATRO form-control width-100" name="CP"   id="CP" />														   							
+						</div>						
+					</div>	
+
+					<!--================================LINEA 3 PANEL 4 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">24</span> Teléfono Celular</strong> 
+							</label>															   
+							<input  class="CUATRO form-control width-100" name="TELCEL"   id="TELCEL" />														   							
+						</div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">25</span> Teléfono de Casa</strong> 
+							</label>															   
+							<input  class="CUATRO form-control width-100" name="TELCASA"   id="TELCASA" />														   							
+						</div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">26</span> Correo Electrónico</strong> 
+							</label>															   
+							<input  class="CUATRO form-control width-100" name="CORREO"   id="CORREO" />														   							
+						</div>
+						<div class="col-sm-1"> </div>						
+					</div>	
+				</div><!-- Fin del panel 4-->
+
+
+				<div class="step-pane" data-step="5">
+				    <form style="width: 100%" method="post" id="frmReg5" name="frmReg">
+					<fieldset>
+					<!--================================LINEA 1 PANEL 5 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-4"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">27</span> Nombre del Padre</strong> 
+							</label>															   
+							<input  class="CINCO form-control width-100" name="PADRE"   id="PADRE" />														   							
+						</div>
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">28</span> Vive</strong> 
+							</label>															   
+							<Select  class="CINCO form-control width-100" name="PADREVIVE" id="PADREVIVE">
+							        <OPTION value="S">SI</OPTION>	
+									<OPTION value="N">NO</OPTION>																	
+							</SELECT>														   							
+						</div>
+						<div class="col-sm-4"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">29</span> Teléfono</strong> 
+							</label>															   
+							<input  class="CINCO form-control width-100" name="PADRETEL"   id="PADRETEL" />														   							
+						</div>	
+						<div class="col-sm-1"> </div>					
+					</div>	
+					<!--================================LINEA 1 PANEL 5 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-4"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">30</span> Nombre del Madre</strong> 
+							</label>															   
+							<input  class="CINCO form-control width-100" name="MADRE"   id="MADRE" />														   							
+						</div>
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">31</span> Vive</strong> 
+							</label>															   
+							<Select  class="CINCO form-control width-100" name="MADREVIVE" id="MADREVIVE">
+							        <OPTION value="S">SI</OPTION>	
+									<OPTION value="N">NO</OPTION>																	
+							</SELECT>														   							
+						</div>
+						<div class="col-sm-4"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">32</span> Teléfono</strong> 
+							</label>															   
+							<input  class="CINCO form-control width-100" name="MADRETEL"   id="MADRETEL" />														   							
+						</div>	
+						<div class="col-sm-1"> </div>					
+					</div>
+					</fieldset>
+				    </form>
+								
+				</div><!-- Fin del panel 5-->
+
+				<div class="step-pane" data-step="6">
+				    <form style="width: 100%" method="post" id="frmReg6" name="frmReg">
+					<fieldset>
+					<!--================================LINEA 1 PANEL 6 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">33</span> Nombre del Tutor</strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="TUTOR"   id="TUTOR" />														   							
+						</div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">34</span> Estado de Residencia</strong> 
+							</label>															   
+							<Select  class="SEIS form-control width-100" name="ESTTUTOR" id="ESTTUTOR">							      																
+							</SELECT>														   							
+						</div>
+						<div class="col-sm-4"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">35</span> Municipio de Residencia</strong> 
+							</label>															   
+							<Select  class="SEIS form-control width-100" name="MUNTUTOR" id="MUNTUTOR">							      																
+							</SELECT>														   							
+						</div>	
+						<div class="col-sm-1"> </div>					
+					</div>	
+					<!--================================LINEA 2 PANEL 6 ================================-->
+					<div class="row">
+						<div class="col-sm-1"> </div>
+						<div class="col-sm-3"> 
+						       <label class="text-primary">
+									<strong><span class="badge badge-info">36</span> Ciudad o Localidad</strong> 
+								</label>															   
+								<input  class="CUATRO form-control width-100" name="CIUDADTUTOR"   id="CIUDADTUTOR" />
+						</div>	
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">37</span> Calle</strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="CALLETUTOR"   id="CALLETUTOR" />														   							
+						</div>
+						<div class="col-sm-1"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">38</span> No.</strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="NUMEROCALLETUTOR"   id="NUMEROCALLETUTOR" />														   							
+						</div>
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">39</span> COLONIA </strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="COLONIATUTOR"   id="COLONIATUTOR" />														   							
+						</div>
+						<div class="col-sm-1"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">40</span> C.P.</strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="CPTUTOR"   id="CPTUTOR" />														   							
+						</div>						
+					</div>	
+
+					<!--================================LINEA 3 PANEL 6 ================================-->
+					<div class="row">
+						<div class="col-sm-1"> </div>
+						<div class="col-sm-2"> 
+						       <label class="text-primary">
+									<strong><span class="badge badge-info">36</span> Télefono Celular</strong> 
+								</label>															   
+								<input  class="CUATRO form-control width-100" name="TELCASATUTOR"   id="TELCASATUTOR" />
+						</div>	
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">37</span> Teléfono de casa</strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="TELCELTUTOR"   id="TELCELTUTOR" />														   							
+						</div>
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">38</span> Correo electrónico</strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="CORREOTUTOR"   id="CORREOTUTOR" />														   							
+						</div>
+						<div class="col-sm-4"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">39</span> Centro de Trabajo </strong> 
+							</label>															   
+							<input  class="SEIS form-control width-100" name="TRABAJOTUTOR"   id="TRABAJOTUTOR" />														   							
+						</div>										
+					</div>	
+
+					</fieldset>
+				    </form>			
+				</div><!-- Fin del panel 6-->
 			</div>
+
+
 			<hr/>
 		    </div>
 			<div class="wizard-actions">
@@ -273,7 +578,7 @@
 					    <i class="ace-icon danger fa fa-arrow-left"></i>Ant
 					</button>
 
-					<button class="btn btn-white  btn-info btn-round btn-next" data-last="Finish">Sig
+					<button class="btn btn-white  btn-info btn-round btn-next" data-last="Finalizar">Sig
 						<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 					</button>
 			</div>
