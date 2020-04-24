@@ -1,18 +1,31 @@
 <?php 
-	header('Content-Type: text/html; charset='.$_SESSION['encode']);
-	include(".././includes/Conexion.php");
-	include(".././includes/UtilUser.php");
+	header('Content-Type: text/html; charset=ISO-8859-1');
+	include("../includes/Conexion.php");
+	include("../includes/UtilUser.php");
 	$miConex = new Conexion();
 	$miUtil= new UtilUser();
 	$logouser="../imagenes/login/sigea.png";
 	$nivel="../";
+	session_start();		
+	$_SESSION['usuario'] = "ASPIRANTES";
+	$_SESSION['nombre'] = "registro de aspirantes";
+	$_SESSION['super'] = "N";
+	$_SESSION['inicio'] = 1;
+	$_SESSION['INSTITUCION'] = "ITSM";
+	$_SESSION['CAMPUS'] = "0";
+	$_SESSION['encode'] = "ISO-8859-1";
+	$_SESSION['carrera'] = "1";
+	$_SESSION['depto'] = "0";
+	$_SESSION['titApli'] = "Sistema Gesti&oacute;n Escolar - Administrativa";
+	$_SESSION['bd'] = "Mysql";
+
 	?>
 <!DOCTYPE html>
 <html lang="es">
 	<head>
 	    <link rel="icon" type="image/gif" href="../imagenes/login/sigea.ico">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta charset=""/>
+		<meta charset="ISO-8859-1"/>
 		<title>SIGEA Sistema de Gestión Escolar - Administrativa </title>
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/font-awesome/4.5.0/css/font-awesome.min.css" />
