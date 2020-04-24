@@ -157,7 +157,7 @@ var matser="";
         addSELECT("selMaterias","contMaterias","MATERIAS", "", " AND MATE_TIPO='T'",""); 
         addSELECT("selGenero","contGenero","PROPIO", "SELECT SEXO_CLAVE, SEXO_DESCRIP FROM esexo", "",""); 
         addSELECT("selEstado","contEstado","PROPIO", "SELECT ID_ESTADO, ESTADO FROM cat_estado", "",""); 
-       // addSELECT("selMunicipio","contMunicipio","PROPIO", "SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_MUNICIPIO=''", "",""); 
+        addSELECT("selMunicipio","contMunicipio","PROPIO", "SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_MUNICIPIO=''", "",""); 
 
 
         var losmeses = [{id: "01",opcion: "ENERO"},{id: "02",opcion: "FEBRERO"}, {id: "03",opcion: "MARZO"}, {id: "04",opcion: "ABRIL"},

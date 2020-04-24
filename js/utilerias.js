@@ -615,16 +615,18 @@ function setSesion(contenedor,campo){
 
 /*==================================================ACTUALIZA LOS DATOS DE UN SELECT =============================================*/
 
-function actualizaSelect(nombre,sql,tipoSelect){
+function actualizaSelect(nombre,sql,tipoSelect,eltipo){
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
 	 $("#"+nombre).empty();
 	 $("#"+nombre).append("<option value=\"0\">Elija una opci&oacute;n</option>");
+	 $("#"+nombre).trigger("chosen:updated");
+	 fuera="";
+	 if (eltipo=="FUERA") {fuera="nucleo/";}
 	 $.ajax({
         type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+        url:  "../"+fuera+"base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
         success: function(data){  
 			losdatos=JSON.parse(data);
-			$("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
        	 jQuery.each(JSON.parse(data), function(clave, valor) { 	
        		 $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");       	     
               });
