@@ -1,4 +1,4 @@
-<?php session_start(); if (($_SESSION['inicio']==1)) {
+<?php 
 	header('Content-Type: text/html; charset='.$_SESSION['encode']);
 	include(".././includes/Conexion.php");
 	include(".././includes/UtilUser.php");
@@ -328,10 +328,7 @@
 
 </script>
 
-
-
 </body>
-<?php } else {header("Location: index.php");}?>
 </html>
 
 

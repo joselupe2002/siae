@@ -163,6 +163,18 @@
 		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 
 			        	 base_grupo=valor.SIE; base_materia=valor.MATERIA;    });
 
+
+					alert ("select UNID_ID, UNID_NUMERO, UNID_DESCRIP, "+
+				        		 "(select count(*) from eplaneacion b where STR_TO_DATE(FECHA,'%d/%m/%Y')  BETWEEN STR_TO_DATE('<?php echo $_GET["inicia_corte"]?>','%d/%m/%Y') "+ 
+				        		 " AND STR_TO_DATE('<?php echo $_GET["termina_corte"]?>','%d/%m/%Y') and b.NUMUNIDAD=a.UNID_NUMERO "+ 
+				        		 " and b.MATERIA=a.UNID_MATERIA and b.GRUPO='<?php echo $_GET["grupo"]?>' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO,"+
+				        		 "(select count(*) from vecortesexp g where DATE_FORMAT(NOW(),'%Y-%m-%d') BETWEEN STR_TO_DATE(INICIA,'%d/%m/%Y')  "+
+		                         " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and g.UNIDAD=a.UNID_ID and g.MATERIA=a.UNID_MATERIA and "+
+		                         "g.PROFESOR='<?php echo $_GET["profesor"]?>' and g.CICLO='<?php echo $_GET["ciclo"]?>' and g.GRUPO='<?php echo $_GET["grupo"]?>')  as ABIERTO2, "+
+		                         "(select count(*) from eplaneacion b where STR_TO_DATE(FECHA,'%d/%m/%Y')  BETWEEN STR_TO_DATE('<?php echo $_GET["inicia_corte"]?>','%d/%m/%Y') "+ 
+				        		 " AND STR_TO_DATE('<?php echo $_GET["termina_corte"]?>','%d/%m/%Y') and b.NUMUNIDAD=a.UNID_NUMERO "+ 
+				        		 " and b.MATERIA='"+base_materia+"' and b.GRUPO='"+base_grupo+"' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO3 "+
+				        		 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''");
 		        	 
 					 $.ajax({
 				         type: "GET",
