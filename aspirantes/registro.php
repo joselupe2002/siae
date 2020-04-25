@@ -45,7 +45,7 @@
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
+	<body id="grid_registro" style="background-color: white;">
        
     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
     </div>
@@ -82,11 +82,13 @@
 					<li data-step="3"><span class="step">3</span><span class="title">Procedencia</span></li>
 					<li data-step="4"><span class="step">4</span><span class="title">Contacto</span></li>
 					<li data-step="5"><span class="step">5</span><span class="title">Padres</span></li>
-					<li data-step="6"><span class="step">6</span><span class="title">Tutor</span></li>					
+					<li data-step="6"><span class="step">6</span><span class="title">Tutor</span></li>
+					<li data-step="7"><span class="step">7</span><span class="title">Documentos</span></li>					
 				</ul>
 			</div>
 			<hr />
 			<div class="step-content pos-rel">
+<!--================ =======================================================================================-->					
 				<div class="step-pane active" data-step="1">
 				<form style="width: 100%" method="post" id="frmReg" name="frmReg">
 					<fieldset>
@@ -154,7 +156,7 @@
 					</fieldset>
 				</form>
 				</div><!-- Fin del panel 1-->
-
+<!--================ =======================================================================================-->					
 				<div class="step-pane" data-step="2">
 				    <form style="width: 100%" method="post" id="frmReg2" name="frmReg">
 					<fieldset>
@@ -261,7 +263,7 @@
 					</fieldset>
 				    </form>				 
 				</div><!-- Fin del panel 2-->
-
+<!--================ =======================================================================================-->					
 				
 				<div class="step-pane" data-step="3">
 				    <form style="width: 100%" method="post" id="frmReg3" name="frmReg">
@@ -300,7 +302,22 @@
 								<input  class="TRES form-control width-100" name="PROMBAC"   id="PROMBAC" />							
 							   							
 						</div>
-						<div class="col-sm-5"> </div>
+						<div class="col-sm-3"> 
+						        <label class="text-primary">
+									<strong><span class="badge badge-info">14A</span> Area de Conocimiento</strong> 
+								</label>
+								<Select  class="TRES  form-control width-100" name="AREACONOC" id="AREACONOC">									
+								</select>		
+						
+
+						</div>
+						<div class="col-sm-2"> 
+						        <label class="text-primary">
+									<strong><span class="badge badge-info">14B</span> Año de Egreso</strong> 
+								</label>	
+								<input  class="TRES form-control width-100" name="EGRESOBAC"   id="EGRESOBAC" />
+
+						</div>
 						<div class="col-sm-1"> </div>
 
 					</div>
@@ -328,11 +345,14 @@
 				    </form>
 
 				</div><!-- Fin del panel 3-->
-				
+
+<!--================ =======================================================================================-->									
 				<div class="step-pane" data-step="4">
 				    <form style="width: 100%" method="post" id="frmReg4" name="frmReg">
 					<fieldset>
-					<!--================================LINEA 1 PANEL 3 ================================-->
+
+					
+					<!--================================LINEA 1 PANEL 4================================-->
 					<div class="row">
 					    <div class="col-sm-1"> </div>
 						<div class="col-sm-3"> 
@@ -412,22 +432,55 @@
 					</div>	
 				</div><!-- Fin del panel 4-->
 
-
+<!--================ =======================================================================================-->					
 				<div class="step-pane" data-step="5">
 				    <form style="width: 100%" method="post" id="frmReg5" name="frmReg">
 					<fieldset>
+
 					<!--================================LINEA 1 PANEL 5 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-2"> 
+								<label class="text-primary">
+									<strong><span class="badge badge-info">27</span> Servicio Médico</strong> 
+								</label>								
+							    <Select  class="CINCO form-control width-100" name="SM" id="SM">									
+								</select>								
+						</div>
+						<div class="col-sm-3"> 
+								<label class="text-primary">
+									<strong><span class="badge badge-info">28</span> Institución</strong> 
+								</label>
+								<input  class="CINCO form-control width-100" name="SMINSTITUCION"   id="SMINSTITUCION" />								
+							 							
+						</div>
+						<div class="col-sm-3"> 
+						       <label class="text-primary">
+									<strong><span class="badge badge-info">29</span> No. Afiliación</strong> 
+								</label>															   
+								<input  class="CINCO form-control width-100" name="SMNUMERO"   id="SMNUMERO" />
+						</div>
+						<div class="col-sm-2"> 
+						       <label class="text-primary">
+									<strong><span class="badge badge-info">30</span> Tipo de Sangre</strong> 
+								</label>															   
+								<input  class="CINCO form-control width-100" name="TIPOSAN"   id="TIPOSAN" />
+						</div>							
+						<div class="col-sm-1"> </div>
+					</div>
+
+					<!--================================LINEA 2 PANEL 5 ================================-->
 					<div class="row">
 					    <div class="col-sm-1"> </div>
 						<div class="col-sm-4"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">27</span> Nombre del Padre</strong> 
+								<strong><span class="badge badge-info">31</span> Nombre del Padre</strong> 
 							</label>															   
 							<input  class="CINCO form-control width-100" name="PADRE"   id="PADRE" />														   							
 						</div>
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">28</span> Vive</strong> 
+								<strong><span class="badge badge-info">32</span> Vive</strong> 
 							</label>															   
 							<Select  class="CINCO form-control width-100" name="PADREVIVE" id="PADREVIVE">
 							        <OPTION value="S">SI</OPTION>	
@@ -436,24 +489,24 @@
 						</div>
 						<div class="col-sm-4"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">29</span> Teléfono</strong> 
+								<strong><span class="badge badge-info">33</span> Teléfono</strong> 
 							</label>															   
 							<input  class="CINCO form-control width-100" name="PADRETEL"   id="PADRETEL" />														   							
 						</div>	
 						<div class="col-sm-1"> </div>					
 					</div>	
-					<!--================================LINEA 1 PANEL 5 ================================-->
+					<!--================================LINEA 3 PANEL 5 ================================-->
 					<div class="row">
 					    <div class="col-sm-1"> </div>
 						<div class="col-sm-4"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">30</span> Nombre del Madre</strong> 
+								<strong><span class="badge badge-info">34</span> Nombre del Madre</strong> 
 							</label>															   
 							<input  class="CINCO form-control width-100" name="MADRE"   id="MADRE" />														   							
 						</div>
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">31</span> Vive</strong> 
+								<strong><span class="badge badge-info">35</span> Vive</strong> 
 							</label>															   
 							<Select  class="CINCO form-control width-100" name="MADREVIVE" id="MADREVIVE">
 							        <OPTION value="S">SI</OPTION>	
@@ -462,7 +515,7 @@
 						</div>
 						<div class="col-sm-4"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">32</span> Teléfono</strong> 
+								<strong><span class="badge badge-info">36</span> Teléfono</strong> 
 							</label>															   
 							<input  class="CINCO form-control width-100" name="MADRETEL"   id="MADRETEL" />														   							
 						</div>	
@@ -472,7 +525,7 @@
 				    </form>
 								
 				</div><!-- Fin del panel 5-->
-
+<!--================ =======================================================================================-->					
 				<div class="step-pane" data-step="6">
 				    <form style="width: 100%" method="post" id="frmReg6" name="frmReg">
 					<fieldset>
@@ -481,20 +534,20 @@
 					    <div class="col-sm-1"> </div>
 						<div class="col-sm-3"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">33</span> Nombre del Tutor</strong> 
+								<strong><span class="badge badge-info">37</span> Nombre del Tutor</strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="TUTOR"   id="TUTOR" />														   							
 						</div>
 						<div class="col-sm-3"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">34</span> Estado de Residencia</strong> 
+								<strong><span class="badge badge-info">38</span> Estado de Residencia</strong> 
 							</label>															   
 							<Select  class="SEIS form-control width-100" name="ESTTUTOR" id="ESTTUTOR">							      																
 							</SELECT>														   							
 						</div>
 						<div class="col-sm-4"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">35</span> Municipio de Residencia</strong> 
+								<strong><span class="badge badge-info">39</span> Municipio de Residencia</strong> 
 							</label>															   
 							<Select  class="SEIS form-control width-100" name="MUNTUTOR" id="MUNTUTOR">							      																
 							</SELECT>														   							
@@ -506,31 +559,31 @@
 						<div class="col-sm-1"> </div>
 						<div class="col-sm-3"> 
 						       <label class="text-primary">
-									<strong><span class="badge badge-info">36</span> Ciudad o Localidad</strong> 
+									<strong><span class="badge badge-info">40</span> Ciudad o Localidad</strong> 
 								</label>															   
 								<input  class="CUATRO form-control width-100" name="CIUDADTUTOR"   id="CIUDADTUTOR" />
 						</div>	
 						<div class="col-sm-3"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">37</span> Calle</strong> 
+								<strong><span class="badge badge-info">41</span> Calle</strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="CALLETUTOR"   id="CALLETUTOR" />														   							
 						</div>
 						<div class="col-sm-1"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">38</span> No.</strong> 
+								<strong><span class="badge badge-info">42</span> No.</strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="NUMEROCALLETUTOR"   id="NUMEROCALLETUTOR" />														   							
 						</div>
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">39</span> COLONIA </strong> 
+								<strong><span class="badge badge-info">43</span> COLONIA </strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="COLONIATUTOR"   id="COLONIATUTOR" />														   							
 						</div>
 						<div class="col-sm-1"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">40</span> C.P.</strong> 
+								<strong><span class="badge badge-info">44</span> C.P.</strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="CPTUTOR"   id="CPTUTOR" />														   							
 						</div>						
@@ -541,33 +594,36 @@
 						<div class="col-sm-1"> </div>
 						<div class="col-sm-2"> 
 						       <label class="text-primary">
-									<strong><span class="badge badge-info">36</span> Télefono Celular</strong> 
+									<strong><span class="badge badge-info">45</span> Télefono Celular</strong> 
 								</label>															   
 								<input  class="CUATRO form-control width-100" name="TELCASATUTOR"   id="TELCASATUTOR" />
 						</div>	
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">37</span> Teléfono de casa</strong> 
+								<strong><span class="badge badge-info">46</span> Teléfono de casa</strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="TELCELTUTOR"   id="TELCELTUTOR" />														   							
 						</div>
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">38</span> Correo electrónico</strong> 
+								<strong><span class="badge badge-info">47</span> Correo electrónico</strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="CORREOTUTOR"   id="CORREOTUTOR" />														   							
 						</div>
 						<div class="col-sm-4"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">39</span> Centro de Trabajo </strong> 
+								<strong><span class="badge badge-info">48</span> Centro de Trabajo </strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="TRABAJOTUTOR"   id="TRABAJOTUTOR" />														   							
 						</div>										
 					</div>	
-
 					</fieldset>
 				    </form>			
 				</div><!-- Fin del panel 6-->
+<!--================ =======================================================================================-->					
+					<div class="step-pane" data-step="7" id="listaadj">
+						
+					</div>
 			</div>
 
 
@@ -587,7 +643,6 @@
 
 
 	
-										
 		 							
 <!-- -------------------Primero ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>

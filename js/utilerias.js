@@ -220,6 +220,36 @@ function mostrarEspera (nombre,contenedor, mensaje){
 	$('#'+nombre).modal({show:true, backdrop: 'static'});
 }
 
+function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,mensajebtn, eventoConfirm){
+	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog modal-sm \" role=\"document\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-info\" >"+
+			   "                  <span><i class=\"menu-icon green fa-2x fa fa-info\"></i>"+
+			   "                        <span class=\"text-success lead \"> <strong>"+titulo+"</strong></span>"+
+			   "                  </span>"+
+			   "                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"> "+
+               "                        <span aria-hidden=\"true\">&times;</span> "+
+               "                  </button> "+
+    		   "             </div>"+
+			   "             <div class=\"modal-body\" style=\"text-align: center;\">"+
+			   "                   <div class=\"alert alert-info bigger-110\">"+mensajeInfo+"</div>"+
+			   "                    <div class=\"space-6\"></div>"+
+			   "                    <p class=\"bigger-110 bolder center grey\">"+
+			   "                        <i class=\"ace-icon fa fa-hand-o-right blue bigger-120\"></i>"+mensajeConfirm+
+		       "                    </p>"+
+			   "             </div>"+     
+			   "             <div class=\"modal-footer\"> "+               
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-danger btn-round\" data-dismiss=\"modal\">Cancelar</button>"+
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-info btn-round\" onclick=\""+eventoConfirm+"\">"+mensajebtn+"</button>"+
+               "             </div>"+
+               "         </div>"+
+               "   </div>"+
+               "</div>";
+	$("#"+contenedor).append(script);
+	$('#'+nombre).modal({show:true, backdrop: 'static'});
+}
+
 function ocultarEspera (nombre){
 	$('#'+nombre).modal("hide");  
 }
@@ -505,6 +535,41 @@ function generaTablaDinBtn(nombreTabla, sql, titulos, campos) {
 }
 
 /*================================================GENERAR SELECT EN UN CONTENEDOR CON DATOS=================================================*/
+
+function calcularEdad(fecha) {
+	var hoy = new Date();
+
+	var cumpleanos = fecha.substring(6,10);
+	var edad = hoy.getFullYear() - cumpleanos;
+    return edad;
+}
+
+function curpValida(curp) {
+    var re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/,
+        validado = curp.match(re);
+	
+    if (!validado)  //Coincide con el formato general?
+    	return false;
+    
+    //Validar que coincida el dígito verificador
+    function digitoVerificador(curp17) {
+        //Fuente https://consultas.curp.gob.mx/CurpSP/
+        var diccionario  = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
+            lngSuma      = 0.0,
+            lngDigito    = 0.0;
+        for(var i=0; i<17; i++)
+            lngSuma = lngSuma + diccionario.indexOf(curp17.charAt(i)) * (18 - i);
+        lngDigito = 10 - lngSuma % 10;
+        if (lngDigito == 10) return 0;
+        return lngDigito;
+    }
+  
+    if (validado[2] != digitoVerificador(validado[1])) 
+    	return false;
+        
+    return true; //Validado
+}
+
 
 function getSQLTipo(tipo,otrascondiciones){
 	elsql="";

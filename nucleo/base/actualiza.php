@@ -4,6 +4,8 @@
    header('Content-Type: text/html; charset='.$_SESSION['encode']);
    include("../.././includes/Conexion.php");
    if ($_SESSION['inicio']==1) { 
+      
+    
        $miConex = new Conexion();       
        $ins="";
        $val="";
@@ -23,6 +25,7 @@
        }
        $ins=substr($ins,0,strlen($ins)-1);  
    
+       //echo "UPDATE ".$nombreTabla." SET ".$ins." WHERE ".$campoLLave."='".$valorLLave."'";
        $res=$miConex->afectaSQL($bd,"UPDATE ".$nombreTabla." SET ".$ins." WHERE ".$campoLLave."='".$valorLLave."'");   
       
        $msj="";
