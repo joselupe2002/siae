@@ -273,7 +273,7 @@ var elciclo="";
 
 					ESTESCPROC: "Debe elegir el estado de la escuela de procedencia",
 					ESCPROC: "Debe elegir una escuela de procedencia",
-					PROMBAC: {required: "Debe colocar su promedio de Bachiller", number: "No es un número valido", min:"El promedio debe ser  entre 60 a 100",max:"El promedio debe ser  entre 6 a 10"},
+					PROMBAC: {required: "Debe colocar su promedio de Bachiller", number: "No es un número valido", min:"El promedio debe ser  entre 60 a 100",max:"El promedio debe ser  entre 60 a 100"},
 
 					EDORES: "Debe elegir su estado de Residencia actual",
 					MUNIRES: "Debe elegir su municipio de Residencia actual",
