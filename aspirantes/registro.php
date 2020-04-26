@@ -103,6 +103,9 @@
 									<input  class="UNO form-control width-100" name="CURP" id="CURP" />
 									<i class="ace-icon fa fa-pencil-square"></i>
 								</span>
+								<button onclick="window.open('https://www.gob.mx/curp/', '_blank');" class="btn btn-white  btn-info btn-round">Buscar CURP
+						            <i class="ace-icon fa fa-search icon-on-right"></i>
+					            </button>
 							</div>
 							<!--================ CARRERA  DEL ASPIRANTE ======================-->
 							<div class="col-sm-3"> 
@@ -475,8 +478,8 @@
 						<div class="col-sm-4"> 
 						    <label class="text-primary">
 								<strong><span class="badge badge-info">31</span> Nombre del Padre</strong> 
-							</label>															   
-							<input  class="CINCO form-control width-100" name="PADRE"   id="PADRE" />														   							
+							</label>																					   
+							    <input  class="CINCO form-control width-100" name="PADRE"   id="PADRE" />														   							
 						</div>
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
@@ -513,12 +516,23 @@
 									<OPTION value="N">NO</OPTION>																	
 							</SELECT>														   							
 						</div>
-						<div class="col-sm-4"> 
+						<div class="col-sm-2"> 
 						    <label class="text-primary">
 								<strong><span class="badge badge-info">36</span> Teléfono</strong> 
 							</label>															   
 							<input  class="CINCO form-control width-100" name="MADRETEL"   id="MADRETEL" />														   							
 						</div>	
+						<div class="col-sm-2"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">36</span> El tutor es:</strong> 
+							</label>															   
+							<Select  class="CINCO form-control width-100" name="ELTUTOR" id="ELTUTOR">
+							        <OPTION value="O">OTRA PERSONA</OPTION>		
+							        <OPTION value="P">EL PADRE</OPTION>	
+									<OPTION value="M">LA MADRE</OPTION>																									
+							</SELECT>														   							
+						</div>	
+
 						<div class="col-sm-1"> </div>					
 					</div>
 					</fieldset>

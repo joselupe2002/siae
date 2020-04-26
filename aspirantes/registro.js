@@ -84,6 +84,15 @@ var elciclo="";
 		}); 
 		
 
+		$("#ELTUTOR").change(function(){			
+			if ($("#ELTUTOR").val()=='P') {
+				$("#TUTOR").val($("#PADRE").val());
+			}
+			if ($("#ELTUTOR").val()=='M') {
+				$("#TUTOR").val($("#MADRE").val());
+			}
+		}); 
+
 		$("#ESTRES").change(function(){				
 			actualizaSelect("MUNRES","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#ESTRES").val()+"' ORDER BY MUNICIPIO","NORMAL","FUERA"); 
 		}); 
@@ -106,7 +115,7 @@ var elciclo="";
 			encontre=false;
 			
 			//Verificamos si la CURP ya fue registrada anteriormente 
-			elsql="SELECT CURP, FINALIZADO FROM aspirantes where CURP='"+$("#CURP").val()+"' and CICLO='"+elciclo+"'";
+			elsql="SELECT CURP, FINALIZADO FROM aspirantes where CURP='"+$("#CURP").val().toUpperCase()+"' and CICLO='"+elciclo+"'";
 			$.ajax({
 					type: "GET",
 					url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
@@ -389,12 +398,13 @@ function guardarGen(){
 		parametros={
 			tabla:"aspirantes",
 			bd:"Mysql",
-			CURP:$("#CURP").val(),
-			APEPAT:$("#APEPAT").val(),
-			APEMAT:$("#APEMAT").val(),
-			NOMBRE:$("#NOMBRE").val(),
+			CURP:$("#CURP").val().toUpperCase(),
+			APEPAT:$("#APEPAT").val().toUpperCase(),
+			APEMAT:$("#APEMAT").val().toUpperCase(),
+			NOMBRE:$("#NOMBRE").val().toUpperCase(),
 			CARRERA:$("#CARRERA").val(),
 			CARRERA2:$("#CARRERA2").val(),
+			TIPOCAPT:"WEB",
 			CICLO:elciclo,
 			_INSTITUCION:"ITSM",
 			_CAMPUS:"0",
@@ -418,10 +428,10 @@ function guardarPag1(){
 		tabla:"aspirantes",
 		bd:"Mysql",
 		campollave:"CURP",
-		valorllave:$("#CURP").val(),		
-			APEPAT:$("#APEPAT").val(),
-			APEMAT:$("#APEMAT").val(),
-			NOMBRE:$("#NOMBRE").val(),
+		valorllave:$("#CURP").val().toUpperCase(),		
+			APEPAT:$("#APEPAT").val().toUpperCase(),
+			APEMAT:$("#APEMAT").val().toUpperCase(),
+			NOMBRE:$("#NOMBRE").val().toUpperCase(),
 			CARRERA:$("#CARRERA").val(),
 			CARRERA2:$("#CARRERA2").val(),
 			CICLO:elciclo
@@ -443,19 +453,19 @@ function guardarPag2(){
 			tabla:"aspirantes",
 			bd:"Mysql",
 			campollave:"CURP",
-			valorllave:$("#CURP").val(),
+			valorllave:$("#CURP").val().toUpperCase(),
 			NACIONALIDAD: $("#NACIONALIDAD").val(),	
-			NACIONALIDAD_ADD : $("#NACIONALIDAD_ADD").val(),
+			NACIONALIDAD_ADD : $("#NACIONALIDAD_ADD").val().toUpperCase(),
 			FECHANAC: $("#FECHANAC").val(),
 			GENERO: $("#GENERO").val(),
 			EDOCIVIL: $("#EDOCIVIL").val(),
 			CAPACIDADDIF: $("#CAPACIDADDIF").val(),
-			CAPACIDADDIF_ADD: $("#CAPACIDADDIF_ADD").val(),
+			CAPACIDADDIF_ADD: $("#CAPACIDADDIF_ADD").val().toUpperCase(),
 			BECA: $("#BECA").val(),
-			BECA_ADD: $("#BECA_ADD").val(),
+			BECA_ADD: $("#BECA_ADD").val().toUpperCase(),
 			EDONAC: $("#EDONAC").val() ,
 			MUNINAC: $("#MUNINAC").val() ,
-			RFC: $("#RFC").val(),
+			RFC: $("#RFC").val().toUpperCase(),
 			CICLO:elciclo			
 	};
 	$.ajax({
@@ -477,7 +487,7 @@ function guardarPag3(){
 		tabla:"aspirantes",
 		bd:"Mysql",
 		campollave:"CURP",
-		valorllave:$("#CURP").val(),
+		valorllave:$("#CURP").val().toUpperCase(),
 		
 		ESTESCPROC: $("#ESTESCPROC").val() ,
 	    ESCPROC: $("#ESCPROC").val() , 
@@ -507,14 +517,14 @@ function guardarPag4(){
 		tabla:"aspirantes",
 		bd:"Mysql",
 		campollave:"CURP",
-		valorllave:$("#CURP").val(),
+		valorllave:$("#CURP").val().toUpperCase(),
 		
 		ESTRES: $("#ESTRES").val() , 
 			MUNRES: $("#MUNRES").val() , 
-			CIUDADRES: $("#CIUDADRES").val() , 
-			CALLE : $("#CALLE").val() ,
-			NUMEROCALLE : $("#NUMEROCALLE").val() ,
-			COLONIA: $("#COLONIA").val() , 
+			CIUDADRES: $("#CIUDADRES").val().toUpperCase() , 
+			CALLE : $("#CALLE").val().toUpperCase() ,
+			NUMEROCALLE : $("#NUMEROCALLE").val().toUpperCase() ,
+			COLONIA: $("#COLONIA").val().toUpperCase() , 
 			CP : $("#CP").val() ,
 			TELCEL : $("#TELCEL").val() ,
 			TELCASA : $("#TELCASA").val() ,
@@ -539,15 +549,15 @@ function guardarPag5(){
 		tabla:"aspirantes",
 		bd:"Mysql",
 		campollave:"CURP",
-		valorllave:$("#CURP").val(),
+		valorllave:$("#CURP").val().toUpperCase(),
 		
 		SM : $("#SM").val() ,
-		SMINSTITUCION: $("#SMINSTITUCION").val() ,
+		SMINSTITUCION: $("#SMINSTITUCION").val().toUpperCase(),
 		SMNUMERO: $("#SMNUMERO").val() ,
-		TIPOSAN: $("#TIPOSAN").val() , 
-		PADRE: $("#PADRE").val() ,
+		TIPOSAN: $("#TIPOSAN").val().toUpperCase(), 
+		PADRE: $("#PADRE").val().toUpperCase() ,
 		PADREVIVE: $("#PADREVIVE").val() ,
-		MADRE: $("#MADRE").val() ,
+		MADRE: $("#MADRE").val().toUpperCase() ,
 		MADREVIVE: $("#MADREVIVE").val() , 
 		PADRETEL: $("#PADRETEL").val() , 
 		MADRETEL: $("#MADRETEL").val() 
@@ -572,19 +582,19 @@ function guardarPag6(){
 		tabla:"aspirantes",
 		bd:"Mysql",
 		campollave:"CURP",
-		valorllave:$("#CURP").val(),
-		TUTOR: $("#TUTOR").val() , 
+		valorllave:$("#CURP").val().toUpperCase(),
+		TUTOR: $("#TUTOR").val().toUpperCase() , 
 		ESTTUTOR: $("#ESTTUTOR").val() ,
 		MUNTUTOR: $("#MUNTUTOR").val() ,
-		CIUDADTUTOR: $("#CIUDADTUTOR").val() , 
-		CALLETUTOR: $("#CALLETUTOR").val() ,
-		NUMEROCALLETUTOR: $("#NUMEROCALLETUTOR").val() ,
-		COLONIATUTOR: $("#COLONIATUTOR").val() , 
+		CIUDADTUTOR: $("#CIUDADTUTOR").val().toUpperCase() , 
+		CALLETUTOR: $("#CALLETUTOR").val().toUpperCase() ,
+		NUMEROCALLETUTOR: $("#NUMEROCALLETUTOR").val().toUpperCase() ,
+		COLONIATUTOR: $("#COLONIATUTOR").val().toUpperCase() , 
 		CPTUTOR: $("#CPTUTOR").val() , 
 		TELCASATUTOR : $("#TELCASATUTOR").val() ,
 		TELCELTUTOR: $("#TELCELTUTOR").val() , 
 		CORREOTUTOR: $("#CORREOTUTOR").val() , 
-		TRABAJOTUTOR: $("#TRABAJOTUTOR").val() 
+		TRABAJOTUTOR: $("#TRABAJOTUTOR").val().toUpperCase() 
 		};
 		$.ajax({
 			type: "POST",
@@ -606,7 +616,7 @@ function finalizar(){
 		tabla:"aspirantes",
 		bd:"Mysql",
 		campollave:"CURP",
-		valorllave:$("#CURP").val(),
+		valorllave:$("#CURP").val().toUpperCase(),
 		FINALIZADO:"S"
 		};
 
@@ -617,7 +627,7 @@ function finalizar(){
 			url:"../nucleo/base/actualiza.php",
 			data: parametros,
 			success: function(data){   
-				window.open("ficha.php?curp="+$("#CURP").val()+"&ciclo="+elciclo, '_blank');      			        	
+				window.open("ficha.php?curp="+$("#CURP").val().toUpperCase()+"&ciclo="+elciclo, '_blank');      			        	
 				location. reload();
 										 
 		},

@@ -106,6 +106,7 @@
 
 <script type="text/javascript">
 
+/*
 $(document).ready(function() {
     $('#example').DataTable( {
         "scrollY": 200,
@@ -124,6 +125,7 @@ function getHash(){
 	console.log(sha512('JOSE'));
 	//form.submit();
 }
+
 
 
 
@@ -382,7 +384,7 @@ function ver(){
 	});
 
 
-
+*/
 	
 	
 
