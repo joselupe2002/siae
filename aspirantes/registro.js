@@ -242,7 +242,7 @@ var elciclo="";
 
 					ESTESCPROC:{min: 1},
 					ESCPROC:{min: 1},
-					PROMBAC : {required : true,number: true, min:6, max:10},
+					PROMBAC : {required : true,number: true, min:60, max:100},
 
 					EDORES:{min: 1},
 					MUNIRES:{min: 1},
