@@ -103,9 +103,10 @@
 									<input  class="UNO form-control width-100" name="CURP" id="CURP" />
 									<i class="ace-icon fa fa-pencil-square"></i>
 								</span>
-								<button onclick="window.open('https://www.gob.mx/curp/', '_blank');" class="btn btn-white  btn-info btn-round">Buscar CURP
+								<span title="Consulte su CURP en la página oficial" class="label label-success" style="cursor:pointer;" onclick="window.open('https://www.gob.mx/curp/', '_blank');" 
+								         class="btn btn-white  btn-info btn-round">Buscar CURP
 						            <i class="ace-icon fa fa-search icon-on-right"></i>
-					            </button>
+								</span>
 							</div>
 							<!--================ CARRERA  DEL ASPIRANTE ======================-->
 							<div class="col-sm-3"> 
