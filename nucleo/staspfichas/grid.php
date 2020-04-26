@@ -158,6 +158,7 @@
    var elcorte;
    var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223","240,7,7","240,7,12"];
    var ladefault="<img src=\"../../imagenes/menu/esperar.gif\"> </img>";
+   colorbtn=["btn-yellow","btn-light","btn-pink","btn-grey","btn-success","btn-info","btn-warning","btn-danger","btn-primary"];                            
 
    $(document).ready(function($) { 
        var Body = $('body'); 
@@ -224,7 +225,7 @@
                     });
 
                     //Cargamos datos de las carreras aspirantes 
-                           colorbtn=["btn-yellow","btn-light","btn-pink","btn-grey","btn-success","btn-info","btn-warning","btn-danger","btn-primary"];                            
+                         
                             elsqlSolCar="SELECT a.CARR_DESCRIP AS CARRERA, a.CARR_DESCORTA AS CARRERACOR,"+
                                        "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"'"+
                                        " and CARRERA=CARR_CLAVE) AS NUM FROM ccarreras a WHERE a.CARR_OFERTAR='S' order by CARR_DESCRIP";                                                       
@@ -249,18 +250,18 @@
                             elsqlSolCarFin="SELECT a.CARR_DESCRIP AS CARRERA, a.CARR_DESCORTA AS CARRERACOR,"+
                                        "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"' and FINALIZADO='S' "+
                                        " and CARRERA=CARR_CLAVE) AS NUM FROM ccarreras a WHERE a.CARR_OFERTAR='S' order by CARR_DESCRIP";                                                       
-                            c=0;
+                            c2=0;
                             $.ajax({
                                 type: "GET",
                                 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlSolCarFin),
                                 success: function(dataCarFin){   
                                     jQuery.each(JSON.parse(dataCarFin), function(clave, valor) {
-                                         $("#lascarrerasFin").append("<span title=\""+valor.CARRERA+"\" class=\"btn btn-app btn-sm "+colorbtn[c]+" no-hover\">"+
+                                         $("#lascarrerasFin").append("<span title=\""+valor.CARRERA+"\" class=\"btn btn-app btn-sm "+colorbtn[c2]+" no-hover\">"+
 													              "   <span class=\"line-height-1 bigger-170\">"+valor.NUM+"</span>"+
                                                                   "   <br /> "+
 													              "   <span class=\"line-height-1 smaller-60\"> "+valor.CARRERACOR+" </span>"+
                                                                   "</span>");
-                                                                  c++;
+                                                                  c2++;
                                      });
                                    
                                 }
