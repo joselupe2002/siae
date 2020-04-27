@@ -10,10 +10,91 @@
 	$nivel="../../";
 	
 
-	
+	class VariableStream
+{
+    private $varname;
+    private $position;
+
+    function stream_open($path, $mode, $options, &$opened_path)
+    {
+        $url = parse_url($path);
+        $this->varname = $url['host'];
+        if(!isset($GLOBALS[$this->varname]))
+        {
+            trigger_error('Global variable '.$this->varname.' does not exist', E_USER_WARNING);
+            return false;
+        }
+        $this->position = 0;
+        return true;
+    }
+
+    function stream_read($count)
+    {
+        $ret = substr($GLOBALS[$this->varname], $this->position, $count);
+        $this->position += strlen($ret);
+        return $ret;
+    }
+
+    function stream_eof()
+    {
+        return $this->position >= strlen($GLOBALS[$this->varname]);
+    }
+
+    function stream_tell()
+    {
+        return $this->position;
+    }
+
+    function stream_seek($offset, $whence)
+    {
+        if($whence==SEEK_SET)
+        {
+            $this->position = $offset;
+            return true;
+        }
+        return false;
+    }
+    
+    function stream_stat()
+    {
+        return array();
+    }
+}
+
+
 	
 	class PDF extends FPDF {
        
+
+        function __construct($orientation='P', $unit='mm', $size='A4')
+        {
+            parent::__construct($orientation, $unit, $size);
+            // Register var stream protocol
+            stream_wrapper_register('var', 'VariableStream');
+        }
+    
+        function MemImage($data, $x=null, $y=null, $w=0, $h=0, $link='')
+        {
+            // Display the image contained in $data
+            $v = 'img'.md5($data);
+            $GLOBALS[$v] = $data;
+            $a = getimagesize('var://'.$v);
+            if(!$a)
+                $this->Error('Invalid image data');
+            $type = substr(strstr($a['mime'],'/'),1);
+            $this->Image('var://'.$v, $x, $y, $w, $h, $type, $link);
+            unset($GLOBALS[$v]);
+        }
+    
+        function GDImage($im, $x=null, $y=null, $w=0, $h=0, $link='')
+        {
+            // Display the GD image associated with $im
+            ob_start();
+            imagepng($im);
+            $data = ob_get_clean();
+            $this->MemImage($data, $x, $y, $w, $h, $link);
+        }
+        /*============================================================================================*/
         
         function parseVar($key='',$value='') {
             if(empty($key) or empty($value)) return;
@@ -133,8 +214,23 @@
 				return $data;
 			}
           
+
+            function LoadFoto()
+			{	
+                $data=[];			
+                $miConex = new Conexion();
+                $sql="select RUTA from adjaspirantes a where a.AUX='FOTO".$_GET["curp"]."'";
+                
+				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
+				foreach ($resultado as $row) {
+					$data[] = $row;
+				}
+				return $data;
+            }
+            
             function LoadDatosAspirantes()
-			{				
+			{	
+                $data=[];			
                 $miConex = new Conexion();
                 $sql="select * from vaspirantes where CURP='".$_GET["curp"]."' and CICLO='".$_GET["ciclo"]."'";
                //echo $sql;
@@ -208,37 +304,47 @@
             function ficha() {
                 $dataAlum = $this->LoadDatosAspirantes();             
                 $dataCiclo = $this->LoadDatosCiclo();
-                $miutil = new UtilUser();                
- 
+                $dataFoto = $this->LoadFoto();
+                $miutil = new UtilUser();    
+                if (!empty($dataFoto)) { 
+                    $lafoto=$dataFoto[0][0]; 
+                    $logo = file_get_contents($lafoto);
+                    $this->MemImage($logo,20,37,22,28);
+                }
+
                 $fecha=date("d/m/Y"); 
                 $this->SetFont('Montserrat-SemiBold','B',10);
 
                 $this->Ln(5);
                 $this->SetFont('Montserrat-Black','',10);   
                 $this->SetFillColor(172,31,8);
-                $this->SetTextColor(255);                     
+                $this->SetTextColor(255);     
+                $this->SetX(60);                   
                 $this->Cell(30,5,utf8_decode("No. de Ficha"),1,0,'C',true);
-                $this->Cell(60,5,utf8_decode("Periodo"),1,0,'C',true);
-                $this->Cell(40,5,utf8_decode("Aula"),1,0,'C',true);
-                $this->Cell(40,5,utf8_decode("Fecha"),1,0,'C',true);
+                $this->Cell(40,5,utf8_decode("Periodo"),1,0,'C',true);
+                $this->Cell(30,5,utf8_decode("Aula"),1,0,'C',true);
+                $this->Cell(30,5,utf8_decode("Fecha"),1,0,'C',true);
                 $this->Ln(5);
 
                 $this->SetFillColor(172,31,6);
                 $this->SetTextColor(0);
+                $this->SetX(60);
                 $this->Cell(30,5,utf8_decode($dataAlum[0]["IDASP"]),1,0,'C');
-                $this->Cell(60,5,utf8_decode($dataCiclo[0]["CICL_DESCRIP"]),1,0,'C');
-                $this->Cell(40,5,utf8_decode($dataAlum[0]["CARR_AULAADMINISION"]),1,0,'C');
-                $this->Cell(40,5,utf8_decode($fecha),1,0,'C');
+                $this->Cell(40,5,utf8_decode($dataCiclo[0]["CICL_DESCRIP"]),1,0,'C');
+                $this->Cell(30,5,utf8_decode($dataAlum[0]["CARR_AULAADMINISION"]),1,0,'C');
+                $this->Cell(30,5,utf8_decode($fecha),1,0,'C');
                 $this->Ln(5);
                 
                 $this->SetFont('Montserrat-Black','',10);   
                 $this->SetFillColor(172,31,8);
-                $this->SetTextColor(255);                     
-                $this->Cell(170,5,utf8_decode("ASPIRANTE"),1,0,'C',true);            
+                $this->SetTextColor(255);       
+                $this->SetX(60);              
+                $this->Cell(130,5,utf8_decode("ASPIRANTE"),1,0,'C',true);            
                 $this->Ln(5);
                 $this->SetFillColor(172,31,6);
                 $this->SetTextColor(0);
-                $this->Cell(170,5,utf8_decode($dataAlum[0]["NOMBRE"]." ".$dataAlum[0]["APEPAT"]." ".$dataAlum[0]["APEMAT"]),1,0,'C');
+                $this->SetX(60);
+                $this->Cell(130,5,utf8_decode($dataAlum[0]["NOMBRE"]." ".$dataAlum[0]["APEPAT"]." ".$dataAlum[0]["APEMAT"]),1,0,'C');
                 $this->Ln(15);
 
                 $this->SetFont('Montserrat-Black','',10);   
@@ -248,6 +354,7 @@
                 $this->Cell(85,5,utf8_decode("2DA OPCIÓN"),1,0,'C',true);
                 $this->Ln(5);
 
+                $this->SetFont('Montserrat-Black','',8);  
                 $this->SetFillColor(172,31,6);
                 $this->SetTextColor(0);
                 $this->Cell(85,5,utf8_decode($dataAlum[0]["CARRERAD"]),1,0,'C');
@@ -328,8 +435,8 @@
                 $this->SetTextColor(0);
                 $this->SetWidths(array(90,40,40));
                 $this->Row(array( utf8_decode($dataAlum[0]["ESCPROCD"]),
-                                  utf8_decode($dataAlum[0]["ESTESCPROCD"]),
-                                  utf8_decode($dataAlum[0]["MUNESCPROCD"])
+                                  utf8_decode($dataAlum[0]["MUNESCPROCD"]),
+                                  utf8_decode($dataAlum[0]["ESTESCPROCD"])
                                  ));
 
                 $this->SetFillColor(172,31,6);

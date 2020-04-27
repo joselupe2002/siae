@@ -114,6 +114,7 @@ var elciclo="";
 		$("#CURP").change(function(){
 			encontre=false;
 			
+			//mostrarEspera("esperaCURP","grid_registro","Cargando..");
 			//Verificamos si la CURP ya fue registrada anteriormente 
 			elsql="SELECT CURP, FINALIZADO FROM aspirantes where CURP='"+$("#CURP").val().toUpperCase()+"' and CICLO='"+elciclo+"'";
 			$.ajax({
@@ -123,13 +124,17 @@ var elciclo="";
 						jQuery.each(JSON.parse(data), function(clave, valor) { 
 								if (valor.FINALIZADO=='S') {
 									lacurp=$("#CURP").val();
-									mostrarConfirm("confirmReimpresion", "grid_registro", "Registro finalizado","la CURP "+lacurp+" ya cuenta con un registro finalizado para este periodo",
-		                             "¿Desea reimprimir su ficha?","Reimprimir", "reimprimir('"+lacurp+"');");
+									mostrarConfirm("confirmReimpresion", "grid_registro", "Registro finalizado",
+									"<span class=\"lead text-danger\"><strong> la CURP <span class=\"lead text-success\"> "+lacurp+" </span> ya cuenta con un registro finalizado para este periodo</span>",
+		                             "¿Desea reimprimir su ficha?","Reimprimir", "reimprimir('"+lacurp+"');","modal-lg");
 									$("#CURP").val("");
 									$("#CURP").focus();
 								}	
 								else { 
-									alert ("Al parecer ya se registro anteriormente en este ciclo, pero no ha finalizado su registro se cargaran los datos capturados anteriormente para que finalize su registro")
+									mostrarIfo("infoYa", "grid_registro", "Registro no Finalizado",
+									"<span class=\"lead text-danger\"><strong> Al parecer ya se registro anteriormente en este ciclo,"+
+									" pero no ha finalizado su registro se cargaran los datos capturados anteriormente para que "+
+									" finalize su registro</strong></span>","modal-lg");
 									elsqlbus="SELECT * from aspirantes where CURP='"+$("#CURP").val()+"' and CICLO='"+elciclo+"'";
 									$.ajax({
 										type: "GET",
@@ -176,8 +181,7 @@ var elciclo="";
 												$("#TELCEL").val(valor.TELCEL );
 												$("#TELCASA").val(valor.TELCASA );
 												$("#CORREO").val(valor.CORREO );
-												$("#SM").val(valor.SM );
-												$("#SMINSTITUCION").val(valor.SMINSTITUCION );
+												$("#SM").val(valor.SM );											
 												$("#SMNUMERO").val(valor.SMNUMERO);
 												$("#TIPOSAN").val(valor.TIPOSAN);
 												$("#PADRE").val(valor.PADRE);
@@ -199,10 +203,13 @@ var elciclo="";
 												$("#CORREOTUTOR").val(valor.CORREOTUTOR);
 												$("#TRABAJOTUTOR").val(valor.TRABAJOTUTOR);
 												$("#CURP").prop("disabled","true");
+												$("#CURP").val($("#CURP").val().toUpperCase());
+												//ocultarEspera("esperaCURP");
 											}); 				   
 										},
 									error: function(data) {	                  
 											alert('ERROR: '+data);
+											//ocultarEspera("esperaCURP");
 										}
 								});
 									}
@@ -243,17 +250,18 @@ var elciclo="";
 					ESTESCPROC:{min: 1},
 					ESCPROC:{min: 1},
 					PROMBAC : {required : true,number: true, min:60, max:100},
+					SMNUMERO: {required : true,number: true, maxlength:11, minlength:11},
 
 					EDORES:{min: 1},
 					MUNIRES:{min: 1},
 					CIUDADRES:{ required: true},
 					CALLE:{ required: true},
 					CP : {number: true},
-					TELCEL : {required : true, number: true},
+					TELCEL : {required : true, number: true,maxlength:10, minlength:10},
 					CORREO : {required : true, email: true},
 
 					TUTOR : {required: true},
-					TELCELTUTOR : {required : true, number: true},
+					TELCELTUTOR : {required : true, number: true,maxlength:10, minlength:10},
 					CORREOTUTOR : {required : true, email: true},
 
 
@@ -274,17 +282,24 @@ var elciclo="";
 					ESTESCPROC: "Debe elegir el estado de la escuela de procedencia",
 					ESCPROC: "Debe elegir una escuela de procedencia",
 					PROMBAC: {required: "Debe colocar su promedio de Bachiller", number: "No es un número valido", min:"El promedio debe ser  entre 60 a 100",max:"El promedio debe ser  entre 60 a 100"},
+					SMNUMERO: {required: "Debe colocar su número de IMSS", number: "No es un número valido",
+					           maxlength:"El número de afiliación debe ser de 11 carácteres",
+							   minlength:"El número de afiliación debe ser de 11 carácteres"},
 
 					EDORES: "Debe elegir su estado de Residencia actual",
 					MUNIRES: "Debe elegir su municipio de Residencia actual",
 					CIUDADRES:"Debe colocar su ciudado localidad de Residencia actual",
 					CALLE:"Debe colocar su dirección de Residencia actual",
 					CP : "El CP debe ser número",
-					TELCEL : {required:"Se requiere número de celular",number:"debe colocar sólo números"},
+					TELCEL : {required:"Se requiere número de celular",number:"debe colocar sólo números",
+					          maxlength:"El número de TELÉFONO debe ser de 10 números",
+					          minlength:"El número de TELÉFONO debe ser de 10 números"},
 					CORREO : {required:"Se requiere correo electrónico",email:"El email no es correcto"},
 
 					TUTOR: "Debe colocar el nombre de un tutor",
-					TELCELTUTOR : {required:"Se requiere número de celular de tutor",number:"debe colocar sólo números"},
+					TELCELTUTOR : {required:"Se requiere número de celular de tutor",number:"debe colocar sólo números",
+					               maxlength:"El número de TELÉFONO debe ser de 10 números",
+					               minlength:"El número de TELÉFONO debe ser de 10 números"},
 					CORREOTUTOR : {required:"Se requiere correo electrónico de tutor",email:"El email no es correcto"},
 					
 			}			
@@ -350,7 +365,7 @@ var elciclo="";
 				}
                 
 				
-				if(info.step == 5) {
+				if(info.step == 5) {					
 					var form = $( "#frmReg5" ); form.validate(); campo=sonvalidos(form);
 					if (!(campo=="")) { e.preventDefault();}
 					else {guardarPag5();}
@@ -519,7 +534,7 @@ function guardarPag4(){
 		campollave:"CURP",
 		valorllave:$("#CURP").val().toUpperCase(),
 		
-		ESTRES: $("#ESTRES").val() , 
+		    ESTRES: $("#ESTRES").val() , 
 			MUNRES: $("#MUNRES").val() , 
 			CIUDADRES: $("#CIUDADRES").val().toUpperCase() , 
 			CALLE : $("#CALLE").val().toUpperCase() ,
@@ -552,7 +567,6 @@ function guardarPag5(){
 		valorllave:$("#CURP").val().toUpperCase(),
 		
 		SM : $("#SM").val() ,
-		SMINSTITUCION: $("#SMINSTITUCION").val().toUpperCase(),
 		SMNUMERO: $("#SMNUMERO").val() ,
 		TIPOSAN: $("#TIPOSAN").val().toUpperCase(), 
 		PADRE: $("#PADRE").val().toUpperCase() ,
@@ -651,8 +665,29 @@ function apareceEdit(id,op){
 
 
 function confirmarFinalizado(){
-		mostrarConfirm("confirmFinalizar", "grid_registro", "Finalizar Proceso","Al finalizar el proceso ya no podrá relaizar cambios en sus datos, y su información será enviada para cotejamiento",
-		"¿Esta usted Seguro?","Finalizar Proceso", "finalizar();");
+	todos=true;
+	$( ".imgadj" ).each(function( index ) {
+		if ($(this).attr("cargado")=='N') {
+			todos=false;
+		}
+		
+	});
+
+	if (todos) {
+		mostrarConfirm("confirmFinalizar", "grid_registro", "Finalizar Proceso",
+		"<span class=\"lead text-danger\"><strong> Al finalizar el proceso ya no podrá relaizar "+
+		"cambios en sus datos, y su información será "+
+		"enviada para cotejamiento.</span>"+
+		"<span class=\"lead text-danger\"><strong>Al finalizar se visualizará una ficha, la cuál de guardar e imprimir y será presentada el día de su exámen</span>"+
+		"</strong>",
+		"¿Esta usted Seguro?","Finalizar Proceso", "finalizar();","modal-lg");
+	}
+	else {
+		mostrarIfo("infoFalta", "grid_registro", "Documentos Adjuntos",
+				   "<span class=\"lead text-danger\"><strong>Su registro no puede ser Finalizado </strong></span> "+
+				   "<span class=\"lead text-warning\"><strong> Al parecer no ha adjuntado todos los documentos, "+
+									" si tiene problema con alguno su registro quedá guardado para continuar posteriormente solo capturando su CURP</strong></span>","modal-lg");
+	}
 }
 
 
@@ -664,12 +699,51 @@ function cargarAdjuntos() {
 			 " (SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' ORDER BY CICL_ORDEN DESC LIMIT 1) AS CICLO "+
 	         " from documaspirantes a "+
 	         "LEFT OUTER JOIN  adjaspirantes b  on (b.AUX=concat(a.CLAVE,'"+$("#CURP").val()+"'))"+
-			 " WHERE a.ENLINEA='S'";
+			 " WHERE a.ENLINEA='S' order by TIPOADJ, DOCUMENTO";
 	$.ajax({
 		type: "GET",
 		url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlAdj),
 		success: function(data){    
-			$("#listaadj").empty();				              	
+			$("#listaadj").empty();		
+			$("#listaadj").append(
+				                "<div class=\"alert alert-danger\" style=\"padding:0px; margin:0px;\">"+
+								"   <div class=\"row\" style=\"padding:0px;  margin:0px;\">"+								  
+			                      "    <div class=\"col-sm-1\" style=\"padding:0px; margin:0px;\" ></div>"+
+								  "    <div class=\"col-sm-8\" style=\"padding:0px; margin:0px;\">"+								  
+								  "             <p><strong><span class=\"text-success\">Nota:</span>"+
+								  "	              <span class=\"text-primary \">Todos los documentos a excepción de la FOTO se deben adjuntar en formato PDF. </span>"+
+								  " 	          <span class=\"text-danger\"> Máximo 4MB</span>"+								                       
+								  "             </strong></p> "+
+								  "    </div>"+								  								
+								  "    <div class=\"col-sm-2\" style=\"padding:0px; margin:0px;\">"+								  
+								  "            <a href=\"https://www.ilovepdf.com/es/jpg_a_pdf\" target=\"_blank\">"+
+								  "                 <span title=\"Click para ir a una página que le ayude en la conversión de imagenes a formato PDF\" "+
+								  "                       class=\"label  label-danger label-white middle\">Convertir Imagen-PDF</span>"+
+								  "            </a>"+
+								  "    </div>"+								 
+								  "    <div class=\"col-sm-1\" style=\"padding:0px; margin:0px;\"></div>"+
+								  "</div>"+								
+								  "<div class=\"row\" style=\"padding:0px;  margin:0px;\"  >"+								  
+								  "    <div class=\"col-sm-1\" style=\"padding:0px; margin:0px;\"></div>"+
+								  "    <div class=\"col-sm-8\" style=\"padding:0px; margin:0px;\" >"+
+								  "             <p><strong><span class= \"text-success\">FOTO INFANTIL:</span>"+
+								  "	              <span class=\"text-primary \">Deberá ser en formato <span class=\"badge badge-pink\">PNG</span>"+
+								  " 	          <span class=\"text-danger\"> Máximo 4MB</span> blanco y negro o a color </span>"+
+								  "             </strong></p> "+
+								  "     </div>"+
+								  "     <div class=\"col-sm-3\" style=\"padding:0px; margin:0px;\">"+
+								  "               <a href=\"https://www.iloveimg.com/es/recortar-imagen\" target=\"_blank\">"+
+								  "                      <span title=\"Click para ir a una página que le ayude a recortar imágenes\" "+
+								  "                      class=\"label  label-purple label-white middle\">   Recortar Imágen</span>"+
+								  "                </a>"+
+								  "               <a href=\"https://imagen.online-convert.com/es/convertir-a-png\" target=\"_blank\">"+
+								  "                      <span title=\"Click para ir a una página que le ayude a convertir imagenes a PNG\" "+
+								  "                      class=\"label  label-pink label-white middle\">Convertir a PNG</span>"+
+								  "                </a>"+
+								  "     </div>"+
+								  "</div>"+
+								"</div>"); 
+
 			jQuery.each(JSON.parse(data), function(clave, valor) { 
 				   stElim="display:none; cursor:pointer;";
 					if (valor.RUTA.length>0) { stElim="cursor:pointer; display:block; ";} 
@@ -684,7 +758,7 @@ function cargarAdjuntos() {
 					"        </div>"+
 					"        <div class=\"col-sm-1\" style=\"padding-top:5px;\">"+
 					"           <a target=\"_blank\" id=\"enlace_RUTA_"+valor.CLAVE+"\" href=\""+valor.RUTA+"\">"+
-					"                 <img width=\"40px\" height=\"40px\" id=\"pdf_"+valor.CLAVE+"\" name=\"pdf_"+valor.CLAVE+"\" src=\"..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
+					"                 <img class=\"imgadj\" cargado=\"S\" width=\"40px\" height=\"40px\" id=\"pdf_"+valor.CLAVE+"\" name=\"pdf_"+valor.CLAVE+"\" src=\"..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
 					"           </a>"+
 					"           <i style=\""+stElim+"\"  id=\"btnEli_RUTA_"+valor.CLAVE+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
 					"            onclick=\"eliminarEnlaceDriveAsp('file_"+valor.CLAVE+"','ASPIRANTES_"+valor.CICLO+"',"+
@@ -694,7 +768,7 @@ function cargarAdjuntos() {
 
 					
 
-					if ((contDatos % 2)==1) {contFila++; fila="<div class=\"row\" id=\"fila"+contFila+"\"><div  class=\"col-sm-1\"></div</div>"; }
+					if ((contDatos % 2)==1) {contFila++; fila="<div class=\"row\" style=\"padding:0px;\" id=\"fila"+contFila+"\"><div  class=\"col-sm-1\"></div></div>"; }
 					else {fila="";}
 					
 					$("#listaadj").append(fila);
@@ -704,12 +778,13 @@ function cargarAdjuntos() {
 						
 					
 				   if (valor.RUTA=='') { 
-					   $('#enlace_RUTA'+valor.CLAVE).attr('disabled', 'disabled');
+					   $('#enlace_RUTA'+valor.CLAVE).attr('disabled', 'disabled');					  
 					   $('#enlace_RUTA'+valor.CLAVE).attr('href', '../imagenes/menu/pdfno.png');
-					   $('#pdf_'+valor.CLAVE).attr('src', "../imagenes/menu/pdfno.png");		                    
+					   $('#pdf_'+valor.CLAVE).attr('src', "../imagenes/menu/pdfno.png");
+					   $('#pdf_'+valor.CLAVE).attr('cargado', 'N');		                    
 					  }
 				
-					if (((valor.TIPOADJ.indexOf("png")>0) || (valor.TIPOADJ.indexOf("bmp")>0)) && !(valor.RUTA=='')) {			
+					if (((valor.TIPOADJ.indexOf("png")>=0) || (valor.TIPOADJ.indexOf("bmp")>=0)) && !(valor.RUTA=='')) {			
 						$('#pdf_'+valor.CLAVE).attr('src', valor.RUTA);	
 					}
 												

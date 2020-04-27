@@ -162,7 +162,7 @@
 				</div><!-- Fin del panel 1-->
 <!--================ =======================================================================================-->					
 				<div class="step-pane" data-step="2">
-				    <form style="width: 100%" method="post" id="frmReg2" name="frmReg">
+				    <form style="width: 100%" method="post" id="frmReg2" name="frmReg2">
 					<fieldset>
 					<!--================================LINEA 1 PANEL 2 ================================-->
 					<div class="row">
@@ -270,7 +270,7 @@
 <!--================ =======================================================================================-->					
 				
 				<div class="step-pane" data-step="3">
-				    <form style="width: 100%" method="post" id="frmReg3" name="frmReg">
+				    <form style="width: 100%" method="post" id="frmReg3" name="frmReg3">
 					<fieldset>
 					<!--================================LINEA 1 PANEL 3 ================================-->
 					<div class="row">
@@ -352,7 +352,7 @@
 
 <!--================ =======================================================================================-->									
 				<div class="step-pane" data-step="4">
-				    <form style="width: 100%" method="post" id="frmReg4" name="frmReg">
+				    <form style="width: 100%" method="post" id="frmReg4" name="frmReg4">
 					<fieldset>
 
 					
@@ -393,7 +393,7 @@
 						</div>
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">21</span> No.</strong> 
+								<strong><span class="badge badge-info">21</span> No. Ext/Int</strong> 
 							</label>															   
 							<input  class="CUATRO form-control width-100" name="NUMEROCALLE"   id="NUMEROCALLE" />														   							
 						</div>
@@ -428,43 +428,39 @@
 						</div>
 						<div class="col-sm-3"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">26</span> Correo Electrónico</strong> 
+								<strong><span class="badge badge-info">26</span> Correo Electrónico <span class="label label-danger">Importante</span></strong> 
 							</label>															   
 							<input  class="CUATRO form-control width-100" name="CORREO"   id="CORREO" />														   							
 						</div>
 						<div class="col-sm-1"> </div>						
 					</div>	
+					</fieldset>
+				    </form>
 				</div><!-- Fin del panel 4-->
 
 <!--================ =======================================================================================-->					
 				<div class="step-pane" data-step="5">
-				    <form style="width: 100%" method="post" id="frmReg5" name="frmReg">
+				    <form style="width: 100%" method="post" id="frmReg5" name="frmReg5">
 					<fieldset>
 
 					<!--================================LINEA 1 PANEL 5 ================================-->
 					<div class="row">
 					    <div class="col-sm-1"> </div>
-						<div class="col-sm-2"> 
+						<div class="col-sm-4"> 
 								<label class="text-primary">
 									<strong><span class="badge badge-info">27</span> Servicio Médico</strong> 
 								</label>								
 							    <Select  class="CINCO form-control width-100" name="SM" id="SM">									
 								</select>								
 						</div>
-						<div class="col-sm-3"> 
-								<label class="text-primary">
-									<strong><span class="badge badge-info">28</span> Institución</strong> 
-								</label>
-								<input  class="CINCO form-control width-100" name="SMINSTITUCION"   id="SMINSTITUCION" />								
-							 							
-						</div>
+						
 						<div class="col-sm-3"> 
 						       <label class="text-primary">
-									<strong><span class="badge badge-info">29</span> No. Afiliación</strong> 
+									<strong><span class="badge badge-info">29</span> No. Afiliación IMSS (Bachiller)</strong> 
 								</label>															   
 								<input  class="CINCO form-control width-100" name="SMNUMERO"   id="SMNUMERO" />
 						</div>
-						<div class="col-sm-2"> 
+						<div class="col-sm-3"> 
 						       <label class="text-primary">
 									<strong><span class="badge badge-info">30</span> Tipo de Sangre</strong> 
 								</label>															   
@@ -542,7 +538,7 @@
 				</div><!-- Fin del panel 5-->
 <!--================ =======================================================================================-->					
 				<div class="step-pane" data-step="6">
-				    <form style="width: 100%" method="post" id="frmReg6" name="frmReg">
+				    <form style="width: 100%" method="post" id="frmReg6" name="frmReg6">
 					<fieldset>
 					<!--================================LINEA 1 PANEL 6 ================================-->
 					<div class="row">
@@ -586,7 +582,7 @@
 						</div>
 						<div class="col-sm-1"> 
 						    <label class="text-primary">
-								<strong><span class="badge badge-info">42</span> No.</strong> 
+								<strong><span class="badge badge-info">42</span> No. Ext/Int</strong> 
 							</label>															   
 							<input  class="SEIS form-control width-100" name="NUMEROCALLETUTOR"   id="NUMEROCALLETUTOR" />														   							
 						</div>
@@ -611,13 +607,13 @@
 						       <label class="text-primary">
 									<strong><span class="badge badge-info">45</span> Télefono Celular</strong> 
 								</label>															   
-								<input  class="CUATRO form-control width-100" name="TELCASATUTOR"   id="TELCASATUTOR" />
+								<input  class="CUATRO form-control width-100" name="TELCELTUTOR"   id="TELCELTUTOR" />
 						</div>	
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
 								<strong><span class="badge badge-info">46</span> Teléfono de casa</strong> 
 							</label>															   
-							<input  class="SEIS form-control width-100" name="TELCELTUTOR"   id="TELCELTUTOR" />														   							
+							<input  class="SEIS form-control width-100" name="TELCASATUTOR"   id="TELCASATUTOR" />														   							
 						</div>
 						<div class="col-sm-2"> 
 						    <label class="text-primary">
@@ -636,8 +632,8 @@
 				    </form>			
 				</div><!-- Fin del panel 6-->
 <!--================ =======================================================================================-->					
-					<div class="step-pane" data-step="7" id="listaadj">
-						
+					<div class="step-pane" data-step="7" id="listaadj" style="padding-top: 0px; margin:0px;">
+					    
 					</div>
 			</div>
 

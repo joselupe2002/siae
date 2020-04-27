@@ -220,9 +220,12 @@ function mostrarEspera (nombre,contenedor, mensaje){
 	$('#'+nombre).modal({show:true, backdrop: 'static'});
 }
 
-function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,mensajebtn, eventoConfirm){
+function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,mensajebtn, eventoConfirm,tam){
+	$("#"+nombre).empty();
+	tamMsj="110";
+	if (tam="modal-lg") {tamMsj="160";} 
 	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
-	           "   <div class=\"modal-dialog modal-sm \" role=\"document\">"+
+	           "   <div class=\"modal-dialog "+tam+"\" role=\"document\">"+
                "         <div class=\"modal-content\">"+
                "             <div class=\"modal-header bg-info\" >"+
 			   "                  <span><i class=\"menu-icon green fa-2x fa fa-info\"></i>"+
@@ -235,13 +238,13 @@ function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,
 			   "             <div class=\"modal-body\" style=\"text-align: center;\">"+
 			   "                   <div class=\"alert alert-info bigger-110\">"+mensajeInfo+"</div>"+
 			   "                    <div class=\"space-6\"></div>"+
-			   "                    <p class=\"bigger-110 bolder center grey\">"+
-			   "                        <i class=\"ace-icon fa fa-hand-o-right blue bigger-120\"></i>"+mensajeConfirm+
+			   "                    <p class=\"bigger-"+tamMsj+" bolder center grey\">"+
+			   "                        <i class=\"ace-icon fa fa-hand-o-right blue bigger-"+tamMsj+"\"></i><strong>"+mensajeConfirm+"</strong>"+
 		       "                    </p>"+
 			   "             </div>"+     
 			   "             <div class=\"modal-footer\"> "+               
 			   "                  <button type=\"button\" class=\"btn btn-white  btn-danger btn-round\" data-dismiss=\"modal\">Cancelar</button>"+
-			   "                  <button type=\"button\" class=\"btn btn-white  btn-info btn-round\" onclick=\""+eventoConfirm+"\">"+mensajebtn+"</button>"+
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" onclick=\""+eventoConfirm+"\"><strong>"+mensajebtn+"</strong></button>"+
                "             </div>"+
                "         </div>"+
                "   </div>"+
@@ -249,6 +252,37 @@ function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,
 	$("#"+contenedor).append(script);
 	$('#'+nombre).modal({show:true, backdrop: 'static'});
 }
+
+
+function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
+	tamMsj="110";
+	$("#"+nombre).empty();
+	if (tam="modal-lg") {tamMsj="160";} 
+	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog "+tam+"\" role=\"document\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-success\" >"+
+			   "                  <span><i class=\"menu-icon yellow fa-2x fa fa-info\"></i>"+
+			   "                        <span class=\"text-success lead \"> <strong>"+titulo+"</strong></span>"+
+			   "                  </span>"+
+			   "                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"> "+
+               "                        <span aria-hidden=\"true\">&times;</span> "+
+               "                  </button> "+
+    		   "             </div>"+
+			   "             <div class=\"modal-body\" style=\"text-align: center;\">"+
+			   "                   <div class=\"alert alert-info bigger-110\">"+mensajeInfo+"</div>"+
+			   "                    <div class=\"space-6\"></div>"+
+			   "             </div>"+     
+			   "             <div class=\"modal-footer\"> "+               
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-danger btn-round\" data-dismiss=\"modal\">Aceptar</button>"+
+			   "             </div>"+
+               "         </div>"+
+               "   </div>"+
+               "</div>";
+	$("#"+contenedor).append(script);
+	$('#'+nombre).modal({show:true, backdrop: 'static'});
+}
+
 
 function ocultarEspera (nombre){
 	$('#'+nombre).modal("hide");  

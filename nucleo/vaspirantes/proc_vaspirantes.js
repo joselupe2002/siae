@@ -273,7 +273,7 @@ function marcarPagado(modulo,usuario,essuper){
 		"     <textarea id=\"obsPagado\" style=\"width:100%; height:100%; resize: none;\">"+table.rows('.selected').data()[0]["OBSPAGO"]+"</textarea>",
 		"¿Marcar como Pagado? "+
 		"<SELECT id=\"pagado\"><OPTION value=\"S\">S</OPTION><OPTION value=\"N\">N</OPTION></SELECT>"
-		,"Finalizar Proceso", "btnMarcarPagado('"+table.rows('.selected').data()[0]["IDASP"]+"');");
+		,"Finalizar Proceso", "btnMarcarPagado('"+table.rows('.selected').data()[0]["IDASP"]+"');","modal-sm");
 	}
 	else {alert ("El registro de este aspirante no esta finalizado");}
 }
@@ -293,7 +293,7 @@ function marcarCotejado(modulo,usuario,essuper){
 		"     <textarea id=\"obsCotejado\" style=\"width:100%; height:100%; resize: none;\">"+table.rows('.selected').data()[0]["OBSCOTEJO"]+"</textarea>",
 		"¿Marcar como Cotejado? "+
 		"<SELECT id=\"cotejado\"><OPTION value=\"S\">S</OPTION><OPTION value=\"N\">N</OPTION></SELECT>"
-		,"Finalizar Proceso", "btnMarcarCotejado('"+table.rows('.selected').data()[0]["IDASP"]+"');");
+		,"Finalizar Proceso", "btnMarcarCotejado('"+table.rows('.selected').data()[0]["IDASP"]+"');","modal-sm");
 	}
 	else {alert ("El registro de este aspirante no esta finalizado");}
 }
