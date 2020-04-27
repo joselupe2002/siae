@@ -709,7 +709,7 @@ function subirPDFDriveSaveAsp(nombreComponente,carpeta,nombreImg, nombreInput, e
 	   	    				    		$("#"+nombreImg).attr("src","../imagenes/menu/pdf.png");
 	   	    				    		$("#"+nombreImg+"_2").attr("src","../imagenes/menu/pdf.png");
 										   
-										if ((extensiones.indexOf("png")>0) || (extensiones.indexOf("bmp")>0) ){
+										if ((extensiones.indexOf("png")>=0) || (extensiones.indexOf("bmp")>=0) ){
 											$("#"+nombreImg).attr("src",laimagen);
 											$("#"+nombreImg+"_2").attr("src",laimagen);
 										}
