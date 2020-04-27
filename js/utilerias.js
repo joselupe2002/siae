@@ -221,7 +221,7 @@ function mostrarEspera (nombre,contenedor, mensaje){
 }
 
 function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,mensajebtn, eventoConfirm,tam){
-	$("#"+nombre).empty();
+	$("#"+nombre).remove();
 	tamMsj="110";
 	if (tam="modal-lg") {tamMsj="160";} 
 	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
@@ -256,7 +256,7 @@ function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,
 
 function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
 	tamMsj="110";
-	$("#"+nombre).empty();
+	$("#"+nombre).remove();
 	if (tam="modal-lg") {tamMsj="160";} 
 	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
 	           "   <div class=\"modal-dialog "+tam+"\" role=\"document\">"+
