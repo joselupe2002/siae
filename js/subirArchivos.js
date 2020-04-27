@@ -682,7 +682,7 @@ function subirPDFDriveSaveAsp(nombreComponente,carpeta,nombreImg, nombreInput, e
 	    				 
 	    				  
 	   	    			  jQuery.ajax({
-	   	    				    url: preruta+'subirArchivoDrive.php?carpeta='+carpetaDrive+'&inputFile=archivo&imganterior='+elid+"&modo=pdf",
+	   	    				    url: preruta+'subirArchivoDriveAsp.php?carpeta='+carpetaDrive+'&inputFile=archivo&imganterior='+elid+"&modo=pdf",
 	   	    				    data: data,
 	   	    				    cache: false,
 	   	    				    timeout: 600000, 
@@ -697,7 +697,7 @@ function subirPDFDriveSaveAsp(nombreComponente,carpeta,nombreImg, nombreInput, e
 			   	    					      //eliminamos archivo anterior en caso de existir
 			  	   		    				  if (elid.length>0) {	    					  
 			  	   		    					  jQuery.ajax({
-			  	   		    		   	    		  url: preruta+'eliminarArchivoDrive.php?idfile='+elid,
+			  	   		    		   	    		  url: preruta+'eliminarArchivoDriveAsp.php?idfile='+elid,
 			  	   		    		   	    	      cache: false,
 			  	   		    		   	    		  timeout: 600000, 
 			  	   		    		   	    		  contentType: false,
@@ -752,7 +752,7 @@ function eliminarEnlaceDriveAsp(nombreComponente,carpeta,nombreImg, nombreInput,
 	     preruta="";
 	     if (fuera=='S') {preruta="..\\nucleo\\base\\";}
 	     jQuery.ajax({
-	   	    		  url: preruta+'eliminarArchivoDrive.php?idfile='+elid,
+	   	    		  url: preruta+'eliminarArchivoDriveAsp.php?idfile='+elid,
 	   	    	      cache: false,
 	   	    		  timeout: 600000, 
 	   	    		  contentType: false,
