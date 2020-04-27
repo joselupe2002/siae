@@ -667,7 +667,7 @@ function apareceEdit(id,op){
 function confirmarFinalizado(){
 	todos=true;
 	$( ".imgadj" ).each(function( index ) {
-		if ($(this).attr("cargado")=='N') {
+		if ($(this).attr("src").indexOf("pdfno.png")>=0) {
 			todos=false;
 		}	
 	});
@@ -677,7 +677,7 @@ function confirmarFinalizado(){
 		"<span class=\"lead text-danger\"><strong> Al finalizar el proceso ya no podrá relaizar "+
 		"cambios en sus datos, y su información será "+
 		"enviada para cotejamiento.</span>"+
-		"<span class=\"lead text-danger\"><strong>Al finalizar se visualizará una ficha, la cuál de guardar e imprimir y será presentada el día de su exámen</span>"+
+		"<span class=\"lead text-danger\"><strong> Al finalizar se visualizará una ficha, la cuál deberá guardar e imprimir y presentarla el día de su exámen</span>"+
 		"</strong>",
 		"¿Esta usted Seguro?","Finalizar Proceso", "finalizar();","modal-lg");
 	}
