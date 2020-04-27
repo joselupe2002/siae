@@ -667,10 +667,11 @@ function apareceEdit(id,op){
 function confirmarFinalizado(){
 	todos=true;
 	$( ".imgadj" ).each(function( index ) {
+		alert ($(this).attr("cargado"));
 		if ($(this).attr("cargado")=='N') {
+			
 			todos=false;
-		}
-		
+		}	
 	});
 
 	if (todos) {
