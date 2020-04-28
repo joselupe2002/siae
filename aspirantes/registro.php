@@ -150,7 +150,7 @@
 						 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						 <span class="text-inverse bigger-140">Certificado de Secundaria</span><br/>
 						 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						 <span class="text-inverse bigger-140">Constancia de estudio de sexto semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>
+						 <span class="text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>
 						 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						 <span class="text-inverse bigger-140">Recibo de Pago</span><br/>
 				</strong>
