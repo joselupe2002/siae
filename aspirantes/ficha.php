@@ -131,7 +131,7 @@
                     //Draw the border
                     $this->Rect($x,$y,$w,$h);
                     //Print the text
-                    $this->MultiCell($w,5,$data[$i],0,$a);
+                    $this->MultiCell($w,4,$data[$i],0,$a);
                     //Put the position to the right of the cell
                     $this->SetXY($x+$w,$y);
                 }
@@ -345,8 +345,9 @@
                 $this->SetTextColor(0);
                 $this->SetX(60);
                 $this->Cell(130,5,utf8_decode($dataAlum[0]["NOMBRE"]." ".$dataAlum[0]["APEPAT"]." ".$dataAlum[0]["APEMAT"]),1,0,'C');
-                $this->Ln(15);
+                $this->Ln(5);
 
+                $this->Ln(10);
                 $this->SetFont('Montserrat-Black','',10);   
                 $this->SetFillColor(172,31,8);
                 $this->SetTextColor(255);                     
@@ -418,7 +419,7 @@
                                 utf8_decode($dataAlum[0]["CORREO"]),
                                 utf8_decode($dataAlum[0]["RFC"])
                                 ));
-                $this->Ln(15);
+                $this->Ln(5);
                 $this->SetFont('Montserrat-Black','',10);   
                 $this->SetFillColor(1,68,106);
                 $this->SetTextColor(255);   
@@ -460,7 +461,7 @@
                                 utf8_decode($dataAlum[0]["EDONACD"])
                                 ));
 
-                $this->Ln(15);  
+                $this->Ln(5);  
                 $this->SetFont('Montserrat-Black','',8); 
                 $this->SetFillColor(1,68,106);
                 $this->SetTextColor(255);  
@@ -471,6 +472,40 @@
                 $this->SetFillColor(172,31,6);
                 $this->SetTextColor(0);
                 $this->SetWidths(array(170));
+                $this->SetAligns(array('J'));
+
+                $this->Row(array(utf8_decode("¡ADVERTENCIA!\n".
+                "El procedimiento de inscripción está sujeto a la normatividad aplicable emitida por el ".
+                "Tecnológico Nacional de México, por lo que su observancia es obligatoria para quienes desean ".
+                "ingresar a una institución del sistema, como lo es el Instituto Tecnológico Superior de Macuspana.".
+                "\n".
+                "En consecuencia, la falta de un requisito, por ejemplo, no haber concluido sus estudios de bachillerato (adeudo de materias) u otras análogas; ".
+                " para realizar su inscripción, produce la invalidación de su procedimiento de inscripción en esta institución; ". 
+                " por ello, se le invita a que realice el pago de inscripción SOLO SI, cuenta con la documentación y requisitos ". 
+                " solicitados para su inscripción. \n". 
+                "En caso contrario, lo hace Usted, bajo su más estricta responsabilidad en el entendido de que su inscripción será nula, en cualquier momento, ". 
+                " aunque haya realizado el pago por concepto de inscripción o cursado asignaturas, y las consecuencias que ". 
+                " deriven de lo anterior solo son imputables a quien realiza el pago. \n\n".
+                "RECIBIRÁ UN CORREO ELECTRÓNICO INDICANDO LA FECHA Y HORA DE ".
+                "ENTREGA DE DOCUMENTOS ORIGINALES, ASÍ COMO DEL DÍA DE PRESENTACIÓN DEL EXAMEN DE INGRESO. \n\n"           
+            )));
+            $this->SetDrawColor(255);
+            $this->Ln(5);   
+            $this->Row(array(utf8_decode("Protesto que los datos aquí asentados y la información que adjunte en ".
+            "formato electrónico es fidedigna y que soy el único responsable de la misma.")));
+            
+            $this->Ln(15); 
+            $this->SetTextColor(0);  
+            $this->SetFont('Montserrat-Black','',8); 
+            $this->setX(70);
+            $this->Cell(65,1,"",1,1,'C',true);
+            $this->Cell(170,5,utf8_decode($dataAlum[0]["NOMBRE"]." ".$dataAlum[0]["APEPAT"]." ".$dataAlum[0]["APEMAT"]),'T',0,'C',false);
+
+
+
+
+
+                /*
                 $this->Cell(170,5,utf8_decode("Exámen Nacional de Ingreso a la Educación Superior: ".
                                              $dataCiclo[0]["CICL_FECHAADMISION"]. "   Hora: ".$dataCiclo[0]["CICL_HORADMISION"]),'LR',1,'L',false);
                 $this->Cell(170,5,utf8_decode("Favor de presentarse 30 Min. antes del Exámen con: "),'LR',1,'L',false);
@@ -482,7 +517,13 @@
                 $this->Cell(170,5,utf8_decode("Solictud impresa de la Ficha"),'LR',1,'L',false);   
                 $this->Cell(170,5,utf8_decode("Cálculadora básica"),'LR',1,'L',false);
                 $this->Cell(170,5,utf8_decode("NOTA: ES REQUISITO PARA SU INSCRIPCIÓN LLEVAR LOS CURSOS DE INDUCCIÓN"),'LRB',1,'L',false);
+*/
 
+
+                
+                
+
+                
 /*
                 $this->SetFont('Montserrat-SemiBold','B',10);
                 $this->setX(50);

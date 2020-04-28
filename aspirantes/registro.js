@@ -674,10 +674,12 @@ function confirmarFinalizado(){
 
 	if (todos) {
 		mostrarConfirm("confirmFinalizar", "grid_registro", "Finalizar Proceso",
-		"<span class=\"lead text-danger\"><strong> Al finalizar el proceso ya no podrá relaizar "+
+		"<span class=\"lead text-danger\"><strong> Al finalizar el proceso ya no podrá realizar "+
 		"cambios en sus datos, y su información será "+
 		"enviada para cotejamiento.</span>"+
-		"<span class=\"lead text-danger\"><strong> Al finalizar se visualizará una ficha, la cuál deberá guardar e imprimir y presentarla el día de su exámen</span>"+
+		"<span class=\"lead text-danger\"><strong> Se visualizará una ficha, la cuál deberá "+
+		"guardar e imprimir y presentarla el día de su exámen.</span>"+
+		"<span class=\"lead text-black\"><strong> En caso de extraviar su ficha, podrá reimprimirla ingresando a esta misma página y capturando su CURP</span>"+
 		"</strong>",
 		"¿Esta usted Seguro?","Finalizar Proceso", "finalizar();","modal-lg");
 	}
