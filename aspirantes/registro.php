@@ -173,6 +173,16 @@
               </div>
 		</div>
 
+		<div class="row" style="padding-top: 10px; text-align:justify;"> 
+			 <div class="col-sm-12">
+				  <span class="badge badge-warning bigger-120">8</span>
+				  <strong>
+				  <span class="text-success bigger-120"> Al finalizar su registro si desea imprimir nuevamente su ficha, solo ingrese al registro, coloque su CURP y le dará la opción de Imprimir su Ficha</span> 			  
+				  </strong>
+              </div>
+		</div>
+
+
 	</div>
 </div>
 
