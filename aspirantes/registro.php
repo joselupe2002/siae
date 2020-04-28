@@ -459,6 +459,11 @@
 									<strong><span class="badge badge-info">29</span> No. Afiliación IMSS (Bachiller)</strong> 
 								</label>															   
 								<input  class="CINCO form-control width-100" name="SMNUMERO"   id="SMNUMERO" />
+								<span title="Consulte su CURP en la página oficial" class="label label-success" style="cursor:pointer;" 
+								         onclick="window.open('https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS;JSESSIONIDASEGEXTERNO=SpgaCff8MRCqwDIw13E4NlcwPXSkV1jKBE6u0cilknwtWuzE4o0r!-1509158015', '_blank');" 
+								         class="btn btn-white  btn-info btn-round">Buscar IMSS
+						            <i class="ace-icon fa fa-search icon-on-right"></i>
+								</span>
 						</div>
 						<div class="col-sm-3"> 
 						       <label class="text-primary">

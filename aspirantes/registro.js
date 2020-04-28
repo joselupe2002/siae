@@ -727,6 +727,7 @@ function cargarAdjuntos() {
 								  "    <div class=\"col-sm-8\" style=\"padding:0px; margin:0px;\" >"+
 								  "             <p><strong><span class= \"text-success\">FOTO INFANTIL:</span>"+
 								  "	              <span class=\"text-primary \">Deberá ser en formato <span class=\"badge badge-pink\">PNG</span>"+
+								  "	              <span class=\"badge badge-success\">JPEG</span>"+
 								  " 	          <span class=\"text-danger\"> Máximo 4MB</span> blanco y negro o a color </span>"+
 								  "             </strong></p> "+
 								  "     </div>"+
