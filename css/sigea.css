@@ -44,3 +44,9 @@ input.error{
   color: #c51244;
   border: 1px solid #c51244 !important; 
 }
+
+
+@font-face {
+  font-family: Girassol;
+  src: url("../fonts/Girassol-Regular.ttf");
+  }

@@ -52,16 +52,16 @@
 
 
 	<div style="height:10px; background-color: #C18900;"> </div>
-	<div class="container-fluid informacion">   
+	<div class="container-fluid informacion" style="background-color: #9B0B0B;">   
          <div class="row">
              <div class="col-md-4" >
                    <img src="../imagenes/empresa/logo2.png" alt="" width="50%" class="img-fluid" alt="Responsive image" />  
 			  </div>
 			  <div class="col-md-4" >
-				   <div class="text-success" style="font-size:25px; text-align:center; font-weight: bold;">
-						  Proceso de Admisión
+				   <div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">
+						  PROCESO DE ADMISIÓN
 				    </div>
-				   <div class="text-primary"  style="font-size:30px; text-align:center; font-weight: bold;">2020</div>
+				   <div class="text-primary"  style="padding:0px; font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">2020</div>
 			  </div>
 			  <div class="col-md-4" style="padding-top: 20px; text-align: right;">
 			        <button onclick="window.open('registroCapt.php', '_blank'); " class="btn btn-white bigger-180  btn-info btn-round btn-next">
@@ -127,10 +127,9 @@
 				  <a href="docCuenta.pdf" target="_blank">
 					  <span class="label label-white label-success middle">Datos Cuenta</span>
 				  </a>
-				  <br/>
-				  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-				  <strong><span class="text-primary bigger-140">CUENTA: </span><span class="text-success bigger-140">0114349660</span></strong><br/>
-				  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+				  <br/>				  
+				  <strong><span class="text-primary bigger-140">CUENTA: </span><span class="text-success bigger-140">0114349660</span></strong><br/>				   
+				  <strong><span class="text-primary bigger-140">CLABE : </span><span class="text-success bigger-140">012790001143496603</span></strong><br/> 
 				  <strong><span class="text-primary bigger-140">BANCO : </span><span class="text-success bigger-140">BBVA Bancomer</span></strong>
               </div>
 		</div>
@@ -140,18 +139,12 @@
 				  <span class="badge badge-pink bigger-120">5</span>
 				  <span class="text-light bigger-120"> Deberá tener los siguientes documentos en PDF</span> 
 				  <br/>				  
-				  <strong>
-				         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-					     <span class="text-inverse bigger-140">Acta de Nacimiento</span><br/>
-				         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						 <span class="text-inverse bigger-140">Clave Única de registro de Población</span><br/>
-						 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						 <span class="text-inverse bigger-140">Número de Seguridad Social Expedida por el IMSS</span><br/>
-						 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						 <span class="text-inverse bigger-140">Certificado de Secundaria</span><br/>
-						 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						 <span class="text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>
-						 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				  <strong>				         
+					     <span class="text-inverse bigger-140">Acta de Nacimiento</span><br/>				         
+						 <span class="text-inverse bigger-140">Clave Única de registro de Población</span><br/>						 
+						 <span class="text-inverse bigger-140">Número de Seguridad Social Expedida por el IMSS</span><br/>						 
+						 <span class="text-inverse bigger-140">Certificado de Secundaria</span><br/>						 
+						 <span class="text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>						 
 						 <span class="text-inverse bigger-140">Recibo de Pago</span><br/>
 				</strong>
               </div>
@@ -216,6 +209,12 @@
 					</div>
 					<div class="row"> 
 							<div class="col-md-12"> 
+								<i class="ace-icon fa fa-phone white bigger-150"></i>
+								<span style="color:white; font-weight: bold;"> 9360000000</span>
+							</div>
+					</div>
+					<div class="row"> 
+							<div class="col-md-12"> 
 								<i class="ace-icon fa fa-headphones white bigger-150"></i>
 								<span style="color:white; font-weight: bold;"> 9933000870</span>
 							</div>
@@ -234,7 +233,16 @@
 								<i class="ace-icon fa fa-map-marker green bigger-150"></i>
 								<span style="color:white; font-weight: bold;"> Avenida Tecnológico s/n, Lerdo de Tejada 1ra Secc.</span>
 						    </div>
-					</div>			
+					</div>
+					<div class="row"> 
+							<div class="col-md-12"> 								
+								<span style="color:white; font-weight: bold;"> Macuspana, Tabasco, C.P. 86719</span>
+						    </div>
+					</div>
+					
+					
+
+					
 			  </div>
 
 			  <div class="col-md-1" style="padding-top: 20px; text-align: right;">
