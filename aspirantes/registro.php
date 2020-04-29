@@ -207,16 +207,10 @@
 					</div>
 					<div class="row"> 
 							<div class="col-md-12"> 
-								<i class="ace-icon fa fa-phone white bigger-150"></i>
-								<span style="color:white; font-weight: bold;"> 9360000000</span>
+								<i class="ace-icon fa fa-envelope-o white bigger-150"></i>
+								<span style="color:white;">escolares@macuspana.tecnm.mx</span>
 							</div>
-					</div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<i class="ace-icon fa fa-headphones white bigger-150"></i>
-								<span style="color:white; font-weight: bold;"> 9933000870</span>
-							</div>
-					</div>
+					</div>				
 			  </div>				
 
 			  <div class="col-md-4" >
