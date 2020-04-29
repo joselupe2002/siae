@@ -34,7 +34,7 @@ var elciclo="";
 		actualizaSelect("ESTTUTOR","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
 		actualizaSelect("MUNTUTOR","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
 
-		actualizaSelect("AREACONOC","SELECT CLAVE, NOMBRE FROM areaconoc order by NOMBRE","NORMAL","FUERA"); 
+		actualizaSelect("AREACONOC","SELECT CLAVE, NOMBRE FROM areaconoc order by CLAVE","NORMAL","FUERA"); 
 
 		actualizaSelect("ESTRES","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
         actualizaSelect("MUNRES","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
@@ -251,6 +251,7 @@ var elciclo="";
 					ESCPROC:{min: 1},
 					PROMBAC : {required : true,number: true, min:60, max:100},
 					SMNUMERO: {required : true,number: true, maxlength:11, minlength:11},
+					AREACONOC:{min: 1},
 
 					EDORES:{min: 1},
 					MUNIRES:{min: 1},
@@ -259,6 +260,7 @@ var elciclo="";
 					CP : {number: true},
 					TELCEL : {required : true, number: true,maxlength:10, minlength:10},
 					CORREO : {required : true, email: true},
+
 
 					TUTOR : {required: true},
 					TELCELTUTOR : {required : true, number: true,maxlength:10, minlength:10},
@@ -285,6 +287,7 @@ var elciclo="";
 					SMNUMERO: {required: "Debe colocar su número de IMSS", number: "No es un número valido",
 					           maxlength:"El número de afiliación debe ser de 11 carácteres",
 							   minlength:"El número de afiliación debe ser de 11 carácteres"},
+					AREACONOC:"Debe elegir una opción de area de conocimiento de bachiller",
 
 					EDORES: "Debe elegir su estado de Residencia actual",
 					MUNIRES: "Debe elegir su municipio de Residencia actual",
