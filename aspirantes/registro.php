@@ -65,8 +65,8 @@
 			  </div>
 			  <div class="col-md-4" style="padding-top: 20px; text-align: right;">
 			        <button onclick="window.open('registroCapt.php', '_blank'); " class="btn btn-white bigger-180  btn-info btn-round btn-next">
-						 <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-						 <strong><span class="text-primary">Registrarme</span></strong>						
+						 <i class="ace-icon fa fa-pencil green icon-on-right"></i>
+						 <strong><span style="font-family:'Girassol';"class="text-primary">Registrarme</span></strong>						
 					</button>
 			  </div>
         </div>
@@ -79,27 +79,27 @@
 	<div>
 	    <div class="row"> 
 			 <div class="col-sm-12 text-center">
-				  <span class="text-danger bigger-300"><strong>INFORMACIÓN IMPORTANTE</strong></span> 
+				  <span class="fontAmaranthB text-danger bigger-300"><strong>INFORMACIÓN IMPORTANTE</strong></span> 
               </div>
 		</div>
 		<div class="row"> 
 			 <div class="col-sm-12">
-				  <span class="text-light bigger-120">Antes de iniciar tu proceso de pre-inscripción es necesario que tomes en cuente la documentación que debes tener a la mano para que sea más ágil tu registro. 
+				  <span class="fontAmaranthB text-light bigger-120">Antes de iniciar tu proceso de pre-inscripción es necesario que tomes en cuente la documentación que debes tener a la mano para que sea más ágil tu registro. 
 				  </span> 
               </div>
 		</div>
 		<div class="row" style="padding-top: 10px; text-align:justify;"> 
 			 <div class="col-sm-12">
 				  <span class="badge badge-primary bigger-120">1</span>
-				  <span class="text-light bigger-120">Clave Única de registro de Población CURP. la cuál será tu identificador como aspirante, por lo que se debe capturar correctamente. 
+				  <span class="fontAmaranth text-light bigger-120">Clave Única de registro de Población CURP. la cuál será tu identificador como aspirante, por lo que se debe capturar correctamente. 
 				  </span> 
 				  <a href="https://www.gob.mx/curp/" target="_blank"><span class="label label-white label-success middle">Consulta tu CURP</span></a>
               </div>
 		</div>
 		<div class="row" style="padding-top: 10px; text-align:justify;"> 
 			 <div class="col-sm-12">
-				  <span class="badge badge-success bigger-120">2</span>
-				  <span class="text-light bigger-120">Número de Seguro Social del IMSS, que fue otorgado en tu Bachiller  
+				  <span class="fontAmaranth badge badge-success bigger-120">2</span>
+				  <span class="fontAmaranth text-light bigger-120">Número de Seguro Social del IMSS, que fue otorgado en tu Bachiller  
 				  </span> 
 				  <a  target="_blank" href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS;JSESSIONIDASEGEXTERNO=SpgaCff8MRCqwDIw13E4NlcwPXSkV1jKBE6u0cilknwtWuzE4o0r!-1509158015">
 					  <span class="label label-white label-success middle">Consulta tu IMSS</span>
@@ -109,8 +109,8 @@
 		<div class="row" style="padding-top: 10px; text-align:justify;"> 
 			 <div class="col-sm-12">
 				  <span class="badge badge-danger bigger-120">3</span>
-				  <span class="text-light bigger-120"> Constancia de Estudios de Educación Media Superior. 
-					  <span class="text-danger">En caso de no contar con ella por la situación actual deberá 
+				  <span class="fontAmaranth text-light bigger-120"> Constancia de Estudios de Educación Media Superior. 
+					  <span class="fontAmaranth text-danger">En caso de no contar con ella por la situación actual deberá 
 						                        llenar el documento de prorroga, firmarlo, escanearlo y subirlo en la sección de Constancia en formato PDF <i class="ace-icon blue fa fa-hand-o-right"></i> </span>  
 				  </span> 
 				  <a href="docProroga.docx">
@@ -121,39 +121,37 @@
 		<div class="row" style="padding-top: 10px; text-align:justify;"> 
 			 <div class="col-sm-12">
 				  <span class="badge badge-yellow bigger-120">4</span>
-				  <span class="text-light bigger-120"> Haber realizado el pago correspondiente de
-					  <span class="text-danger bigger-140"> $ 545.00 </span> por concepto de Ficha. Debe tener escaneado en formato PDF el Recibo
+				  <span class="fontAmaranth text-light bigger-120"> Haber realizado el pago correspondiente de
+					  <span class="fontAmaranth text-danger bigger-140"> $ 545.00 </span> por concepto de Ficha. Debe tener escaneado en formato PDF el Recibo
 				  </span>
 				  <a href="docCuenta.pdf" target="_blank">
-					  <span class="label label-white label-success middle">Datos Cuenta</span>
+					  <span class="fontAmaranth label label-white label-success middle">Datos Cuenta</span>
 				  </a>
 				  <br/>				  
-				  <strong><span class="text-primary bigger-140">CUENTA: </span><span class="text-success bigger-140">0114349660</span></strong><br/>				   
-				  <strong><span class="text-primary bigger-140">CLABE : </span><span class="text-success bigger-140">012790001143496603</span></strong><br/> 
-				  <strong><span class="text-primary bigger-140">BANCO : </span><span class="text-success bigger-140">BBVA Bancomer</span></strong>
+				  <strong><span class="fontAmaranthB text-primary bigger-140">CUENTA: </span><span class="text-success bigger-140">0114349660</span></strong><br/>				   
+				  <strong><span class="fontAmaranthB text-primary bigger-140">CLABE : </span><span class="text-success bigger-140">012790001143496603</span></strong><br/> 
+				  <strong><span class="fontAmaranthB text-primary bigger-140">BANCO : </span><span class="text-success bigger-140">BBVA Bancomer</span></strong>
               </div>
 		</div>
 
 		<div class="row" style="padding-top: 10px; text-align:justify;"> 
 			 <div class="col-sm-12">
 				  <span class="badge badge-pink bigger-120">5</span>
-				  <span class="text-light bigger-120"> Deberá tener los siguientes documentos en PDF</span> 
-				  <br/>				  
-				  <strong>				         
-					     <span class="text-inverse bigger-140">Acta de Nacimiento</span><br/>				         
-						 <span class="text-inverse bigger-140">Clave Única de registro de Población</span><br/>						 
-						 <span class="text-inverse bigger-140">Número de Seguridad Social Expedida por el IMSS</span><br/>						 
-						 <span class="text-inverse bigger-140">Certificado de Secundaria</span><br/>						 
-						 <span class="text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>						 
-						 <span class="text-inverse bigger-140">Recibo de Pago</span><br/>
-				</strong>
+				  <span class="fontAmaranthB  text-light bigger-140"> Deberá tener los siguientes documentos en PDF</span> 
+				  <br/>				  				         
+					     <span class="fontAmaranth  text-inverse bigger-140">Acta de Nacimiento</span><br/>				         
+						 <span class="fontAmaranth  text-inverse bigger-140">Clave Única de registro de Población</span><br/>						 
+						 <span class="fontAmaranth  text-inverse bigger-140">Número de Seguridad Social Expedida por el IMSS</span><br/>						 
+						 <span class="fontAmaranth  text-inverse bigger-140">Certificado de Secundaria</span><br/>						 
+						 <span class="fontAmaranth  text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>						 
+						 <span class="fontAmaranth text-inverse bigger-140">Recibo de Pago</span><br/>
               </div>
 		</div>
 
 		<div class="row" style="padding-top: 10px; text-align:justify;"> 
 			 <div class="col-sm-12">
 				  <span class="badge badge-purple bigger-120">6</span>
-				  <span class="text-light bigger-120"> Fotografía infantil (blanco y negro o a color) en formato PNG o JPEG</span> 			  
+				  <span class="fontAmaranth  text-light bigger-120"> Fotografía infantil (blanco y negro o a color) en formato PNG o JPEG</span> 			  
               </div>
 		</div>
 
@@ -161,7 +159,7 @@
 			 <div class="col-sm-12">
 				  <span class="badge badge-success bigger-120">7</span>
 				  <strong>
-				  <span class="text-danger bigger-120"> Una vez que capture Su CURP, Carrera y Nombre Completo, su registro queda guardado y puede finalizarlo en cualquier momento.</span> 			  
+				  <span class=" fontAmaranth  text-danger bigger-120"> Una vez que capture Su CURP, Carrera y Nombre Completo, su registro queda guardado y puede finalizarlo en cualquier momento.</span> 			  
 				  </strong>
               </div>
 		</div>
@@ -170,7 +168,7 @@
 			 <div class="col-sm-12">
 				  <span class="badge badge-warning bigger-120">8</span>
 				  <strong>
-				  <span class="text-success bigger-120"> Al finalizar su registro si desea imprimir nuevamente su ficha, solo ingrese al registro, coloque su CURP y le dará la opción de Imprimir su Ficha</span> 			  
+				  <span class="fontAmaranth  text-success bigger-120"> Al finalizar su registro si desea imprimir nuevamente su ficha, solo ingrese al registro, coloque su CURP y le dará la opción de Imprimir su Ficha</span> 			  
 				  </strong>
               </div>
 		</div>

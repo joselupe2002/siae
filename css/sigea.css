@@ -23,6 +23,10 @@ top:10px;
 
 }
 
+
+
+  
+
 label.error{
     background: #ff2828 center left 2px no-repeat; 
     border: 2px solid #804040;
@@ -50,3 +54,27 @@ input.error{
   font-family: Girassol;
   src: url("../fonts/Girassol-Regular.ttf");
   }
+
+@font-face {
+    font-family: PermanentMarker;
+    src: url("../fonts/PermanentMarker-Regular.ttf");
+    }
+
+@font-face {
+      font-family: Amaranth;
+      src: url("../fonts/Amaranth-Regular.ttf");
+      }
+  
+@font-face {
+        font-family: AmaranthB;
+        src: url("../fonts/Amaranth-Bold.ttf");
+        }
+
+.fontAmaranth {
+        font-family: 'Amaranth';
+      }
+.fontAmaranthB {
+        font-family: 'AmaranthB';
+      }      
+
+    
