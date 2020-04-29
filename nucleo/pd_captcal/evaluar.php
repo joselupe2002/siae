@@ -185,7 +185,7 @@
 				        		 ab=parseInt(valor.ABIERTO)+parseInt(valor.ABIERTO2)+parseInt(valor.ABIERTO3);
 					        	 cadVer='C';
 					        	 if (ab>0) {cadVer='A';}
-				        		 $("#unidades").append("<option value=\""+valor.UNID_NUMERO+"\">"+utf8Decode(valor.UNID_NUMERO+" "+valor.UNID_DESCRIP)+" ("+cadVer+")</option>");       	     
+				        		 $("#unidades").append("<option value=\""+valor.UNID_NUMERO+"\">"+utf8Decode(valor.UNID_NUMERO+" "+valor.UNID_DESCRIP)+" |"+cadVer+"|</option>");       	     
 				               });
 				             },
 				         error: function(data) {	                  
@@ -203,7 +203,7 @@
         function cargarCalificaciones() {
         	 //Cargar Calificaciones
         	 launidad=parseInt($("#unidades").val());  
-        	 abierto=$('#unidades option:selected').text().split("(")[1];
+        	 abierto=$('#unidades option:selected').text().split("|")[1];
    
 	          
 			 $.ajax({
@@ -226,7 +226,7 @@
 
 				    	   
                             
-				    	    if (abierto=='A)') {
+				    	    if (abierto=='A') {
 
 				    	    	//Para capturar calificaciones
 				    	    	$("#row"+valor.ID).append("<td id=\"nombre_"+valor.ID+"\">"+"<select class=\"text-primary\" style=\"width:60px; font-size:11px;\" id=\"SEL_"+valor.ID+"\" "+
