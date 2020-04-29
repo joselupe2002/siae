@@ -182,7 +182,7 @@
 						</div>
 						<div class="col-sm-3"> 
 								<label class="text-primary">
-									<strong><span class="badge badge-info">7</span> Fecha Nacimiento dd/mm/aaaa</strong> 
+									<strong><span class="badge badge-info">7</span> Fecha Nacimiento <span class="text-danger">dd/mm/aaaa</span></strong> 
 								</label>								
 							    <div class="input-group">
     				                 <input class="TRES form-control editandotabla date-picker" name="FECHANAC" id="FECHANAC" type="text" autocomplete="off" data-date-format="dd/mm/yyyy" /> 
@@ -301,7 +301,7 @@
 					    <div class="col-sm-1"> </div>
 						<div class="col-sm-5"> 
 								<label class="text-primary">
-									<strong><span class="badge badge-info">14</span> Promedio Bachiller (Escala 60-100)</strong> 
+									<strong><span class="badge badge-info">14</span> Promedio Bachiller <span class="text-danger">(Escala 60-100 ej. 8.3=83)</span></strong> 
 								</label>	
 								<input  class="TRES form-control width-100" name="PROMBAC"   id="PROMBAC" />							
 							   							

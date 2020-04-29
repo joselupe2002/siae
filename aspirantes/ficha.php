@@ -487,7 +487,7 @@
                 " aunque haya realizado el pago por concepto de inscripción o cursado asignaturas, y las consecuencias que ". 
                 " deriven de lo anterior solo son imputables a quien realiza el pago. \n\n".
                 "RECIBIRÁ UN CORREO ELECTRÓNICO INDICANDO LA FECHA Y HORA DE ".
-                "ENTREGA DE DOCUMENTOS ORIGINALES, ASÍ COMO DEL DÍA DE PRESENTACIÓN DEL EXAMEN DE INGRESO. \n\n"           
+                "ENTREGA DE DOCUMENTOS ORIGINALES, ASÍ COMO TAMBIÉN DEL DÍA DE PRESENTACIÓN DEL EXAMEN DE INGRESO. \n\n"           
             )));
             $this->SetDrawColor(255);
             $this->Ln(5);   
