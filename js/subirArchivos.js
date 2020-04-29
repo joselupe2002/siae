@@ -302,7 +302,7 @@ function insertaPorta(campoid,id,campo,materia,tabla,aux){
 			data: parametros,
 			success: function(data){
 				$('#dlgproceso').modal("hide"); 
-				if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}
+				if (data.length>0) {alert ("Ocurrio un error: "+data);}
 				else {alert ("Se ha guardado el archivo de: "+materia);}		
 			}					     
 			});    	    

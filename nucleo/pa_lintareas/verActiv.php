@@ -180,15 +180,18 @@
 
 		
 
+
         function cargarActividades() {
  
-			 $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select  a.ID AS ID, a.CICLO as CICLO, a.RUTA AS RUTA, a.ACTIVIDAD AS ACTIVIDAD,IFNULL(b.ENVIADA,'') AS ENVIADA,"+
+			elsql="select  a.ID AS ID, a.CICLO as CICLO, a.RUTA AS RUTA, a.ACTIVIDAD AS ACTIVIDAD,IFNULL(b.ENVIADA,'') AS ENVIADA,"+
 				         " IFNULL(b.RUTA,'') AS RUTA2, IFNULL(b.FECHAENV,'') AS FECHARUTA2,IFNULL(a.ENLACE1,'') AS ENLACE1, IFNULL(a.ENLACE2,'') AS ENLACE2, IFNULL(a.ENLACE3,'') AS ENLACE3, a.FECHAENT as FECHAENT from linactdoc a LEFT OUTER JOIN lintareas b ON (concat(a.ID,'_<?php echo $_SESSION['usuario'];?>')=b.AUX)  where "+
 				          " GRUPO='<?php echo $_GET["grupo"];?>' and IDUNIDAD='"+$("#unidades").val()+"'"+
 				          " and CICLO='<?php echo $_GET["ciclo"];?>' and PROFESOR='<?php echo $_GET["profesor"];?>'"+
-				          " and MATERIA='<?php echo $_GET["materia"];?>' and PUBLICADA='S' order by ID"),
+						  " and MATERIA='<?php echo $_GET["materia"];?>' and PUBLICADA='S' order by ID";
+	
+			 $.ajax({
+		         type: "GET",
+		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
 		         success: function(data){    
 		        	 $("#lalista").empty();		                	
 		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 
@@ -284,7 +287,6 @@
 								 $('#pdfProf'+valor.ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
 		               	    }
 						
-
 		        		    if (valor.RUTA2=='') {								 
 								 $('#enlace_RUTA'+valor.ID).click(function(evt) {evt.preventDefault();});
 			                     $('#enlace_RUTA'+valor.ID).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
@@ -314,47 +316,51 @@
             }
 		
              function enviar(id,valor, idsolo){	
-            	 var f = new Date();
-            	 fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
-            			            	
-            	 if ($("#enlace_RUTA_"+idsolo).attr("href").length>0) { 
-		            	 parametros={tabla:"lintareas",						    		    	      
-		    			    	     bd:"Mysql",
-		    			    	     campollave:"AUX",
-		    			    	     valorllave:id,
-		    			             ENVIADA:valor,
-                                     FECHAENV:fechacap,
-                                     _INSTITUCION: "<?php echo $_SESSION["INSTITUCION"];?>",
-                                     _CAMPUS:"<?php echo $_SESSION["INSTITUCION"];?>"
-		    			             };	      
-		    			 $.ajax({
-		    			    		 type: "POST",
-		    			    		 url:"../base/actualiza.php",
-		    			    		 data: parametros,
-		    			    		 success: function(data){        			    		
-		    					     if (data.substring(0,2)=='0:') { 
-		    						        $('#dlgproceso').modal("hide"); 
-		    					    		alert ("Ocurrio un error: "+data); console.log(data);
-		    					     }
-		    					     else {
-		        					    	if (valor=='S') {
-		            					        alert("La actividad fue enviada exitosamente");            					    		    	      
-		            					    	$("#icopub"+id).removeClass("fa-unlock");
-		            					    	$("#icopub"+id).addClass("fa-lock");
-		            					    	cargarActividades();
-		            					    }
-		        					 if (valor=='N') { 
-		            					    	alert("La actividad se coloco como NO ENVIADA");
-		            					    	$("#icopub"+id).removeClass("fa-lock");
-		            					    	$("#icopub"+id).addClass("fa-unlock");        
-		            					    	cargarActividades();    					    		    	      
-		        					    	}
-		    					    		    		      
-		    					      }		                                	                                        					          
-		    			          }					     
-		    			    });
-            	 }
-            	 else { alert ("No ha adjuntado archivo PDF de la actividad");}                     	 
+				 if (confirm("¿Seguro que desea enviar su actividad, ya no podrá modificarla posteriormente?")) {
+
+			
+						var f = new Date();
+						fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
+												
+						if ($("#enlace_RUTA_"+idsolo).attr("href").length>0) { 
+								parametros={tabla:"lintareas",						    		    	      
+											bd:"Mysql",
+											campollave:"AUX",
+											valorllave:id,
+											ENVIADA:valor,
+											FECHAENV:fechacap,
+											_INSTITUCION: "<?php echo $_SESSION["INSTITUCION"];?>",
+											_CAMPUS:"<?php echo $_SESSION["INSTITUCION"];?>"
+											};	      
+								$.ajax({
+											type: "POST",
+											url:"../base/actualiza.php",
+											data: parametros,
+											success: function(data){        			    		
+											if (data.substring(0,2)=='0:') { 
+													$('#dlgproceso').modal("hide"); 
+													alert ("Ocurrio un error: "+data); console.log(data);
+											}
+											else {
+													if (valor=='S') {
+														alert("La actividad fue enviada exitosamente");            					    		    	      
+														$("#icopub"+id).removeClass("fa-unlock");
+														$("#icopub"+id).addClass("fa-lock");
+														cargarActividades();
+													}
+											if (valor=='N') { 
+														alert("La actividad se coloco como NO ENVIADA");
+														$("#icopub"+id).removeClass("fa-lock");
+														$("#icopub"+id).addClass("fa-unlock");        
+														cargarActividades();    					    		    	      
+													}
+																	
+											}		                                	                                        					          
+										}					     
+									});
+						}
+						else { alert ("No ha adjuntado archivo PDF de la actividad");}       
+					}              	 
     			}
 
              
