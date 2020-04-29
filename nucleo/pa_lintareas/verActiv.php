@@ -260,8 +260,8 @@
 							                          "      <div class=\"row\"> "+ 
 							                          "           <div class=\"col-sm-2\">"+
                                                       "                 <span><strong>Instrucciones:</strong></span>"+
-                                                      "                 <a target=\"_blank\" id=\"enlaceProf\" href=\""+valor.RUTA+"\">"+
-                                                      "                     <img width=\"40px\" height=\"40px\" id=\"pdfProf\" name=\"pdfProf\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
+                                                      "                 <a target=\"_blank\" id=\"enlaceProf"+valor.ID+"\" href=\""+valor.RUTA+"\">"+
+                                                      "                     <img width=\"40px\" height=\"40px\" id=\"pdfProf"+valor.ID+"\" name=\"pdfProf\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
                                                       "                 </a>"+
                                                       "           </div> "+ 
 							                          "           <div class=\"col-sm-2\">"+
@@ -274,16 +274,19 @@
                                                               botonEnviar+
                                                       "      </div> "+                                                                                                         
 						                              "</div>"+						                              
-				                              "</div>");
+											  "</div>");
+											  
+											  
 
-		        		    if (valor.RUTA=='') { 
-		        		    	 $('#enlaceProf'+valor.ID).attr('disabled', 'disabled');
+		        		    if (valor.RUTA=='') { 								
+								 $('#enlaceProf'+valor.ID).click(function(evt) {evt.preventDefault();});
 			                     $('#enlaceProf'+valor.ID).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
-			                     $('#pdfProf'+valor.ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");				                        		                       	                    
+								 $('#pdfProf'+valor.ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
 		               	    }
+						
 
-		        		    if (valor.RUTA2=='') {
-		        		    	 $('#enlace_RUTA'+valor.ID).attr('disabled', 'disabled');
+		        		    if (valor.RUTA2=='') {								 
+								 $('#enlace_RUTA'+valor.ID).click(function(evt) {evt.preventDefault();});
 			                     $('#enlace_RUTA'+valor.ID).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
 			                     $('#pdf_'+valor.ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	
 			        		    }

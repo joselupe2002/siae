@@ -293,7 +293,8 @@
                                                       "<a onclick=\"elimarActividad("+valor.ID+");\" class=\"red\" style=\"cursor: pointer;\"><i class=\"ace-icon fa fa-times bigger-125\"></i></a>"+
 						                           "</div>"+
 				                              "</div>");
-
+					 
+							
 		        		    if (valor.RUTA=='') { 
 		                        $('#enlace_RUTA'+valor.ID).attr('disabled', 'disabled');
 		                        $('#enlace_RUTA'+valor.ID).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');

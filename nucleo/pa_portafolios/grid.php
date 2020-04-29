@@ -198,7 +198,7 @@
 
 
     	    if (valor.RUTAENCUADRE=='') { 
-                $('#enlace_'+valor.MATERIA+"1").attr('disabled', 'disabled');
+				$('#enlace_'+valor.MATERIA+"1").attr('disabled', 'disabled');				
                 $('#enlace_'+valor.MATERIA+"1").attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
                 $('#pdf1_'+valor.MATERIA).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
        	    }
@@ -329,7 +329,7 @@ function impEncuadre(id, materia, descrip){
 	    		    		$("#elid").val()+"|"+ //id del detalle del grupo
 	    		    		$("#a_"+i+"_1").val()+"|"+    //fecha
 	    		    		$("#a_"+i+"_2").val()+"|"+    //evidencia de producto
-	    		    		$("#a_"+i+"_3").val()+"|"+    //evidencia de desempeño
+	    		    		$("#a_"+i+"_3").val()+"|"+    //evidencia de desempeï¿½o
 	    		            $("#a_"+i+"_4").val()+"|"+    //evidencia de conocimiento
 	    		            $("#a_"+i+"_5").val()+"|"+    //evidencia de actitud	    		            
 	    		            fechacap+"|<?php echo $_SESSION["usuario"];?>|<?php echo $_SESSION["INSTITUCION"];?>|<?php echo $_SESSION["CAMPUS"];?>";    //fechaCaptura +
@@ -504,7 +504,7 @@ function impEncuadre(id, materia, descrip){
 
 
 						  
-						//===================EVIDENCIAS DE DESEMPEÑO ==========================================			                        
+						//===================EVIDENCIAS DE DESEMPEï¿½O ==========================================			                        
 						  $("#rowUni"+c).append("<td width=\"20%\">"+
 	 	    		                "<input class=\"fileSigea\" type=\"file\" id=\"file2_"+c+"_"+valor.ENCU_ID+"\" name=\"file2_"+c+"_"+valor.ENCU_ID+"\""+
 	 	    	                    "onchange=\"subirPDFDriveSave('file2_"+c+"_"+valor.ENCU_ID+"','EVIDENCIAS_ALUM_"+$("#elciclo").html()+"','pdf2_"+c+"_"+valor.ENCU_ID+"','"+valor.ENCU_ID+"2_"+c+"','pdf','S','ID','"+valor.UNID_ID+ciclo+matricula+materia+"','"+valor.UNID_DESCRIP+" - EV. DES.','eadjuntos','alta','ED');\">"+
