@@ -52,112 +52,144 @@ contMat=1;
 
     function cargarMaterias(){
 	
-		script="<table id=\"tabAvances\" class= \"table table-condensed table-bordered table-hover\" "+
+		script="<table id=\"tabMaterias\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
 	   	   "        <thead >  "+
-		   "             <tr id=\"headAvances\">"+
+		   "             <tr id=\"headMaterias\">"+
 		   "                <th>No.</th> "+
+		   "                <th>ID.</th> "+
 		   "                <th>Profesor</th> "+	
 		   "                <th>Materia</th> "+	
-		   "                <th>U1</th> "+
-		   "                <th>U2</th> "+
-		   "                <th>U3</th> "+
-		   "                <th>U4</th> "+
-		   "                <th>U5</th> "+
-		   "                <th>U6</th> "+
-		   "                <th>U7</th> "+
-		   "                <th>U8</th> "+
-		   "                <th>U9</th> "+
-		   "                <th>U10</th> "+	
-		   "             </tr> "+
+		   "                <th>Sem</th> "+	
+		   "                <th>GPO</th> "+
+		   "                <th>UNID</th>"+
+		   "                <th>Alum</th> ";
+		   for (i=1; i<=10; i++) {
+			script+="<th>%APR_U"+i+"</th><th>APR_U"+i+"</th><th>REP_U"+i+"</th>";
+		  }	
+		  script+="             </tr> "+
 		   "            </thead>" +
 		   "         </table>";
-		   $("#losAvances").empty();
-		   $("#losAvances").append(script);
+		   $("#aprovecha").empty();
+		   $("#aprovecha").append(script);
+
+		  
+
 				
-		elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE,"+
-		" getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"') as PERIODOS  FROM "+
-		" dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and PDOCVE='"+$("#elciclo").html()+"'"+
-		cadPeriodo+
-		" and b.ALUM_CARRERAREG="+$("#selCarreras").val()+" and b.ALUM_MAPA='"+$("#selPlanes").val()+"' ORDER BY ALUM_MATRICULA";
+		elsql="select a.IDDETALLE, PROFESOR, PROFESORD, MATERIA, MATERIAD, SEMESTRE, SIE AS GRUPO, "+		      
+		      "(select count(*) from eunidades where UNID_MATERIA=MATERIA and UNID_PRED='') AS NUMUNI"+
+		      " from vedgrupos a where a.CICLO='"+$("#selCiclos").val()+"'"+ 
+			  " and a.CARRERA="+$("#selCarreras").val()+"  ORDER BY SEMESTRE,MATERIAD";
+	  
 		mostrarEspera("esperahor","grid_avancegral","Cargando Datos...");
 	    $.ajax({
 	           type: "GET",
 			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
-	           success: function(data){  				      
-					  generaTablaAvances(JSON.parse(data));   
-						 
-					   elsqlMat="select CICL_MATERIA as MATERIA, CICL_MATERIAD AS MATERIAD, CICL_CUATRIMESTRE AS SEMESTRE, "+
-								"IFNULL(CVEESP,0) as CVEESP from veciclmate a where a.CICL_MAPA='"+$("#selPlanes").val()+"'"+
-								" AND IFNULL(CICL_TIPOMAT,0) NOT IN ('T') "+
-								" order by IFNULL(CVEESP,0),CICL_CUATRIMESTRE, CICL_MATERIAD ";
-						$.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlMat),
-							success: function(dataMat){  											      
-									generaTablaMaterias(JSON.parse(dataMat));  
+	           success: function(data){  
+				      			      
+					generaTablaProfesores(JSON.parse(data));   
+				  	
+					for (i=1;i<contAlum;i++) {
+							elsqlPaso="select IDGRUPO,count(*) AS N from dlista where IDGRUPO="+$("#IDDETALLE_"+i).html();															
+							$.ajax({
+								type: "GET",
+								url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,
+								success: function(dataPaso){  											      
+									jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
+										$("#n_"+valorPaso.IDGRUPO).html(valorPaso.N);
+
+										
+										for (j=1; j<=$("#uni_"+valorPaso.IDGRUPO).html(); j++) {
+											unidades+="SUM(IF (LISPA"+j+">=70,1,0)),";
+										}
+
 									
-									for (i=1;i<contAlum;i++) {
-										elsqlPaso="select ALUCTR,MATCVE, IF(MAX(PDOCVE)='"+$("#elciclo").html()+"','A','C') AS CICLO, max(LISCAL) AS LISCAL, count(*) as VECES "+
-										" from dlista n where ALUCTR='"+$("#alum_"+i).html()+"'"+ 
-										" group by ALUCTR,MATCVE";	
-														
-											$.ajax({
-												type: "GET",
-												url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,
-												success: function(dataPaso){  											      
-													jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
-														for (j=1;j<contMat;j++) {														
-															if (valorPaso.MATCVE==$("#mat_"+j).html()) {
-																if  (valorPaso.CICLO=='A') { // asignaturas del ciclo A = Acctual 
-																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa green fa-thumbs-up bigger-160\"><i>"); 														
-																}
-																if ((valorPaso.CICLO=='C') && (valorPaso.LISCAL>=70)) {
-																	  $("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa blue fa-check bigger-160\"><i>"); 															
-																} 
-																if ((valorPaso.CICLO=='C') && (valorPaso.LISCAL<70)) {
-																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa red fa-check bigger-160\"><i>"); 															
-															     }
-																$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).append("<span class=\"small text-danger\">"+valorPaso.VECES+"<span>"); 
-																//alert (valorPaso.ALUCTR+" "+ valorPaso.MATCVE+" "+$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html()+ " ");
-																break;
-															}
-														}
-													}); 
-													
-												}
-											});																				
-									}
-									
-									ocultarEspera("esperahor");  
-									   	      					  					  
-								},
-								error: function(dataMat) {	                  
-										alert('ERROR: '+dataMat);
+										if (unidades.length>0) {
+												elsqlUni="select IDGRUPO,"+unidades.substring(0,unidades.length-1)+" from dlista where IDGRUPO="+valorPaso.IDGRUPO+
+												"   GROUP BY IDGRUPO";																																	
+												$.ajax({
+													type: "GET",
+													url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlUni,
+													success: function(dataUni){  
+														cont=0;	
+														datosUnidades=JSON.parse(dataUni);										      
+														jQuery.each(datosUnidades, function(claveUni, valorUni) { 
+															
+															for (k=1; k<=parseInt($("#uni_"+valorUni.IDGRUPO).html()); k++) {	
+																	//alert ("#PROMU"+k+"_"+valorUni.IDGRUPO+" "+datosUnidades[0][k]+" "+datosUnidades[0][k]);													
+																	
+																	$("#APRU"+k+"_"+valorUni.IDGRUPO).html(datosUnidades[0][k]);
+																	$("#REPU"+k+"_"+valorUni.IDGRUPO).html(parseInt($("#n_"+valorPaso.IDGRUPO).html())-parseInt($("#APRU"+k+"_"+valorUni.IDGRUPO).html()));
+																	$("#PROMU"+k+"_"+valorUni.IDGRUPO).html(Math.round(parseInt($("#APRU"+k+"_"+valorUni.IDGRUPO).html())/
+																	                                        parseInt($("#n_"+valorPaso.IDGRUPO).html())*100,2)+"%");
+																	
+			
+																}															
+														}); 													
 													}
-						});	      	      					  					  
-	            },
-	        	error: function(data) {	                  
-	        	   	    alert('ERROR: '+data);
-	        	   	                  }
-	    });	        	   	   	        	    	 
-		
+												});
+											}		
+
+									}); 													
+								}
+							});	
+							
+							unidades="";
+							
+							
+
+					}
+									
+				ocultarEspera("esperahor");  
+																	
+			},
+			error: function(dataMat) {	                  
+					alert('ERROR: '+dataMat);
+								}
+	});	      	      					  					  		
 }
 
 
-function generaTablaAvances(grid_data){
-	contAlum=1;
-	$("#cuerpoAvances").empty();
-	$("#tabAvances").append("<tbody id=\"cuerpoAvances\">");
-	//$("#btnfiltrar").attr("disabled","disabled");
-	jQuery.each(grid_data, function(clave, valor) { 	        			
-		$("#cuerpoAvances").append("<tr id=\"rowA"+contAlum+"\">");
-		
-		$("#rowA"+contAlum).append("<td>"+contAlum+"</td>");
-		$("#rowA"+contAlum).append("<td id=\"alum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.ALUM_MATRICULA+"</td>");
-		$("#rowA"+contAlum).append("<td id=\"Nalum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.NOMBRE+"</td>");
-		$("#rowA"+contAlum).append("<td style=\"font-size:10px;\"><span class=\"badge  badge-info\">"+valor.PERIODOS+"</span></td>");
+function exportar (){
+	$("#tabMaterias").tableExport();
+}
 
+function generaTablaProfesores(grid_data){
+	
+	contAlum=1;
+	$("#cuerpoMaterias").empty();
+	$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
+	//$("#btnfiltrar").attr("disabled","disabled");
+	jQuery.each(grid_data, function(clave, valor) { 
+		//alert ($("#rowM"+contAlum).html()+" "+valor.PROFESOR);   			
+		$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
+		$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
+		$("#rowM"+contAlum).append("<td id=\"IDDETALLE_"+contAlum+"\" style=\"font-size:10px;\">"+valor.IDDETALLE+"</td>");
+		$("#rowM"+contAlum).append("<td id=\"Nalum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.PROFESORD+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:10px;\">"+valor.MATERIAD+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:10px;\" id=\"uni_"+valor.IDDETALLE+"\">"+valor.NUMUNI+"</td>");
+		
+		evento="onclick=\"window.open('../pd_captcal/repUni.php?materia="+valor.MATERIA+"&grupo="+valor.GRUPO+
+				"&ciclo="+$("#selCiclos").val()+"&profesor="+valor.PROFESOR+"&id="+valor.IDDETALLE+
+				"&materiad="+valor.MATERIAD+"&semestre="+valor.SEMESTRE+"','_blank');\" ";
+		
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><a "+evento+">"+
+										"<span title=\"Click para ver reporte por Unidades\" style=\"cursor:pointer;\""+
+										" class=\"badge badge-warning\">"+valor.GRUPO+"</span></a></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.SEMESTRE+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span class=\"badge  badge-info\" id=\"n_"+valor.IDDETALLE+"\"></span></td>");
+		
+		for (i=1; i<=10; i++) {
+			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\" ><span class=\"badge  badge-success\" id=\"PROMU"+i+"_"+valor.IDDETALLE+"\"> </span></td>");
+			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><i class=\"fa fa-hand-o-up blue bigger-130\"></i><span  id=\"APRU"+i+"_"+valor.IDDETALLE+"\"></span></td>");
+			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><i class=\"fa fa-hand-o-down red bigger-130\"></i><span id=\"REPU"+i+"_"+valor.IDDETALLE+"\"></span> </td>");
+		}
+	
+		
+
+		
+		 
+		
 	    contAlum++;      			
 	});	
 	
@@ -174,7 +206,7 @@ function generaTablaMaterias(grid_data){
 		if (valor.CVEESP=='0') {item=0; esplan='S';}
 		else {item=(valor.CVEESP%10)+1; esplan='N';}
 	    	        			
-		$("#headAvances").append("<th style=\"font-size:8px;\" class=\""+fondos[item]+"\" title=\""+valor.MATERIAD+"\" >"+
+		$("#headMaterias").append("<th style=\"font-size:8px;\" class=\""+fondos[item]+"\" title=\""+valor.MATERIAD+"\" >"+
 								"<span class=\"materias\" id=\"mat_"+contMat+"\" esplan=\""+esplan+"\" "+
 									   "fondo=\""+fondos[item]+"\" descrip=\""+valor.MATERIAD+"\" >"+valor.MATERIA+
 								"</span>"+
@@ -188,7 +220,7 @@ function generaTablaMaterias(grid_data){
 			if ($("#mat_"+j).attr("esplan")=='S') {elfondo="";}
 			else {elfondo=$("#mat_"+j).attr("fondo");}
 
-			$("#rowA"+i).append("<td class=\""+elfondo+"\" "+
+			$("#rowM"+i).append("<td class=\""+elfondo+"\" "+
 			                         "title=\""+$("#Nalum_"+i).html()+"-"+$("#mat_"+j).attr("descrip")+"\""+
 									 " style=\"text-align:center;\" "+
 									 "id=\"celda_"+$("#alum_"+i).html()+"_"+$("#mat_"+j).html()+"\"></td>");

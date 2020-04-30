@@ -59,6 +59,9 @@ contMat=1;
 		}  
     }
 
+	function exportar (){
+		$("#tabAvances").tableExport();
+	}
 
     function cargarAvances(){
 		if (!($("#selPeriodos").val()=='99')) {

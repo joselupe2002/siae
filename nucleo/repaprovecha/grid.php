@@ -53,6 +53,9 @@
 						<div class="col-sm-3" style="padding-top:14px;">
 						    <button title="Buscar Registros" onclick="cargarMaterias();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
+							</button>	
+							<button title="Exportar a Excel" onclick="exportar();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon orange glyphicon glyphicon-export bigger-120"></i><span class="btn-small"></span>            
 							</button>											
 						</div>
 		            </div> 
@@ -61,7 +64,7 @@
               <div class="widget-body">
 				   <div class="widget-main">
 				       <div class="row">	
-					       <div id="losAvances" class="col-sm-12" style="overflow-x: scroll; height:370px;" >    
+					       <div id="aprovecha" class="col-sm-12" style="overflow-x: scroll; height:370px;" >    
 						   </div>
                        </div>
                     </div>
@@ -117,6 +120,11 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.gritter.min.js"></script>
 
 <script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
+
+<!-- -------------------Exportación de tabla a excel----------------------->
+<script src="<?php echo $nivel; ?>js/FileSaver.min.js"></script>
+<script src="<?php echo $nivel; ?>js/tableexport.js"></script>
+
 
 <script src="repaprovecha.js"></script>
 <script type="text/javascript">

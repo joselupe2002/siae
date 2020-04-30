@@ -54,7 +54,10 @@
 						<div class="col-sm-3" style="padding-top:14px;">
 						    <button title="Buscar Registros" onclick="cargarAvances();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
-							</button>											
+							</button>	
+							<button title="Exportar a Excel" onclick="exportar();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon orange glyphicon glyphicon-export bigger-120"></i><span class="btn-small"></span>            
+							</button>										
 						</div>
 		            </div> 
 		      </div>
@@ -119,7 +122,14 @@
 
 <script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
 
+
 <script src="avancegral.js"></script>
+
+<!-- -------------------Exportación de tabla a excel----------------------->
+<script src="<?php echo $nivel; ?>js/FileSaver.min.js"></script>
+<script src="<?php echo $nivel; ?>js/tableexport.js"></script>
+
+
 <script type="text/javascript">
  
 </script>
