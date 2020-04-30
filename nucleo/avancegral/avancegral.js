@@ -21,6 +21,9 @@ contMat=1;
 			type: "GET",
 			url:  "../base/getSesion.php?bd=Mysql&campo=carrera",
 			success: function(data){  
+				alert("SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
+				" and CARR_CLAVE IN ("+data+")");
+
 				addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
 				" and CARR_CLAVE IN ("+data+")", "",""); 
 				},
