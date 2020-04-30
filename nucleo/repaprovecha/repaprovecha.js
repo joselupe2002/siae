@@ -60,9 +60,9 @@ contMat=1;
 		   "                <th>ID.</th> "+
 		   "                <th>Profesor</th> "+	
 		   "                <th>Materia</th> "+	
-		   "                <th>Sem</th> "+	
+		   "                <th>Unid</th> "+	
 		   "                <th>GPO</th> "+
-		   "                <th>UNID</th>"+
+		   "                <th>Sem</th>"+
 		   "                <th>Alum</th> ";
 		   for (i=1; i<=10; i++) {
 			script+="<th>%APR_U"+i+"</th><th>APR_U"+i+"</th><th>REP_U"+i+"</th>";
@@ -104,8 +104,6 @@ contMat=1;
 											unidades+="SUM(IF (LISPA"+j+">=70,1,0)),";
 										}
 
-									    alert ("select IDGRUPO,"+unidades.substring(0,unidades.length-1)+" from dlista where IDGRUPO="+valorPaso.IDGRUPO+
-										"   GROUP BY IDGRUPO");
 
 										if (unidades.length>0) {
 												elsqlUni="select IDGRUPO,"+unidades.substring(0,unidades.length-1)+" from dlista where IDGRUPO="+valorPaso.IDGRUPO+
