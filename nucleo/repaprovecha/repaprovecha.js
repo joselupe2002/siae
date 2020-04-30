@@ -104,7 +104,9 @@ contMat=1;
 											unidades+="SUM(IF (LISPA"+j+">=70,1,0)),";
 										}
 
-									
+									    alert ("select IDGRUPO,"+unidades.substring(0,unidades.length-1)+" from dlista where IDGRUPO="+valorPaso.IDGRUPO+
+										"   GROUP BY IDGRUPO");
+										
 										if (unidades.length>0) {
 												elsqlUni="select IDGRUPO,"+unidades.substring(0,unidades.length-1)+" from dlista where IDGRUPO="+valorPaso.IDGRUPO+
 												"   GROUP BY IDGRUPO";																																	
@@ -112,7 +114,7 @@ contMat=1;
 													type: "GET",
 													url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlUni,
 													success: function(dataUni){  
-														alert (dataUni);
+														
 														cont=0;	
 														datosUnidades=JSON.parse(dataUni);										      
 														jQuery.each(datosUnidades, function(claveUni, valorUni) { 
