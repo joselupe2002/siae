@@ -372,7 +372,7 @@
 							    <Select  class="CUATRO form-control width-100" name="MUNRES" id="MUNRES">									
 								</select>								
 						</div>
-						<div class="col-sm-3"> 
+						<div class="col-sm-4"> 
 						       <label class="text-primary">
 									<strong><span class="badge badge-info">19</span> Ciudad o Localidad</strong> 
 								</label>															   
@@ -396,7 +396,7 @@
 							</label>															   
 							<input  class="CUATRO form-control width-100" name="NUMEROCALLE"   id="NUMEROCALLE" />														   							
 						</div>
-						<div class="col-sm-2"> 
+						<div class="col-sm-3"> 
 						    <label class="text-primary">
 								<strong><span class="badge badge-info">22</span> COLONIA </strong> 
 							</label>															   
@@ -425,14 +425,51 @@
 							</label>															   
 							<input  class="CUATRO form-control width-100" name="TELCASA"   id="TELCASA" />														   							
 						</div>
-						<div class="col-sm-3"> 
+						<div class="col-sm-4"> 
 						    <label class="text-primary">
 								<strong><span class="badge badge-info">26</span> Correo Electrónico <span class="label label-danger">Importante</span></strong> 
 							</label>															   
 							<input  class="CUATRO form-control width-100" name="CORREO"   id="CORREO" />														   							
 						</div>
 						<div class="col-sm-1"> </div>						
-					</div>	
+					</div>
+					
+					<!--================================LINEA 4 PANEL 4 ================================-->
+					<div class="row">
+					    <div class="col-sm-1"> </div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">A</span> Cuenta con Internet en Casa</strong> 
+							</label>															   
+							<Select  class="DOS form-control width-100" name="INTERNET" id="INTERNET">
+							        <OPTION value="">Elija opción</OPTION>
+								    <OPTION value="N">SI</OPTION>
+									<OPTION value="S">NO</OPTION>									
+							</SELECT>														   							
+						</div>
+						<div class="col-sm-3"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">B</span> Cuenta con equipo de cómputo</strong> 
+							</label>															   
+							<Select  class="DOS form-control width-100" name="EQUIPO" id="EQUIPO">
+							        <OPTION value="">Elija opción</OPTION>
+								    <OPTION value="N">SI</OPTION>
+									<OPTION value="S">NO</OPTION>									
+							</SELECT>														   							
+						</div>
+						<div class="col-sm-4"> 
+						    <label class="text-primary">
+								<strong><span class="badge badge-info">B</span> Podría presentar examen de admisión en Línea <span class="label label-danger">Importante</span></strong> 
+							</label>															   
+							<Select  class="DOS form-control width-100" name="EXAMENENCASA" id="EXAMENENCASA">
+							        <OPTION value="">Elija opción</OPTION>
+								    <OPTION value="N">SI</OPTION>
+									<OPTION value="S">NO</OPTION>									
+							</SELECT>															   							
+						</div>
+						<div class="col-sm-1"> </div>						
+					</div>
+
 					</fieldset>
 				    </form>
 				</div><!-- Fin del panel 4-->

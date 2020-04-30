@@ -78,3 +78,19 @@ input.error{
       }      
 
     
+
+
+
+/*=====================================PARA LAS FORMULA MATEMATICAS =============================*/
+
+.dblarrow {
+  font-size: 125%;
+  top: -0.4ex;
+  margin: 0 2px;
+}
+.dblarrow:after {
+  content:"\2190";
+  position: absolute;
+  left: 0;
+  top: 0.5ex;
+}

@@ -921,6 +921,80 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 		return 0;
 	}
 
+
+	if (tipo=="EDITOR") {
+		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label>\n "+
+		     "<div class= \"wysiwyg-editor\" id=\""+nombre+"\" style=\"overflow-x: auto;\">"+dato+"</div>";	
+		$("#"+padre).append(cad);
+
+		$('#'+nombre).ace_wysiwyg({
+			toolbar:
+			[
+				'font',
+				'fontSize',
+				{name:'bold', className:'btn-info'},			
+				null,
+				'foreColor',
+				null,
+				{name:'undo', className:'btn-grey'},
+				{name:'redo', className:'btn-grey'},
+				null,
+				{name:'insertImage', className:'btn-primary'},
+				{name:'nuevo', className:'btn-success'}
+			],
+			'wysiwyg': {
+				fileUploadError: showErrorAlert
+			}
+		}).prev().addClass('wysiwyg-style2');
+
+
+		if ( typeof jQuery.ui !== 'undefined' && ace.vars['webkit'] ) {	
+			var lastResizableImg = null;
+			function destroyResizable() {
+				if(lastResizableImg == null) return;
+				lastResizableImg.resizable( "destroy" );
+				lastResizableImg.removeData('resizable');
+				lastResizableImg = null;
+			}
+			var enableImageResize = function() {
+				$('.wysiwyg-editor')
+				.on('mousedown', function(e) {
+					var target = $(e.target);
+					if( e.target instanceof HTMLImageElement ) {
+						if( !target.data('resizable') ) {
+							target.resizable({
+								aspectRatio: e.target.width / e.target.height,
+							});
+							target.data('resizable', true);						
+							if( lastResizableImg != null ) {
+								//disable previous resizable image
+								lastResizableImg.resizable( "destroy" );
+								lastResizableImg.removeData('resizable');
+							}
+							lastResizableImg = target;
+						}
+					}
+				})
+				.on('click', function(e) {
+					if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
+						destroyResizable();
+					}
+				})
+				.on('keydown', function() {
+					destroyResizable();
+				});
+			}
+
+			enableImageResize();
+		}
+
+		
+		return 0;
+	}
+	
+
+
+
 	if (tipo=="FECHA") {
 		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label> "+
 	         " <div class=\"input-group\"><input "+eventos+estilo+" class=\"form-control date-picker\" name=\""+nombre+"\" id=\""+nombre+"\" "+
@@ -1248,6 +1322,17 @@ if (tipo=="SELECT_MULTIPLE") {
 	}
 
 	
+}
+
+
+function showErrorAlert (reason, detail) {
+	var msg='';
+	if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
+	else {
+		//console.log("error uploading file", reason, detail);
+	}
+	$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+ 
+	 '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
 }
 
 

@@ -331,6 +331,10 @@ class UtilUser {
 				$cad=$campos["colum_name"].":  $(\"#".$campos["colum_name"]."\").val()==null?' ':$(\"#".$campos["colum_name"]."\").val().toString(),\n";
 			}
 			
+			if ($campos["tipo"]=="EDITOR"){				
+				$cad=$campos["colum_name"].":  $(\"#".$campos["colum_name"]."\").html(),\n";
+			}
+
 			if ($campos["tipo"]==":USUARIO"){
 				$cad=$campos["colum_name"].":\"".$_SESSION['usuario']."\",\n";
 			}

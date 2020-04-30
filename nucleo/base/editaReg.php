@@ -49,6 +49,11 @@
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-skins.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />	
+
+			<!-- page specific plugin styles -->
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery-ui.custom.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+		<script src="<?php echo $nivel; ?>assets/js/ace-extra.min.js"></script>
 			
 	</head>
 
@@ -80,10 +85,7 @@
 	                  
 	                   <?php $rescampos=$miUtil->getCamposForm($_GET['modulo']); ?>
 	                   <script type="text/javascript"> campos=<?php echo json_encode($rescampos);?></script>
-	                   
 
-			
-		           
 	                </fieldset>
 	         </form>
              <br/>
@@ -165,6 +167,12 @@
 <script src="<?php echo $nivel."nucleo/".$_GET["modulo"]."/ed_".$_GET["modulo"].".js"?>"></script>
 <?php }?>	
 
+<script src="<?php echo $nivel; ?>assets/js/markdown.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-markdown.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.hotkeys.index.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-wysiwyg.min.js"></script>
+
+
 <script type="text/javascript">
         var textosel="";
         var losdatos = new Array();
@@ -172,6 +180,9 @@
 		$(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
 		$(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
 
+		$(document).ready(function($) {
+				
+		});
 
 /*======================================CARGANDO LOS COMPONENTES ==================================*/		
 		function cargarElementos(callback) {

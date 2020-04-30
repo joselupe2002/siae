@@ -181,6 +181,11 @@ var elciclo="";
 												$("#TELCEL").val(valor.TELCEL );
 												$("#TELCASA").val(valor.TELCASA );
 												$("#CORREO").val(valor.CORREO );
+												$("#INTERNET").val(valor.INTERNET );
+												$("#EQUIPO").val(valor.EQUIPO );
+												$("#EXAMENENCASA").val(valor.EXAMENENCASA );
+
+
 												$("#SM").val(valor.SM );											
 												$("#SMNUMERO").val(valor.SMNUMERO);
 												$("#TIPOSAN").val(valor.TIPOSAN);
@@ -260,7 +265,9 @@ var elciclo="";
 					CP : {number: true},
 					TELCEL : {required : true, number: true,maxlength:10, minlength:10},
 					CORREO : {required : true, email: true},
-
+					INTERNET : {required : true},
+					EQUIPO : {required : true},
+					EXAMENENCASA : {required : true},
 
 					TUTOR : {required: true},
 					TELCELTUTOR : {required : true, number: true,maxlength:10, minlength:10},
@@ -298,6 +305,10 @@ var elciclo="";
 					          maxlength:"El número de TELÉFONO debe ser de 10 números",
 					          minlength:"El número de TELÉFONO debe ser de 10 números"},
 					CORREO : {required:"Se requiere correo electrónico",email:"El email no es correcto"},
+
+					INTERNET : {required:"Es necesario conteste este campo"},
+					EQUIPO : {required:"Es necesario conteste este campo"},
+					EXAMENENCASA : {required:"Es necesario conteste este campo"},
 
 					TUTOR: "Debe colocar el nombre de un tutor",
 					TELCELTUTOR : {required:"Se requiere número de celular de tutor",number:"debe colocar sólo números",
@@ -546,7 +557,11 @@ function guardarPag4(){
 			CP : $("#CP").val() ,
 			TELCEL : $("#TELCEL").val() ,
 			TELCASA : $("#TELCASA").val() ,
-			CORREO : $("#CORREO").val()
+			CORREO : $("#CORREO").val(),
+			INTERNET:$("#INTERNET").val(),
+			EQUIPO:$("#EQUIPO").val(),
+			EXAMENENCASA:$("#EXAMENENCASA").val()
+
 		};
 		$.ajax({
 			type: "POST",

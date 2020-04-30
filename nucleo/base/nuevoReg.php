@@ -43,6 +43,11 @@
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-skins.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
+
+		<!-- page specific plugin styles -->
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery-ui.custom.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+		<script src="<?php echo $nivel; ?>assets/js/ace-extra.min.js"></script>
 		
 			
 	</head>
@@ -160,6 +165,12 @@
 <script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
 <script src="<?php echo $nivel; ?>js/utilerias.js"></script>
 
+<script src="<?php echo $nivel; ?>assets/js/markdown.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-markdown.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.hotkeys.index.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-wysiwyg.min.js"></script>
+
+
 <?php  if (file_exists($nivel."nucleo/".$_GET["modulo"]."/ed_".$_GET["modulo"].".js")) { ?>
 <script src="<?php echo $nivel."nucleo/".$_GET["modulo"]."/ed_".$_GET["modulo"].".js"?>"></script>
 <?php }?>
@@ -183,7 +194,45 @@
 		}
 
 
+		if ( typeof jQuery.ui !== 'undefined' && ace.vars['webkit'] ) {		
+		var lastResizableImg = null;
+		function destroyResizable() {
+			if(lastResizableImg == null) return;
+			lastResizableImg.resizable( "destroy" );
+			lastResizableImg.removeData('resizable');
+			lastResizableImg = null;
+		}
+		var enableImageResize = function() {
+			$('.wysiwyg-editor')
+			.on('mousedown', function(e) {
+				var target = $(e.target);
+				if( e.target instanceof HTMLImageElement ) {
+					if( !target.data('resizable') ) {
+						target.resizable({
+							aspectRatio: e.target.width / e.target.height,
+						});
+						target.data('resizable', true);						
+						if( lastResizableImg != null ) {
+							//disable previous resizable image
+							lastResizableImg.resizable( "destroy" );
+							lastResizableImg.removeData('resizable');
+						}
+						lastResizableImg = target;
+					}
+				}
+			})
+			.on('click', function(e) {
+				if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
+					destroyResizable();
+				}
+			})
+			.on('keydown', function() {
+				destroyResizable();
+			});
+	    }
 
+		enableImageResize();
+	}
 
 
 /*======================================CARGANDO LOS COMPONENTES ==================================*/		
@@ -313,7 +362,7 @@
 			 
 
 
-	  function guardar(){
+	  function guardar(){	
 			var form = $( "#frmReg" );
 			form.validate();
 			campo=sonvalidos(form);
@@ -368,6 +417,7 @@
 	  }
 
 	
+	  
 
 </script>
 

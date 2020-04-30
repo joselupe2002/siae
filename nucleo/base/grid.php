@@ -26,7 +26,7 @@
         <link href="imagenes/login/sigea.png" rel="image_src" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-        
+
         
 			
 
