@@ -98,8 +98,6 @@ contMat=1;
 																				      
 									jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
 										$("#n_"+valorPaso.IDGRUPO).html(valorPaso.N);
-
-										alert ($("#uni_"+valorPaso.IDGRUPO).html());
 										for (j=1; j<=$("#uni_"+valorPaso.IDGRUPO).html(); j++) {
 											unidades+="SUM(IF (LISPA"+j+">=70,1,0)),";
 										}
