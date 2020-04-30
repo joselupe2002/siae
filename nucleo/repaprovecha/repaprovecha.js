@@ -95,7 +95,7 @@ contMat=1;
 								type: "GET",
 								url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,
 								success: function(dataPaso){  
-									alert (dataPaso);											      
+																				      
 									jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
 										$("#n_"+valorPaso.IDGRUPO).html(valorPaso.N);
 
@@ -112,6 +112,7 @@ contMat=1;
 													type: "GET",
 													url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlUni,
 													success: function(dataUni){  
+														alert (dataUni);
 														cont=0;	
 														datosUnidades=JSON.parse(dataUni);										      
 														jQuery.each(datosUnidades, function(claveUni, valorUni) { 
