@@ -94,7 +94,8 @@ contMat=1;
 							$.ajax({
 								type: "GET",
 								url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,
-								success: function(dataPaso){  											      
+								success: function(dataPaso){  
+									alert (dataPaso);											      
 									jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
 										$("#n_"+valorPaso.IDGRUPO).html(valorPaso.N);
 
