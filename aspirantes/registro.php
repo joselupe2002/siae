@@ -142,7 +142,7 @@
 					     <span class="fontAmaranth  text-inverse bigger-140">Acta de Nacimiento</span><br/>				         
 						 <span class="fontAmaranth  text-inverse bigger-140">Clave Única de registro de Población</span><br/>						 
 						 <span class="fontAmaranth  text-inverse bigger-140">Número de Seguridad Social Expedida por el IMSS</span><br/>						 
-						 <span class="fontAmaranth  text-inverse bigger-140">Certificado de Secundaria</span><br/>						 
+						<!-- <span class="fontAmaranth  text-inverse bigger-140">Certificado de Secundaria (opcional)</span><br/>						 -->
 						 <span class="fontAmaranth  text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>						 
 						 <span class="fontAmaranth text-inverse bigger-140">Recibo de Pago</span><br/>
               </div>
