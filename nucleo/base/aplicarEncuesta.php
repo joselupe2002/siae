@@ -255,7 +255,7 @@
 			                   
 			                    
 			                   if (elsql.indexOf("{"+nombre+"}")>0) {
-			                    	    elsql=damesqldep(elsql,'<?echo $_SESSION["usuario"];?>');
+			                    	    elsql=damesqldep(elsql,'<?php echo $_SESSION["usuario"];?>');
 			                            agregarEspera("imggif_"+valor.CLAVE,valor.gif);
 
 			                            param=buscarBD('<?php echo $_SESSION["bd"];?>',elsql);

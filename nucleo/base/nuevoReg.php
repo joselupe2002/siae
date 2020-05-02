@@ -263,11 +263,12 @@
 				    });
 				         
 				     controw=1;  abrilinea=false; contcol=1;
-				     
+					
+					 seccionAnt=tabs[0]["seccion"];  
 				     jQuery.each(campos, function(clave, valor){	
 
 				    
-				    	    if (contcol>numCol) {abrilinea=false; controw++;}
+						    if ((contcol>numCol) || (seccionAnt!=valor.seccion)) {abrilinea=false; controw++; seccionAnt=valor.seccion;  }
 				    	    		    	 
 		                    if (!(abrilinea)) { 
 		                        $("#tabs_"+valor.seccion).append("<div id=\"row_"+valor.seccion+"_"+controw+"\" class=\"row\">\n");
@@ -306,7 +307,7 @@
 			                   
 			                    
 			                   if (elsql.indexOf("{"+nombre+"}")>0) {
-			                    	    elsql=damesqldep(elsql,'<?echo $_SESSION["usuario"];?>');
+			                    	    elsql=damesqldep(elsql,'<?php echo $_SESSION["usuario"];?>');
 			                            agregarEspera("imggif_"+valor.colum_name,valor.gif);
 
 			                            param=buscarBD('<?php echo $_GET["bd"];?>',elsql);

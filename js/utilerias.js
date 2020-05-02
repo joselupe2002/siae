@@ -877,7 +877,7 @@ function damesqldep(elsql,elusuario) {
 					elsql=elsql.replace ("{"+lista[i]+"}","'"+$("#"+lista[i]).val()+"'");
 				}
 			}
-
+//alert (elsql);
    return elsql;
 }
 	
@@ -1112,10 +1112,10 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 				    "         <div class=\"btn-group pull-right\">"+
 					"              <label onclick=\"paginapreview($('#"+nombre+"').html(),'"+padre+"');\" "+
 					"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
-					"              <i class=\"ace-icon fa fa-times bigger-125\"></i>Preview</label>"+
+					"              <i class=\"ace-icon fa fa-external-link-square bigger-125\"></i>Preview</label>"+
 					"              <label onclick=\"editaFormula('"+nombre+"','"+padre+"');\" "+
-					"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
-					"              <i class=\"ace-icon fa fa-times bigger-125\"></i>Formulas</label>"+
+					"              class=\"btn btn-sm btn-primary btn-white btn-round\">"+
+					"              <i class=\"ace-icon fa fa-superscript bigger-125\"></i>Formulas</label>"+
 					"         </div>"+
                     "     </div>"+
 					"</div>"+
@@ -1135,6 +1135,8 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 				null,
 				{name:'undo', className:'btn-grey'},
 				{name:'redo', className:'btn-grey'},
+				{name:'createLink', className:'btn-pink'},
+			    {name:'unlink', className:'btn-pink'},
 				null,
 				{name:'insertImage', className:'btn-primary'},
 				{name:'nuevo', className:'btn-success'}
