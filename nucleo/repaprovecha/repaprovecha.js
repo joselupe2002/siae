@@ -52,7 +52,7 @@ contMat=1;
 
     function cargarMaterias(){
 	
-		script="<table id=\"tabMaterias\" class= \"table table-condensed table-bordered table-hover\" "+
+		script="<table id=\"tabMaterias\" name=\"tabMaterias\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
 	   	   "        <thead >  "+
 		   "             <tr id=\"headMaterias\">"+
@@ -124,13 +124,16 @@ contMat=1;
 																	                                        parseInt($("#n_"+valorPaso.IDGRUPO).html())*100,2)+"%");
 																	
 			
-																}															
-														}); 													
+																}	
+																													
+														}); 
+																												
 													}
 												});
 											}		
 
-									}); 													
+									}); 
+																				
 								}
 							});	
 							
@@ -140,8 +143,7 @@ contMat=1;
 
 					}
 									
-				ocultarEspera("esperahor");  
-																	
+				ocultarEspera("esperahor");  																											
 			},
 			error: function(dataMat) {	                  
 					alert('ERROR: '+dataMat);
@@ -150,9 +152,8 @@ contMat=1;
 }
 
 
-function exportar (){
-	$("#tabMaterias").tableExport();
-}
+
+
 
 function generaTablaProfesores(grid_data){
 	

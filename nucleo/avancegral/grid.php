@@ -55,8 +55,8 @@
 						    <button title="Buscar Registros" onclick="cargarAvances();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
 							</button>	
-							<button title="Exportar a Excel" onclick="exportar();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon orange glyphicon glyphicon-export bigger-120"></i><span class="btn-small"></span>            
+							<button title="Exportar a Excel" onclick="convertirDataTable('tabAvances');" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon orange fa fa-wrench bigger-120"></i><span class="btn-small"></span>            
 							</button>										
 						</div>
 		            </div> 
@@ -64,6 +64,16 @@
 
               <div class="widget-body">
 				   <div class="widget-main">
+				      <div id="opcionestabAvances" class="row hide" >
+					        <div class="col-sm-1"></div>
+						    <div class="col-sm-3">
+								<div class="pull-left tableTools-container" id="botonestabAvances"></div>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" id="buscartabAvances" placeholder="Filtrar...">	
+							</div>
+					   </div>
+					   
 				       <div class="row">	
 					       <div id="losAvances" class="col-sm-12" style="overflow-x: scroll; height:370px;" >    
 						   </div>

@@ -229,7 +229,7 @@
 		                   
 		                    if (abrilinea){     
 		                    	 $("#row_"+valor.SECCION+"_"+controw).append("   <div id=\"cell_"+valor.SECCION+"_"+controw+"_"+contcol+"\" class=\"col-sm-"+tam+"\">\n");                     	 
-		                         getElementoEd("cell_"+valor.SECCION+"_"+controw+"_"+contcol,valor.CLAVE,valor.TIPO,valor.PREGUNTA,valor.ELSQL,"","N", valor.gif,autoi,'I',bd);		                         
+		                         getElementoEd("cell_"+valor.SECCION+"_"+controw+"_"+contcol,valor.CLAVE,valor.TIPO,valor.PREGUNTA,valor.ELSQL,"","N", valor.gif,autoi,'I',bd,'<?php echo $_SESSION['usuario'];?>');		                         
 		                         contcol++;
 		                    	}  
 		                	callback(valor.CLAVE);                                    					         
@@ -255,7 +255,7 @@
 			                   
 			                    
 			                   if (elsql.indexOf("{"+nombre+"}")>0) {
-			                    	    elsql=damesqldep(elsql,nombre);
+			                    	    elsql=damesqldep(elsql,'<?echo $_SESSION["usuario"];?>');
 			                            agregarEspera("imggif_"+valor.CLAVE,valor.gif);
 
 			                            param=buscarBD('<?php echo $_SESSION["bd"];?>',elsql);

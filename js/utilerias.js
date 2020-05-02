@@ -31,7 +31,66 @@
 		    );
 		    return unicodeString;
 		}
-			
+		
+		
+/*==================================CONVERTIR TABLA HTML a DATATABLE =============================*/
+		function convertirDataTable (latabla){
+
+			if ($("#opciones"+latabla).hasClass('hide')){
+				if (! $.fn.DataTable.isDataTable( '#'+latabla)) {
+						myTable=$("#"+latabla).DataTable({
+							"paging":   false,
+							"ordering": false,
+							"info":     false});
+						$(".dataTables_filter").css("display","none");
+		
+						$('#buscar'+latabla).keyup(function(){
+							myTable.search($(this).val()).draw() ;
+						});
+		
+						$.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
+						new $.fn.dataTable.Buttons( myTable, {
+														buttons: [
+															{
+																"extend": "colvis",
+																"text": "<i title='Columnas' class='fa fa-list-ul bigger-110 blue'></i>",
+																"className": "btn btn-white btn-primary btn-bold",
+																columns: ':not(:first):not(:last)'
+															},
+															{
+																"extend": "copy",
+																"text": "<i title='Copiar Datos' class='fa fa-copy bigger-110 pink'></i>",
+																"className": "btn btn-white btn-primary btn-bold"
+															},
+															{
+																"extend": "csv",
+																"charset": "UTF-8",
+																"text": "<i title='Exportar a Excel' class='glyphicon glyphicon-export bigger-110 orange'></i>",
+																"className": "btn btn-white btn-primary btn-bold"
+															}]
+														});
+		
+		
+						myTable.buttons().container().appendTo( $('#botones'+latabla) );
+						//Columnas que se desean visualizar en el grid 
+						var defaultColvisAction = myTable.button(0).action();
+						myTable.button(0).action(function (e, dt, button, config) {
+							defaultColvisAction(e, dt, button, config);		
+							if($('.dt-button-collection > .dropdown-menu').length == 0) {
+								$('.dt-button-collection')
+								.wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
+								.find('a').attr('href', '#').wrap("<li />")
+							}
+						//	$('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
+						});
+					}
+		
+						$("#opciones"+latabla).removeClass("hide");
+					}
+				else
+				   { $("#opciones"+latabla).addClass("hide"); }
+		}
+
 /*=====================================FUNCIONES PARA DECODIFICAR LAS HORAS HH:MM-HH:MM ============================*/
 function decodificaHora(horario) {
 	var datos=[];
@@ -798,7 +857,7 @@ function quitarEspera(nombre,ico){
 	   
 }
 
-function damesqldep(elsql) {
+function damesqldep(elsql,elusuario) {
         var lista = new Array();
   	    xdatos = elsql.split('|');
 		  elsql=xdatos[1];
@@ -811,8 +870,14 @@ function damesqldep(elsql) {
 			}
 
 		    for(i=0;i<lista.length;i++){
-				elsql=elsql.replace ("{"+lista[i]+"}","'"+$("#"+lista[i]).val()+"'");
+				if ("{"+lista[i]+"}"=='{:USUARIO}') {
+					elsql=elsql.replace ("{"+lista[i]+"}","'"+elusuario+"'");			 
+				}
+				else {
+					elsql=elsql.replace ("{"+lista[i]+"}","'"+$("#"+lista[i]).val()+"'");
+				}
 			}
+
    return elsql;
 }
 	
@@ -844,8 +909,123 @@ function getOptions(cadena){
 		 
 }
 
+/*============================================================================================*/
+var funciones=[];
+funciones[0] = "<span style=\"position:relative; top:-8px; left:4px; font-size:11px;\">r</span>"+
+			       "<span style=\"font-size:16px;\">&radic;</span>"+
+				   "<span style=\"padding: -0px; margin: 0px; border-top:thin black solid;\">ab</span>";
+funciones[1] = "<span style=\"font-size:16px;\">&radic;</span>"+
+				   "<span style=\"padding: -0px; margin: 0px; border-top:thin black solid;\">ab</span>";				   
+funciones[2]="<div style=\"display: inline-block; vertical-align: middle; margin: 0 0.2em 0.4ex; text-align: center;\">"+
+             "     <span style=\"display: block;   padding-top: 0.15em;\">abc</span>"+
+             "     <span style=\"border-top: thin solid black; display: block; padding-top: 0.15em;\">ab</span>"+
+             "</div>";
 
-function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,funcion,bd, ancho)
+/*============================================================================================*/		   
+
+function copiarFormula(elmodal,elemento,elprev){
+	$('#'+elemento).html($('#'+elemento).html()+$('#'+elprev).html());
+	$('#'+elmodal).modal("hide");
+}
+
+function actualizarTexto(visual,editfor){
+	$('#'+visual).html($('#'+editfor).val());
+}
+function addFormula(visual,contenido,editfor) {
+	elcontenido=contenido;
+	if (contenido.indexOf("funcion|")>=0) {
+		elcontenido=funciones[contenido.split("|")[1]];
+	}
+	$('#'+visual).append(elcontenido);
+	$('#'+editfor).val($('#'+editfor).val()+elcontenido);
+}
+
+function editaFormula(elemento,padre) {
+	$("#formulas").remove();
+	script=    "<div class=\"modal fade\" id=\"formulas\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog modal-lg role=\"document\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-info\" >"+
+			   "                  <span><i class=\"menu-icon green fa-2x fa fa-info\"></i>"+
+			   "                        <span class=\"text-success lead \"> <strong>Formulas</strong></span>"+
+			   "                  </span>"+
+			   "                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"> "+
+               "                        <span aria-hidden=\"true\">&times;</span> "+
+			   "                  </button> "+
+			   "                  <div class=\"row\">    "+
+			   "                      <div class=\"col-sm-10\">    "+
+			   "                           <label onclick=\"addFormula('prevFor','x<sup>2</sup>','editFor');\" "+
+			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">x<sup>n</sup>"+
+			   "                           </label>"+	
+			   "                           <label onclick=\"addFormula('prevFor','x<sub>2</sub>','editFor');\" "+
+			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">x<sub>n</sub>"+
+			   "                           </label>"+
+			   "                           <label onclick=\"addFormula('prevFor','&int;','editFor');\" "+
+			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">&int;"+
+			   "                           </label>"+
+			   "                           <label onclick=\"addFormula('prevFor','<sup>a</sup>/<sub>b</sub>','editFor');\" "+
+			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\"><sup>a</sup>/<sub>b</sub>"+
+			   "                           </label>"+
+			   "                           <label onclick=\"addFormula('prevFor','funcion|1','editFor');\" "+
+			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">"+funciones[1]+
+			   "                           </label>"+
+			   "                           <label onclick=\"addFormula('prevFor','funcion|0','editFor');\" "+
+			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">"+funciones[0]+
+			   "                           </label>"+
+			   "                           <label onclick=\"addFormula('prevFor','funcion|2','editFor');\" "+
+			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">"+funciones[2]+
+			   "                           </label>"+
+			   "                      </div>"+
+			   "                      <div class=\"col-sm-2\">    "+
+			   "                           <label onclick=\"copiarFormula('formulas','"+elemento+"','prevFor');\" "+
+			   "                                  class=\"btn btn-sm btn-danger btn-white btn-round\">Copiar"+
+			   "                           </label>"+	
+			   "                      </div>"+	   
+			   "                  </div>"+
+    		   "             </div>"+
+			   "             <div class=\"modal-body\" style=\"text-align: center;\">"+	
+			   "                  <textarea onkeyup=\"actualizarTexto('prevFor','editFor');\"  style=\"width:100%; height:200px;\" id=\"editFor\" ></textarea>"+	
+			   "             </div>"+  
+			   "             <div id=\"prevFor\" style=\"padding-left:20px; height:40px; backgroud-color:whte;\" >"+			     
+			   "              </div>"+
+               "         </div>"+
+               "   </div>"+
+			   "</div>";
+	elpadre=$("#"+padre).parent()
+	$(elpadre).append(script);
+	$('#formulas').modal({show:true, backdrop: 'static'});
+
+}
+
+function paginapreview(ht,padre){
+//	 window.open("../base/pagPreview.php?ht="+encodeURI(ht),"Preview","width=600, height=300");
+	$("#previewTexto").remove();
+	script=    "<div class=\"modal fade\" id=\"previewTexto\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog modal-lg role=\"document\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-info\" >"+
+			   "                  <span><i class=\"menu-icon green fa-2x fa fa-info\"></i>"+
+			   "                        <span class=\"text-success lead \"> <strong>Preview</strong></span>"+
+			   "                  </span>"+
+			   "                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"> "+
+               "                        <span aria-hidden=\"true\">&times;</span> "+
+               "                  </button> "+
+    		   "             </div>"+
+			   "             <div class=\"modal-body\" style=\"text-align: center;\">"+
+			   "                   <div class=\"alert alert-info bigger-110\">"+ht+"</div>"+		
+			   "             </div>"+     
+               "         </div>"+
+               "   </div>"+
+			   "</div>";
+	elpadre=$("#"+padre).parent()
+	$(elpadre).append(script);
+	$('#previewTexto').modal({show:true, backdrop: 'static'});
+
+
+	}
+
+
+function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,funcion,bd, elusuario)
 {   elauto="";
 	hab="";	
 	etiqueta=utf8Decode(etiqueta);
@@ -923,8 +1103,25 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 
 
 	if (tipo=="EDITOR") {
-		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label>\n "+
-		     "<div class= \"wysiwyg-editor\" id=\""+nombre+"\" style=\"overflow-x: auto;\">"+dato+"</div>";	
+        eleditor="<div class=\"widget-box widget-color-green\">"+
+					"<div class=\"widget-body\"> "+
+					"     <div class=\"widget-main no-padding\">"+
+					"         <div class=\"wysiwyg-editor\" id=\""+nombre+"\" style=\"height:100px;\">"+dato+"</div>"+
+					"     </div>"+
+                    "     <div class=\"widget-toolbox padding-4 clearfix\">"+
+				    "         <div class=\"btn-group pull-right\">"+
+					"              <label onclick=\"paginapreview($('#"+nombre+"').html(),'"+padre+"');\" "+
+					"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
+					"              <i class=\"ace-icon fa fa-times bigger-125\"></i>Preview</label>"+
+					"              <label onclick=\"editaFormula('"+nombre+"','"+padre+"');\" "+
+					"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
+					"              <i class=\"ace-icon fa fa-times bigger-125\"></i>Formulas</label>"+
+					"         </div>"+
+                    "     </div>"+
+					"</div>"+
+					"</div>";
+	
+		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label>\n "+eleditor;	
 		$("#"+padre).append(cad);
 
 		$('#'+nombre).ace_wysiwyg({
@@ -945,7 +1142,7 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 			'wysiwyg': {
 				fileUploadError: showErrorAlert
 			}
-		}).prev().addClass('wysiwyg-style2');
+		}).prev().addClass('wysiwyg-style1');
 
 
 		if ( typeof jQuery.ui !== 'undefined' && ace.vars['webkit'] ) {	
@@ -1169,7 +1366,7 @@ if (tipo=="SELECT_MULTIPLE") {
          		 cad+="</SELECT></div>";
          		 
          		$("#"+padre).append(cad);    
-         		elsql=damesqldep(sql);                 
+         		elsql=damesqldep(sql,elusuario);                 
          		agregarEspera("imggif_"+nombre,ico);
  			   
          		param2=buscarBD(bd,elsql);
@@ -1220,7 +1417,7 @@ if (tipo=="SELECT_MULTIPLE") {
          		 cad+="</SELECT></div>";
          		 
          		$("#"+padre).append(cad);  		
-         		elsql=damesqldep(sql);
+         		elsql=damesqldep(sql,elusuario);
                  
          		agregarEspera("imggif_"+nombre,ico);
  			   
