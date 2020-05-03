@@ -141,7 +141,7 @@
         var cuentasCal=0;
         
         
-		$(document).ready(function($) { var Body = $('body'); Body.addClass('preloader-site'); cargarUnidades(); $("#unidades").change(function(){cargarCalificaciones();}); });
+		$(document).ready(function($) { var Body = $('body'); $(document).bind("contextmenu",function(e){return false;});  Body.addClass('preloader-site'); cargarUnidades(); $("#unidades").change(function(){cargarCalificaciones();}); });
 		$(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
 
 

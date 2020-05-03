@@ -300,8 +300,10 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.maskedinput.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/select2.min.js"></script>
 
-<script src="registro.js"></script>
+
 <script type="text/javascript">
+    $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
+    $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
 
 
 </script>

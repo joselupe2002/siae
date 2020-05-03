@@ -43,7 +43,9 @@ class UtilUser {
 		$mail->AddAddress($receptor);
 		$mail->CharSet = 'UTF-8';
 		
-		$mail->AddStringAttachment($adj1, 'oficio.pdf', 'base64', 'application/pdf');
+		if (!($adj1=="")) {
+			 $mail->AddStringAttachment($adj1, 'oficio.pdf', 'base64', 'application/pdf');
+		}
 		
 //		$mail->AddAttachment($adj1,$adj1);
 //		$mail->AddAttachment($adj2,$adj2);
@@ -497,6 +499,18 @@ class UtilUser {
 	}
 	
 	
+	public function getExamenes($usuario,$tipo) {
+		$util= new UtilUser();
+		$miConexU = new Conexion();
+		
+		$sq="select h.*, (SELECT count(*) FROM lincontestar where IDEXAMEN=h.IDEXAMEN and IDPRESENTA='".$usuario."' and TERMINADO='S') as N from vlinaplex h where  STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') ".
+				" Between STR_TO_DATE(h.`INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`TERMINA`,'%d/%m/%Y') and tipo='".$tipo."'";
+		
+		$sq=$sq. " ORDER BY 1";
+		$res=$miConexU->getConsulta("Mysql",$sq);
+		return $res;
+	}
+
 	
 	public function getSELECTDEP($tabla) {
 		$util= new UtilUser();
