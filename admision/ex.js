@@ -121,6 +121,7 @@ function cargarFoto(){
 
 		
 function mandaExamen(idexa, fechaini,horaini){
+
 	sq="SELECT ifnull(IDCON,0) as IDCON,count(*) as N FROM lincontestar WHERE IDEXAMEN="+idexa+" and IDPRESENTA='"+curp+"'";
 	$.ajax({
 		type: "POST",
@@ -145,11 +146,10 @@ function mandaExamen(idexa, fechaini,horaini){
 			 		  url:"../nucleo/base/inserta.php",
 			 	      data: parametros,
 			 	      success: function(data){ 
-						   alert ("cargare");
-                            cargandoExamen(idexa);
 					   }
 					});
 			}
+			cargandoExamen(idexa, fechaini,horaini);
 
 		}
 	});
@@ -157,13 +157,13 @@ function mandaExamen(idexa, fechaini,horaini){
 
 
 
-function cargandoExamen(idexa){
+function cargandoExamen(idexa,fechaini,horaini){
 	$("#contenidoAsp").empty();
 	var cad="";
 	sq="SELECT * from vlinpreguntas WHERE IDEXAMEN="+idexa+" order by IDSECCION,ORDEN" ;
 
 	cad="<div class=\"widget-box\">"+
-	       "<div class=\"widget-body\">"+
+		   "<div class=\"widget-body\">"+fechaini+ " "+ horaini+
 		        "<div class=\"widget-main\">"+
 			        "<div id=\"fuelux-wizard-container\"><div>"+
 						"<ul id=\"itempreg\" class=\"steps\">"+
