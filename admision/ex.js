@@ -217,8 +217,10 @@ function cierraExamen(){
 		type: "POST",
 		url:"../nucleo/base/actualiza.php",
 		data: parametros,
-		success: function(data){        			        	
-			cargarExamenes();					 
+		success: function(data){     
+			$('#dlgcierraExamen').modal("hide");	   			        	
+			cargarExamenes();	
+						 
 		}					     
 	}); 
 
@@ -237,7 +239,7 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 		   "     </div>" +
 		   "     <div class=\"col-sm-2\">"+"<span class=\"fontAmaranth\">"+fechareal+"</span>  <span class=\"fontAmaranth\">"+horareal+"</span>"+
 		   "     </div>" +
-		   "     <div class=\"col-sm-9\">"+"<span class=\"fontAmaranth pull-right\">Minutos Restantes:</span> <span id=\"contminrestantes\" class=\"fontAmaranth badge badge-success\"></span>"+
+		   "     <div class=\"col-sm-9\">"+"<span class=\"fontAmaranth pull-right\">Minutos Restantes:</span> <span id=\"contminrestantes\" class=\"pull-right fontAmaranth badge badge-success\"></span>"+
 		   "     </div>" +
 		   "   </div>"+   
 		   "   <div class=\"row\">"+
@@ -331,7 +333,7 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 function aparecer(idpreg,valsum){
 
 	if ((pregactiva+valsum)>=contPreg)  {
-		mostrarConfirm("confirmCierre", "grid_registro", "Finalizar Examen",
+		mostrarConfirm("dlgcierraExamen", "grid_registro", "Finalizar Examen",
 									"<span class=\"lead text-danger\"><strong>Al finalizar su examen ya no se podrá realizar cambios ",
 		                             "¿Seguro qeu desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
 	}
@@ -357,6 +359,7 @@ function aparecer(idpreg,valsum){
 function verExamen(id,curp,contiempo,minutos,horaInicia) {
 	elexamen=id;
 	var minAct=0;
+	var minutosInicio=0;
 	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDEXAMEN="+id+" and IDPRESENTA='"+curp+"'";
 	$.ajax({
 		type: "POST",
@@ -364,27 +367,27 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 		success: function (dataCon) {	
 	        idcon=0;  encontre=false;
 			jQuery.each(JSON.parse(dataCon), function(clave, valorCon) { 
-				if (valorCon.N>0) {encontre=true;}
-				fechareal=valorCon.FECHAINICIA;
-				horareal=valorCon.INICIO;
-				horaAct=dataFecha.split("|")[0];
+				minutosInicio=parseInt(valorCon.INICIO.split(":")[0])*60 + parseInt(valorCon.INICIO.split(":")[1]);
 			});  
 
 			$.ajax({
 				type: "POST",
 				url:  "../nucleo/base/getFechaHora.php",
-				success: function (dataFecha) {			
-					horaAct=dataFecha.split("|")[0];
+				success: function (dataFecha) {		
+					horaAct=dataFecha.split("|")[0];					   
+					minAct=parseInt(horaAct.split(":")[0])*60 + parseInt(horaAct.split(":")[1]);						
+					
 					fechaAct=dataFecha.split("|")[1];
-					minAct=parseInt(horaAct.split(":")[0])*60 + parseInt(horaAct.split(":")[1]);
 					minIni=0;
 					if (!(horaInicia=='LIBRE')) {
 						minIni=parseInt(horaInicia.split(":")[0])*60+parseInt(horaInicia.split(":")[1]);
-						if (minAct<minIni) { alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" Aun falta para iniciar"); return 0;}
-						
+						if (minAct<minIni) { alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" Aun falta para iniciar"); return 0;}						
 						}
-						alert (minAct+" "+minIni+" "+minutos);	
-						if ((minAct>=(parseInt(minIni)+parseInt(minutos))) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); return 0;}  
+					
+				
+					tiempoqueda=minutos-(parseInt(minAct)-parseInt(minutosInicio));
+					//alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
+					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); return 0;}  
 					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
 					}
 			});
