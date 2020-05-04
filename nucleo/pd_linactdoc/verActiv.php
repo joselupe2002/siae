@@ -54,12 +54,31 @@
                    <button class="btn btn-white btn-danger btn-bold" onclick="regresar();"><i class="ace-icon fa fa-reply-all bigger-120 blue"></i>Regresar    </button>
                </div>                 
 	     </div>
-    </div>
-    <div class="row" style="height: 300px; overflow-y: auto;">
-          <div class="col-sm-1"></div> 
-          <div class="col-sm-10" id="laTabla"></div> 
-		  <div class="col-sm-1"></div> 
-     </div>	
+	</div>
+	<div class="widget-body">
+				   <div class="widget-main">
+				      <div id="opcionestabHorarios" class="row hide" >
+					        <div class="col-sm-1"></div>
+						    <div class="col-sm-3">
+								<div class="pull-left tableTools-container" id="botonestabHorarios"></div>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" id="buscartabHorarios" placeholder="Filtrar...">	
+							</div>
+							<div class="col-sm-3">
+								 <span class="text-success">Alum: </span><span class="badge badge-success" id="total"></span>
+								 <span class="text-primary">Ent: </span><span class="badge badge-primary" id="totale"></span>
+							</div>
+					   </div>
+					   <div class="row" style="height: 300px; overflow-y: auto;">
+							<div class="col-sm-1"></div> 
+							<div class="col-sm-10" id="laTabla"></div> 
+							<div class="col-sm-1"></div> 
+					   </div>	
+                    </div>
+			   </div>
+
+   
 	
 	
 	
@@ -204,7 +223,8 @@
 		
 
         function cargarAlumnos() {
-        	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";
+			 var ladefault="..\\..\\imagenes\\menu\\pdf.png";
+			 total=0; tne=0;
 			 $.ajax({
 		         type: "GET",
 		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) AS NOMBRE,"+ 
@@ -216,7 +236,7 @@
 		         success: function(data){    
 		        	 $("#laTabla").empty();
 		        	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th></tr>"+ 
+		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th></tr>"+ 
 		                       "</thead></table> ");
 		    
 		        	 $("#cuerpo").empty();
@@ -230,10 +250,18 @@
 			                                                    " <img width=\"30px\" height=\"30px\" id=\""+valor.MATRICULA+"TAREA\" "+
 			                                                           "src=\""+ladefault+"\" width=\"50px\" height=\"50px\"></a></td>");
 				          $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.FECHARUTA+"</span></td>");
-				          $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.FECHAENV+"</span></td>");
-				         		                  
-				          if (valor.RUTA=='') {$('#'+valor.MATRICULA+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfno.png");}				          		         
-		              });
+						  $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.FECHAENV+"</span></td>");
+						  
+						  total++;
+                          cadSubio='S'				         		                  
+						  if (valor.RUTA=='') {cadSubio='N'; tne++; $('#'+valor.MATRICULA+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfno.png");}	
+						  $("#row"+valor.MATRICULA).append("<td><span class=\"badge badge-primary\" style=\"font-weight:bold;\">"+cadSubio+"</span></td>");
+
+					  });
+					  $("#total").html(total);
+					  $("#totale").html(parseInt(total)-parseInt(tne));
+					  
+					  convertirDataTable('tabHorarios');
 		       	       $('#dlgproceso').modal("hide"); 
 		            },
 		        error: function(data) {	  

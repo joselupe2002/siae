@@ -36,11 +36,28 @@ function verEvidencias(modulo,usuario,institucion, campus,essuper){
 		   "             </button>"+
 		   "          </div>"+
 		   "          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto; height:300px;\">"+	
-		   "                <div class=\"row\">"+
+		   "              <div class=\"widget-body\">"+
+		   "	               <div class=\"widget-main\">"+
+		   "	                   <div id=\"opcionestabHorarios\" class=\"row hide\" >"+
+		   "		                   <div class=\"col-sm-1\"></div>"+
+		   "			               <div class=\"col-sm-3\">"+
+		   "					           <div class=\"pull-left tableTools-container\" id=\"botonestabHorarios\"></div>"+
+		   "				           </div>"+
+		   "				           <div class=\"col-sm-3\">"+
+		   "					            <input type=\"text\" id=\"buscartabHorarios\" placeholder=\"Filtrar...\">"+	
+		   "				           </div>"+
+		   "                           <div class=\"col-sm-3\">"+
+		   "					          <span class=\"text-success\">Alum: </span><span class=\"badge badge-success\" id=\"total\"></span>"+
+		   "					         <span class=\"text-primary\">Ent: </span><span class=\"badge badge-primary\" id=\"totale\"></span>"+
+		   "					       </div>"+
+		   "		               </div>"+
+		   "                   </div>"+
+		   "              </div>"+
+		   "              <div class=\"row\">"+
 	       "                     <div class=\"col-sm-1\"></div> "+
 	       "                     <div class=\"col-sm-10\" id=\"laTabla\"></div> "+
-		   "                <div class=\"col-sm-1\"></div> "+
-	       "          </div>"+		     
+		   "                     <div class=\"col-sm-1\"></div> "+
+	       "              </div>"+		     
 	       "          </div>"+
 		   "      </div>"+
 		   "   </div>"+
@@ -65,6 +82,7 @@ function verEvidencias(modulo,usuario,institucion, campus,essuper){
 
 
 function cargarAlumnos(grupo, ciclo,profesor,materia,actividad) {
+	  total=0; tne=0;
 	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";	
 	 $.ajax({
         type: "GET",
@@ -77,7 +95,7 @@ function cargarAlumnos(grupo, ciclo,profesor,materia,actividad) {
         success: function(data){    
        	 $("#laTabla").empty();
        	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-                      "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th></tr>"+ 
+                      "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th></tr>"+ 
                       "</thead></table> ");
    
        	 $("#cuerpo").empty();
@@ -92,9 +110,14 @@ function cargarAlumnos(grupo, ciclo,profesor,materia,actividad) {
 	                                                           "src=\""+ladefault+"\" width=\"50px\" height=\"50px\"></a></td>");
 		          $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.FECHARUTA+"</span></td>");
 		          $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.FECHAENV+"</span></td>");
-		         		                  
-		          if (valor.RUTA=='') {$('#'+valor.MATRICULA+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfno.png");}				          		         
-             });
+				 
+				  total++; cadSubio='S'
+				  if (valor.RUTA=='') {cadSubio='N'; tne++; $('#'+valor.MATRICULA+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfno.png");}				          		         
+				  $("#row"+valor.MATRICULA).append("<td><span class=\"badge badge-primary\" style=\"font-weight:bold;\">"+cadSubio+"</span></td>");
+			 });
+			    $("#total").html(total);
+			    $("#totale").html(parseInt(total)-parseInt(tne));
+			    convertirDataTable('tabHorarios');
       	       $('#dlgproceso').modal("hide"); 
            },
        error: function(data) {	  
