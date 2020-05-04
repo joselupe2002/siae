@@ -389,7 +389,7 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 					if (minutosInicio==0) {tiempoqueda=minutos-(parseInt(minutosInicio));}
 					else {tiempoqueda=minutos-(parseInt(minAct)-parseInt(minutosInicio)); }
 					    
-					alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
+					//alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
 					
 					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); return 0;}  
 					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
