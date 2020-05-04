@@ -367,7 +367,9 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 		success: function (dataCon) {	
 	        idcon=0;  encontre=false;
 			jQuery.each(JSON.parse(dataCon), function(clave, valorCon) { 
-				minutosInicio=parseInt(valorCon.INICIO.split(":")[0])*60 + parseInt(valorCon.INICIO.split(":")[1]);
+				if (valorCon.N>0)  {
+				   minutosInicio=parseInt(valorCon.INICIO.split(":")[0])*60 + parseInt(valorCon.INICIO.split(":")[1]);
+				}
 			});  
 
 			$.ajax({
@@ -384,9 +386,11 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 						if (minAct<minIni) { alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" Aun falta para iniciar"); return 0;}						
 						}
 					
-				
-					tiempoqueda=minutos-(parseInt(minAct)-parseInt(minutosInicio));
-					//alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
+					if (minutosInicio==0) {tiempoqueda=minutos-(parseInt(minutosInicio));}
+					else {tiempoqueda=minutos-(parseInt(minAct)-parseInt(minutosInicio)); }
+					    
+					alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
+					
 					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); return 0;}  
 					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
 					}
