@@ -211,7 +211,7 @@
 		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE, LISPA"+launidad+" as CAL, LISFA"+launidad+" as FALTA"+
 				          " from dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.GPOCVE='<?php echo $_GET["grupo"];?>'"+
 				          " and PDOCVE='<?php echo $_GET["ciclo"];?>' and LISTC15='<?php echo $_GET["profesor"];?>'"+
-				          " and MATCVE='<?php echo $_GET["materia"];?>' order by 2"),
+				          " and MATCVE='<?php echo $_GET["materia"];?>' order by ALUM_APEPAT,ALUM_APEMAT,ALUM_NOMBRE"),
 		         success: function(data){    
 		        	 $("#latabla").empty();
 		        	 $("#latabla").append("<thead><tr id=\"titulo\"><th style=\"text-align: center;\">No. Control</th>"+ 
