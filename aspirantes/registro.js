@@ -422,12 +422,15 @@ var elciclo="";
 	
 function guardarGen(){
 	var f = new Date();
-	fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
 	
+	fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
+	var laclave = pad(f.getDate(),2)+pad((f.getMonth() +1),2) +f.getFullYear()+Math.floor(Math.random()*1000);
+
 		parametros={
 			tabla:"aspirantes",
 			bd:"Mysql",
 			CURP:$("#CURP").val().toUpperCase(),
+			CLAVE: laclave,
 			APEPAT:$("#APEPAT").val().toUpperCase(),
 			APEMAT:$("#APEMAT").val().toUpperCase(),
 			NOMBRE:$("#NOMBRE").val().toUpperCase(),

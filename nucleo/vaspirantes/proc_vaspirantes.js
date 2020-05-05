@@ -180,7 +180,7 @@ function verPago(modulo,usuario,essuper){
 
 		    
 			sqlAsp="SELECT ifnull(RUTA,'') AS RUTA FROM adjaspirantes b where "+
-			       " b.AUX=CONCAT('FOTO','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
+			       " b.AUX=CONCAT('PAGO','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
 		    $.ajax({
 		           type: "GET",
 		           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlAsp),
