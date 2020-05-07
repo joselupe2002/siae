@@ -75,6 +75,20 @@ function verPlanea(modulo,usuario,institucion, campus,essuper){
 }
 
 
+
+function verRepUni(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	window.open("../pd_captcal/repUni.php?materia="+table.rows('.selected').data()[0]["CVE_MAT"]+
+	            "&grupo="+table.rows('.selected').data()[0]["GRUPO"]+
+				"&ciclo="+table.rows('.selected').data()[0]["CICLO"]+
+				"&profesor="+table.rows('.selected').data()[0]["EMPL"]+
+				"&id="+table.rows('.selected').data()[0]["IDDET"]+
+				"&materiad="+table.rows('.selected').data()[0]["MATERIA"]+
+				"&semestre=1","_blank");
+}
+
+
+
 function asignarbase(){
 	
 	if ($("#gbase").val()>0) {

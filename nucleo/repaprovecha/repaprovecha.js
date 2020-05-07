@@ -98,14 +98,16 @@ contMat=1;
 																				      
 									jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
 										$("#n_"+valorPaso.IDGRUPO).html(valorPaso.N);
+										unidades="";
 										for (j=1; j<=$("#uni_"+valorPaso.IDGRUPO).html(); j++) {
-											unidades+="SUM(IF (LISPA"+j+">=70,1,0)),";
+											unidades+="SUM(IF (LISPA"+j+">=70,1,0)) AS U"+j+",";
 										}
 
 
 										if (unidades.length>0) {
 												elsqlUni="select IDGRUPO,"+unidades.substring(0,unidades.length-1)+" from dlista where IDGRUPO="+valorPaso.IDGRUPO+
-												"   GROUP BY IDGRUPO";																																	
+												"   GROUP BY IDGRUPO";	
+											
 												$.ajax({
 													type: "GET",
 													url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlUni,

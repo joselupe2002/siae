@@ -919,7 +919,31 @@ funciones[1] = "<span style=\"font-size:16px;\">&radic;</span>"+
 funciones[2]="<div style=\"display: inline-block; vertical-align: middle; margin: 0 0.2em 0.4ex; text-align: center;\">"+
              "     <span style=\"display: block;   padding-top: 0.15em;\">abc</span>"+
              "     <span style=\"border-top: thin solid black; display: block; padding-top: 0.15em;\">ab</span>"+
-             "</div>";
+			 "</div>";
+funciones[3]="<font face=\'symbol\'>&#64</font>";
+funciones[4]="<font face='symbol'>&#201</font>";
+funciones[5]="<font face='symbol'>&#181</font>";
+funciones[6]="<font face='symbol'>&#187</font>";
+funciones[7]="<font face='symbol'>&#202</font>";
+funciones[8]="<font face='symbol'>&#203</font>";
+funciones[9]="<font face='symbol'>&#204</font>";
+funciones[10]="<font face='symbol'>&#205</font>";
+funciones[11]="<font face='symbol'>&#219</font>";
+funciones[12]="<font face='symbol'>&#220</font>";
+funciones[13]="<font face='symbol'>&#221</font>";
+funciones[14]="<font face='symbol'>&#222</font>";
+funciones[15]="<font face='symbol'>&#223</font>";
+funciones[16]="<font face='symbol'>&#199</font>";
+funciones[17]="<font face='symbol'>&#200</font>";
+funciones[18]="<font face='symbol'>&#206</font>";
+funciones[19]="<font face='symbol'>&#207</font>";
+funciones[20]="<font face='symbol'>&#34</font>";
+funciones[21]="<font face='symbol'>&#36</font>";
+funciones[22]="<font face='symbol'>&#165</font>";
+funciones[23]="<font face='symbol'>&#171</font>";
+funciones[24]="<font face='symbol'>&#172</font>";
+funciones[25]="<font face='symbol'>&#174</font>";
+funciones[26]="<font face='symbol'>&#175</font>";
 
 /*============================================================================================*/		   
 
@@ -938,6 +962,7 @@ function addFormula(visual,contenido,editfor) {
 	}
 	$('#'+visual).append(elcontenido);
 	$('#'+editfor).val($('#'+editfor).val()+elcontenido);
+	
 }
 
 function editaFormula(elemento,padre) {
@@ -965,17 +990,14 @@ function editaFormula(elemento,padre) {
 			   "                           </label>"+
 			   "                           <label onclick=\"addFormula('prevFor','<sup>a</sup>/<sub>b</sub>','editFor');\" "+
 			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\"><sup>a</sup>/<sub>b</sub>"+
-			   "                           </label>"+
-			   "                           <label onclick=\"addFormula('prevFor','funcion|1','editFor');\" "+
-			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">"+funciones[1]+
-			   "                           </label>"+
-			   "                           <label onclick=\"addFormula('prevFor','funcion|0','editFor');\" "+
-			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">"+funciones[0]+
-			   "                           </label>"+
-			   "                           <label onclick=\"addFormula('prevFor','funcion|2','editFor');\" "+
-			   "                                  class=\"btn btn-sm btn-success btn-white btn-round\">"+funciones[2]+
-			   "                           </label>"+
-			   "                      </div>"+
+			   "                           </label>";
+
+			   for (i=0;i<funciones.length;i++) {
+	    script+="         <label onclick=\"addFormula('prevFor','funcion|"+i+"','editFor');\" "+
+				"               class=\"btn btn-sm btn-success btn-white btn-round\">"+funciones[i]+
+				"         </label>";				
+			   }
+	   script+="                      </div>"+
 			   "                      <div class=\"col-sm-2\">    "+
 			   "                           <label onclick=\"copiarFormula('formulas','"+elemento+"','prevFor');\" "+
 			   "                                  class=\"btn btn-sm btn-danger btn-white btn-round\">Copiar"+

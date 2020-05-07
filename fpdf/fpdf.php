@@ -829,7 +829,9 @@ function Write($h, $txt, $link='')
 			}
 			else
 			{
-				$this->Cell($w,$h,substr($s,$j,$sep-$j),0,2,'',false,$link);
+				$this->Cell($w,$h,substr($s,$j,$sep-$j),0,0,'',false,$link);
+				if ($l>$wmax) {$this->x = $this->lMargin;
+					           $this->y += $h; }
 				$i = $sep+1;
 			}
 			$sep = -1;
@@ -847,8 +849,9 @@ function Write($h, $txt, $link='')
 			$i++;
 	}
 	// Last chunk
-	if($i!=$j)
-		$this->Cell($l/1000*$this->FontSize,$h,substr($s,$j),0,0,'',false,$link);
+	if($i!=$j){
+		$this->Cell($l/1000*$this->FontSize,$h,substr($s,$j),0,0,'',false,$link);}
+	
 }
 
 function Ln($h=null)

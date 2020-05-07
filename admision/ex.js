@@ -2,6 +2,9 @@ var elciclo="";
 var pregactiva=0;
 var contPreg=1;	
 var elexamen;
+var arr_nombresec=[];
+var arr_instsec=[];
+var arr_instpreg=[];
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -35,9 +38,7 @@ function cargarFoto(){
 		else{$("#fotoAsp").attr("src","../imagenes/menu/default.png");}
 		}
 	});
-
 }
-
 
 	function cargarExamenes(){
 		$("#contenidoAsp").empty();
@@ -59,7 +60,8 @@ function cargarFoto(){
 								  "      </div>");
 		sq="select h.*, (SELECT count(*) FROM lincontestar where IDEXAMEN=h.IDEXAMEN and IDPRESENTA='"+curp+"' and TERMINADO='S') as N "+
 		    " from vlinaplex h where  STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
-			" Between STR_TO_DATE(h.`INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`TERMINA`,'%d/%m/%Y') and tipo='ASPIRANTES'";
+			" Between STR_TO_DATE(h.`INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`TERMINA`,'%d/%m/%Y') and tipo='ASPIRANTES'"+
+			" and ifnull(CARRERA,'"+carrera+"')='"+carrera+"'";
 
 		$.ajax({
 			type: "POST",
@@ -230,8 +232,7 @@ function cierraExamen(){
 function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 	$("#contenidoAsp").empty();
 	var cad="";
-	sq="SELECT * from vlinpreguntas WHERE IDEXAMEN="+idexa+" order by IDSECCION,ORDEN" ;
-
+	sq="SELECT * from vlinpreguntas WHERE IDEXAMEN="+idexa+" order by IDSECCION,ORDEN, IDPREG" ;
 	cad="<div class=\"widget-box widget-color-blue\" style=\"width:100%;\"  >"+
 		   "<div class=\"widget-header widget-header-small\">"+
 		   "   <div class=\"row\">"+
@@ -267,7 +268,12 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 		type: "POST",
 		url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
 		success: function (dataPre) {		
-		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 			
+		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 
+				arr_nombresec[clave]=valorPre.SECCIOND;
+				arr_instsec[clave]=valorPre.INSTRUCCIONES;
+				arr_instpreg[clave]=valorPre.INSTRUCCIONESPREG;
+		
+
 			    hide="hide"; color="badge badge-gray";
 				if (contPreg==1){ hide=""; pregactiva=1; color="badge badge-yellow";}
 				$("#itempreg").append("<span id=\"elitem"+contPreg+"\" idPreg=\""+valorPre.IDPREG+"\" style=\"cursor:pointer;width:30px;\" class=\"itemPreg "+color+"\" "+
@@ -325,10 +331,23 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 				}
 			});
 
+			colocarSeccion(0);
+
+
 		}
 	});
 }
 
+
+
+function colocarSeccion(item){
+	cad="<span class=\"fontAmaranthB bigger-100 label label-danger label-white middle\"> SECCIÓN: "+arr_nombresec[item]+"</span><br/>";
+	if (arr_instsec[item].length>0) {
+		cad+="<span class=\"fontAmaranthB bigger-100 label label-success label-white middle\"> INSTRUCCIÓN: "+arr_instsec[item]+"</span><br/>"; }
+	if (arr_instpreg[item].length>0) {	
+		cad+="<span class=\"fontAmaranthB bigger-100 label label-info label-white middle\"> INSTRUCCIÓN PREGUNTA: "+arr_instpreg[item]+"</span><br/>";}
+	$("#observaciones").html(cad);
+}
 
 function aparecer(idpreg,valsum){
 
@@ -352,7 +371,8 @@ function aparecer(idpreg,valsum){
 	$("#elitem"+modificarnum).removeClass("badge-gray");
 	$("#elitem"+modificarnum).removeClass("badge-yellow");
 	$("#elitem"+modificarnum).addClass("badge-yellow");
-    pregactiva=modificarnum;
+	pregactiva=modificarnum;
+	colocarSeccion(pregactiva-1);
 }
 
 
@@ -360,6 +380,7 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
+	var yaabrio=false;
 	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDEXAMEN="+id+" and IDPRESENTA='"+curp+"'";
 	$.ajax({
 		type: "POST",
@@ -368,7 +389,9 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 	        idcon=0;  encontre=false;
 			jQuery.each(JSON.parse(dataCon), function(clave, valorCon) { 
 				if (valorCon.N>0)  {
+					yaabrio=true;
 				   minutosInicio=parseInt(valorCon.INICIO.split(":")[0])*60 + parseInt(valorCon.INICIO.split(":")[1]);
+				   fechainicio=valorCon.FECHAINICIA;
 				}
 			});  
 
@@ -383,14 +406,17 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 					minIni=0;
 					if (!(horaInicia=='LIBRE')) {
 						minIni=parseInt(horaInicia.split(":")[0])*60+parseInt(horaInicia.split(":")[1]);
-						if (minAct<minIni) { alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" Aun falta para iniciar"); return 0;}						
+						if (minAct<minIni) { alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" espere por favor"); return 0;}						
 						}
 					
 					if (minutosInicio==0) {tiempoqueda=minutos-(parseInt(minutosInicio));}
 					else {tiempoqueda=minutos-(parseInt(minAct)-parseInt(minutosInicio)); }
 					    
 					//alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
-					
+					//alert (fechainicio+"!="+fechaAct);
+					if ((yaabrio) && (fechainicio!=fechaAct) && (contiempo=='S')) {
+						alert ("El tiempo para iniciar el examen se ha concluido días diferentes: Inicio el examen el dia "+fechainicio); return 0;
+					}
 					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); return 0;}  
 					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
 					}
