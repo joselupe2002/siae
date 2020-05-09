@@ -91,7 +91,10 @@ function imprimeReporte(tipocons,consecutivo) {
 						}
 					});
 
-	if (tipocons=="1") {window.open("conscal.php?matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+	if (tipocons=="1") {window.open("conscal.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+	if (tipocons=="2") {window.open("conshorario.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+	if (tipocons=="3") {window.open("consperiodo.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+	if (tipocons=="4") {window.open("conssincal.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
 	if (tipocons=="5") {window.open("../avancecurri/kardex.php?matricula="+$("#selAlumnos").val(), '_blank');  }
 
 }
