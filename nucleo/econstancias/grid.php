@@ -57,8 +57,9 @@
 								</div>
 								
 								<div class="space-6" ></div>	
-								<div class="row" style="padding: 10px;" >	
-										<div id="lostipos" class="col-sm-12"></div> 
+								<div class="row" style="padding: 10px;">	
+										    <div  id="lostipos" class="col-sm-6">  </div>
+											<div  id="lostipoexp" class="col-sm-6"> </div>								
 								</div>
 								
 								
@@ -72,12 +73,22 @@
 												<i class="ace-icon green fa fa-file-o bigger-140"></i><span class="btn-small"></span>            
 												Constancia
 										</button> 
+										<button title="Imprimir constancia" onclick="creaConsHor('2201','16E40154','10','2020');" class="btn btn-white btn-info btn-round" value="Agregar"> 
+												<i class="ace-icon green fa fa-file-o bigger-140"></i><span class="btn-small"></span>            
+												Prueba
+										</button>
 								</div>
 						</div>
 					</div>
 			</div>
 			<div class="col-sm-3"></div>
 	</div>
+	<div id="htmlConst" class="hide">
+		  <div class="row"><div class="col-sm-12" id="encabezadoCons">sdad</div></div>
+		  <div class="row"><div class="col-sm-12" id="cuerpoCons">sdfdsf</div></div>
+		  <div class="row"><div class="col-sm-12" id="calCons">dsf</div></div>
+		  <div class="row"><div class="col-sm-12" id="pieCons">dfdsf</div></div>
+	</div> 
 <!-- ============================================================================================================-->			
 		 							
 <!-- -------------------Primero ----------------------->
