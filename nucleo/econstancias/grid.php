@@ -73,10 +73,7 @@
 												<i class="ace-icon green fa fa-file-o bigger-140"></i><span class="btn-small"></span>            
 												Constancia
 										</button> 
-										<button title="Imprimir constancia" onclick="creaConsHor('2201','16E40154','10','2020');" class="btn btn-white btn-info btn-round" value="Agregar"> 
-												<i class="ace-icon green fa fa-file-o bigger-140"></i><span class="btn-small"></span>            
-												Prueba
-										</button>
+									
 								</div>
 						</div>
 					</div>

@@ -229,7 +229,7 @@ function creaConsCal (elciclo,matricula,consec,anio){
 											//alert (dataCal);											
 											colocaCalificaciones(JSON.parse(dataCal));	
 											colocaPie(consec,valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.CARRERAD);																				
-											exportHTML("htmlConst","C_"+valorAlu.ALUM_MATRICULA+".doc");	
+											exportHTML("htmlConst","CCAL_"+valorAlu.ALUM_MATRICULA+".doc");	
 											ocultarEspera("esperacons")	;
 										}//success de las calificaciones
 									});	//del ajax de las calificaciones	
@@ -249,7 +249,7 @@ function colocaHorarios(dataCal) {
 	$("#tablacal").append(
 		"    <tr>"+
 		"       <th style=\"width:10%; font-size:8px;\">GRUPO</th>"+
-		"       <th style=\"width:25%; font-size:8px;\">MATERIA/PROFESOR</th>"+
+		"       <th style=\"width:20%; font-size:8px;\">MATERIA/PROFESOR</th>"+
 		"       <th style=\"width:5%; font-size:8px;\">CRED</th>"+
 		"       <th style=\"width:10%; font-size:8px;\">LUNES</th>"+
 		"       <th style=\"width:10%; font-size:8px;\">MARTES</th>"+
@@ -257,6 +257,7 @@ function colocaHorarios(dataCal) {
 		"       <th style=\"width:10%; font-size:8px;\">JUEVES</th>"+
 		"       <th style=\"width:10%; font-size:8px;\">VIERNES</th>"+
 		"       <th style=\"width:10%; font-size:8px;\">SABADO</th>"+
+		"       <th style=\"width:10%; font-size:8px;\">REP</th>"+
 		"    </tr>");
 	jQuery.each(dataCal, function(claveCal, valorCal) { 
 			$("#tablacal").append(
@@ -270,6 +271,7 @@ function colocaHorarios(dataCal) {
 			"       <td style=\"width:10%; font-size:8px;\">"+valorCal.JUEVES+"</td>"+
 			"       <td style=\"width:10%; font-size:8px;\">"+valorCal.VIERNES+"</td>"+
 			"       <td style=\"width:10%; font-size:8px;\">"+valorCal.SABADO+"</td>"+
+			"       <td style=\"width:10%; font-size:8px;\">"+valorCal.REP+"</td>"+
 			"    </tr>");
     }); //del each de las calificaciones
 }
@@ -325,10 +327,186 @@ function creaConsHor(elciclo,matricula,consec,anio){
 											//alert (dataCal);											
 											colocaHorarios(JSON.parse(dataCal));	
 											colocaPie(consec,valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.CARRERAD);																				
-											exportHTML("htmlConst","C_"+valorAlu.ALUM_MATRICULA+".doc");	
+											exportHTML("htmlConst","CHOR_"+valorAlu.ALUM_MATRICULA+".doc");	
 											ocultarEspera("esperacons")	;
 										}//success de las calificaciones
 									});	//del ajax de las calificaciones	
+								}); //del each de datos delalumno									
+							}//success de de datos del alumno 
+						});	//del ajax de datos generales del alumno 
+					}); //del each de los datos delciclo	
+				} //del success de los datos del ciclo	  
+			}); // ajax de los datos del ciclo	 
+		} //success de datos generales de la institucions
+	}); //del ajax de datos generales de la institucion
+}
+
+
+function colocaPeriodos(dataCal) {
+	$("#calCons").append("<br/><table id=\"tablacal\" border=\"1\" style=\"width:100%; border-collapse: collapse;\"></table>");
+	
+	lascal=0; nummat=0; totalcal=0; totalmat=0;
+    ciclo=""; elsem=1; n=1;
+	jQuery.each(dataCal, function(claveCal, valorCal) { 
+		    if (!(ciclo==valorCal.CICLO)) {
+				if (!(n==1)) {
+					$("#tablacal").append(
+						"    <tr>"+
+						"       <th colspan=\"5\" style=\"width:60%;  text-align:left;  font-size:10px;\">PROMEDIO DEL PERIODO: "+Math.round(parseInt(lascal)/parseInt(nummat))+"</th>"+
+						"    </tr><br/>");
+					lascal=0; nummat=0;
+				}
+
+				$("#tablacal").append(
+					"    <tr>"+
+					"       <th colspan=\"5\" style=\"width:60%; background-color:#E1DBDB; text-align:center; font-size:12px;\">SEMESTRE "+elsem+" PERIODO: "+valorCal.CICLOD+"</th>"+
+					"    </tr>"+
+					"    <tr>"+
+					"       <th style=\"width:60%; text-align:center; font-size:10px;\">MATERIAS</th>"+
+					"       <th colspan=\"2\" style=\"width:30%; text-align:center; font-size:10px;\">CALIFICACIÓN</th>"+
+					"       <th style=\"width:5%; text-align:center; font-size:10px;\">OPC</th>"+
+					"       <th style=\"width:5%; text-align:center; font-size:10px;\">OBS</th>"+
+					"    </tr>");
+					ciclo=valorCal.CICLO;
+					elsem++;
+			}
+			$("#tablacal").append(
+			"    <tr>"+
+			"       <td style=\"width:60%; font-size:10px;\">"+valorCal.MATERIAD+"</td>"+
+			"       <td style=\"width:10%; text-align:center;  font-size:10px;\">"+valorCal.CAL+"</td>"+
+			"       <td style=\"width:20%;  font-size:10px;\">"+NumeroALetras(valorCal.CAL)+"</td>"+
+			"       <td style=\"width:5%; font-size:10px;\">"+valorCal.TCALCONS+"</td>"+
+			"       <td style=\"width:5%; font-size:10px;\"></td>"+
+			"    </tr>");
+			lascal+=parseInt(valorCal.CAL); nummat++;
+			totalcal+=parseInt(valorCal.CAL); totalmat++;
+			n++;
+	}); //del each de las calificaciones
+	$("#tablacal").append(
+		"    <tr>"+
+		"       <th colspan=\"5\" style=\"width:60%;  text-align:left;  font-size:10px;\">PROMEDIO DEL PERIODO: "+Math.round(parseInt(lascal)/parseInt(nummat))+"</th>"+
+		"    </tr><br/>");
+	
+	$("#calCons").append(
+			"<div style=\"font-size:8px;\" >OPC: OR Ordinario, RE Regularización, EX Extraordinario, O2 Ordinario de "+
+			"repetición de curso, R2 Regularización de repetición de curso, EE Examen Especial, EQ Equivalencia de "+
+			" Estudios, CO Convalidación, RE Revalidación</div>");
+
+	$("#calCons").append(
+		"    <br/>"+
+		"    <div>PROMEDIO DE LOS PERIODOS LISTADOS "+Math.round(parseInt(totalcal)/parseInt(totalmat))+"</div>");
+
+}
+
+function creaConsPer(elciclo,matricula,consec,anio){
+	$("#encabezadoCons").empty();$("#cuerpoCons").empty();$("#calCons").empty();$("#pieCons").empty();
+	mostrarEspera("esperacons","grid_econstancias", "Cargando Datos..");
+    elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	$.ajax({
+		type: "GET",
+		url:  "../base/getdatossql.php?sql="+encodeURI(elsqlGen)+"&sel=0&bd=SQLite",
+		success: function(dataGen){ 
+			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_fechaof;});
+			creaEncabezado(consec,anio,clave);
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
+			
+			$.ajax({
+			    type: "GET",
+			    url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCic)+"&sel=0&bd=Mysql",
+			    success: function(dataCic){ 
+			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
+				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
+						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
+						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
+						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
+						" getavance('"+matricula+"') as AVANCE, "+
+						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
+						" getPeriodos('"+matricula+"',getciclo()) AS PERIODOS,"+
+						" getcuatrialum('"+matricula+"',getciclo()) as SEMESTRE,"+
+						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='"+matricula+"') AS CRECUR "+
+						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
+						" CARR_CLAVE=ALUM_CARRERAREG"+
+						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+			    		$.ajax({
+							type: "GET",
+							url:  "../base/getdatossql.php?sql="+encodeURI(elsqlAlu)+"&sel=0&bd=Mysql",
+							success: function(dataAlu){ 
+								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
+									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
+											   valorAlu.CARRERAD,valorCic.CICL_INICIO,valorCic.CICL_FIN,
+											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
+											   valorAlu.AVANCE,valorAlu.PERIODOS," CON LAS CALIFICACIONES QUE A CONTINUACION SE ENLISTAN:" );
+									
+									elsqlCal="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,"+ 
+									"(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,"+
+									"TCAL,TCALCONS, CICLO, CICLOD, CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM vconstperiodo "+
+									"where MATRICULA='"+matricula+"' AND CAL>=70 "+
+									"and TIPOMAT NOT IN ('T','I','AC','SS')  ORDER BY CICLO,SEMESTRE, MATERIAD";
+									$.ajax({
+										type: "GET",
+										url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCal)+"&sel=0&bd=Mysql",
+										success: function(dataCal){ 
+											//alert (dataCal);											
+											colocaPeriodos(JSON.parse(dataCal));	
+											colocaPie(consec,valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.CARRERAD);																				
+											exportHTML("htmlConst","CPER_"+valorAlu.ALUM_MATRICULA+".doc");	
+											ocultarEspera("esperacons")	;
+										}//success de las calificaciones
+									});	//del ajax de las calificaciones	
+								}); //del each de datos delalumno									
+							}//success de de datos del alumno 
+						});	//del ajax de datos generales del alumno 
+					}); //del each de los datos delciclo	
+				} //del success de los datos del ciclo	  
+			}); // ajax de los datos del ciclo	 
+		} //success de datos generales de la institucions
+	}); //del ajax de datos generales de la institucion
+}
+
+
+
+function creaConsIns(elciclo,matricula,consec,anio){
+	$("#encabezadoCons").empty();$("#cuerpoCons").empty();$("#calCons").empty();$("#pieCons").empty();
+	mostrarEspera("esperacons","grid_econstancias", "Cargando Datos..");
+    elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	$.ajax({
+		type: "GET",
+		url:  "../base/getdatossql.php?sql="+encodeURI(elsqlGen)+"&sel=0&bd=SQLite",
+		success: function(dataGen){ 
+			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_fechaof;});
+			creaEncabezado(consec,anio,clave);
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
+			
+			$.ajax({
+			    type: "GET",
+			    url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCic)+"&sel=0&bd=Mysql",
+			    success: function(dataCic){ 
+			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
+				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
+						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
+						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
+						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
+						" getavance('"+matricula+"') as AVANCE, "+
+						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
+						" getPeriodos('"+matricula+"',getciclo()) AS PERIODOS,"+
+						" getcuatrialum('"+matricula+"',getciclo()) as SEMESTRE,"+
+						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='"+matricula+"') AS CRECUR "+
+						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
+						" CARR_CLAVE=ALUM_CARRERAREG"+
+						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+			    		$.ajax({
+							type: "GET",
+							url:  "../base/getdatossql.php?sql="+encodeURI(elsqlAlu)+"&sel=0&bd=Mysql",
+							success: function(dataAlu){ 
+								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
+									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
+											   valorAlu.CARRERAD,valorCic.CICL_INICIO,valorCic.CICL_FIN,
+											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
+											   valorAlu.AVANCE,valorAlu.PERIODOS,"" );
+											   colocaPie(consec,valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.CARRERAD);
+											   exportHTML("htmlConst","CINS_"+valorAlu.ALUM_MATRICULA+".doc");	
+											   ocultarEspera("esperacons")	;
+									
 								}); //del each de datos delalumno									
 							}//success de de datos del alumno 
 						});	//del ajax de datos generales del alumno 
