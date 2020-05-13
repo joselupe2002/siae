@@ -72,7 +72,7 @@
      </div><br/>
      <div class="row">
          <div class="col-sm-4">
-             <img src="../../imagenes/ayuda/filtro.png" style="width: 100%;"></img><br/>
+             <img src="../../imagenes/ayuda/filtro.PNG" style="width: 100%;"></img><br/>
          </div>
          <div class="col-sm-8">
              <div class="fontRobotoB bigger-100 text-danger text-align: justify"">
@@ -100,7 +100,7 @@
                  Aparecerán los datos de acuerdo al filtro establecido, de aqui en adelante llamaremos GRID a el componenete 
                  donde se encuentra la información del módulo.                    
       </div>
-     <img src="../../imagenes/ayuda/grid.png" style="width: 100%;"></img><br/>
+     <img src="../../imagenes/ayuda/grid.PNG" style="width: 100%;"></img><br/>
      <ol>
          <li class="fontRobotoB text-danger bigger-110" style="text-align: justify; color: blue;">
              <a onclick="getAyuda('fuba');" style="cursor:pointer"> 
@@ -212,7 +212,7 @@
      </div><br/>
      <div class="row">
          <div class="col-sm-4">
-             <img src="../../imagenes/ayuda/filtro.png" style="width: 100%;"></img><br/>
+             <img src="../../imagenes/ayuda/filtro.PNG" style="width: 100%;"></img><br/>
          </div>
          <div class="col-sm-8">
              <div class="fontRobotoB text-info bigger-100" style="text-align: justify;">
