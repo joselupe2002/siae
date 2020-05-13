@@ -50,32 +50,29 @@ input.error{
 }
 
 
-@font-face {
-  font-family: Girassol;
-  src: url("../fonts/Girassol-Regular.ttf");
-  }
+@font-face {font-family: Girassol;src: url("../fonts/Girassol-Regular.ttf");}
 
-@font-face {
-    font-family: PermanentMarker;
-    src: url("../fonts/PermanentMarker-Regular.ttf");
-    }
+@font-face { font-family: PermanentMarker;src: url("../fonts/PermanentMarker-Regular.ttf");}
 
-@font-face {
-      font-family: Amaranth;
-      src: url("../fonts/Amaranth-Regular.ttf");
-      }
+@font-face {font-family: Amaranth;src: url("../fonts/Amaranth-Regular.ttf");}
   
-@font-face {
-        font-family: AmaranthB;
-        src: url("../fonts/Amaranth-Bold.ttf");
-        }
+@font-face { font-family: AmaranthB; src: url("../fonts/Amaranth-Bold.ttf");}
 
-.fontAmaranth {
-        font-family: 'Amaranth';
-      }
-.fontAmaranthB {
-        font-family: 'AmaranthB';
-      }      
+@font-face {font-family: Roboto-Black; src: url("../fonts/Roboto-Black.ttf");}
+
+@font-face {font-family: Roboto-Bold; src: url("../fonts/Roboto-Bold.ttf");}
+
+@font-face {font-family: Roboto-Light; src: url("../fonts/Roboto-Light.ttf");}
+
+@font-face {font-family: Roboto-Regular; src: url("../fonts/Roboto-Regular.ttf");}
+
+
+.fontAmaranth {font-family: 'Amaranth';}
+.fontAmaranthB {font-family: 'AmaranthB';}     
+.fontRobotoBk {font-family: 'Roboto-Black';}   
+.fontRobotoB {font-family: 'Roboto-Bold';}   
+.fontRobotoL {font-family: 'Roboto-Light';}   
+.fontRoboto {font-family: 'Roboto-Regular';}   
 
     
 
