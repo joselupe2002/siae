@@ -184,7 +184,10 @@
         function cargarActividades() {
  
 			elsql="select  a.ID AS ID, a.CICLO as CICLO, a.RUTA AS RUTA, a.ACTIVIDAD AS ACTIVIDAD,IFNULL(b.ENVIADA,'') AS ENVIADA,"+
-				         " IFNULL(b.RUTA,'') AS RUTA2, IFNULL(b.FECHAENV,'') AS FECHARUTA2,IFNULL(a.ENLACE1,'') AS ENLACE1, IFNULL(a.ENLACE2,'') AS ENLACE2, IFNULL(a.ENLACE3,'') AS ENLACE3, a.FECHAENT as FECHAENT from linactdoc a LEFT OUTER JOIN lintareas b ON (concat(a.ID,'_<?php echo $_SESSION['usuario'];?>')=b.AUX)  where "+
+						 " IFNULL(b.RUTA,'') AS RUTA2, IFNULL(b.FECHAENV,'') AS FECHARUTA2,IFNULL(a.ENLACE1,'') AS ENLACE1, "+
+						 " IFNULL(a.ENLACE2,'') AS ENLACE2, IFNULL(a.ENLACE3,'') AS ENLACE3, a.FECHAENT as FECHAENT, "+
+						 " (select count(*) from lintareasobs where MATRICULA='<?php echo $_SESSION['usuario'];?>' and IDTAREA=a.ID) AS NUMOBS"+
+						 " from linactdoc a LEFT OUTER JOIN lintareas b ON (concat(a.ID,'_<?php echo $_SESSION['usuario'];?>')=b.AUX)  where "+
 				          " GRUPO='<?php echo $_GET["grupo"];?>' and IDUNIDAD='"+$("#unidades").val()+"'"+
 				          " and CICLO='<?php echo $_GET["ciclo"];?>' and PROFESOR='<?php echo $_GET["profesor"];?>'"+
 						  " and MATERIA='<?php echo $_GET["materia"];?>' and PUBLICADA='S' order by ID";
@@ -267,18 +270,24 @@
                                                       "                     <img width=\"40px\" height=\"40px\" id=\"pdfProf"+valor.ID+"\" name=\"pdfProf\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
                                                       "                 </a>"+
                                                       "           </div> "+ 
-							                          "           <div class=\"col-sm-2\">"+
+							                          "           <div class=\"col-sm-1\">"+
                                                       "                <div class=\"time\"><i class=\"ace-icon fa fa-clock-o bigger-110\"></i> <span class=\"text-primary\">"+
                                                       "                          <strong>Entrega:</strong></span> "+valor.FECHAENT+
                                                       "                </div>"+
                                                       "           </div>"+                                                      
-                                                      htenlace1+htenlace2+htenlace3+botonSubir+
+													  htenlace1+htenlace2+htenlace3+botonSubir+
+													  "      <div class=\"col-sm-1\">"+
+													  "           <span title=\"Click para ver las observaciones realizadas a la tarea\" "+
+													  "           class=\"badge badge-danger\" style=\"cursor:pointer;\" "+
+							                          "           onclick=\"mostrarObs('"+valor.ID+"','<?php echo $_SESSION['usuario'];?>','"+
+													              valor.NUMOBS+"');\">"+valor.NUMOBS+" <i class=\"fa fa-comment\"></i></span>"+
+													  "      </div>"+
                                                       "      <div class=\"col-sm-1\">"+
                                                               botonEnviar+
                                                       "      </div> "+                                                                                                         
 						                              "</div>"+						                              
 											  "</div>");
-											  
+							 			  
 											  
 
 		        		    if (valor.RUTA=='') { 								
@@ -363,7 +372,28 @@
 					}              	 
     			}
 
-             
+			 
+		function mostrarObs(idact,matricula,numobs){
+			if (numobs>0) {
+				$("#infoObs").empty();
+				$.ajax({
+		         type: "GET",
+				 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from lintareasobs where "+
+				        "MATRICULA='"+matricula+"' and IDTAREA='"+idact+"'"),
+		         success: function(data){   
+					    cad="<ol>"; 
+					    jQuery.each(JSON.parse(data), function(clave, valor) { 
+							cad+="<li class=\"fontRoboto text-success\" style=\"width:100%; font-size:12px; text-align:justify;\">"+
+							"<strong>Fecha: "+valor.FECHA+" OBS:"+valor.OBSERVACION+"</strong></li>";
+						});
+					    cad+="</ol>";
+						mostrarIfo("infoObs", "gestorActividad", "Observaciones Realizadas",
+									"<span class=\"lead text-danger\">"+cad+
+									"</span>","modal-lg");
+				       }
+			     });
+		   }
+		}
              
 
 		function regresar(){

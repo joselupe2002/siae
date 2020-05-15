@@ -45,8 +45,8 @@
           
          
           $miConex = new Conexion();
-          $resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT a.EMPL_FOTO FROM pempleados a where a.EMPL_USER='".$_SESSION['usuario']."'".
-          		                                           " UNION  SELECT b.ALUM_FOTO from falumnos b where b.ALUM_MATRICULA='".$_SESSION['usuario']."'" );
+          $resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT IFNULL(a.EMPL_FOTO,'imagenes/menu/default.png') FROM pempleados a where a.EMPL_USER='".$_SESSION['usuario']."'".
+          		                                           " UNION  SELECT IFNULL(b.ALUM_FOTO,'imagenes/menu/default.png') from falumnos b where b.ALUM_MATRICULA='".$_SESSION['usuario']."'" );
            foreach ($resultado as $row) {
            	    $logouser= $row[0];
             }
@@ -84,7 +84,7 @@
 					   <li class="purple dropdown-modal">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="ace-icon fa fa-bell icon-animated-bell"></i>
-								<span class="badge badge-important"><?php echo $noti;?></span>
+								<span id="numNoti" class="badge badge-important"><?php echo $noti;?></span>
 							</a>
 
 							<ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
@@ -94,12 +94,12 @@
 									    <?php foreach ($misNoti as $row) 									          
 									    {      $oc="";$st="";
 									    if (strlen($row["ENOT_ENLACE"])>0) {$st="cursor:pointer;"; $oc="onClick=\"abrirenlace('".$row["ENOT_ENLACE"]."','".$row["ENOT_TIPO"]."');\"";}
-									         	echo "<li><div class=\"row\">".
-											                 
+									         	echo "<li id=\"not_".$row["ENOT_ID"]."\"><div class=\"row\">".											                 
 											                 "<div class=\"col-md-12\"><p ".$oc."style=\"line-height:15px; vertical-align:center; 
                                                                                                          text-align:justify; font-size:11px; ".$st."\">".
-                                                                                       $row["ENOT_DESCRIP"]."</p></div>".
-											            "</div".											            
+																					   $row["ENOT_DESCRIP"].
+														     "<i style=\"cursor:pointer\" onclick=\"eliminarNoti('".$row["ENOT_ID"]."')\" class=\"fa fa-trash-o red\"></i></p></div>".
+											            "</div>".											            
                                                     "</li>";} ?>																													
 									</ul>
 								</li>
@@ -406,6 +406,27 @@
 			
 		});
 
+
+		function eliminarNoti(idnot){
+			lafecha=dameFecha("FECHA");
+			parametros={tabla:"enotivistas",
+								bd:"Mysql",
+								_INSTITUCION:"<?php echo $_SESSION['INSTITUCION'];?>",
+								_CAMPUS:"<?php echo $_SESSION['CAMPUS'];?>",
+								IDNOT:idnot,
+								USUARIO:"<?php echo $_SESSION['usuario'];?>",								
+								FECHA:lafecha};     
+			  		$.ajax({
+							type: "POST",
+							url:"nucleo/base/inserta.php",
+							data: parametros,
+							success: function(data){ 		
+								$("#not_"+idnot).remove();
+								$("#numNoti").html(parseInt($("#numNoti").html()-1));
+							}
+						});
+
+		}
 
 
 		</script>

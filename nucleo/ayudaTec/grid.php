@@ -37,20 +37,39 @@
 					<h4 class="fontRobotoBk widget-title lighter smaller">Ayuda</h4>
 				</div>
                 <div class="widget-body" style="padding: 20px;  height: 350px; overflow-y: auto;">
-                        <a onclick="getAyuda('grpr');" style="cursor:pointer;">
-                            <p><i class="fa fa-file-text green"></i> <span id="etgrpr" class="indice fontRoboto">Grid Principal</span></p>
-                        </a>
-
-                        <a onclick="getAyuda('fuba');" style="cursor:pointer;">
-                            <p><i class="fa fa-file-text green"></i> <span id="etfuba" class="indice fontRoboto">Funciones Básicas</span></p>
-                        </a>
-                        <a onclick="getAyuda('fire');" style="cursor:pointer;">
-                            <p><i class="fa fa-file-text green"></i> <span id="etfire" class="indice fontRoboto">Filtro de Registros</span></p>
-                        </a>
-                        <a onclick="getAyuda('daco');" style="cursor:pointer;">
-                            <p><i class="fa fa-file-text green"></i> <span id="etdaco" class="indice fontRoboto">Contactos de Alumnos</span></p>
-                        </a>
-				</div>
+                    <div id="accordion" class="accordion-style2">
+                        <div class="group">
+                            <h5 class="accordion-header" style="cursor:pointer;">Inicio</h5>
+                            <div>
+                                <a onclick="getAyuda('grpr');" style="cursor:pointer;">
+                                    <p><i class="fa fa-file-text green"></i> <span id="etgrpr" class="indice fontRoboto">Grid Principal</span></p>
+                                </a>
+                                <a onclick="getAyuda('fuba');" style="cursor:pointer;">
+                                    <p><i class="fa fa-file-text green"></i> <span id="etfuba" class="indice fontRoboto">Funciones Básicas</span></p>
+                                </a>
+                                <a onclick="getAyuda('fire');" style="cursor:pointer;">
+                                    <p><i class="fa fa-file-text green"></i> <span id="etfire" class="indice fontRoboto">Filtro de Registros</span></p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <h5 class="accordion-header" style="cursor:pointer;">Aspirantes</h5>
+                            <div>
+                                <a onclick="getAyuda('apas');" style="cursor:pointer;">
+                                    <p><i class="fa fa-file-text green"></i> <span id="etapas" class="indice fontRoboto">Aprobar Aspirantes</span></p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <h5 class="accordion-header" style="cursor:pointer;">Indicadores</h5>
+                            <div>
+                                <a onclick="getAyuda('daco');" style="cursor:pointer;">
+                                    <p><i class="fa fa-file-text green"></i> <span id="etdaco" class="indice fontRoboto">Contactos de Alumnos</span></p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>   <!--del acordion-->
+				</div><!--del widget-body-->
 			</div>
     </div>
     <div class="col-sm-8">
@@ -64,6 +83,9 @@
 			</div>
     </div>
 </div>
+
+
+
 
 <!--=====================================================================================================-->
 <div  class="hide" id="grpr">
@@ -254,6 +276,27 @@
    </ol>
 </div>
 
+
+<div class="hide" id="apas">
+     <span class="fontRoboto bigger-110">Pasos para la aprobación de los aspirantes. Al aprobar un aspirante el sistema realiza los siguientes procesos: 
+         Agregar al aspirante al módulo de alumnos con los datos de asapirantes, le asigna matricula de acuerdo al consecutivo establecido
+         para el periodo. 
+     </span><br/>
+     <br/>
+     <ol>
+     <li class="fontRoboto bigger-110">Ir al menú </span> 
+         <span class="fontRobotoB bigger-110"> Aspirantes <i class="fa fa-arrow-circle-right blue"></i> 
+                                <span class="text-danger"> 01) Aspirantes </li>
+     <li class="fontRoboto bigger-110">Establezca el filtro de acuerdo al CICLO o CARRERA</li>
+     <li class="fontRoboto bigger-110">Seleccione el alumno que desea aprobar</li>
+     <li class="fontRoboto bigger-110">Ir al botón 
+         <span data-toggle="dropdown" class="btn btn-info btn-white dropdown-toggle">
+         Procesos <span class="ace-icon fa fa-caret-down icon-only"></span></span> </li>
+     <li class="fontRoboto bigger-110">Elegir la opción <span class="fontRobotoB bigger-110 blue"> 06) Aceptar Ind. </span></li>
+     <li class="fontRoboto bigger-110">Confirmar la opción</li>
+   </ol>
+</div>
+
 <script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>        
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
 <script type="<?php echo $nivel; ?>text/javascript"> if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");</script>
@@ -292,6 +335,19 @@
 
 <script type="text/javascript">
 
+$( "#accordion" ).accordion({
+       collapsible: true ,
+					heightStyle: "content",
+					animate: 250,
+					header: ".accordion-header"
+				}).sortable({
+					axis: "y",
+					handle: ".accordion-header",
+					stop: function( event, ui ) {
+						ui.item.children( ".accordion-header" ).triggerHandler( "focusout" );
+					}
+                });
+                
     function getAyuda(id){
         
         $("#titulo").html($("#et"+id).html());

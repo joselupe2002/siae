@@ -297,7 +297,7 @@ function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,
 			   "             <div class=\"modal-body\" style=\"text-align: center;\">"+
 			   "                   <div class=\"alert alert-info bigger-110\">"+mensajeInfo+"</div>"+
 			   "                    <div class=\"space-6\"></div>"+
-			   "                    <p class=\"bigger-"+tamMsj+" bolder center grey\">"+
+			   "                    <p id=\"msjConfirm\" class=\"bigger-"+tamMsj+" bolder center grey\">"+
 			   "                        <i class=\"ace-icon fa fa-hand-o-right blue bigger-"+tamMsj+"\"></i><strong>"+mensajeConfirm+"</strong>"+
 		       "                    </p>"+
 			   "             </div>"+     
@@ -628,6 +628,30 @@ function generaTablaDinBtn(nombreTabla, sql, titulos, campos) {
 }
 
 /*================================================GENERAR SELECT EN UN CONTENEDOR CON DATOS=================================================*/
+
+function pad(n, width, z) {
+	z = z || '0';
+	n = n + '';
+	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  }
+
+
+function dameFecha(tipo,dias){
+	dias=dias||0;
+	var hoy = new Date();
+	var lafecha= new Date(hoy.getTime()+(dias * 24 * 60 * 60 * 1000));
+	if (tipo=="FECHA") {
+       return pad(lafecha.getDate(),2,'0')+"/"+pad(lafecha.getMonth()+1,2,'0')+"/"+lafecha.getFullYear();
+	}
+	if (tipo=="HORA") {
+		return pad(lafecha.getHours(),2,'0')+":"+pad(lafecha.getMinutes(),2,'0');
+	 }
+	if (tipo=="FECHAHORA") {
+		return pad(lafecha.getDate(),2,'0')+"/"+pad(lafecha.getMonth()+1,2,'0')+"/"+lafecha.getFullYear()+ " "+
+		       pad(lafecha.getHours(),2,'0')+":"+pad(lafecha.getMinutes(),2,'0');
+	 }
+
+}
 
 function calcularEdad(fecha) {
 	var hoy = new Date();

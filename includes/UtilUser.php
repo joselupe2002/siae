@@ -551,11 +551,14 @@ class UtilUser {
 		if (!($conRol)) {$us="'".$usuario."'";}
 		
 		$sq="select * from enotificaciones h where  STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') ".
-				" Between STR_TO_DATE(h.`ENOT_INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`ENOT_TERMINA`,'%d/%m/%Y')"; 
+				" Between STR_TO_DATE(h.`ENOT_INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`ENOT_TERMINA`,'%d/%m/%Y')".
+				" and ENOT_ID NOT IN (SELECT IDNOT FROM enotivistas where USUARIO='".$usuario."')"; 
 		
 		if (!($esSuper=='S')) {	$sq=$sq. " and ENOT_USUARIO in (".$us.")";}
 		
 		$sq=$sq. " ORDER BY ENOT_ID DESC";
+
+		//echo $sq;
 		$res=$miConexU->getConsulta("Mysql",$sq);
 		return $res;
 	}

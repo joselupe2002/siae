@@ -227,16 +227,18 @@
 			 total=0; tne=0;
 			 $.ajax({
 		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) AS NOMBRE,"+ 
+				 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, "+
+						 "concat(ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) AS NOMBRE, GPOCVE AS GRUPO, MATCVE AS MATERIA, LISTC5 AS PROFESOR,"+ 
+						 "(select count(*) from lintareasobs where MATRICULA=c.ALUM_MATRICULA and IDTAREA='"+$("#actividades").val()+"') AS NUMOBS,"+
 		        		 "PDOCVE as CICLO, ifnull(b.RUTA,'') AS RUTA, ifnull(b.FECHARUTA,'') as FECHARUTA,  ifnull(b.FECHAENV,'') as FECHAENV"+
 		        		 " from dlista a LEFT OUTER JOIN lintareas b ON (concat('"+$("#actividades").val()+"','_',a.ALUCTR)=b.AUX), falumnos c"+ 
 		        		 " where ALUCTR=ALUM_MATRICULA AND GPOCVE='<?php echo $_GET["grupo"];?>' "+
 		        		 " and PDOCVE='<?php echo $_GET["ciclo"];?>' and LISTC15='<?php echo $_GET["profesor"];?>'"+
 		        		 " and MATCVE='<?php echo $_GET["materia"];?>' ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE"),
 		         success: function(data){    
-		        	 $("#laTabla").empty();
+					   $("#laTabla").empty();										   
 		        	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th></tr>"+ 
+		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th><th>OBS</th><th>N.OBS</th></tr>"+ 
 		                       "</thead></table> ");
 		    
 		        	 $("#cuerpo").empty();
@@ -256,13 +258,29 @@
                           cadSubio='S'				         		                  
 						  if (valor.RUTA=='') {cadSubio='N'; tne++; $('#'+valor.MATRICULA+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfno.png");}	
 						  $("#row"+valor.MATRICULA).append("<td><span class=\"badge badge-primary\" style=\"font-weight:bold;\">"+cadSubio+"</span></td>");
-
+						  
+						  btnRegresa="";
+						  if (cadSubio=='S') {
+							  btnRegresa="<button title=\"Click para hacer observación sobre la tarea y devolverla al alumno\""+
+							  " class=\"btn btn-white btn-danger btn-bold\" "+
+							  " onClick=\"devolverActividad('"+$("#actividades").val()+"','"+valor.MATRICULA+"','"+
+							    valor.CICLO+"','"+valor.GRUPO+"','"+valor.MATERIA+"','"+valor.PROFESOR+"');\">"+
+							  "Dev. Actividad</button>";							  
+						  }
+						  $("#row"+valor.MATRICULA).append("<td>"+btnRegresa+"</td>");
+						  $("#row"+valor.MATRICULA).append("<td><span title=\"Click para ver las observaciones realizadas a la tarea\" class=\"badge badge-danger\" style=\"cursor:pointer;\" "+
+							  " onclick=\"mostrarObs('"+$("#actividades").val()+"','"+valor.MATRICULA+"','"+
+							  valor.NUMOBS+"');\""+" style=\"color:white;\">"+valor.NUMOBS+"</span></td>");
 					  });
 					  $("#total").html(total);
 					  $("#totale").html(parseInt(total)-parseInt(tne));
 					  
+
+					  $("#botonestabHorarios").empty();
+					  $("#opcionestabHorarios").addClass("hide");
 					  convertirDataTable('tabHorarios');
-		       	       $('#dlgproceso').modal("hide"); 
+					    
+		       	         $('#dlgproceso').modal("hide"); 
 		            },
 		        error: function(data) {	  
 		        	      $('#dlgproceso').modal("hide");                 
@@ -271,8 +289,98 @@
 		       });
             }
 		
-       
-             
+		
+		function devolverActividad(idact,matricula,ciclo,grupo,materia,profesor){
+			$("#confirmDevolver").empty();					
+			mostrarConfirm("confirmDevolver", "gestorActividad",  "DevolverTarea",
+			"<span class=\"label label-success\">Observaciones de la Tarea</span>"+
+			"     <textarea id=\"obsTarea\" style=\"width:100%; height:100%; resize: none;\"></textarea>",""
+			,"Devolver", "devuelve('"+idact+"','"+matricula+"','"+ciclo+"','"+grupo+"','"+materia+"','"+profesor+"');","modal-sm");
+			$("#msjConfirm").empty();	
+		}
+
+		function devuelve (idact,matricula,ciclo,grupo,materia,profesor){
+			lafecha=dameFecha("FECHAHORA");
+			lafechaNot=dameFecha("FECHA");
+			lafechaNotFin=dameFecha("FECHA",3);
+		
+			laobs=$("#obsTarea").val();
+			$('#confirmDevolver').modal("hide");
+			mostrarEspera("esperaobs","gestorActividad","Procesando...");
+
+			parametros={tabla:"lintareas",bd:"Mysql",campollave:"AUX",valorllave:idact+"_"+matricula,ENVIADA:'N'};
+			$.ajax({
+				type: "POST",
+				url:"../../nucleo/base/actualiza.php",
+				data: parametros,
+				success: function(data){    					 									 
+					parametros={tabla:"lintareasobs",
+								bd:"Mysql",
+								_INSTITUCION:"<?php echo $_SESSION['INSTITUCION'];?>",
+								_CAMPUS:"<?php echo $_SESSION['CAMPUS'];?>",
+								MATRICULA:matricula,
+								OBSERVACION:laobs,
+								IDTAREA:idact,							
+								FECHA:lafecha,
+								USUARIO:"<?php echo $_SESSION['usuario'];?>"};     
+			  		$.ajax({
+							type: "POST",
+							url:"../base/inserta.php",
+							data: parametros,
+							success: function(data){ 
+								cargarAlumnos();
+								ocultarEspera("esperaobs");					            	
+							}
+						});
+				
+					//Abrimos una notificación para el alumno
+					parametros={tabla:"enotificaciones",
+								bd:"Mysql",
+								_INSTITUCION:"<?php echo $_SESSION['INSTITUCION'];?>",
+								_CAMPUS:"<?php echo $_SESSION['CAMPUS'];?>",
+								ENOT_DESCRIP:"Tienes una corrección Asignatura: "+materia+" Unidad: "+$("#actividades option:selected").text(),
+								ENOT_USUARIO:matricula,
+								ENOT_INICIA:lafechaNot,							
+								ENOT_TERMINA:lafechaNotFin,
+								ENOT_ENLACE:"nucleo/base/pa_lintareas/grid.php?modulo=pa_lintareas",
+								ENOT_TIPO:"P",
+								ENOT_FECHA:lafecha,
+								ENOT_USER:"<?php echo $_SESSION['usuario'];?>"};     
+			  		$.ajax({
+							type: "POST",
+							url:"../base/inserta.php",
+							data: parametros,
+							success: function(data){ 			            	
+							}
+						});
+										
+				}					     
+			}); 
+
+		}
+			 
+		
+		function mostrarObs(idact,matricula,numobs){
+			if (numobs>0) {
+				$("#infoObs").empty();
+				$.ajax({
+		         type: "GET",
+				 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from lintareasobs where "+
+				        "MATRICULA='"+matricula+"' and IDTAREA='"+idact+"'"),
+		         success: function(data){   
+					    cad="<ol>"; 
+					    jQuery.each(JSON.parse(data), function(clave, valor) { 
+							cad+="<li class=\"fontRoboto text-success\" style=\"width:100%; font-size:12px; text-align:justify;\">"+
+							"<strong>Fecha: "+valor.FECHA+" OBS:"+valor.OBSERVACION+"</strong></li>";
+						});
+					    cad+="</ol>";
+						mostrarIfo("infoObs", "gestorActividad", "Observaciones Realizadas",
+									"<span class=\"lead text-danger\">"+cad+
+									"</span>","modal-lg");
+				       }
+			     });
+		   }
+		}
 
 		function regresar(){
 			window.location="grid.php?modulo=<?php echo $_GET["modulo"];?> ";	
