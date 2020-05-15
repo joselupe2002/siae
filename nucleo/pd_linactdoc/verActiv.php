@@ -342,7 +342,7 @@
 								ENOT_USUARIO:matricula,
 								ENOT_INICIA:lafechaNot,							
 								ENOT_TERMINA:lafechaNotFin,
-								ENOT_ENLACE:"nucleo/base/pa_lintareas/grid.php?modulo=pa_lintareas",
+								ENOT_ENLACE:"nucleo/pa_lintareas/grid.php?modulo=pa_lintareas",
 								ENOT_TIPO:"P",
 								ENOT_FECHA:lafecha,
 								ENOT_USER:"<?php echo $_SESSION['usuario'];?>"};     
