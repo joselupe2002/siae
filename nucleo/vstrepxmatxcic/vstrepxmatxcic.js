@@ -83,10 +83,11 @@ contMat=1;
 		"CONCAT(d.EMPL_NOMBRE,' ',d.EMPL_APEPAT, ' ',d.EMPL_APEMAT) AS PROFESORD,a.GPOCVE AS GRUPO, "+
 		"b.ALUM_CARRERAREG AS CARRERA, e.CARR_DESCRIP AS CARRERAD,SUM(IF (ALUM_SEXO=1,1,0)) AS HOMBRE,"+
 		"SUM(IF (ALUM_SEXO=2,1,0)) AS MUJER,SUM(IF (LISCAL>=70 AND ALUM_SEXO=1,1,0)) AS APR_HOMBRE,"+
-		"SUM(IF (LISCAL>=70 AND ALUM_SEXO=2,1,0)) AS APR_MUJER, COUNT(*) as TOTAL "+
+		"SUM(IF (LISCAL>=70 AND ALUM_SEXO=2,1,0)) AS APR_MUJER, COUNT(*) as TOTAL "+		
 		" from dlista a left outer join pempleados d on (d.EMPL_NUMERO=IFNULL(a.LISTC15,0)), falumnos b, cmaterias c, ccarreras e"+
 		" where a.ALUCTR=b.ALUM_MATRICULA  and a.MATCVE=c.MATE_CLAVE and b.ALUM_CARRERAREG=e.CARR_CLAVE"+
 		" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' and PDOCVE='"+$("#selCiclos").val()+"'"+
+		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','T','AC','OC','RP') and GPOCVE<>'REV' "+
 		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
 	  
 		mostrarEspera("esperaInf","grid_vstliscontacto","Cargando Datos...");
