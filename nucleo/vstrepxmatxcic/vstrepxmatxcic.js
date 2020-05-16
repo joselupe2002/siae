@@ -90,7 +90,7 @@ contMat=1;
 		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','T','AC','OC','RP') and GPOCVE<>'REV' "+
 		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
 	  
-		mostrarEspera("esperaInf","grid_vstliscontacto","Cargando Datos...");
+		mostrarEspera("esperaInf","grid_vstrepxmatxcic","Cargando Datos...");
 	    $.ajax({
 	           type: "GET",
 			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
