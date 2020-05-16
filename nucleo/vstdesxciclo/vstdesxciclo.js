@@ -9,9 +9,7 @@ contMat=1;
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
 
 
-    jQuery(function($) { 
-
-		
+    jQuery(function($) { 		
 		$(".input-mask-hora").mask("99:99");
 		$(".input-mask-horario").mask("99:99-99:99");
 		$(".input-mask-numero").mask("99");
