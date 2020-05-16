@@ -56,9 +56,9 @@
  <?php $numCol=2;
        $tam=(12/$numCol);
  ?>
-<!--  
+
    <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
- -->
+ 
  	
  <div class="panel panel-success">
     <div class="panel-heading"> <b><i class="ace-icon blue fa fa-pencil"></i> Nuevo Registro</b></div>
