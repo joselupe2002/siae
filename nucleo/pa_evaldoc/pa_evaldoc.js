@@ -92,7 +92,8 @@ function cargarMaterias() {
                         });
                     }
                 else 
-                    {$('#dlgproceso').modal("hide"); }
+                    {    $("#cuerpo").empty("<span class=\"text-danger bogger-130\"> No esta abierto el periodo de Evaluación Docente</span>");
+                        $('#dlgproceso').modal("hide"); }
                                 
         },
     error: function(data) {	                  
