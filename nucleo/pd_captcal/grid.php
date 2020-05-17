@@ -175,7 +175,10 @@ function verificarCorte(){
     $('#dlgproceso').modal({show:true, backdrop: 'static'});
     $.ajax({
            type: "GET",
-           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from ecortescal where  CICLO=getciclo() and ABIERTO='S' order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 0,1"),
+		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from ecortescal where  CICLO=getciclo() "+
+		   " and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
+		   " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CALIFICACION' "+
+		   " order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 0,1"),
            success: function(data){
         	        haycorte=false;
         	        $("#stCorte").html("Corte Cerrado");                  
