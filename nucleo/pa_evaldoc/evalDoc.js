@@ -176,8 +176,8 @@ function aparecer(idpreg,valsum){
 			}
 		}
 		mostrarConfirm("dlgcierraExamen", "grid_registro", "Finalizar Examen",
-									"<span class=\"lead text-danger\"><strong>Al finalizar su examen ya no se podrá realizar cambios ",
-		                             "¿Seguro qeu desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
+									"<span class=\"lead text-danger\"><strong>Al finalizar ya no se podrá realizar cambios ",
+		                             "¿Seguro que desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
 	}
 
 	modificarnum=parseInt(idpreg)+parseInt(valsum);

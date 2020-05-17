@@ -354,7 +354,7 @@ function aparecer(idpreg,valsum){
 	if ((pregactiva+valsum)>=contPreg)  {
 		mostrarConfirm("dlgcierraExamen", "grid_registro", "Finalizar Examen",
 									"<span class=\"lead text-danger\"><strong>Al finalizar su examen ya no se podrá realizar cambios ",
-		                             "¿Seguro qeu desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
+		                             "¿Seguro que desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
 	}
 
 	modificarnum=parseInt(idpreg)+parseInt(valsum);
