@@ -77,7 +77,7 @@ function cargarMaterias() {
                 " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('T','AC')"+
                 " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE=getciclo()";
 
-                if (abierto) { 
+                if (abierto>0) { 
                         $.ajax({
                             type: "GET",
                             url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlmater),
