@@ -417,3 +417,129 @@ function AceptarTodos(modulo,usuario,institucion, campus,essuper){
 	});
 		aceptarAspirante(table.rows(elReg).data(), modulo,institucion,campus);
 }
+
+
+//=============================================INSCRIPCION ==================================*/
+
+
+function insTodos(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	agregarDialog(modulo);
+	nreg=0;
+	elReg=0;
+	table.rows().iterator('row', function(context, index){
+		 nreg++;		    
+	});
+	inscribirAspirante(table.rows(elReg).data(), modulo,institucion,campus);
+}
+
+function insInd(modulo,usuario,essuper){
+	table = $("#G_"+modulo).DataTable();
+		if (table.rows('.selected').data().length>0) {
+			if (table.rows('.selected').data()[0]["ACEPTADO"]=='S') {
+				if (table.rows('.selected').data()[0]["INSCRITO"]=='N') {
+					if (confirm("Desea inscribir al aspirante ID: "+table.rows('.selected').data()[0]["IDASP"])) {
+						setInscrito(table.rows('.selected').data()[0]["IDASP"],"S");
+					}
+				}
+				else {
+					  alert ("El aspirante ya se encuentra inscrito");
+					}
+				} 	
+	         else {alert ("El aspirante no ha sido aceptado");}
+        }
+		else { alert ("Debe seleccionar un Registro"); return 0; }
+}
+	
+
+
+function setInscrito(id,valor){
+	var hoy= new Date();		
+	var elanio=hoy.getFullYear();
+	elaniomat=elanio.toString().substring(2,4)
+	$('#modalDocument').modal({show:true, backdrop: 'static'});	 
+	   parametros={
+		   tabla:"aspirantes",
+		   campollave:"IDASP",
+		   bd:"Mysql",
+		   valorllave:id,
+		   INSCRITO: valor
+	   };
+	   $.ajax({
+			type: "POST",
+			url:"actualiza.php",
+			data: parametros,
+			success: function(data){
+					$.ajax({
+						type: "POST",
+						url:"../base/getConsecutivo.php?tabla=econsoficial&campok=concat(TIPO,ANIO)&campocons=CONSECUTIVO&valork="+"MATRICULA"+elanio,
+						success: function(dataC){
+							micons=dataC;							
+							mimat=elaniomat+"E40"+pad(micons,3,'0');							
+							if (micons>0) {
+								$.ajax({
+									type: "POST",
+									url:"../base/ejecutasql.php?bd=Mysql&sql="+encodeURI("call inscribeAspirante('"+id+"','"+mimat+"'); "),
+									success: function(dataC){
+										alert ("El aspirante "+id+" Ha quedado inscrito con la atricula "+mimat);
+										$('#dlgproceso').modal("hide"); 
+										if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}										
+										window.parent.document.getElementById('FRvaspirantes').contentWindow.location.reload();
+									}					     
+								});   //ajax del procedimiento de insercion en falumnos  					   
+							}
+							else {$('#dlgproceso').modal("hide"); }
+						}					     
+					});  // ajax del consecutivo   
+			} 					     
+	   }); //ajax de actualizacion   	                
+}
+
+
+function inscribirAspirante(lafila,modulo,institucion, campus) {
+	res="";
+	var table = $("#G_"+modulo).DataTable();	
+	var hoy= new Date();		
+	var elanio=hoy.getFullYear();
+	elaniomat=elanio.toString().substring(2,4)
+
+	if ((lafila[0]["INSCRITO"]=='N') && (lafila[0]["ACEPTADO"]=='S')) {
+		parametros={tabla:"aspirantes",campollave:"IDASP",bd:"Mysql",valorllave:lafila[0][0],INSCRITO: "S"};
+		$.ajax({type: "POST",
+				url:"actualiza.php",
+				data: parametros,
+				success: function(data){    
+					$.ajax({
+						type: "POST",
+						url:"../base/getConsecutivo.php?tabla=econsoficial&campok=concat(TIPO,ANIO)&campocons=CONSECUTIVO&valork="+"MATRICULA"+elanio,
+						success: function(dataC){
+							micons=dataC;							
+							mimat=elaniomat+"E40"+pad(micons,3,'0');						
+							if (micons>0) {
+								$.ajax({
+									type: "POST",
+									url:"../base/ejecutasql.php?bd=Mysql&sql="+encodeURI("call inscribeAspirante('"+lafila[0][0]+"','"+mimat+"'); "),
+									success: function(dataC){
+										if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
+											$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se inscribio el aspirante "+lafila[0][0]+". Matricula: "+mimat+"\n"); 
+											}	
+										else {$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
+														
+										elReg++;
+										if (nreg>elReg) {inscribirAspirante(table.rows(elReg).data(),modulo,institucion,campus);}										
+									 }																								     
+								});   //ajax del procedimiento de insercion en falumnos  					   
+							}
+							else {$('#dlgproceso').modal("hide"); }
+						}					     
+					});  // ajax del consecutivo   	
+				}						     
+			  });    	  
+	} 
+	else {
+		$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" EL ASPIRANTE "+lafila[0][0]+" YA ESTA INSCRITO O NO ESTA ACEPTADO \n");
+		elReg++;
+		inscribirAspirante(table.rows(elReg).data(),modulo,institucion,campus);	
+	}
+     
+}
