@@ -133,8 +133,8 @@ function generaTablaInformacion(grid_data){
 												type: "GET",
 												url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlDes),
 												success: function(dataDes){ 	
-													ayuda1="Alumnos que de la generación "+valor.CICLO+" que no se inscribieron al ciclo ";
-													ayuda2="Alumnos que de la generación "+valor.CICLO+" que no se inscribieron al ciclo y estaban inscritos en el ciclo anterior: ";
+													ayuda1="Alumnos de la generación "+valor.CICLO+" que no se inscribieron al ciclo ";
+													ayuda2="Alumnos de la generación "+valor.CICLO+" que no se inscribieron al ciclo y estaban inscritos en el ciclo anterior: ";
 																										
 													$("#rowM"+valor.CICLO).append("<td><span title=\""+ayuda1+"\" class=\"badge badge-danger\">"+JSON.parse(dataDes)[0]["MATRICULA"]+"</span> "+
 													                                  "<span title=\""+ayuda2+"\" class=\"badge badge-warning\">"+JSON.parse(dataDes)[0]["ESTABAN"]+"</span>"+
