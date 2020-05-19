@@ -196,15 +196,15 @@ var maxuni=0;
   	     $.ajax({
           type: "GET",
           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT MAX((select count(*) from eunidades l where "+
-                  "l.UNID_MATERIA=e.MATCVE and UNID_PRED='')) AS N from dlista e  where  e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.PDOCVE=getciclo()"),
+                  "l.UNID_MATERIA=e.MATCVE and UNID_PRED='')) AS N from dlista e  where  "+
+				  "e.ALUCTR='<?php echo $_SESSION['usuario']?>'  and e.IDGRUPO IN "+
+				  "(select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')"),
           success: function(data){      	    
         	      jQuery.each(JSON.parse(data), function(clave, valor) { 	
                         maxuni=valor.N;
             	      });
 
-        	      $.ajax({
-        	             type: "GET",
-        	             url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
+			      sqlMat="select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                 	             "ifnull(LISCAL,0) as LISCAL,ifnull(LISPA1,0)  as LISPA1,ifnull(LISPA2,0) AS LISPA2,ifnull(LISPA3,0) as LISPA3,"+
 								 "ifnull(LISPA4,0) as LISPA4,ifnull(LISPA5,0) as LISPA5,ifnull(LISPA6,0) as LISPA6,ifnull(LISPA7,0) as LISPA6,"+
 								 "ifnull(LISPA8,0) as LISPA8,ifnull(LISPA9,0) as LISPA9,ifnull(LISPA10,0) as LISPA10, ifnull(LISPA11,0) as LISPA11,"+
@@ -213,7 +213,10 @@ var maxuni=0;
         	                      " (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,"+
         	                      " getcuatrimatxalum(e.MATCVE,ALUCTR) AS SEM "+
         	                      " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+        	                      
-        	            		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.PDOCVE=getciclo()"),
+        	            		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')"			  		  
+        	      $.ajax({
+        	             type: "GET",
+        	             url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlMat),
         	             success: function(data){   
             	                 	    
         	          	        generaTabla(JSON.parse(data,maxuni));	   
