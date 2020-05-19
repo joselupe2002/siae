@@ -234,7 +234,7 @@
 		         	        imgpub="fa-unlock";
 
 
-		         	        botonSubir= "<div class=\"col-sm-4\">"+
+		         	        botonSubir= "<div class=\"col-sm-3\">"+
                             "                 <input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.ID+"\""+
                             "                        onchange=\"subirPDFDriveSave('file_"+valor.ID+"','ENLINEAALUM_<?php echo $_GET["ciclo"]; ?>','pdf_"+valor.ID+"','RUTA_"+valor.ID+"','pdf','S','ID','"+valor.ID+"',' ACTIVIDAD  "+utf8Decode(valor.ID)+" ','lintareas','alta','"+valor.ID+"_<?php echo $_SESSION['usuario'];?>');\">"+
                             "                 <input  type=\"hidden\" value=\""+valor.RUTA2+"\"  name=\"RUTA_"+valor.ID+"\" id=\"RUTA_"+valor.ID+"\"  placeholder=\"\" />"+

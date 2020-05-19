@@ -67,7 +67,7 @@
                                           <ul class=\"dropdown-menu dropdown-info dropdown-menu-right\">";
 					            	
 					                foreach ($proc as $row) {
-					                	echo "<li><a onclick=\"".$row["proc_proceso"]."('".$_GET['modulo']."','"
+					                	echo "<li style=\"cursor:pointer;\"><a onclick=\"".$row["proc_proceso"]."('".$_GET['modulo']."','"
 				                                                                         .$_SESSION['usuario']."','"
 				                                                                         .$_SESSION['INSTITUCION']."','"
 				                                                                         .$_SESSION['CAMPUS']."','"

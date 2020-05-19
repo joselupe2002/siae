@@ -47,6 +47,7 @@
 			    <thead>  
                       <tr>                          
                           <th style="text-align: center;">Id</th> 
+						  <th style="text-align: center;">Ciclo</th> 
                           <th style="text-align: center;">Sem</th> 
                           <th style="text-align: center;">Grupo</th> 
                           <th style="text-align: center;">Cve. Asig.</th> 
@@ -145,6 +146,7 @@
     	    
 			$("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
 			$("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
+			$("#row"+valor.ID).append("<td>"+valor.CICLO+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SEM+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SIE+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
@@ -205,7 +207,8 @@ function cargarAct(){
 	    $.ajax({
 	           type: "GET",
 	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE "+                
-					   " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>' and CICLO=getciclo() "+
+					   " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>'"+
+					   //" and CICLO=getciclo() "+
 					   " and CERRADOCAL='N'"),
 	           success: function(data){
 	        	     generaTabla(JSON.parse(data));	 

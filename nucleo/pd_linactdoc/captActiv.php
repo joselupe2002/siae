@@ -290,7 +290,7 @@
 		                           "                    <i id=\icopub"+valor.ID+"\" class=\"ace-icon fa fa-bullhorn  bigger-160 green \"></i>"+
 		                           "              </a>"+
 		                           "            </div> ";
-		         	        if (valor.PUBLICADA=='S') { divpublicar="";}  
+		         	        if (valor.PUBLICADA=='S') { divpublicar="<span class=\"badge badge-success\"><i class=\"fa fa-check\"> </i> Actividad Publicada</span>";}  
 		         	       
 
 		         	      

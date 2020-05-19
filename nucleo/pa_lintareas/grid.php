@@ -46,7 +46,8 @@
 	     <div  class="table-responsive" style="height:400px;overflow: auto; ">
 		     <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 				   	<thead>  
-					    <tr style="background-color: #9F5906; color: white;">					        					       
+					    <tr style="background-color: #9F5906; color: white;">	
+						    <th style="text-align: center;">Ciclo</th> 				        					       
 					        <th style="text-align: center;">Grupo</th> 
 					        <th style="text-align: center;">Clave</th> 					        
 					        <th style="text-align: center;">Asigantura</th> 
@@ -141,7 +142,8 @@
 	   $("#tabHorarios").append("<tbody id=\"cuerpo\">");
        jQuery.each(grid_data, function(clave, valor) { 	
         	    
-    	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");    	   
+    	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">"); 
+			$("#row"+valor.ID).append("<td>"+valor.CICLO+"</td>");   	   
     	    $("#row"+valor.ID).append("<td>"+valor.GRUPO+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
     	    $("#row"+valor.ID).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
@@ -198,7 +200,7 @@ function cargarMaterias() {
          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                   " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD"+
                   " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('T','AC')"+
-        		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.PDOCVE=getciclo()"),
+        		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.MATCVE IN (select DGRU_MATERIA FROM edgrupos where DGRU_CERRADOCAL='N')"),
          success: function(data){        	    
       	        generaTabla(JSON.parse(data));	   
       	        $('#dlgproceso').modal("hide");      	     

@@ -139,7 +139,7 @@
         var todasColumnas;
         var losCriterios;
         var cuentasCal=0;
-        
+        var eltidepocorte;
         
 		$(document).ready(function($) { var Body = $('body'); $(document).bind("contextmenu",function(e){return false;});  Body.addClass('preloader-site'); cargarUnidades(); $("#unidades").change(function(){cargarCalificaciones();}); });
 		$(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
@@ -151,52 +151,67 @@
 			 $("#laTabla").empty();
 			 $("#unidades").empty();
 			 $("#unidades").append("<option value=\"0\">Elija Unidad</option>");	
-
-
 			 
 			 base_materia=0;
 			 base_grupo=0;
-			 $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT DGRU_MATERIA AS MATERIA,SIE FROM edgrupos p where p.`DGRU_ID`='<?php echo $_GET["base"]?>'"),
-		         success: function(data){    		        				         
-		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 
-			        	 base_grupo=valor.SIE; base_materia=valor.MATERIA;    });
-
-
-				
-		        	 
-					 $.ajax({
-				         type: "GET",
-				         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select UNID_ID, UNID_NUMERO, UNID_DESCRIP, "+
-				        		 "(select count(*) from eplaneacion b where STR_TO_DATE(FECHA,'%d/%m/%Y')  BETWEEN STR_TO_DATE('<?php echo $_GET["inicia_corte"]?>','%d/%m/%Y') "+ 
-				        		 " AND STR_TO_DATE('<?php echo $_GET["termina_corte"]?>','%d/%m/%Y') and b.NUMUNIDAD=a.UNID_NUMERO "+ 
-				        		 " and b.MATERIA=a.UNID_MATERIA and b.GRUPO='<?php echo $_GET["grupo"]?>' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO,"+
-				        		 "(select count(*) from vecortesexp g where DATE_FORMAT(NOW(),'%Y-%m-%d') BETWEEN STR_TO_DATE(INICIA,'%d/%m/%Y')  "+
-		                         " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and g.UNIDAD=a.UNID_ID and g.MATERIA=a.UNID_MATERIA and "+
-		                         "g.PROFESOR='<?php echo $_GET["profesor"]?>' and g.CICLO='<?php echo $_GET["ciclo"]?>' and g.GRUPO='<?php echo $_GET["grupo"]?>')  as ABIERTO2, "+
-		                         "(select count(*) from eplaneacion b where STR_TO_DATE(FECHA,'%d/%m/%Y')  BETWEEN STR_TO_DATE('<?php echo $_GET["inicia_corte"]?>','%d/%m/%Y') "+ 
-				        		 " AND STR_TO_DATE('<?php echo $_GET["termina_corte"]?>','%d/%m/%Y') and b.NUMUNIDAD=a.UNID_NUMERO "+ 
-				        		 " and b.MATERIA='"+base_materia+"' and b.GRUPO='"+base_grupo+"' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO3 "+
-				        		 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''"),
-				         success: function(data){    
-				        	 
-				        	 jQuery.each(JSON.parse(data), function(clave, valor) {
-				        		 ab=parseInt(valor.ABIERTO)+parseInt(valor.ABIERTO2)+parseInt(valor.ABIERTO3);
-					        	 cadVer='C';
-					        	 if (ab>0) {cadVer='A';}
-				        		 $("#unidades").append("<option value=\""+valor.UNID_NUMERO+"\">"+utf8Decode(valor.UNID_NUMERO+" "+valor.UNID_DESCRIP)+" |"+cadVer+"|</option>");       	     
-				               });
-				             },
-				         error: function(data) {	                  
-				                    alert('ERROR: '+data);
-				                }
-				        });		     
-		         }
-			 });
-
 			 
-			    
+			 //Buscamos los cortes que esta abierto para la asignatura de acuerdo al ciclo 
+			 sqlCor="select * from ecortescal where  CICLO='<?php echo $_GET["ciclo"]?>'"+
+		            " and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
+					" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
+		            " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CALIFICACION' "+
+		            " order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
+			
+			$.ajax({
+		         type: "GET",
+		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlCor),
+		         success: function(dataCor){   
+					 iniCorte=""; finCorte=""; 		        				         
+		        	 jQuery.each(JSON.parse(dataCor), function(clave, valorCor) { 	
+					    iniCorte=valorCor.INICIA; finCorte=valorCor.TERMINA; eltidepocorte=	valorCor.TIPO;					
+					 });
+
+					//alert (iniCorte+" "+finCorte);
+					$.ajax({
+						type: "GET",
+						url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT DGRU_MATERIA AS MATERIA,SIE FROM edgrupos p where p.`DGRU_ID`='<?php echo $_GET["base"]?>'"),
+						success: function(data){    		        				         
+							jQuery.each(JSON.parse(data), function(clave, valor) { 
+								base_grupo=valor.SIE; base_materia=valor.MATERIA;    });
+							
+
+							sqlUni="select UNID_ID, UNID_NUMERO, UNID_DESCRIP, "+
+										"(select count(*) from eplaneacion b where STR_TO_DATE(FECHA,'%d/%m/%Y')  BETWEEN STR_TO_DATE('"+iniCorte+"','%d/%m/%Y') "+ 
+										" AND STR_TO_DATE('"+finCorte+"','%d/%m/%Y') and b.NUMUNIDAD=a.UNID_NUMERO "+ 
+										" and b.MATERIA=a.UNID_MATERIA and b.GRUPO='<?php echo $_GET["grupo"]?>' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO,"+
+										"(select count(*) from vecortesexp g where DATE_FORMAT(NOW(),'%Y-%m-%d') BETWEEN STR_TO_DATE(INICIA,'%d/%m/%Y')  "+
+										" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and g.UNIDAD=a.UNID_ID and g.MATERIA=a.UNID_MATERIA and "+
+										"g.PROFESOR='<?php echo $_GET["profesor"]?>' and g.CICLO='<?php echo $_GET["ciclo"]?>' and g.GRUPO='<?php echo $_GET["grupo"]?>')  as ABIERTO2, "+
+										"(select count(*) from eplaneacion b where STR_TO_DATE(FECHA,'%d/%m/%Y')  BETWEEN STR_TO_DATE('"+iniCorte+"','%d/%m/%Y') "+ 
+										" AND STR_TO_DATE('"+finCorte+"','%d/%m/%Y') and b.NUMUNIDAD=a.UNID_NUMERO "+ 
+										" and b.MATERIA='"+base_materia+"' and b.GRUPO='"+base_grupo+"' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO3 "+
+										" from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''"
+				
+							$.ajax({
+								type: "GET",
+								url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlUni),
+								success: function(data){    
+									
+									jQuery.each(JSON.parse(data), function(clave, valor) {
+										ab=parseInt(valor.ABIERTO)+parseInt(valor.ABIERTO2)+parseInt(valor.ABIERTO3);
+										cadVer='C';
+										if (ab>0) {cadVer='A';}
+										$("#unidades").append("<option value=\""+valor.UNID_NUMERO+"\">"+utf8Decode(valor.UNID_NUMERO+" "+valor.UNID_DESCRIP)+" |"+cadVer+"|</option>");       	     
+									});
+									},
+								error: function(data) {	                  
+											alert('ERROR: '+data);
+										}
+								});		     
+						}
+					}); //del ajax de las Unidades 					 
+				 } // del success
+			}); // del ajax de los cortes 			    
 		}
 
 
@@ -273,18 +288,18 @@
 			campo='';
 			if (tipo=="FALTA"){campo='F';}
 			
-			if ("<?php echo $_GET["tipocorte"];?>"=='CCO1'){tipocal="1";}
-			if ("<?php echo $_GET["tipocorte"];?>"=='CCO2'){tipocal="1";}
-			if ("<?php echo $_GET["tipocorte"];?>"=='CCO3'){tipocal="1";}
-			if ("<?php echo $_GET["tipocorte"];?>"=='CCC1'){tipocal="2";}
-			if ("<?php echo $_GET["tipocorte"];?>"=='CCC2'){tipocal="3";}
+			if (eltidepocorte=='CCO1'){tipocal="1";}
+			if (eltidepocorte=='CCO2'){tipocal="1";}
+			if (eltidepocorte=='CCO3'){tipocal="1";}
+			if (eltidepocorte=='CCC1'){tipocal="2";}
+			if (eltidepocorte=='CCC2'){tipocal="3";}
 
 			$("#SELIMG_"+id).attr("src","..\\..\\imagenes\\menu\\esperar.gif");
 		    	    $.ajax({
 		    	        type: "POST",
 		    	        url:"actualizaCal.php?valorllave="+id+"&numeroUni="+numeroUni+"&c="+$("#SEL"+campo+"_"+id).val()+"&materia="+materia+
 							"&tipocal="+tipocal+"&materia="+materia+"&profesor="+profesor+"&ciclo="+ciclo+"&matricula="+matricula+"&grupo="+grupo+"&tipo="+tipo+
-							"&idcorte=<?php echo $_GET["idcorte"];?>&tipocorte=<?php echo $_GET["tipocorte"];?>",		    
+							"&idcorte=<?php echo $_GET["idcorte"];?>&tipocorte="+eltidepocorte,		    
 		    	        success: function(data){	
 								    	        		
 		    	        	if (data.substring(0,2)=='0:') {alert ("Ocurrio un error: "+data);}	 

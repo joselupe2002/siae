@@ -49,6 +49,7 @@
 					    <tr style="background-color: #9F5906; color: white;">
 					        
 					        <th style="text-align: center;">ID</th> 
+							<th style="text-align: center;">Ciclo</th> 
 					        <th style="text-align: center;">Sem</th> 
 					        <th style="text-align: center;">Grupo</th> 
 					        <th style="text-align: center;">Clave</th> 					        
@@ -146,6 +147,7 @@
     	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
     	    
     	    $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
+			$("#row"+valor.ID).append("<td>"+valor.CICLO+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SEM+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SIE+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
@@ -204,7 +206,8 @@ function cargarMaterias() {
          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='ENCUADRE'),'') AS RUTAENCUADRE, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='DIAGNOSTICA'),'') AS RUTADIAGNOSTICA "+                 
-        		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>' and CICLO=getciclo() "),
+        		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>'"+
+				 " and CERRADOCAL='N'"),
          success: function(data){        	    
       	        generaTabla(JSON.parse(data));	   
       	        $('#dlgproceso').modal("hide");      	     

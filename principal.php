@@ -95,10 +95,10 @@
 									    {      $oc="";$st="";
 									    if (strlen($row["ENOT_ENLACE"])>0) {$st="cursor:pointer;"; $oc="onClick=\"abrirenlace('".$row["ENOT_ENLACE"]."','".$row["ENOT_TIPO"]."');\"";}
 									         	echo "<li id=\"not_".$row["ENOT_ID"]."\"><div class=\"row\">".											                 
-											                 "<div class=\"col-md-12\"><p ".$oc."style=\"line-height:15px; vertical-align:center; 
-                                                                                                         text-align:justify; font-size:11px; ".$st."\">".
+											                 "<div class=\"col-md-12\"><p style=\"line-height:15px; vertical-align:center; 
+                                                                                                         text-align:justify; font-size:11px; ".$st."\"><span ".$oc.">".
 																					   $row["ENOT_DESCRIP"].
-														     "<i style=\"cursor:pointer\" onclick=\"eliminarNoti('".$row["ENOT_ID"]."')\" class=\"fa fa-trash-o red\"></i></p></div>".
+														     "</span><i style=\"cursor:pointer; padding:0px;\" onclick=\"eliminarNoti('".$row["ENOT_ID"]."')\" class=\"fa fa-trash-o red\"></i></p></div>".
 											            "</div>".											            
                                                     "</li>";} ?>																													
 									</ul>
