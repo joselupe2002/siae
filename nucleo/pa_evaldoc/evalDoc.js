@@ -44,6 +44,30 @@ function cierraExamen(){
 		}					     
 	}); 
 
+	
+    var losdatos=[];
+	losdatos[0]=iddetalle+"|"+idgrupo+"|"+$("#obsalum").val();
+    var loscampos = ["IDDETALLE","IDGRUPO","DESCRIP",];
+		   parametros={
+				tabla:"ed_observa",
+			 campollave:"IDDETALLE",
+			 bd:"Mysql",
+			 valorllave:iddetalle,
+			 eliminar: "S",
+			 separador:"|",
+			 campos: JSON.stringify(loscampos),
+			 datos: JSON.stringify(losdatos)
+		   };
+
+		  $.ajax({
+			 type: "POST",
+			 url:"../base/grabadetalle.php",
+			 data: parametros,
+			 success: function(data){				
+				 if (data.length>0) {alert ("Ocurrio un error: "+data);}					                      	                                        					          
+			 }					     
+		 });    	 
+
 }
 
 
@@ -175,9 +199,13 @@ function aparecer(idpreg,valsum){
 				return 0;
 			}
 		}
+		$("#dlgcierraExamen").empty();
 		mostrarConfirm("dlgcierraExamen", "grid_registro", "Finalizar Examen",
-									"<span class=\"lead text-danger\"><strong>Al finalizar ya no se podrá realizar cambios ",
-		                             "¿Seguro que desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
+									"<span class=\"lead text-danger\"><strong>Antes de finalizar, podría dar una opinion general del maestro"+									
+									 "    <textarea id=\"obsalum\" style=\"width:100%; height:100%; resize: none;\"></textarea>",
+									 "¿Seguro que desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
+		
+								
 	}
 
 	modificarnum=parseInt(idpreg)+parseInt(valsum);
@@ -209,8 +237,8 @@ $(document).ready(function(){
 function cambioRespuesta(idpreg,num,opcion,puntaje,idexa){
 	lafecha=dameFecha("FECHAHORA");
     var losdatos=[];
-	losdatos[0]=iddetalle+"|"+ciclo+"|"+materia+"|"+profesor+"|"+usuario+"|"+grupo+"|"+idpreg+"|"+opcion+"|"+puntaje+"|"+lafecha;
-    var loscampos = ["IDDETALLE","CICLO","MATERIA","PROFESOR","MATRICULA","GRUPO","IDPREGUNTA","RESPUESTA","PUNTAJE","fecha",];
+	losdatos[0]=iddetalle+"|"+ciclo+"|"+materia+"|"+profesor+"|"+usuario+"|"+grupo+"|"+idpreg+"|"+opcion+"|"+puntaje+"|"+lafecha+"|"+idgrupo;
+    var loscampos = ["IDDETALLE","CICLO","MATERIA","PROFESOR","MATRICULA","GRUPO","IDPREGUNTA","RESPUESTA","PUNTAJE","FECHA","IDGRUPO",];
 
 		   parametros={
 				tabla:"ed_respuestas",

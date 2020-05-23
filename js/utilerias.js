@@ -35,6 +35,7 @@
 		
 /*==================================CONVERTIR TABLA HTML a DATATABLE =============================*/
 		function convertirDataTable (latabla){
+			
 
 			if ($("#opciones"+latabla).hasClass('hide')){
 				if (! $.fn.DataTable.isDataTable( '#'+latabla)) {

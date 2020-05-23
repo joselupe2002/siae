@@ -90,7 +90,7 @@ contMat=1;
 					generaTablaProfesores(JSON.parse(data));   
 				  	
 					for (i=1;i<contAlum;i++) {
-							elsqlPaso="select IDGRUPO,count(*) AS N from dlista where IDGRUPO="+$("#IDDETALLE_"+i).html();															
+							elsqlPaso="select IDGRUPO,count(*) AS N from dlista where IDGRUPO="+$("#IDDETALLE_"+i).html()+ " AND BAJA='N'";															
 							$.ajax({
 								type: "GET",
 								url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,

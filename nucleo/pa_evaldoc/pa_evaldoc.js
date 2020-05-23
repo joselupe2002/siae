@@ -26,7 +26,7 @@ jQuery.each(grid_data, function(clave, valor) {
     $("#row"+valor.ID).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");
     if (valor.HIZO==0) {
     $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"evaluar('"+valor.ID+"','"+valor.PROFESOR+"','"+
-                               valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.GRUPO+"','"+valor.CICLO+"','"+utf8Decode(valor.PROFESORD)+"');\" title=\"Capturar actividades para la asignatura\" "+
+                               valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.GRUPO+"','"+valor.CICLO+"','"+utf8Decode(valor.PROFESORD)+"','"+valor.IDGRUPO+"');\" title=\"Capturar actividades para la asignatura\" "+
             "class=\"btn btn-white btn-waarning btn-bold\">"+
             "<i class=\"ace-icon fa fa-check bigger-160 blue \"></i>"+
             "</a></td>");
@@ -71,11 +71,11 @@ function cargarMaterias() {
                 $("#elciclo").html(cad1);
                 $("#elciclod").html(cad2);
 
-                sqlmater="select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
+                sqlmater="select e.ID, e.ALUCTR as MATRICULA,e.IDGRUPO,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                 " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD, "+
                 " (select count(*) from ed_respuestas where IDDETALLE=e.ID and MATRICULA='"+elusuario+"' and TERMINADA='S') HIZO "+
                 " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('T','AC')"+
-                " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE=getciclo()";
+                " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE=getciclo() and e.BAJA='N'";
 
                 if (abierto>0) { 
                         $.ajax({
@@ -107,8 +107,8 @@ function cargarMaterias() {
 
 
 
-function evaluar(id,profesor,materia,materiad,grupo,ciclo,profesord){
-      window.location="evalDoc.php?&id="+id+"&ciclo="+ciclo+"&profesord="+profesord+"&profesor="+profesor+"&grupo="+grupo+"&materia="+materia+"&materiad="+materiad;
+function evaluar(id,profesor,materia,materiad,grupo,ciclo,profesord,idgrupo){
+      window.location="evalDoc.php?idgrupo="+idgrupo+"&id="+id+"&ciclo="+ciclo+"&profesord="+profesord+"&profesor="+profesor+"&grupo="+grupo+"&materia="+materia+"&materiad="+materiad;
 }
 
 

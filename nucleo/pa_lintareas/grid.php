@@ -200,7 +200,7 @@ function cargarMaterias() {
          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                   " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD"+
                   " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('T','AC')"+
-        		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')"),
+        		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.BAJA='N' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')"),
          success: function(data){        	    
       	        generaTabla(JSON.parse(data));	   
       	        $('#dlgproceso').modal("hide");      	     
