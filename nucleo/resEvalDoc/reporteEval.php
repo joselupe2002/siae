@@ -289,7 +289,7 @@
         $pdf->SetFillColor(246, 206, 99);
         $pdf->SetTextColor(0); 
         $pdf->Cell(110,5,'PORCETAJE',1,0,'R',true);
-        $pdf->Cell(20,5,round(($evaluaron/$totalalum)*100,2),1,0,'C',true);
+        $pdf->Cell(20,5,sprintf('%0.2f',round(($evaluaron/$totalalum)*100,2)),1,0,'C',true);
         $pdf->Cell(20,5,'',1,0,'C',true);
         $pdf->Cell(20,5,'',1,0,'C',true);
         $pdf->Ln(8);
@@ -341,7 +341,7 @@
         $pdf->SetFillColor(172,31,6);
         $pdf->SetTextColor(0);
         $pdf->SetWidths(array(90,30,30));
-        $pdf->SetAligns(array('L','C','L'));
+        $pdf->SetAligns(array('L','R','L'));
 
         $i=0;
         $suma=0;
@@ -353,11 +353,11 @@
             if ($porc>3 && $porc<=4) {$etval="MUY BIEN";} 
             if ($porc>3 && $porc<=5) {$etval="EXCELENTE";}           
             $pdf->Row(array( utf8_decode(explode("|",$valor)[0]),
-                             $porc,
+                             sprintf('%0.2f',$porc)." %",
                              utf8_decode($etval)
                            )
                       );
-            $suma.=$porc;
+            (float)$suma+=(float)$porc;
            $i++;
         }
         $global=round(($suma/$i),2);

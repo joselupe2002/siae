@@ -40,6 +40,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />	
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/colorbox.min.css" />
 
         <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }</style>
 	</head>
@@ -59,15 +60,17 @@
 			  </div>
 			  <div class="col-md-4" >
 				   <div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">
-						  ITSM - RECORRIDO VIRTUAL
+						  RECORRIDO VIRTUAL
 				    </div>
-				   
+					<div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">
+						  ITSM
+				    </div>
 			  </div>
 			  <div class="col-md-4" style="padding-top: 20px; text-align: right;">
 			     <a download href="ITSM.mcworld">
 			        <button class="btn btn-white bigger-180  btn-info btn-round btn-next">
 						 <i class="ace-icon fa fa-download orange icon-on-right"></i>
-						 <strong><span style="font-family:'Girassol';"class="text-primary">Descargar</span></strong>						
+						 <strong><span style="font-family:'Girassol';"class="text-primary">Descargar Mapa Minecraft</span></strong>						
 					</button>
 				</a>
 			  </div>
@@ -76,19 +79,63 @@
 	<div style="height:10px; background-color: #C18900;"> 
 	 </div>
 	 
+	 
 <div style="padding-left: 30px; padding-right:30px; ">  
+    <div class='space-10'></div>
     <div class="row"> 
-		<div class="col-sm-3 text-center">
-			<img src="img/i1.PNG" width="75%" height="50%" />
-		</div>
-		<div class="col-sm-3 text-center">
-			<img src="img/i2.PNG" width="75%" height="50%" />
-		</div>
-		<div class="col-sm-3 text-center">
-			<img src="img/i3.PNG" width="75%" height="50%" />
-        </div>
-    </div>
+	    <div class="col-sm-3 text-center">
+		      <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="img/video.mp4" allowfullscreen></iframe>
+               </div>
+		</div> 
+		<div class="col-sm-9">
+		    <div class="row"> 
+			    <div class="col-sm-12">
+					<div class="page-header"><h1>Galeria de Imágenes<small><i class="ace-icon fa fa-angle-double-right"></i> Instituto Tecnológico Superior de Macuspana</small></h1></div><!-- /.page-header -->
+				</div>
+			</div>
+			<div class="row"> 
+			    <div class="col-sm-12 text-center">
+			        <ul class="ace-thumbnails clearfix">
+						<li> <a href="img/i1.PNG" title="Entrada al ITSM" data-rel="colorbox">
+								 <img width="150" height="120" src="img/i1.PNG" />
+							  </a>
+						</li>
+						<li> <a href="img/i2.PNG" title="Entrada al ITSM" data-rel="colorbox">
+								 <img width="160" height="120"  src="img/i2.PNG" />
+							  </a>
+						</li>
+						<li> <a href="img/i3.PNG" title="Entrada al ITSM" data-rel="colorbox">
+								<img width="160" height="120"  src="img/i3.PNG" />
+							  </a>
+						</li>
+					</ul>					
+				</div>
+			</div>
+		</div>	
+	</div>
 
+	<div class='space-10'></div>
+	<div class="row"> 
+	    <div class="col-sm-3 text-center">
+		     <span class="profile-picture">
+			   <video width="100%" height="100%" controls><source src="img/video1.mp4" type="video/mp4"></video>
+            </span>
+		</div>
+		<div class="col-sm-3 text-center">
+		   
+		</div>
+		<div class="col-sm-3 text-center">
+		   
+		</div>
+		<div class="col-sm-3 text-center">
+		   
+		</div>
+	</div>
+	
+	
+
+	
 
 	<div class='space-7'></div>
 	<div>
@@ -223,7 +270,7 @@
 					<div class="row"> 
 							<div class="col-md-12"> 
 								<i class="ace-icon fa fa-envelope-o white bigger-150"></i>
-								<span style="color:white;">escolares@macuspana.tecnm.mx</span>
+								<span style="color:white;">comunicacion@macuspana.tecnm.mx</span>
 							</div>
 					</div>				
 			  </div>				
@@ -315,11 +362,48 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.maskedinput.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/select2.min.js"></script>
 
+<script src="<?php echo $nivel; ?>assets/js/jquery.colorbox.min.js"></script>
+
+
 
 <script type="text/javascript">
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
 
+
+	jQuery(function($) {
+	var $overflow = '';
+	var colorbox_params = {
+		rel: 'colorbox',
+		reposition:true,
+		scalePhotos:true,
+		scrolling:false,
+		previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+		next:'<i class="ace-icon fa fa-arrow-right"></i>',
+		close:'&times;',
+		current:'{current} of {total}',
+		maxWidth:'100%',
+		maxHeight:'100%',
+		onOpen:function(){
+			$overflow = document.body.style.overflow;
+			document.body.style.overflow = 'hidden';
+		},
+		onClosed:function(){
+			document.body.style.overflow = $overflow;
+		},
+		onComplete:function(){
+			$.colorbox.resize();
+		}
+	};
+
+	$('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+	$("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+	
+	
+	$(document).one('ajaxloadstart.page', function(e) {
+		$('#colorbox, #cboxOverlay').remove();
+   });
+})
 
 </script>
 
