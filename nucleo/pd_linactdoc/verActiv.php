@@ -230,7 +230,7 @@
 				 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, "+
 						 "concat(ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) AS NOMBRE, GPOCVE AS GRUPO, MATCVE AS MATERIA, LISTC5 AS PROFESOR,"+ 
 						 "(select count(*) from lintareasobs where MATRICULA=c.ALUM_MATRICULA and IDTAREA='"+$("#actividades").val()+"') AS NUMOBS,"+
-		        		 "PDOCVE as CICLO, ifnull(b.RUTA,'') AS RUTA, ifnull(b.FECHARUTA,'') as FECHARUTA,  ifnull(b.FECHAENV,'') as FECHAENV"+
+		        		 "PDOCVE as CICLO, ifnull(b.RUTA,'') AS RUTA, ifnull(b.FECHARUTA,'') as FECHARUTA,  ifnull(b.FECHAENV,'') as FECHAENV, b.REVISADA"+
 		        		 " from dlista a LEFT OUTER JOIN lintareas b ON (concat('"+$("#actividades").val()+"','_',a.ALUCTR)=b.AUX), falumnos c"+ 
 		        		 " where ALUCTR=ALUM_MATRICULA AND GPOCVE='<?php echo $_GET["grupo"];?>' "+
 		        		 " and PDOCVE='<?php echo $_GET["ciclo"];?>' and LISTC15='<?php echo $_GET["profesor"];?>'"+
@@ -238,7 +238,7 @@
 		         success: function(data){    
 					   $("#laTabla").empty();										   
 		        	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th><th>OBS</th><th>N.OBS</th></tr>"+ 
+		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th><th>OBS</th><th>N.OBS</th><th>FIN.</th></tr>"+ 
 		                       "</thead></table> ");
 		    
 		        	 $("#cuerpo").empty();
@@ -255,22 +255,38 @@
 						  $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.FECHAENV+"</span></td>");
 						  
 						  total++;
-                          cadSubio='S'				         		                  
+						  cadSubio='S'	
+						  
+						  if (valor.REVISADA=='S') { tne++; $('#'+valor.MATRICULA+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfrev.png");}	
 						  if (valor.RUTA=='') {cadSubio='N'; tne++; $('#'+valor.MATRICULA+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfno.png");}	
+						  
+
+
 						  $("#row"+valor.MATRICULA).append("<td><span class=\"badge badge-primary\" style=\"font-weight:bold;\">"+cadSubio+"</span></td>");
 						  
 						  btnRegresa="";
-						  if (cadSubio=='S') {
-							  btnRegresa="<button title=\"Click para hacer observación sobre la tarea y devolverla al alumno\""+
+						  btnFinalizar="";
+						  if ((cadSubio=='S') && (valor.REVISADA=='N') ){
+							  btnRegresa="<button id=\"btnreg"+valor.MATRICULA+"\" title=\"Click para hacer observación sobre la tarea y devolverla al alumno\""+
 							  " class=\"btn btn-white btn-danger btn-bold\" "+
 							  " onClick=\"devolverActividad('"+$("#actividades").val()+"','"+valor.MATRICULA+"','"+
 							    valor.CICLO+"','"+valor.GRUPO+"','"+valor.MATERIA+"','"+valor.PROFESOR+"');\">"+
-							  "Dev. Actividad</button>";							  
+							  "Dev. Actividad</button>";	
+
+							  btnFinalizar="<button  id=\"btnfin"+valor.MATRICULA+"\"  title=\"Click para marcar la actividad como finalizada\""+
+							  " class=\"btn btn-white btn-primary btn-bold\" "+
+							  " onClick=\"finalizar('"+$("#actividades").val()+"','"+valor.MATRICULA+"','"+
+							    valor.CICLO+"','"+valor.GRUPO+"','"+valor.MATERIA+"','"+valor.PROFESOR+"');\">"+
+							  "<i class=\"fa fa-check blue\"></i></button>";
 						  }
+
+						  if ((cadSubio=='S') && (valor.REVISADA=='S') ){btnFinalizar="<i class=\"fa fa-check green bigger-120\"><i>";}
+
 						  $("#row"+valor.MATRICULA).append("<td>"+btnRegresa+"</td>");
 						  $("#row"+valor.MATRICULA).append("<td><span title=\"Click para ver las observaciones realizadas a la tarea\" class=\"badge badge-danger\" style=\"cursor:pointer;\" "+
 							  " onclick=\"mostrarObs('"+$("#actividades").val()+"','"+valor.MATRICULA+"','"+
 							  valor.NUMOBS+"');\""+" style=\"color:white;\">"+valor.NUMOBS+"</span></td>");
+						  $("#row"+valor.MATRICULA).append("<td id=\"rev"+valor.MATRICULA+"\">"+btnFinalizar+"</td>");
 					  });
 					  $("#total").html(total);
 					  $("#totale").html(parseInt(total)-parseInt(tne));
@@ -358,6 +374,34 @@
 			}); 
 
 		}
+
+
+
+		function finalizar (idact,matricula,ciclo,grupo,materia,profesor){
+			lafecha=dameFecha("FECHAHORA");
+			lafechaNot=dameFecha("FECHA");
+			lafechaNotFin=dameFecha("FECHA",3);
+	
+			if (confirm("¿Seguro desea marcar la actrividad como finalizada, ya no se podrán enviar observaciones?")) {
+				mostrarEspera("esperaobs","gestorActividad","Procesando...");
+				parametros={tabla:"lintareas",bd:"Mysql",campollave:"AUX",valorllave:idact+"_"+matricula,REVISADA:'S'};
+				$.ajax({
+					type: "POST",
+					url:"../../nucleo/base/actualiza.php",
+					data: parametros,
+					success: function(data){    					 									 
+						ocultarEspera("esperaobs");	   
+						$("#btnfin"+matricula).addClass("hide");								
+						$("#btnreg"+matricula).addClass("hide");
+						$("#rev"+matricula).html("<i class=\"fa fa-check green bigger-120\"><i>");
+						$('#'+matricula+"TAREA").attr('src', "..\\..\\imagenes\\menu\\pdfrev.png");
+					}					     
+				}); 
+			}
+		
+
+		}
+			 
 			 
 		
 		function mostrarObs(idact,matricula,numobs){
