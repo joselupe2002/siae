@@ -238,7 +238,7 @@
 		         success: function(data){    
 					   $("#laTabla").empty();										   
 		        	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th><th>OBS</th><th>N.OBS</th><th>FIN.</th></tr>"+ 
+		                       "<thead><tr><th>NO. CONTROL</th><th>NOMBRE ALUMNO</th><th>TAREA</th><th>SUBIO</th><th>ENVIO</th><th>SUBIO</th><th>OBS</th><th>N.OBS</th><th>REV.</th></tr>"+ 
 		                       "</thead></table> ");
 		    
 		        	 $("#cuerpo").empty();
@@ -382,7 +382,7 @@
 			lafechaNot=dameFecha("FECHA");
 			lafechaNotFin=dameFecha("FECHA",3);
 	
-			if (confirm("¿Seguro desea marcar la actrividad como finalizada, ya no se podrán enviar observaciones?")) {
+			if (confirm("¿Seguro desea marcar la actividad como REVISADA, ya no se podrán enviar observaciones?")) {
 				mostrarEspera("esperaobs","gestorActividad","Procesando...");
 				parametros={tabla:"lintareas",bd:"Mysql",campollave:"AUX",valorllave:idact+"_"+matricula,REVISADA:'S'};
 				$.ajax({
