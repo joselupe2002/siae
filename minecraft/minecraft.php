@@ -141,7 +141,7 @@
 			    <div class="col-sm-12 text-center">
 			        <ul class="ace-thumbnails clearfix">
 						<?php for ($i=1; $i<=16; $i++) {
-							 echo "<li> <a href=\"img/foto".$i.".PNG\" data-rel=\"colorbox\">".
+							 echo "<li> <a href=\"img/foto".$i.".png\" data-rel=\"colorbox\">".
 							      "        <img width=\"150\" height=\"120\" src=\"img/foto".$i.".PNG\" /> ".
 						          "     </a>".
 					              "</li>";
