@@ -83,12 +83,55 @@
 <div style="padding-left: 30px; padding-right:30px; ">  
     <div class='space-10'></div>
     <div class="row"> 
-	    <div class="col-sm-3 text-center">
-		      <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="img/video.mp4" allowfullscreen></iframe>
-               </div>
+	    <div class="col-sm-6">
+		    <div class="row"> 
+			    <div class="col-sm-12">
+					<div class="page-header"><h1>Vídeos Minecraft<small><i class="ace-icon fa fa-angle-double-right"></i> Instituto Tecnológico Superior de Macuspana</small></h1></div><!-- /.page-header -->
+				</div>
+			</div>
+		    <div class="row"> 
+			       <div class="col-sm-4">
+						 <a onclick="verVideo('5zTuOYRPKuY')" style="cursor:pointer;"> 
+							 <i class="ace-icon fa fa-hand-o-right"></i> <span class="text-primary bigger-130">Intro</span>
+						 </a><br/>
+						 <a onclick="verVideo('pvhIf7FcXBI')" style="cursor:pointer"> 
+							 <i class="ace-icon fa fa-hand-o-right"></i> <span class="text-primary bigger-130">Biblioteca</span>
+						 </a><br/>
+						 <a onclick="verVideo('fhnS6riecwc')" style="cursor:pointer"> 
+							 <i class="ace-icon fa fa-hand-o-right"></i> <span class="text-primary bigger-130">Edificio A</span>
+						 </a><br/>
+						 <a onclick="verVideo('N_aGrLaZ0xw')" style="cursor:pointer"> 
+							 <i class="ace-icon fa fa-hand-o-right"></i> <span class="text-primary bigger-130">Edificio B</span>
+						 </a><br/>
+						 <a onclick="verVideo('FcapEJxV_3c')" style="cursor:pointer"> 
+							 <i class="ace-icon fa fa-hand-o-right"></i> <span class="text-primary bigger-130">Edificio C</span>
+						 </a><br/>
+						 <a onclick="verVideo('yXi52wt_1qI')" style="cursor:pointer"> 
+							 <i class="ace-icon fa fa-hand-o-right"></i> <span class="text-primary bigger-130">Promoción 1</span>
+						 </a><br/>
+						 <a onclick="verVideo('9_P9TDMOY-s')" style="cursor:pointer"> 
+							 <i class="ace-icon fa fa-hand-o-right"></i> <span class="text-primary bigger-130">Promoción 2</span>
+					     </a><br/>
+			       </div>
+			       <div class="col-sm-8">
+						<div class="embed-responsive embed-responsive-16by9">
+                              <iframe id="elvideo2" class="embed-responsive-item" src="https://www.youtube.com/embed/5zTuOYRPKuY?rel=0&autoplay:1" allowfullscreen></iframe>
+                        </div>
+				   </div>				   
+			</div>
+			<div class="row"> 
+			    <div class="col-sm-12">
+					<h1 class="fontRobotoB text-danger">¿Quieres vivir una mejor Experiencia?</h1>
+					<a download href="ITSM.mcworld">
+			        <button class="btn btn-white bigger-180  btn-info btn-round btn-next">
+						 <i class="ace-icon fa fa-download orange icon-on-right"></i>
+						 <strong><span style="font-family:'Girassol';"class="text-primary">Descargar Mapa Minecraft</span></strong>						
+					</button>
+				</a>
+				</div>
+			</div>
 		</div> 
-		<div class="col-sm-9">
+		<div class="col-sm-6">
 		    <div class="row"> 
 			    <div class="col-sm-12">
 					<div class="page-header"><h1>Galeria de Imágenes<small><i class="ace-icon fa fa-angle-double-right"></i> Instituto Tecnológico Superior de Macuspana</small></h1></div><!-- /.page-header -->
@@ -97,18 +140,15 @@
 			<div class="row"> 
 			    <div class="col-sm-12 text-center">
 			        <ul class="ace-thumbnails clearfix">
-						<li> <a href="img/i1.PNG" title="Entrada al ITSM" data-rel="colorbox">
-								 <img width="150" height="120" src="img/i1.PNG" />
-							  </a>
-						</li>
-						<li> <a href="img/i2.PNG" title="Entrada al ITSM" data-rel="colorbox">
-								 <img width="160" height="120"  src="img/i2.PNG" />
-							  </a>
-						</li>
-						<li> <a href="img/i3.PNG" title="Entrada al ITSM" data-rel="colorbox">
-								<img width="160" height="120"  src="img/i3.PNG" />
-							  </a>
-						</li>
+						<?php for ($i=1; $i<=16; $i++) {
+							 echo "<li> <a href=\"img/foto".$i.".PNG\" data-rel=\"colorbox\">".
+							      "        <img width=\"150\" height=\"120\" src=\"img/foto".$i.".PNG\" /> ".
+						          "     </a>".
+					              "</li>";
+							}?>
+						
+					
+						
 					</ul>					
 				</div>
 			</div>
@@ -118,9 +158,7 @@
 	<div class='space-10'></div>
 	<div class="row"> 
 	    <div class="col-sm-3 text-center">
-		     <span class="profile-picture">
-			   <video width="100%" height="100%" controls><source src="img/video1.mp4" type="video/mp4"></video>
-            </span>
+		    
 		</div>
 		<div class="col-sm-3 text-center">
 		   
@@ -137,108 +175,7 @@
 
 	
 
-	<div class='space-7'></div>
-	<div>
-	    <div class="row"> 
-			 <div class="col-sm-12 text-center">
-				  <span class="fontAmaranthB text-danger bigger-300"><strong>INFORMACIÓN IMPORTANTE</strong></span> 
-              </div>
-		</div>
-		<div class="row"> 
-			 <div class="col-sm-12">
-				  <span class="fontAmaranthB text-light bigger-120">Antes de iniciar tu proceso de pre-inscripción es necesario que tomes en cuente la documentación que debes tener a la mano para que sea más ágil tu registro. 
-				  </span> 
-              </div>
-		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-primary bigger-120">1</span>
-				  <span class="fontAmaranth text-light bigger-120">Clave Única de registro de Población CURP. la cuál será tu identificador como aspirante, por lo que se debe capturar correctamente. 
-				  </span> 
-				  <a href="https://www.gob.mx/curp/" target="_blank"><span class="label label-white label-success middle">Consulta tu CURP</span></a>
-              </div>
-		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="fontAmaranth badge badge-success bigger-120">2</span>
-				  <span class="fontAmaranth text-light bigger-120">Número de Seguro Social del IMSS, que fue otorgado en tu Bachiller  
-				  </span> 
-				  <a  target="_blank" href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS;JSESSIONIDASEGEXTERNO=SpgaCff8MRCqwDIw13E4NlcwPXSkV1jKBE6u0cilknwtWuzE4o0r!-1509158015">
-					  <span class="label label-white label-success middle">Consulta tu IMSS</span>
-				  </a>
-              </div>
-		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-danger bigger-120">3</span>
-				  <span class="fontAmaranth text-light bigger-120"> Constancia de Estudios de Educación Media Superior. 
-					  <span class="fontAmaranth text-danger">En caso de no contar con ella por la situación actual deberá 
-						                        llenar el documento de prorroga, firmarlo, escanearlo y subirlo en la sección de Constancia en formato PDF <i class="ace-icon blue fa fa-hand-o-right"></i> </span>  
-				  </span> 
-				  <a href="docProroga.docx">
-					  <span class="label label-white label-success middle">Prorroga</span>
-				  </a>
-              </div>
-		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-yellow bigger-120">4</span>
-				  <span class="fontAmaranth text-light bigger-120"> Haber realizado el pago correspondiente de
-					  <span class="fontAmaranth text-danger bigger-140"> $ 545.00 </span> por concepto de Ficha. Debe tener escaneado en formato PDF el Recibo
-				  </span>
-				  <a href="docCuenta.pdf" target="_blank">
-					  <span class="fontAmaranth label label-white label-success middle">Datos Cuenta</span>
-				  </a>
-				  <br/>				  
-				  <strong><span class="fontAmaranthB text-primary bigger-140">CUENTA: </span><span class="text-success bigger-140">0114349660</span></strong><br/>				   
-				  <strong><span class="fontAmaranthB text-primary bigger-140">CLABE : </span><span class="text-success bigger-140">012790001143496603</span></strong><br/> 
-				  <strong><span class="fontAmaranthB text-primary bigger-140">BANCO : </span><span class="text-success bigger-140">BBVA Bancomer</span></strong>
-              </div>
-		</div>
-
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-pink bigger-120">5</span>
-				  <span class="fontAmaranthB  text-light bigger-140"> Deberá tener los siguientes documentos en PDF</span> 
-				  <br/>				  				         
-					     <span class="fontAmaranth  text-inverse bigger-140">Acta de Nacimiento</span><br/>				         
-						 <span class="fontAmaranth  text-inverse bigger-140">Clave Única de registro de Población</span><br/>						 
-						 <span class="fontAmaranth  text-inverse bigger-140">Número de Seguridad Social Expedida por el IMSS</span><br/>						 
-						<!-- <span class="fontAmaranth  text-inverse bigger-140">Certificado de Secundaria (opcional)</span><br/>						 -->
-						 <span class="fontAmaranth  text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>						 
-						 <span class="fontAmaranth text-inverse bigger-140">Recibo de Pago</span><br/>
-              </div>
-		</div>
-
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-purple bigger-120">6</span>
-				  <span class="fontAmaranth  text-light bigger-120"> Fotografía infantil (blanco y negro o a color) en formato PNG o JPEG</span> 			  
-              </div>
-		</div>
-
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-success bigger-120">7</span>
-				  <strong>
-				  <span class=" fontAmaranth  text-danger bigger-120"> Una vez que capture Su CURP, Carrera y Nombre Completo, su registro queda guardado y puede finalizarlo en cualquier momento.</span> 			  
-				  </strong>
-              </div>
-		</div>
-
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-warning bigger-120">8</span>
-				  <strong>
-				  <span class="fontAmaranth  text-success bigger-120"> Al finalizar su registro si desea imprimir nuevamente su ficha, solo ingrese al registro, coloque su CURP y le dará la opción de Imprimir su Ficha</span> 			  
-				  </strong>
-              </div>
-		</div>
-
-
-	</div>
-</div>
-
+	
 <div class='space-20'></div>
 <div style="height:5px; background-color:#C40E0E;"> </div>
 <div class="container-fluid informacion" >   
@@ -405,6 +342,12 @@
    });
 })
 
+
+function verVideo(video) {
+	$("#elvideo").attr("src",video);
+	$("#elvideo2").attr("src","https://www.youtube.com/embed/"+video+"?rel=0");
+	
+}
 </script>
 
 </body>

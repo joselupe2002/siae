@@ -1757,7 +1757,7 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 						   suma=0; sumaF=0;
 						   promedio=0;
 						   for (x=1;x<=numUni;x++) {
-							   if (laLista[clave][x]<=70) {suma=(numUni*60); break; }
+							   if (laLista[clave][x]<70) {suma=(numUni*60); break; }
 							   suma+=parseFloat(laLista[clave][x]);
 						   }	
 						   for (y=1;y<=numUni;y++) {sumaF+=parseFloat(laLista[clave][y+15]);}		    	 
