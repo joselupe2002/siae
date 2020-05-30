@@ -295,10 +295,10 @@
 		}
 		$pdf->Ln(5);
 		
-		$pdf->Cell(0,0,$pdf->getY(),0,1,'L');
+		//$pdf->Cell(0,0,$pdf->getY(),0,1,'L');
 		$pdf->Ln(5);
 		
-		if ($pdf->getY()>=200) {$pdf->addPage();}
+		//if ($pdf->getY()>=200) {$pdf->addPage();}
 		$pdf->SetFont('Montserrat-ExtraBold','B',10);
 		$pdf->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
 		
