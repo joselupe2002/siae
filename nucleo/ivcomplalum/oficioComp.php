@@ -114,7 +114,8 @@
  
    	
 			function LoadData()
-			{				
+			{	
+				$data=[];			
 				$miConex = new Conexion();
 				$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from ivcomplalum where CARRERA=".$_GET["carrera"].
 						                                         " and CAPT_SIE=0 and NUMCRED=5");				
@@ -165,6 +166,26 @@
 			{				
 				$miutil = new UtilUser();
 				$miutil->getPie($this,'V');
+
+
+				$this->SetY(-43);
+				$this->SetFont('Montserrat-ExtraBold','B',8);
+				$this->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
+		
+				$this->SetY(-40);
+		        $this->SetFont('Montserrat-ExtraLight','I',8);
+		        $this->Cell(0,0,utf8_decode('Excelencia en Educación Tecnológica'),0,1,'L');
+
+				$this->SetY(-30);
+				$this->SetFont('Montserrat-ExtraBold','B',8);
+				$this->Cell(250,0,utf8_decode($this->eljefe),0,0,'L');
+				
+				$this->SetY(-33);
+				$this->Cell(250,0,utf8_decode($this->eljefepsto),0,1,'L');				
+				
+				$this->SetY(-25);
+				$this->SetFont('Montserrat-Medium','',8);
+				$this->Cell(0,0,"c.c.p. Archivo.",0,1,'L');
 				
 				
 			}
@@ -201,7 +222,7 @@
 		
 		$pdf->SetFont('Arial','',10);
 		$pdf->SetMargins(20, 25 , 25);
-		$pdf->SetAutoPageBreak(true,30); 
+		$pdf->SetAutoPageBreak(true,45); 
 		$pdf->AddPage();
 		 
 		
@@ -295,10 +316,11 @@
 		}
 		$pdf->Ln(5);
 		
-		//$pdf->Cell(0,0,$pdf->getY(),0,1,'L');
-		$pdf->Ln(5);
-		
+		//$pdf->Cell(0,0,$pdf->getY(),0,1,'L');		
 		//if ($pdf->getY()>=200) {$pdf->addPage();}
+
+
+		/*
 		$pdf->SetFont('Montserrat-ExtraBold','B',10);
 		$pdf->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
 		
@@ -317,8 +339,9 @@
 		$pdf->SetX(10);$pdf->SetY(245);
 		$pdf->SetFont('Montserrat-Medium','',8);
 		$pdf->Cell(0,0,"c.c.p. Archivo.",0,1,'L');
-		
-		
+
+		*/
+	
 		
 		$pdf->Output(); 
  } else {header("Location: index.php");}
