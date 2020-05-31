@@ -166,7 +166,7 @@
                 $miConex = new Conexion();
                 $sql="select p.VMAT_MATERIA AS MATERIA, p.VMAT_MATERIAD AS MATERIAD, p.VMAT_CUATRIMESTRE AS SEMESTRE,".
                 " p.`VMAT_CREDITO` AS CREDITO from falumnos o, vmatciclo p ".
-                " where o.ALUM_MAPA=p.VMAT_MAPA and  ifnull(p.CVEESP,'')='' ".
+                " where o.ALUM_MAPA=p.VMAT_MAPA and  ifnull(p.CVEESP,'0')='0' ".
                 " and o.ALUM_MATRICULA='".$_GET["matricula"]."' and VMAT_TIPOMAT NOT IN ('T') ".
                 " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where ".
                 " h.ALUCTR='".$_GET["matricula"]."' and (LISCAL>=70 or PDOCVE='".$ciclo."'))".
@@ -174,7 +174,7 @@
                 " select p.VMAT_MATERIA AS MATERIA, p.VMAT_MATERIAD AS MATERIAD,p.VMAT_CUATRIMESTRE AS SEMESTRE,".
                 " p.`VMAT_CREDITO` AS CREDITO from falumnos o, vmatciclo p ".
                 " where o.ALUM_MAPA=p.VMAT_MAPA  and o.ALUM_MATRICULA='".$_GET["matricula"]."' ".
-                " and VMAT_TIPOMAT NOT IN ('T') AND ifnull(p.CVEESP,'')=ALUM_ESPECIALIDAD ".
+                " and VMAT_TIPOMAT NOT IN ('T') AND ifnull(p.CVEESP,'0')=ALUM_ESPECIALIDAD ".
                 " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_GET["matricula"]."' ".
                 " and (LISCAL>=70 or PDOCVE='".$ciclo."'))";
                // echo $sql;

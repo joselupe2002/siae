@@ -28,14 +28,14 @@
                                         " VMAT_MATERIA IN ( select VMAT_MATERIA  from vmatciclo p where ".
                                         "                   p.VMAT_MAPA='".$_GET["vmapa"]."'   ".                              
                                         "                   and VMAT_TIPOMAT NOT IN ('T') ".
-                                        "                   and ifnull(p.CVEESP,'')=''".
+                                        "                   and ifnull(p.CVEESP,'0')='0'".
                                         "                   and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_GET["matricula"]."'".
                                         "                                            and (LISCAL>=70 or PDOCVE='".$_GET["ciclo"]."'))".
                                         "                   UNION ".
                                                         "   select p.VMAT_MATERIA from vmatciclo p where ".
                                                         "   p.VMAT_MAPA='".$_GET["vmapa"]."'  ".
                                                         "   and VMAT_TIPOMAT NOT IN ('T') ".
-                                                        "   AND ifnull(p.CVEESP,'')='".$_GET["vesp"]."'".
+                                                        "   AND ifnull(p.CVEESP,'0')='".$_GET["vesp"]."'".
                                                         "    and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_GET["matricula"]."'".
                                                             "                         and (LISCAL>=70 or PDOCVE='".$_GET["ciclo"]."'))   ".     
                                                    "    )".
