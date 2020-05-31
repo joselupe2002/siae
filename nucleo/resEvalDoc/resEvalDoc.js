@@ -62,7 +62,7 @@ contMat=1;
 		   "                <th>GPO</th> "+
 		   "                <th>Sem</th>"+
 		   "                <th>Alum</th> "+
-		   "                <th>Res</th> "+
+		   "                <th>#Res</th> "+
 		   "                <th>%Res</th> "+
 		   "             </tr> "+
 		   "            </thead>" +
@@ -116,8 +116,10 @@ function generaTablaMaterias(grid_data){
 		if ((porc>50) && (porc<=99)) stpor="class=\"badge  badge-success\"";
 		if (porc>=100) stpor="class=\"badge  badge-primary\"";
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><a "+evento+"><span title=\"click para ver reporte de unidades por alumnos\" style=\"cursor:pointer\" class=\"badge  badge-info\">"+valor.ALUM+"</span></a></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span class=\"badge  badge-success\">"+valor.RES+"</span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span "+stpor+">"+porc+"</span></td>");
+		$("#rowM"+contAlum).append("<td><span title=\"Número de alumnos que han respondido la encuensta\" class=\"badge badge-success\"><i class=\"fa fa-male white\"> "+valor.RES+"</i></span></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span "+stpor+">"+porc+" %</span></td>");
+		
+
 	    contAlum++;      			
 	});	
 } 
@@ -137,8 +139,8 @@ function cargarInformacionP(){
 	   "                <th>Depto</th> "+	
 	   "                <th>Departamento</th> "+	 
 	   "                <th>Alum</th> "+
-	   "                <th>Res</th> "+
-	   "                <th>%Res</th> "+
+	   "                <th>#Res</th> "+
+	   "                <th>%Res</th> "+	
 	   "                <th>Reporte</th> "+
 	   "             </tr> "+
 	   "            </thead>" +
@@ -194,12 +196,15 @@ jQuery.each(grid_data, function(clave, valor) {
 		if (porc>=100) stpor="class=\"badge  badge-primary\"";
 
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><a "+evento+"><span title=\"click para ver asiganturas del profesor\" style=\"cursor:pointer\" class=\"badge  badge-info\">"+valor.ALUM+"</span></a></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span class=\"badge  badge-success\">"+valor.RES+"</span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span "+stpor+">"+porc+"</span></td>");
+		$("#rowM"+contAlum).append("<td><span title=\"Número de alumnos que han respondido la encuensta\" class=\"badge badge-success\"><i class=\"fa fa-male white\"> "+valor.RES+"</i></span></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span "+stpor+">"+porc+" %</span></td>");
+		
+
+
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+
 		                                "<button onclick=\"window.open('reporteEval.php?ciclo="+valor.CICLO+"&profesor="+valor.PROFESOR+"&profesord="+valor.PROFESORD+"&deptod="+valor.DEPTOD+"');\""+
 		                                " class=\"btn btn-white btn-success btn-round\">"+
-		                                "<i class=\"ace-icon blue fa fa-tachometer bigger-140\"></i> Reporte</button></td>");
+		                                "<i class=\"/ace-icon blue fa fa-tachometer bigger-140\"></i> Reporte</button></td>");
 		contAlum++;      			
 	}
 });	
@@ -235,5 +240,104 @@ function verMaterias(ciclo,profesor){
 }
 
 
+/*===========================================================POR ALUMNOS==============================================*/
 
 
+function cargarInformacionA(){
+	script="<table id=\"tabMaterias\" name=\"tabMaterias\" class= \"table table-condensed table-bordered table-hover\" "+
+			">"+
+		  "        <thead >  "+
+	   "             <tr id=\"headMaterias\">"+
+	   "                <th>No.</th> "+
+	   "                <th>Ciclo</th> "+	
+	   "                <th>No. Control</th> "+	
+	   "                <th>Nombre Alumno</th> "+	
+	   "                <th>#Mat</th> "+
+	   "                <th>Res</th> "+
+	   "                <th>%Res</th> "+	   
+	   "             </tr> "+
+	   "            </thead>" +
+	   "         </table>";
+	   $("#informacion").empty();
+	   $("#informacion").append(script);
+			
+	elsql="select PDOCVE AS CICLO,ALUM_MATRICULA as MATRICULA, concat (ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) as NOMBRE, "+
+	" count(*) as NMAT,"+
+	" (SELECT COUNT(DISTINCT(l.IDGRUPO)) FROM ed_respuestas l where l.TERMINADA='S' and l.CICLO='"+$("#selCiclos").val()+"' and l.MATRICULA=b.ALUM_MATRICULA) AS RES"+
+	" from dlista a, falumnos b, cmaterias c  where PDOCVE='"+$("#selCiclos").val()+"'"+
+	" and a.ALUCTR=b.ALUM_MATRICULA"+
+	" and a.MATCVE=c.MATE_CLAVE"+
+	" and b.ALUM_CARRERAREG='"+$("#selCarreras").val()+"'"+
+	" group by PDOCVE,ALUCTR";
+
+	
+	mostrarEspera("esperahor","grid_resEvalDoc","Cargando Datos...");
+	$.ajax({
+		   type: "GET",
+		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		   success: function(data){  				      			      
+				generaTablaAlumnos(JSON.parse(data));   													
+				ocultarEspera("esperahor");  																											
+		},
+		error: function(dataMat) {	                  
+				alert('ERROR: '+dataMat);
+							}
+});	      	      					  					  		
+}
+
+function generaTablaAlumnos(grid_data){	
+contAlum=1;
+$("#cuerpoMaterias").empty();
+$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
+//$("#btnfiltrar").attr("disabled","disabled");
+jQuery.each(grid_data, function(clave, valor) { 
+
+		$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
+		$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:14px;\">"+valor.CICLO+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:14px;\">"+valor.MATRICULA+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:14px;\">"+valor.NOMBRE+"</td>");
+	
+		evento="onclick=\"verMateriasA('"+$("#selCiclos").val()+"','"+valor.MATRICULA+"');\"";
+
+		stpor="";
+		porc=Math.round((parseInt(valor.RES)/parseInt(valor.NMAT)*100),1);
+		if (porc==0) stpor="class=\"badge  badge-danger\"";
+		if ((porc>0) && (porc<=50)) stpor="class=\"badge  badge-warning\"";
+		if ((porc>50) && (porc<=99)) stpor="class=\"badge  badge-success\"";
+		if (porc>=100) stpor="class=\"badge  badge-primary\"";
+
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><a "+evento+"><span title=\"click para ver asiganturas del profesor\" style=\"cursor:pointer\" class=\"badge  badge-info\">"+valor.NMAT+"</span></a></td>");
+		$("#rowM"+contAlum).append("<td><span title=\"Número de materias que ha evaluado\" class=\"badge badge-success\"><i class=\"fa fa-male white\"> "+valor.RES+"</i></span></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span "+stpor+">"+porc+" %</span></td>");
+		
+
+		contAlum++;      			
+
+});	
+} 
+
+function verMateriasA(ciclo,alumno){
+	elsqlMa=elsql="select MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, getcuatrimatxalum(MATCVE,ALUCTR) AS SEM "+
+	" from dlista a, cmaterias c  where  PDOCVE='"+ciclo+"'  and  a.MATCVE=c.MATE_CLAVE AND ALUCTR='"+alumno+"'  ORDER BY 3,1";
+
+
+	$.ajax({
+		type: "GET",
+		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlMa),
+		success: function(data){  				      			      
+			cad="<ol>";
+			jQuery.each(JSON.parse(data), function(clave, valor) {
+			   cad+="<li style=\"text-align:justify;\">"+valor.MATERIA+" "+valor.MATERIAD+					
+			        "</li>"; 
+			});	
+			cad+="</ol>";
+			
+			mostrarIfo("infoMat","grid_resEvalDoc","Asignaturas",cad,"modal-lg"); 
+	 },
+	 error: function(dataMat) {	                  
+			 alert('ERROR: '+dataMat);
+						 }
+    });	  
+   	      				
+}

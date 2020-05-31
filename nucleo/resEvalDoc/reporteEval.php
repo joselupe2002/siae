@@ -173,7 +173,7 @@
                 $data=[];	
                 $miConex = new Conexion();
                 $sql="select DESCRIP AS OBS from ed_observa u, edgrupos v where u.IDGRUPO=v.DGRU_ID and ".
-                "v.DGRU_PROFESOR='".$_GET["profesor"]."' and v.DGRU_CICLO='".$_GET["ciclo"]."'";
+                "v.DGRU_PROFESOR='".$_GET["profesor"]."' and v.DGRU_CICLO='".$_GET["ciclo"]."' and DESCRIP<>''";
 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
