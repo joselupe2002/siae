@@ -74,7 +74,7 @@ function cargarMaterias() {
                 sqlmater="select e.ID, e.ALUCTR as MATRICULA,e.IDGRUPO,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                 " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD, "+
                 " (select count(*) from ed_respuestas where IDDETALLE=e.ID and MATRICULA='"+elusuario+"' and TERMINADA='S') HIZO "+
-                " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('T','AC')"+
+                " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE "+
                 " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE=getciclo() and e.BAJA='N'";
 
                 if (abierto>0) { 
