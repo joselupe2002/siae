@@ -84,11 +84,19 @@
 							  <div class="col-sm-4">
 								   <span>Esp:</span> <span id="laesp" class="badge badge-success"></span> <span id="laespd" class="badge badge-warning"></span>
 							  </div>
+							  <div class="col-sm-4">
+								   <span onclick="verCalificaciones();" class="btn btn-white"><i class="fa fa-th"></i></span>
+							  </div>
 						 </div>
 					</div>
 			   </div>
 		</div>
 
+		<select style="display:none;" id="base" style="width: 100%;">
+			              <?php for ($x=70;$x<=100;$x++) {?>
+			                  echo  <option value="<?php echo $x;?>"><?php echo $x;?></option>			            
+			              <?php } ?>		              
+		</select>
 <!-- ============================================================================================================-->			
 		 							
 <!-- -------------------Primero ----------------------->
@@ -146,7 +154,9 @@
 
 <script src="revMaterias.js"></script>
 <script type="text/javascript">
- 
+	var institucion="<?php echo $_SESSION["INSTITUCION"]; ?>";
+	var campus="<?php echo $_SESSION["CAMPUS"]; ?>";
+	var usuario="<?php echo $_SESSION["usuario"]; ?>";
 </script>
 
 

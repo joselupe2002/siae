@@ -64,25 +64,27 @@ contMat=1;
 				"                <th>Créditos</th> "+		
 				"                <th>Cve. Mat.</th> "+
 				"                <th>Nombre Materia</th> "+	
-				"                <th>Cal.</th> "+			   
+				"                <th>Cal.</th> "+	
+				"                <th>Guardar</th> "+			   
 				"             </tr> "+
 				"            </thead>" +
 				"         </table>";
 				$("#informacion").empty();
 				$("#informacion").append(script);
 						
-				elsql="SELECT CICL_MATERIA, CICL_MATERIAD, CICL_CUATRIMESTRE AS SEM, c.CICL_CREDITO AS CRED "+
+				elsql="SELECT CICL_MATERIA AS MATERIA, CICL_MATERIAD as MATERIAD, CICL_CUATRIMESTRE AS SEM, c.CICL_CREDITO AS CRED "+
 				" FROM veciclmate c where c.CICL_MAPA='"+$("#elmapa").html()+"'"+
-				" and if(c.CVEESP=0,'"+$("#laesp").html()+"',CVEESP)='"+$("#laespd").html()+"' AND CICL_MATERIA NOT IN "+
-			    " (SELECT MATCVE from  dlista WHERE ALUCTR='"+$("#selAlumnos").val()+"' and LISCAL>=70)";
+				" and if(c.CVEESP=0,'"+$("#laesp").html()+"',CVEESP)='"+$("#laesp").html()+"' AND CICL_MATERIA NOT IN "+
+			    " (SELECT MATCVE from  dlista WHERE ALUCTR='"+$("#selAlumnos").val()+"' and LISCAL>=70) order by CICL_CUATRIMESTRE, CICL_MATERIAD";
 			   
-	
+
 			
-				mostrarEspera("esperahor","grid_resEvalDoc","Cargando Datos...");
+				mostrarEspera("esperahor","grid_revMaterias","Cargando Datos...");
 				$.ajax({
 					type: "GET",
 					url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
-					success: function(data){  				      			      
+					success: function(data){  	
+						   		      			      
 							generaTablaMaterias(JSON.parse(data));   													
 							ocultarEspera("esperahor");  																											
 					},
@@ -101,6 +103,7 @@ contMat=1;
 
 function generaTablaMaterias(grid_data){	
 	contAlum=1;
+
 	$("#cuerpoMaterias").empty();
 	$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
 	//$("#btnfiltrar").attr("disabled","disabled");
@@ -108,28 +111,165 @@ function generaTablaMaterias(grid_data){
 		//alert ($("#rowM"+contAlum).html()+" "+valor.PROFESOR);   			
 		$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
 		$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
-		$("#rowM"+contAlum).append("<td id=\"IDDETALLE_"+contAlum+"\" style=\"font-size:10px;\">"+valor.IDDETALLE+"</td>");
-		$("#rowM"+contAlum).append("<td id=\"Nalum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.PROFESORD+"</td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:10px;\">"+valor.MATERIAD+"</td>");						
-		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.GRUPO+"</span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.SEMESTRE+"</td>");
-
-		evento="onclick=\"window.open('../pd_captcal/repUni.php?materia="+valor.MATERIA+"&grupo="+valor.GRUPO+
-		"&ciclo="+$("#selCiclos").val()+"&profesor="+valor.PROFESOR+"&id="+valor.IDDETALLE+
-		"&materiad="+valor.MATERIAD+"&semestre="+valor.SEMESTRE+"','_blank');\" ";
-
-		stpor="";
-		porc=Math.round((parseInt(valor.RES)/parseInt(valor.ALUM)*100),1);
-		if (porc==0) stpor="class=\"badge  badge-danger\"";
-		if ((porc>0) && (porc<=50)) stpor="class=\"badge  badge-warning\"";
-		if ((porc>50) && (porc<=99)) stpor="class=\"badge  badge-success\"";
-		if (porc>=100) stpor="class=\"badge  badge-primary\"";
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><a "+evento+"><span title=\"click para ver reporte de unidades por alumnos\" style=\"cursor:pointer\" class=\"badge  badge-info\">"+valor.ALUM+"</span></a></td>");
-		$("#rowM"+contAlum).append("<td><span title=\"Número de alumnos que han respondido la encuensta\" class=\"badge badge-success\"><i class=\"fa fa-male white\"> "+valor.RES+"</i></span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span "+stpor+">"+porc+" %</span></td>");
+		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.SEM+"</span></td>");
+		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+valor.CRED+"</span></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIA+"</td>");	
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIAD+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><SELECT id=\""+valor.MATERIA+"_cal"+"\"></SELECT></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"guardarCal('"+valor.MATERIA+"','"+valor.MATERIAD+"')\" "+
+		                           "class=\"btn btn-white\"><i class=\"fa fa-save red bigger-160\"></i></span></td>");
+		$("#"+valor.MATERIA+"_cal").html($("#base").html());
 		
-
 	    contAlum++;      			
 	});	
 } 
 
+
+
+function guardarCal (materia,materiad){
+	if (confirm("¿Seguro que desea agregar Cal: "+$("#"+materia+"_cal").val()+" a la Asignatura: "+materiad+"?")) {
+		fecha=dameFecha("FECHAHORA");
+		parametros={tabla:"dlista",
+				bd:"Mysql",
+				PDOCVE:$("#selCiclos").val(),
+				ALUCTR:$("#selAlumnos").val(),
+				MATCVE:materia, 
+				GPOCVE:"REV", 
+				LISCAL:$("#"+materia+"_cal").val(),
+				TCACVE:$("#selTipos").val(),
+				LISTC15:"9999",
+				USUARIO: usuario,
+				FECHAINS:fecha,
+				_INSTITUCION: institucion, 
+				_CAMPUS: campus,
+				BAJA: "N",
+				TIPOCAL:$("#selTipos").val()};
+				$('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
+				$.ajax({
+						type: "POST",
+						url:"../base/inserta.php",
+						data: parametros,
+						success: function(data){ 
+								parametros={tabla:"wa_bitacora",
+								bd:"Mysql",
+								CICLO:$("#selCiclos").val(),
+								USUARIO:usuario,
+								MATERIA:materia, 
+								GRUPO:"REV", 
+								PROFESOR:"9999",
+								MATRICULA: $("#selAlumnos").val(),
+								CALIFICACION:$("#"+materia+"_cal").val(),						
+								FECHA_REG: fecha,
+								_INSTITUCION: institucion, 
+								_CAMPUS: campus};	
+							$.ajax({
+									type: "POST",
+									url:"../base/inserta.php",
+									data: parametros,
+									success: function(data){ 	
+									cargarInformacion();        		        	 
+								}
+							});
+							}
+						});			
+		}		
+}
+
+
+function verCalificaciones() {
+	$("#modalDocument").modal("hide");
+
+	script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
+    "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
+	   "      <div class=\"modal-content\">"+
+	   "          <div class=\"modal-header widget-header  widget-color-green\">"+
+	   "             <span class=\"text-success\"><b> <i class=\"menu-icon red fa fa-male\"></i><span class=\"menu-text\"> Alumno:"+$("#selAlumnos option:selected").text()+"</span></b> </span>"+
+	   "             <button type=\"button\" class=\"close\"  data-dismiss=\"modal\"   aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
+	   "                  <span aria-hidden=\"true\">&times;</span>"+
+	   "             </button>"+
+	   "          </div>"+  
+	   "          <div id=\"frmdescarga\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto;\" >"+					  
+	   "             <div class=\"row\"> "+		
+       "                  <table id=\"tabActividad\" class= \"table table-condensed table-bordered table-hover\">"+
+	   "                         <thead>  "+
+	   "                               <tr>"+
+	   "                             	   <th>No</th> "+
+	   "                             	   <th>Id</th> "+
+	   "                             	   <th>Clave</th> "+
+	   "                             	   <th>Materia</th> "+  
+	   "                             	   <th>Cal</th> "+
+	   "                                   <th>Eliminar</th> "+
+	   "                               </tr> "+
+	   "                         </thead>" +
+	   "                   </table>"+	
+	   "             </div> "+ //div del row
+	   "          </div>"+ //div del modal-body		 
+       "        </div>"+ //div del modal content		  
+	   "      </div>"+ //div del modal dialog
+	   "   </div>"+ //div del modal-fade
+	   "</div>";
+
+	 $("#modalDocument").remove();
+     if (! ( $("#modalDocument").length )) {
+          $("#grid_revMaterias").append(script);
+	 }
+	  
+    $('#modalDocument').modal({show:true, backdrop: 'static'});
+
+	sql="select ID AS ID, MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, LISCAL AS CAL "+
+	    " from dlista a, cmaterias b where MATCVE=MATE_CLAVE AND a.ALUCTR='"+$("#selAlumnos").val()+"'"+
+	    " and a.GPOCVE='REV' ORDER BY ID DESC";
+	$.ajax({
+			type: "GET",
+			url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+			success: function(data){  
+				generaMateriasRev(JSON.parse(data));
+				ocultarEspera("esperahor"); 
+			},
+			error: function(data) {	                  
+					alert('ERROR: '+data);
+				}
+			});
+}
+
+function generaMateriasRev(grid_data){	
+	contAlum=1;
+	$("#cuerpoMaterias").empty();
+	$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
+	//$("#btnfiltrar").attr("disabled","disabled");
+	jQuery.each(grid_data, function(clave, valor) { 
+		//alert ($("#rowM"+contAlum).html()+" "+valor.PROFESOR);   			
+		$("#tabActividad").append("<tr id=\"rowM"+contAlum+"\">");
+		$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
+		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.ID+"</span></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIA+"</td>");	
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIAD+"</td>");	
+		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+valor.CAL+"</span></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"eliminarCal('"+valor.ID+"','"+valor.MATERIAD+"')\" "+
+		                           "class=\"btn btn-white\"><i class=\"fa fa-times red bigger-160\"></i></span></td>");		
+	    contAlum++;      			
+	});	
+} 
+
+
+function eliminarCal(id, materiad){
+	if(confirm("Seguro que desea eliminar la Calificación de la Materia: "+materiad)) 
+		 {
+				 var parametros = {
+							tabla : "dlista",
+							bd:"Mysql",
+	    	                campollave : "ID",
+	    	                valorllave : id
+	    	        };
+	    	        $.ajax({
+	    	            data:  parametros,
+	    	            url:   '../base/eliminar.php',
+	    	            type:  'post',          
+	    	            success:  function (response) {  
+							$("#modalDocument").modal("hide");		        
+							cargarInformacion();
+	    	            }
+	    	    });
+		}
+
+    }
