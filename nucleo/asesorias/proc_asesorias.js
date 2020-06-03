@@ -120,7 +120,7 @@ function reporteAsesorias(modulo,usuario,institucion, campus,essuper){
    		            });
 						
 					   elsql3="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
-					   parametros3={sql:elsql2,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+					   parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
 
     	   		  $.ajax({
 						 type: "POST",
@@ -276,11 +276,11 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
             }
         });
 		 
-		elsql="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
+		elsql2="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
+		parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
 	  $.ajax({
 		  type: "POST",
-		  data:parametros,
+		  data:parametros2,
           url:  "../base/dameselectSeg.php",
           success: function(data){
   	       $("#anio").html(data);     	       
