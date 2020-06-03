@@ -485,9 +485,14 @@ function getResultados(){
 
 
 function recursiva (arreglo,elindice,elmax) {
+	parametros={
+		bd:$("#labase").val(),
+		sql:arreglo[elindice]
+	}
 	$.ajax({		
-		type: "GET",
-		url:  "../base/ejecutasqlDin.php?bd="+$("#labase").val()+"&sql="+encodeURI(arreglo[elindice]),
+		type: "POST",
+		url:  "../base/ejecutasqlDin.php",
+		data:parametros,
 		success: function(data){       	     
 			$("#elsqlRes").val($("#elsqlRes").val()+"Lin: "+elindice+":"+data+"\n");
 			if (elindice++<elmax) { recursiva (arreglo,elindice++,elmax); }

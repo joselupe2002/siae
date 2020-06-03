@@ -6,11 +6,11 @@
    if ($_SESSION['inicio']==1) { 
         $miSeg = new Conexion();
         $error="";
-        $conn=$miSeg->tipoConex($_GET["bd"]);
+        $conn=$miSeg->tipoConex($_POST["bd"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         try
         {   
-            $stm = $conn->prepare(str_replace("<*>","&",$_GET["sql"]));
+            $stm = $conn->prepare(str_replace("<*>","&",$_POST["sql"]));
             $stm->execute();			
             $stm= null;
             $conn = null;

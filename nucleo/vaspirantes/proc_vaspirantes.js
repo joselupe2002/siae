@@ -364,12 +364,13 @@ function agregarDialog(modulo){
         title: "Resultados...",
         width: 400,
         height: 400,
-        title_html: true,
+		title_html: true,
         buttons: [
             {
                 text: "OK",
                 "class" : "btn btn-primary btn-minier",
                 click: function() {
+					window.parent.document.getElementById('FRvaspirantes').contentWindow.location.reload();
                     $( this ).dialog( "close" );
                 }
             }
@@ -377,6 +378,8 @@ function agregarDialog(modulo){
     });
 	$('#resul').val("");
 }
+
+
 
 
 
@@ -475,13 +478,20 @@ function setInscrito(id,valor){
 						url:"../base/getConsecutivo.php?tabla=econsoficial&campok=concat(TIPO,ANIO)&campocons=CONSECUTIVO&valork="+"MATRICULA"+elanio,
 						success: function(dataC){
 							micons=dataC;							
-							mimat=elaniomat+"E40"+pad(micons,3,'0');							
+							mimat=elaniomat+"E40"+pad(micons,3,'0');	
+							elsqlpas="call inscribeAspirante('"+id+"','"+mimat+"');";						
 							if (micons>0) {
+								parametros={
+									bd:"mysql",
+									sql:elsqlpas							
+								};
+
 								$.ajax({
 									type: "POST",
-									url:"../base/ejecutasql.php?bd=Mysql&sql="+encodeURI("call inscribeAspirante('"+id+"','"+mimat+"'); "),
-									success: function(dataC){
-										alert ("El aspirante "+id+" Ha quedado inscrito con la atricula "+mimat);
+									url:"../base/ejecutasql.php",
+									data:parametros,
+									success: function(dataC){				
+										alert ("El aspirante "+id+" Ha quedado inscrito con la matricula "+mimat);
 										$('#dlgproceso').modal("hide"); 
 										if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}										
 										window.parent.document.getElementById('FRvaspirantes').contentWindow.location.reload();
@@ -516,10 +526,17 @@ function inscribirAspirante(lafila,modulo,institucion, campus) {
 							micons=dataC;							
 							mimat=elaniomat+"E40"+pad(micons,3,'0');						
 							if (micons>0) {
+								parametros={
+									bd:"mysql",
+									sql:"call inscribeAspirante('"+lafila[0][0]+"','"+mimat+"'); "					
+								};
+
 								$.ajax({
 									type: "POST",
-									url:"../base/ejecutasql.php?bd=Mysql&sql="+encodeURI("call inscribeAspirante('"+lafila[0][0]+"','"+mimat+"'); "),
+									url:"../base/ejecutasql.php",
+									data:parametros,
 									success: function(dataC){
+										
 										if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
 											$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se inscribio el aspirante "+lafila[0][0]+". Matricula: "+mimat+"\n"); 
 											}	
