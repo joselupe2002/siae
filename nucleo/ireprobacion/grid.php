@@ -387,7 +387,7 @@
        var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223","240,7,7","240,7,12"];
 
        
-       /*======================================REPROBACIÓN POR CARRERA ===========================================*/
+       /*======================================REPROBACIï¿½N POR CARRERA ===========================================*/
        $("#chartdiv").empty();
   	   $.ajax({
              type: "GET",
@@ -664,10 +664,12 @@
                    	          colapsar();
                    	          //LLenamos los combos de la carrera 
 
+								 elsql="SELECT DISTINCT(CARRERA), CARRERAD from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera;
+                                parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}       	 
                    	           $.ajax({
-                                 type: "GET",
-                                  url:  "../base/dameselect.php?bd=Mysql&sel=0&sql="+encodeURI("SELECT DISTINCT(CARRERA), CARRERAD "+
-                                                                                  "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera),
+								 type: "POST",
+								 data:parametros,
+                                  url:  "../base/dameselectSeg.php",
                                       success: function(data){   
                                       	   $("#lacarrera").html(data);
                                       	   $("#elsemestre").html(data);
@@ -693,10 +695,12 @@
 	   }
 
    function cargaCortes(){
+	elsql="SELECT DISTINCT(CORTE), CORTE from reprobacion where CICLO="+$("#ciclo").val()+" and "+cadCarrera;
+    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}  
 	   $.ajax({
-           type: "GET",
-            url:  "../base/dameselect.php?bd=Mysql&sel=0&sql="+encodeURI("SELECT DISTINCT(CORTE), CORTE "+
-                                                            "  from reprobacion where CICLO="+$("#ciclo").val()+" and "+cadCarrera),
+		   type: "POST",
+		   data:parametros,
+            url:  "../base/dameselectSeg.php",
                 success: function(data){   
                 	   $("#corte").html(data);                 
                       }
@@ -712,11 +716,12 @@
 		$('.modal.aside').modal('show');
 
 		cadCarrera=" CARRERA IN ('<?php echo str_replace(",","','",$_SESSION['carrera'])?>')";
-		
+		elsql="SELECT DISTINCT(CICLO), CICLO from reprobacion where "+cadCarrera;
+        parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
 		$.ajax({
-            type: "GET",
-             url:  "../base/dameselect.php?bd=Mysql&sel=0&sql="+encodeURI("SELECT DISTINCT(CICLO), CICLO "+
-                                                             "  from reprobacion where "+cadCarrera),
+			type: "POST",
+			data:parametros,
+             url:  "../base/dameselectSeg.php",
                  success: function(data){   
                  	   $("#ciclo").html(data); 
                  	  
@@ -758,7 +763,7 @@
 }
 
 
-   /*======================================REPROBACIÓN POR MATERIA ===========================================*/
+   /*======================================REPROBACIï¿½N POR MATERIA ===========================================*/
    function generaGrafica() {
 	   
 	   if ($("#checkrepmat").is(':checked')){ tipo='ROUND(AVG(PORC_REPR),2)'; } else {tipo='ROUND(AVG(PORC_APR),2)'; }

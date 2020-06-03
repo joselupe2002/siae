@@ -323,11 +323,13 @@ var matser="";
 			});
 		
 
-			
+			elsql="SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE, ' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
+  		  		   " FROM falumnos where ALUM_CARRERAREG=0 order by ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}	
     	$.ajax({
-  		   type: "GET",
-  		   url:  "../base/dameselect.php?bd=Mysql&sel=0&nulcol=0&sql="+encodeURI("SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE, ' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
-  		  		   " FROM falumnos where ALUM_CARRERAREG=0 order by ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT"),
+			 type: "POST",
+			 data:parametros,
+  		   url:  "../base/dameselectSeg.php",
   		   success: function(data){  
   			   $("#alumnos").empty();
   		       $("#alumnos").html(data);

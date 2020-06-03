@@ -1291,9 +1291,11 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 		 
 		 else {
 				 param=buscarBD(bd,sql);
+				 parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],sel:dato}
 				 $.ajax({
-		             type: "GET",
-		             url: "dameselect.php?sql="+encodeURI(param[1])+"&sel="+dato+"&bd="+param[0], 
+					 type: "POST",
+					 data:parametros,
+		             url: "dameselectSeg.php", 
 		             success: function(data){    		            	  
 		                  $("#"+nombre).html(data);   
 		          },
@@ -1328,9 +1330,11 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 		 }
 		 
 		 else {
+			parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],sel:dato}
 			 $.ajax({
-	             type: "GET",
-	             url: "dameselect.php?sql="+encodeURI(param[1])+"&sel="+dato+"&bd="+param[0], 
+				 type: "POST",
+				 data:parametros,
+	             url: "dameselectSeg.php", 
 	             success: function(data){                    
 	                  $("#"+nombre).html(data); 
 	                  $('#'+nombre).trigger("chosen:updated");
@@ -1370,9 +1374,11 @@ if (tipo=="SELECT_MULTIPLE") {
 		 }
 		 
 		 else {
+			parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],sel:dato}
 			 $.ajax({
-	             type: "GET",
-	             url: "dameselect.php?sql="+encodeURI(param[1])+"&sel="+dato+"&bd="+param[0], 
+				 type: "POST",
+				 data:parametros,
+	             url: "dameselectSeg.php", 
 	             success: function(data){                    
 	                  $("#"+nombre).html(data); 
 	                  $('#'+nombre).trigger("chosen:updated");
@@ -1418,10 +1424,12 @@ if (tipo=="SELECT_MULTIPLE") {
          		elsql=damesqldep(sql,elusuario);                 
          		agregarEspera("imggif_"+nombre,ico);
  			   
-         		param2=buscarBD(bd,elsql);
+				 param2=buscarBD(bd,elsql);
+				 parametros={sql:param2[1],dato:sessionStorage.co,bd:param2[0],sel:0}
  				 $.ajax({
-                      type: "GET",
-                      url: 'dameselect.php?sql='+encodeURI(param2[1])+"&sel=0&bd="+param2[0], 
+					  type: "POST",					   
+					  data:parametros,
+                      url: 'dameselectSeg.php', 
                       success: function(data){     
                            $("#"+nombre).html(data);                                 
                            quitarEspera("imggif_"+nombre,ico);
@@ -1471,10 +1479,12 @@ if (tipo=="SELECT_MULTIPLE") {
          		agregarEspera("imggif_"+nombre,ico);
  			   
          		param2=buscarBD(bd,elsql);
-      
+	  
+				 parametros={sql:param2[1],dato:sessionStorage.co,bd:param2[0],sel:"0"}
  				 $.ajax({
-                      type: "GET",
-                      url: 'dameselect.php?sql='+encodeURI(param2[1])+"&sel=0&bd="+param2[0], 
+					  type: "POST",
+					  data:parametros,
+                      url: 'dameselectSeg.php', 
                       success: function(data){     						  
 						   $("#"+nombre).html(data);   
 						   $('#'+nombre).trigger("chosen:updated");                              
@@ -1484,8 +1494,6 @@ if (tipo=="SELECT_MULTIPLE") {
 						   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width':"100%"});})});
 						   $("#"+nombre).val(dato); 
 						   $('#'+nombre).trigger("chosen:updated");  						   
-						   
-                   		   
                    },
                    error: function(data) {
                       alert('ERROR: '+data);

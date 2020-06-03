@@ -128,11 +128,15 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 	                 " FROM edescarga, etipodescarga WHERE DESC_ACTIVIDAD=DESC_CLAVE AND DESC_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
 	                 " and DESC_CICLO='"+table.rows('.selected').data()[0][2]+"'",
         	success: function(data){ 
-					           
+							   
+				               elsql="SELECT DESC_CLAVE, DESC_DESCRIP FROM etipodescarga ORDER BY DESC_DESCRIP";
+			                   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+			
         		               $.ajax({
-					       	           type: "GET",
-					       	           url:  "../base/dameselect.php?sql="+encodeURI("SELECT DESC_CLAVE, DESC_DESCRIP FROM etipodescarga ORDER BY DESC_DESCRIP")+"&sel=0&bd=Mysql",
-					       	           success: function(dataAct){					       	        	  
+					       	           type: "POST",
+					       	           url:  "../base/dameselectSeg.php",									
+                                       data:parametros,	  
+									   success: function(dataAct){					       	        	  
 					       	        	   $("#add").html(dataAct); 
 					       	               $("#add").trigger("chosen:updated");
 					       	               $('.chosen-select').chosen({allow_single_deselect:true}); 			

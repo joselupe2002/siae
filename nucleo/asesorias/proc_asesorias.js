@@ -93,28 +93,39 @@ function reporteAsesorias(modulo,usuario,institucion, campus,essuper){
     	   		    if (! ( $("#modalDocument").length )) {
     	   		        $("#grid_"+modulo).append(script);
     	   		    }
-    	   		    
-    	   		    
+					   
+					elsql="SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOASESORIAS'";
+					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+									   
     	   		     $.ajax({
-    		           type: "GET",
-    		           url:  "../base/dameselect.php?sql="+encodeURI("SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOASESORIAS'  ")+"&sel=0&bd=Mysql",
+					   type: "POST",
+					   data:parametros,
+    		           url:  "../base/dameselectSeg.php",
     		           success: function(data){
     		        	   $("#tipoas").html(data);   
     		        	   $("#tipoas").append("<option value=\"%\">Todos</option>") 
     		           }
     		         });
-    	   		     
+						
+					 elsql2="SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias";
+					parametros2={sql:elsql2,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+
     	   		     $.ajax({
-   		                type: "GET",
-   		                url:  "../base/dameselect.php?sql="+encodeURI("SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias")+"&sel=0&bd=Mysql",
-   		                success: function(data){
-   		        	       $("#ciclo").html(data);   
-   		                }
+						   type: "POST",
+						   data:parametros2,
+   		                	url:  "../base/dameselectSeg.php",
+   		                	success: function(data){
+   		        	       		$("#ciclo").html(data);   
+   		                	}
    		            });
-    	   		     
+						
+					   elsql3="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
+					   parametros3={sql:elsql2,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+
     	   		  $.ajax({
- 		                type: "GET",
- 		                url:  "../base/dameselect.php?sql="+encodeURI("SELECT DISTINCT(ANIO), ANIO FROM vasesorias")+"&sel=0&bd=Mysql",
+						 type: "POST",
+						 data:parametros3,
+ 		                url:  "../base/dameselectSeg.php",
  		                success: function(data){
  		        	       $("#anio").html(data);   
  		                }
@@ -225,41 +236,54 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
 		  $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
 		  $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});
 		  
-	    
+		
+		  elsql="SELECT EMPL_NUMERO, CONCAT(EMPL_NUMERO,' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) FROM pempleados ORDER BY EMPL_NOMBRE, EMPL_APEPAT";
+		  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}  
 	    $.ajax({
-	        type: "GET",
-	        url:  "../base/dameselect.php?sql="+encodeURI("SELECT EMPL_NUMERO, CONCAT(EMPL_NUMERO,' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) FROM pempleados ORDER BY EMPL_NOMBRE, EMPL_APEPAT")+"&sel=0&bd=Mysql",
+			type: "POST",			
+			data:parametros,
+	        url:  "../base/dameselectSeg.php",
 	        success: function(data){
 	     	   $("#profesor").html(data);   
 	     	  $('#profesor').trigger("chosen:updated");
 	     	   
 	        }
 	      });
+		
+		  
+		  elsql="SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOASESORIAS' ";
+		  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
 	    
-	    
-	     $.ajax({
-        type: "GET",
-        url:  "../base/dameselect.php?sql="+encodeURI("SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOASESORIAS'  ")+"&sel=0&bd=Mysql",
+	    $.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/dameselectSeg.php",
         success: function(data){
      	   $("#tipoas").html(data);   
      	   $("#tipoas").append("<option value=\"%\">Todos</option>") 
         }
       });
-	     
+		 
+	  elsql="SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias";
+	  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
+
 	     $.ajax({
-            type: "GET",
-            url:  "../base/dameselect.php?sql="+encodeURI("SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias")+"&sel=0&bd=Mysql",
+			type: "POST",
+			data:parametros,
+            url:  "../base/dameselectSeg.php",
             success: function(data){
     	       $("#ciclo").html(data);   
             }
         });
-	     
+		 
+		elsql="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
 	  $.ajax({
-          type: "GET",
-          url:  "../base/dameselect.php?sql="+encodeURI("SELECT DISTINCT(ANIO), ANIO FROM vasesorias")+"&sel=0&bd=Mysql",
+		  type: "POST",
+		  data:parametros,
+          url:  "../base/dameselectSeg.php",
           success: function(data){
-  	       $("#anio").html(data);   
-  	       
+  	       $("#anio").html(data);     	       
           }
       });
  

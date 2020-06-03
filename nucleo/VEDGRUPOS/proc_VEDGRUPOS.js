@@ -38,12 +38,14 @@ function grupoBase(modulo,usuario,institucion, campus,essuper){
 	    $('#modalDocument').modal({show:true, backdrop: 'static'});
        	 
 
-	    
+	    elsql="select a.`IDDETALLE`, CONCAT(a.MATERIA,' ',a.`MATERIAD`,' (', a.`PROFESORD`,') ',a.`CARRERA`)  from `vedgrupos` a where a.`CICLO`='" +table.rows('.selected').data()[0]["CICLO"]+"'";
+        parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+ 
 	    $.ajax({
-	        	 type: "GET",
-	        	 url:  "../base/dameselect.php?bd=Mysql&sql="+encodeURI("select a.`IDDETALLE`, CONCAT(a.MATERIA,' ',a.`MATERIAD`,' (', a.`PROFESORD`,') ',a.`CARRERA`)  from `vedgrupos` a where a.`CICLO`='" +table.rows('.selected').data()[0]["CICLO"]+"'"),
-	        	 success: function(data){ 	
-	        		
+				 type: "POST",				 
+                 data:parametros,
+	        	 url:  "../base/dameselectSeg.php",
+	        	 success: function(data){ 		        		
 	        		  $("#gbase").html(data); 
 	                  $('#gbase').trigger("chosen:updated");
 	                  $('.chosen-select').chosen({allow_single_deselect:true}); 			

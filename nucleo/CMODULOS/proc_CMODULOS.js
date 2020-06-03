@@ -135,12 +135,17 @@ function ejecutaSQL(elsql){
 }
 
 function dameSQL (elsql,modulo) {
+            
+	        elsqlVal="SELECT * from cmodulos where modu_modulo='"+modulo+"'";
+	        parametros={sql:elsqlVal,dato:sessionStorage.co,bd:$("#labase").val()}
 			$.ajax({
-				type: "GET",
-				url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from cmodulos where modu_modulo='"+modulo+"'")+"&bd="+$("#labase").val(),
-				success: function(data){					
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php?",
+				success: function(data){								
 					losdatos=JSON.parse(data); 
 					jQuery.each(losdatos, function(clave, valor) { 
+						
 						cad="INSERT INTO CMODULOS (modu_modulo,modu_pred,modu_descrip,"+
 							                             "modu_aplicacion,modu_version,modu_ejecuta,modu_tabla,"+
 							                             "modu_icono, modu_imaico,modu_cancel,modu_teclarap,"+
@@ -151,14 +156,20 @@ function dameSQL (elsql,modulo) {
 														  "'"+valor.modu_icono+"',"+"'"+valor.modu_imaico+"',"+"'"+valor.modu_cancel+"',"+"'"+valor.modu_teclarap+"',"+
 														  "'"+valor.modu_auxiliar+"',"+"'"+valor.modu_automatico+"',"+"'"+valor.modu_pagina+"',"+"'"+valor.modu_tablagraba+"',"+
 														  "'"+valor.modu_bd+"',"+"'"+valor._INSTITUCION+"',"+"'"+valor._CAMPUS+"')";
+														  
 					   $("#"+elsql).append(cad+"<;>\n");
+					  
 					   latabla=valor.modu_tabla;
 				   });   	
 				   
+					elsqlVal="SELECT * from all_col_comment where table_name='"+latabla+"'";
+					parametros={sql:elsqlVal,dato:sessionStorage.co,bd:$("#labase").val()}
+
 			        $.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from all_col_comment where table_name='"+latabla+"'")+"&bd="+$("#labase").val(),
-							success: function(data){
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data){								
 								losdatos=JSON.parse(data);  							      	      
 								jQuery.each(losdatos, function(clave, valor) { 
 									cadSQL=valor.sql;
@@ -183,9 +194,13 @@ function dameSQL (elsql,modulo) {
 			                }
 					});
 					
+					elsqlVal="SELECT * from sprocesos where proc_modulo='"+modulo+"'";
+					parametros={sql:elsqlVal,dato:sessionStorage.co,bd:$("#labase").val()}
+
 					$.ajax({
-						type: "GET",
-						url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from sprocesos where proc_modulo='"+modulo+"'")+"&bd="+$("#labase").val(),
+						type: "POST",
+						data:parametros,
+						url:  "../base/getdatossqlSeg.php",
 						success: function(data){
 							losdatos=JSON.parse(data);  							
 							jQuery.each(losdatos, function(clave, valor) { 
@@ -205,9 +220,13 @@ function addComentarios(modulo,usuario,essuper){
 	if (table.rows('.selected').data().length>0) {
 		
 		global=1;
+		
+		elsql="SELECT DISTINCT(tipo), tipo FROM all_col_comment where  tipo is not null and tipo<>'' order by 1";
+        parametros={sql:elsql,dato:sessionStorage.co,bd:'SQLite',sel:'0'}
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/dameselect.php?sql="+encodeURI("SELECT DISTINCT(tipo), tipo FROM all_col_comment where  tipo is not null and tipo<>'' order by 1")+"&sel=0&bd=SQLite",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/dameselectSeg.php",
 	           success: function(data){
 	        	  lostipos=data; 
 	        	  
@@ -275,21 +294,27 @@ function addComentarios(modulo,usuario,essuper){
 	     
 	    }
 	    
-	    $('#modalDocument').modal({show:true, backdrop: 'static'});
+		$('#modalDocument').modal({show:true, backdrop: 'static'});
+		lacadsql="SELECT count(*) as NUM FROM ALL_COL_COMMENT WHERE table_name='"+table.rows('.selected').data()[0][6]+"'";
+		parametros={sql:lacadsql,dato:sessionStorage.co,bd:"SQLite"}
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT count(*) as NUM FROM ALL_COL_COMMENT WHERE table_name='"+table.rows('.selected').data()[0][6]+"'",
+			   type: "POST",			   
+               data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 	        	      losdatos=JSON.parse(data);  
 	        	        
 	        	      jQuery.each(losdatos, function(clave, valor) { hay=valor.NUM; });
 	        
-	        	    	  if (hay>0) {	        	    			        	    	
+	        	    	  if (hay>0) {	 
+							  lacadsql2="SELECT num, colum_name, comments,comentario, "+
+							  " numero,keys,tipo, visgrid,visfrm,validacion, msjval, sql, seccion, gif, autoinc "+
+							  " FROM ALL_COL_COMMENT WHERE table_name='"+table.rows('.selected').data()[0][6]+"' order by numero";
+							  parametros={sql:lacadsql2,dato:sessionStorage.co,bd:"SQLite"}       	    			        	    	
 	        	    		  $.ajax({
-	        	   	           type: "GET",
-	        	   	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT num, colum_name, comments,comentario, "+
-	        	   	                 " numero,keys,tipo, visgrid,visfrm,validacion, msjval, sql, seccion, gif, autoinc "+
-	        	   	                 " FROM ALL_COL_COMMENT WHERE table_name='"+table.rows('.selected').data()[0][6]+"' order by numero",
+							    type: "POST",								  
+							   data:parametros,
+	        	   	           url:  "../base/getdatossqlSeg.php",
 	        	   	           success: function(data){ 
 	        	   	        	
 	        	   	        	     generaTabla(JSON.parse(data));
@@ -307,10 +332,13 @@ function addComentarios(modulo,usuario,essuper){
 	                  }
 	   });
 	    
-	   
+	    elsql="SELECT COLUMN_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sigea' AND TABLE_NAME = '"+table.rows('.selected').data()[0][6]+"'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:'Mysql',sel:'0'}
+		
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/dameselect.php?sql="+encodeURI("SELECT COLUMN_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sigea' AND TABLE_NAME = '"+table.rows('.selected').data()[0][6]+"'")+"&sel=0&bd=Mysql",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/dameselectSeg.php",
 	           success: function(data){
 	        	   $("#campos").html(data);   
 	           }
@@ -462,10 +490,13 @@ function mostrarsql(tipo){
 	   "</div>";
 	
 	   
-	    elsql="SELECT id, mensaje||'/'||validacion FROM SVALIDACIONES WHERE tipo='"+tipo+"'";
+		elsql="SELECT id, mensaje||'/'||validacion FROM SVALIDACIONES WHERE tipo='"+tipo+"'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite",sel:'0'}
+
 	    $.ajax({
-	           type: "GET",
-	           url:  "dameselect.php?sql="+encodeURI(elsql)+"&sel=0&bd=SQLite", 
+			   type: "POST",
+			   data:parametros,
+	           url:  "dameselectSeg.php", 
 	           success: function(data){ 	
 
 	        	   $("#selsql").html(data);
@@ -485,10 +516,12 @@ function mostrarsql(tipo){
 
 
 function ejecutarsqlprobar(sqlprobar){
+	parametros={sql:sqlprobar,dato:sessionStorage.co,bd:"Mysql"}
 	cadres="";
 	$.ajax({
-        type: "GET",
-        url:  "getdatossql.php?sql="+encodeURI(sqlprobar)+"&bd=Mysql", 
+		type: "POST",		
+        data:parametros, 
+        url:  "getdatossqlSeg.php", 
         success: function(data){ 
      	       if (data.substring(0,1)=='[') { alert ("EL SQL SE EJECUTO CON ÉXITO:  \n"+data);}
      	       else {alert ("EL SQL ES INCORRECTO:  \n"+data)}
@@ -555,10 +588,13 @@ function mostrarValidaciones(){
 	   "</div>";
 	
 	   
-	    elsql="SELECT validacion||'|'||mensaje, validacion||'|'||mensaje FROM SVALIDACIONES  WHERE tipo='VAL'";
+		elsql="SELECT validacion||'|'||mensaje, validacion||'|'||mensaje FROM SVALIDACIONES  WHERE tipo='VAL'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite",sel:'0'}
+
 	    $.ajax({
-	           type: "GET",
-	           url:  "dameselect.php?sql="+encodeURI(elsql)+"&sel=0&bd=SQLite", 
+	           type: "POST",
+			   url:  "dameselectSeg.php", 
+			   data:parametros,
 	           success: function(data){ 	
 	        	   $("#selval").html(data);
 	                 },
@@ -763,20 +799,28 @@ function addProcesos(modulo,usuario,essuper){
 	     
 	    }
 	    
-	    $('#modalDocumentProc').modal({show:true, backdrop: 'static'});
+		$('#modalDocumentProc').modal({show:true, backdrop: 'static'});
+		
+		elsqlPr="SELECT count(*) as NUM FROM SPROCESOS WHERE proc_modulo='"+table.rows('.selected').data()[0][0]+"'";
+		parametros={sql:elsqlPr,dato:sessionStorage.co,bd:"SQLite"}
+
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT count(*) as NUM FROM SPROCESOS WHERE proc_modulo='"+table.rows('.selected').data()[0][0]+"'",
+	           type: "POST",
+			   url:  "../base/getdatossqlSeg.php",			   
+               data:parametros,
 	           success: function(data){  
 	        	      losdatos=JSON.parse(data);  
 	        	        
 	        	      jQuery.each(losdatos, function(clave, valor) { hay=valor.NUM; });
 	        
-	        	    	  if (hay>0) {	        	    			        	    	
+	        	    	  if (hay>0) {	
+							  elsqlPr2="SELECT proc_id,proc_proceso,proc_descrip"+
+							  " FROM SPROCESOS WHERE proc_modulo='"+table.rows('.selected').data()[0][0]+"' order by proc_proceso";
+							  parametros={sql:elsqlPr2,dato:sessionStorage.co,bd:"SQLite"}
 	        	    		  $.ajax({
-	        	   	           type: "GET",
-	        	   	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT proc_id,proc_proceso,proc_descrip"+
-	        	   	                 " FROM SPROCESOS WHERE proc_modulo='"+table.rows('.selected').data()[0][0]+"' order by proc_proceso",
+								  type: "POST",
+								  data:parametros,
+	        	   	           url:  "../base/getdatossqlSeg.php",
 	        	   	           success: function(data){ 	        	   	        	
 	        	   	        	     generaTablaProc(JSON.parse(data));
 	        	   	                 },

@@ -108,20 +108,21 @@
        jQuery(function($) {
     	   
 
-		var sql="SELECT DISTINCT(S.INDI_CATEGORIA) AS ID ,INDI_CATEGORIA from eindicadores s where indi_tipo='ESCOLAR' ORDER BY INDI_CATEGORIA";
-		$("#categoria").load("../base/dameselect.php?sql="+encodeURI(sql)+"&sel=0&bd=Mysql");
-
-
-		
+p
+		var elsql="SELECT DISTINCT(S.INDI_CATEGORIA) AS ID ,INDI_CATEGORIA from eindicadores s where indi_tipo='ESCOLAR' ORDER BY INDI_CATEGORIA";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+		$("#categoria").load("../base/dameselectSeg.php");
 
        });
 
        
        function cargaIndicadores(){
-           var sql="select INDI_TABLA,INDI_NOMBRE from eindicadores s where  indi_categoria='"+$("#categoria").val()+"' ORDER BY INDI_CLAVE";
+		   var elsql="select INDI_TABLA,INDI_NOMBRE from eindicadores s where  indi_categoria='"+$("#categoria").val()+"' ORDER BY INDI_CLAVE";
+		   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
            $.ajax({
-               type: "GET",
-               url: "../base/dameselect.php?sql="+encodeURI(sql)+"&sel=0&bd=Mysql",
+			   type: "POST",
+			   data:parametros,
+               url: "../base/dameselectSeg.php?",
                success: function(data){                 
                     $("#indicador").html(data);   
             },
@@ -202,13 +203,13 @@
                      				"zeroRecords":			"No se han encontrado coincidencias.",
                      				"paginate": {
                      					"first":			"Primera",
-                     					"last":				"Última",
+                     					"last":				"ï¿½ltima",
                      					"next":				"Siguiente",
                      					"previous":			"Anterior"
                      				},
                      				"aria": {
-                     					"sortAscending":	"Ordenación ascendente",
-                     					"sortDescending":	"Ordenación descendente"
+                     					"sortAscending":	"Ordenaciï¿½n ascendente",
+                     					"sortDescending":	"Ordenaciï¿½n descendente"
                      				}
                      			},
 

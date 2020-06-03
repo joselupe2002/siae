@@ -638,10 +638,10 @@ class UtilUser {
 				echo "\n$('#".$lista[$i]."').change(function(){    
                         
                           val_".$row["colum_name"]."=$('#".$row["colum_name"]."').val();
-                          alert (\"entre ".$lista[$i]."\"+ val_".$row["colum_name"].");
+						  parametros={sql:".$elsql.$cadFin.",dato:'1',bd:'Mysql',sel:''}
                           $.ajax({
-                              type: \"GET\",
-                              url: 'dameselect.php?sql='+encodeURI(\"".$elsql.$cadFin."), 
+                              type: \"POST\",
+                              url: 'dameselectSeg.php', 
                               success: function(data){    
                                             
                                    $('#".$row["colum_name"]."').html(data);  

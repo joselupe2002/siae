@@ -310,10 +310,13 @@
 			                    	    elsql=damesqldep(elsql,'<?php echo $_SESSION["usuario"];?>');
 			                            agregarEspera("imggif_"+valor.colum_name,valor.gif);
 
-			                            param=buscarBD('<?php echo $_GET["bd"];?>',elsql);
+										param=buscarBD('<?php echo $_GET["bd"];?>',elsql);
+										parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],sel:'0'}
+
 			            				 $.ajax({
-			                                 type: "GET",
-			                                 url: 'dameselect.php?sql='+encodeURI(param[1])+"&sel=0&bd="+param[0], 
+			                                 type: "POST",
+											 url: 'dameselectSeg.php', 
+											 data:parametros,
 			                                 success: function(data){ 
 												     
 			                                      $("#"+valor.colum_name).html(data);  

@@ -4,14 +4,17 @@ function changeASES_MATRICULA(elemento, usuario, institucion, campus){
 
 	$("#ASES_HORA").mask("99:99");
 
+	elsql="SELECT CICL_MATERIA, CICL_MATERIAD FROM veciclmate a where a.CICL_MAPA IN ("+
+	"SELECT ALUM_MAPA from falumnos n where n.ALUM_MATRICULA='"+$("#ASES_MATRICULA").val()+"')"+
+	" ORDER BY CICL_MATERIAD";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
 	$.ajax({
-        type: "GET",
-        url:  "../base/dameselect.php?bd=Mysql&sql=SELECT CICL_MATERIA, CICL_MATERIAD FROM veciclmate a where a.CICL_MAPA IN ("+
-        		"SELECT ALUM_MAPA from falumnos n where n.ALUM_MATRICULA='"+$("#ASES_MATRICULA").val()+"')"+
-                " ORDER BY CICL_MATERIAD&sel=0",
-        success: function(data){  
-     	      //losdatos=JSON.parse(data);  
-       
+		type: "POST",
+		data:parametros,
+        url:  "../base/dameselectSeg.php",
+        success: function(data){ 
+     	      //losdatos=JSON.parse(data);         
      	      $("#ASES_ASIGNATURA").html(data);
      	      $('#ASES_ASIGNATURA').trigger("chosen:updated");
               $('.chosen-select').chosen({allow_single_deselect:true}); 			

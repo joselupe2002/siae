@@ -248,6 +248,7 @@
 
 
 					 function cambioSelect(nombre){
+						
 			             jQuery.each(campos, function(clave, valor){	                     
 
 			            	    var elsql="";
@@ -258,11 +259,14 @@
 			                    	    elsql=damesqldep(elsql,'<?php echo $_SESSION["usuario"];?>');
 			                            agregarEspera("imggif_"+valor.CLAVE,valor.gif);
 
-			                            param=buscarBD('<?php echo $_SESSION["bd"];?>',elsql);
+										param=buscarBD('<?php echo $_SESSION["bd"];?>',elsql);
+										
+										parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],sel:'0'}
 			            				 $.ajax({
-			                                 type: "GET",
-			                                 url: 'dameselect.php?sql='+encodeURI(param[1])+"&sel=0&bd="+param[0], 
-			                                 success: function(data){     
+			                                 type: "POST",
+											 url: 'dameselectSeg.php', 
+											 data:parametros,
+			                                 success: function(data){     												
 			                                      $("#"+valor.CLAVE).html(data);  
 			                                      $("#"+valor.CLAVE).trigger("chosen:updated");                             
 			                                      $('#'+nombre).trigger("chosen:updated");

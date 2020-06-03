@@ -21,6 +21,7 @@ if (count($res)>0) {
 		$_SESSION['encode'] = "ISO-8859-1";
 		$_SESSION['carrera'] = $res[0]["usua_carrera"];
 		$_SESSION['depto'] = $res[0]["usua_depto"];
+		$_SESSION['idsesion'] = rand(5000, 10000);
 		$_SESSION['titApli'] = "Sistema Gesti&oacute;n Escolar - Administrativa";
 		$_SESSION['bd'] = "Mysql";
 		echo "1";	

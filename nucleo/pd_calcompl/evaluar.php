@@ -228,12 +228,14 @@
 		function agregaCriterios(){
 			lasCal="";
 			var numCal=1;
+			elsql="SELECT VALOR,CONCAT(VALOR,' ',DESCRIP) AS DESCRIP from eponderacion where TIPO='ACTCOMPL' ORDER BY VALOR";
+            parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+
 			 $.ajax({
-		           type: "GET",
-		           url:  "../base/dameselect.php?sel=0&bd=Mysql&sql="+encodeURI("SELECT VALOR,CONCAT(VALOR,' ',DESCRIP) AS DESCRIP from eponderacion where TIPO='ACTCOMPL' ORDER BY VALOR"),
-		           success: function(data){
-			      
-  	                       
+				   type: "POST",				   
+                   data:parametros,
+		           url:  "../base/dameselectSeg.php",
+		           success: function(data){			      	                       
 		        	       $("#muestra").html(data);  	     
 		                 },
 		           error: function(data) {	                  

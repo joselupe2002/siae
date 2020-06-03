@@ -84,12 +84,14 @@ function copiarCom(modulo,usuario,institucion, campus,essuper){
 		 		 
 			    
 			    
-			    elsql="SELECT EMPL_NUMERO, CONCAT(EMPL_NUMERO,' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE  FROM pempleados WHERE EMPL_ACTIVO='S' and EMPL_NUMERO<>0 order by EMPL_NOMBRE, EMPL_APEPAT, EMPL_APEMAT"
+				elsql="SELECT EMPL_NUMERO, CONCAT(EMPL_NUMERO,' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE  FROM pempleados WHERE EMPL_ACTIVO='S' and EMPL_NUMERO<>0 order by EMPL_NOMBRE, EMPL_APEPAT, EMPL_APEMAT"
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
 			    $.ajax({
-		            type: "GET",
-		            url: "dameselect.php?sql="+encodeURI(elsql)+"&sel=0&bd=Mysql", 
+					type: "POST",
+					data:parametros,
+		            url: "dameselectSeg.php", 
 		            success: function(data){    
-		            	 $("#modalDocument").remove();
+						 $("#modalDocument").remove();						 
 		        	     if (! ( $("#modalDocument").length )) {$("#grid_"+modulo).append(script);}
 		        	    
 		        	      $('#modalDocument').modal({show:true, backdrop: 'static'});

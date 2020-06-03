@@ -18,10 +18,14 @@ function changeCVEESP(DATO, usuario, institucion, campus){
 function changeCICL_MAPA(DATO, usuario, institucion, campus){
 	elsql="SELECT MATE_CLAVE, CONCAT(MATE_DESCRIP,' ',MATE_CLAVE) FROM cmaterias WHERE MATE_CLAVE NOT IN "+
 	         "(SELECT CICL_MATERIA FROM eciclmate WHERE CICL_MAPA='"+$("#CICL_MAPA").val()+"') ORDER BY MATE_DESCRIP";
-	agregarEspera("imggif_CICL_MATERIA",null);
+   agregarEspera("imggif_CICL_MATERIA",null);
+   
+   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+
 	$.ajax({
-        type: "GET",
-        url: 'dameselect.php?sql='+encodeURI(elsql)+"&sel=0&bd=Mysql", 
+        type: "POST",
+        data:parametros,
+        url: 'dameselectSeg.php', 
         success: function(data){ 
         	  $("#CICL_MATERIA").empty();
               $("#CICL_MATERIA").html(data);                               
@@ -29,10 +33,12 @@ function changeCICL_MAPA(DATO, usuario, institucion, campus){
         	          	 
            quitarEspera("imggif_CICL_MATERIA",null);
 
-           elsql="SELECT o.MAPA_CARRERA, o.CVESIE FROM mapas o where MAPA_CLAVE='"+$("#CICL_MAPA").val()+"'";            
+           elsql="SELECT o.MAPA_CARRERA, o.CVESIE FROM mapas o where MAPA_CLAVE='"+$("#CICL_MAPA").val()+"'";  
+           parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}          
            $.ajax({
-            type: "GET",
-            url: 'getdatossql.php?sql='+encodeURI(elsql)+"&bd=Mysql", 
+            type: "POST",
+            data:parametros,
+            url: 'getdatossqlSeg.php', 
             success: function(data){ 
                jQuery.each(JSON.parse(data), function(clave, valor) { 	
                  $("#CARRERASIE").val(valor.MAPA_CARRERA);
@@ -45,9 +51,11 @@ function changeCICL_MAPA(DATO, usuario, institucion, campus){
                agregarEspera("imggif_CVEESP",null);
                elsql="SELECT ID, CONCAT(CLAVE,' ',DESCRIP) FROM especialidad u where u.MAPA='"+$("#CICL_MAPA").val()+"'";   
             
+               parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
                $.ajax({
-                type: "GET",
-                url: 'dameselect.php?sql='+encodeURI(elsql)+"&sel=0&bd=Mysql", 
+                type: "POST",
+                data:parametros,
+                url: 'dameselectSeg.php', 
                 success: function(data){ 
                    $("#CVEESP").empty();
                    $("#CVEESP").html(data);                               

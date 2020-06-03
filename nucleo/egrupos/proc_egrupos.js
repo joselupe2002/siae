@@ -119,21 +119,27 @@ function horarios(modulo,usuario,institucion, campus,essuper){
 	                  }
 	   });
 	    
-	    
+	
+	   elsql="SELECT CICL_MATERIA, CONCAT(CICL_CUATRIMESTRE,'|',MATE_DESCRIP,'|',CICL_HT,'|',CICL_HP,'|',CICL_MATERIA) FROM  eciclmate, cmaterias WHERE "+
+	   "CICL_MAPA='"+table.rows('.selected').data()[0][5]+"' and CICL_MATERIA=MATE_CLAVE ORDER BY CICL_CUATRIMESTRE, MATE_DESCRIP";
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
+
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/dameselect.php?sql="+encodeURI("SELECT CICL_MATERIA, CONCAT(CICL_CUATRIMESTRE,'|',MATE_DESCRIP,'|',CICL_HT,'|',CICL_HP,'|',CICL_MATERIA) FROM  eciclmate, cmaterias WHERE "+
-	        		                                         "CICL_MAPA='"+table.rows('.selected').data()[0][5]+"' and CICL_MATERIA=MATE_CLAVE ORDER BY CICL_CUATRIMESTRE, MATE_DESCRIP")+"&sel=0&bd=Mysql",
+			   type: "POST",			   
+               data:parametros,
+	           url:  "../base/dameselectSeg.php",
 	           success: function(data){
 	        	   $("#add").html(data);   
 	        	
 	           }
 	    });
-	    
-	    
+		
+		elsql="select AULA_CLAVE, AULA_DESCRIP from eaula order by AULA_DESCRIP";
+        parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}	    
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/dameselect.php?msj=&sql="+encodeURI("select AULA_CLAVE, AULA_DESCRIP from eaula order by AULA_DESCRIP")+"&sel=0&bd=Mysql",
+			   type: "POST",			   
+               data:parametros,
+	           url:  "../base/dameselectSeg.php",
 	           success: function(data){
 	        	   $("#aulas").html(data);   
 	           }
@@ -211,9 +217,13 @@ function eliminarFila(nombre) {
 function generaTabla(grid_data){
 	$("#frmdocumentos").append("<select style=\"visibility:hidden;\" id=\"losprofes\">");
 	global=1;
+	elsql="SELECT EMPL_NUMERO, CONCAT(IFNULL(EMPL_APEPAT,''),' ',IFNULL(EMPL_APEMAT,''),' ',IFNULL(EMPL_NOMBRE,''),' ',EMPL_NUMERO) AS NOMBRE FROM pempleados ORDER BY 2";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}	
+		
 	 $.ajax({
-	           type: "GET",
-	           url:  "../base/dameselect.php?sql="+encodeURI("SELECT EMPL_NUMERO, CONCAT(IFNULL(EMPL_APEPAT,''),' ',IFNULL(EMPL_APEMAT,''),' ',IFNULL(EMPL_NOMBRE,''),' ',EMPL_NUMERO) AS NOMBRE FROM pempleados ORDER BY 2")+"&sel=0&bd=Mysql",
+	           type: "POST",
+			   data:parametros,  
+			   url:  "../base/dameselectSeg.php?",			   
 	           success: function(data){
 	        	    $("#losprofes").html(data);
 	        	    $("#cuerpo").empty();

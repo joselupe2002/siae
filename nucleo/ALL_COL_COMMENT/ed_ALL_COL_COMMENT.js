@@ -34,15 +34,19 @@ function mostrarTablas(){
 	  elsqlLite="SELECT name, name||'|'||'0' FROM sqlite_master WHERE type  IN ('table','view');";   
 	  elsqlMy="SELECT table_name, concat(table_name,'|','1') FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sigea' "+
         " UNION SELECT table_name, concat(table_name,'|','2') FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'sigea' order by 1";  
-	    
+	 
+	parametros={sql:elsqlLite,dato:sessionStorage.co,bd:'SQLite',sel:''}
 	$.ajax({
         type: "GET",
-        url: 'dameselect.php?sql='+encodeURI(elsqlLite)+"&sel=0&bd=SQLite", 
+		url: 'dameselectSeg.php', 
+		data:parametros,
         success: function(data){     
-             $("#tablas").append(data); 
+			 $("#tablas").append(data); 
+			 parametros2={sql:elsqlMy,dato:sessionStorage.co,bd:'Mysql',sel:''}
              $.ajax({
-                 type: "GET",
-                 url: 'dameselect.php?sql='+encodeURI(elsqlMy)+"&sel=0&bd=Mysql", 
+				 type: "GET",
+				 data:parametros2,
+                 url: 'dameselectSeg.php', 
                  success: function(data){     
                        $("#tablas").append(data); 
                      	$('.chosen-select').chosen({allow_single_deselect:true}); 			 				
@@ -178,10 +182,12 @@ function mostrarCampos(){
 	
 	    nombd="Mysql"; sql="SELECT COLUMN_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sigea' AND TABLE_NAME = '"+$("#table_name").val()+"'";
 		if (base==0) {nombd="SQLite"; sql="";}
-	  
+
+		parametros={sql:sql,dato:sessionStorage.co,bd:nombd,sel:''}
 		$.ajax({
-	        type: "GET",
-	        url: 'dameselect.php?sql='+encodeURI(sql)+"&sel=0&bd="+nombd, 
+			type: "POST",
+			data:parametros,
+	        url: 'dameselectSeg.php',
 	        success: function(data){     
 	             $("#campos").html(data);             
 	    },

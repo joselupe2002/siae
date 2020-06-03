@@ -36,11 +36,15 @@ function mostrarTablas(){
 	
 	if ($("#modu_bd").val()=="SQLite") {elsql="SELECT name, name FROM sqlite_master WHERE type  IN ('table','view');";}    
 	if ($("#modu_bd").val()=="Mysql") {elsql="SELECT table_name, table_name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sigea' "+
-        " UNION SELECT table_name, table_name FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'sigea' order by 1";}     
+		" UNION SELECT table_name, table_name FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'sigea' order by 1";}     
+		
+	parametros={sql:elsql,dato:sessionStorage.co,bd:$("#modu_bd").val(),sel:''}
+
 	$.ajax({
-        type: "GET",
-        url: 'dameselect.php?sql='+encodeURI(elsql)+"&sel=0&bd="+$("#modu_bd").val(), 
-        success: function(data){     
+        type: "POST",
+		url: 'dameselectSeg.php', 
+		data:parametros,
+        success: function(data){  		
              $("#tablas").html(data);                               
              if(!ace.vars['touch']) {
  				
