@@ -251,8 +251,8 @@ function cargarMaterias() {
          type: "GET",
          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                  " e.GPOCVE AS GRUPO,"+
-                 " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(PDOCVE,ALUCTR,MATCVE) and b.AUX='ENCUADRE' ORDER BY IDDET LIMIT 1),'') AS RUTAENCUADRE, "+
-                 " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(PDOCVE,ALUCTR,MATCVE) and b.AUX='DIAGNOSTICA' ORDER BY IDDET LIMIT 1),'') AS RUTADIAGNOSTICA "+     
+                 " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(PDOCVE,ALUCTR,MATCVE) and b.AUX='ENCUADRE' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAENCUADRE, "+
+                 " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(PDOCVE,ALUCTR,MATCVE) and b.AUX='DIAGNOSTICA' ORDER BY IDDET DESC LIMIT 1),'') AS RUTADIAGNOSTICA "+     
         		  " from dlista e, cmaterias f where e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('T','AC')"+
         		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.PDOCVE=getciclo()"),
 
@@ -448,10 +448,10 @@ function impEncuadre(id, materia, descrip){
 		    $.ajax({
 		           type: "GET",
 		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT UNID_ID, UNID_NUMERO, UNID_DESCRIP, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EP' ORDER BY IDDET LIMIT 1),'') AS RUTAEP, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='ED' ORDER BY IDDET LIMIT 1),'') AS RUTAED, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EC' ORDER BY IDDET LIMIT 1),'') AS RUTAEC, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EA' ORDER BY IDDET LIMIT 1),'') AS RUTAEA "+
+		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EP' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAEP, "+
+		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='ED' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAED, "+
+		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EC' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAEC, "+
+		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EA' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAEA "+
 	                      "  FROM eunidades j where j.`UNID_MATERIA`='"+materia+"' and j.UNID_PRED='' order by UNID_NUMERO",
 		           success: function(data){  
 		        	      losdatos=JSON.parse(data);  
