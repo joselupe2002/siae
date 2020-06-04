@@ -63,7 +63,7 @@ function cargarFoto(){
 		sq="select h.*, (SELECT count(*) FROM lincontestar where IDEXAMEN=h.IDEXAMEN and IDPRESENTA='"+curp+"' and TERMINADO='S') as N "+
 		    " from vlinaplex h where  STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
 			" Between STR_TO_DATE(h.`INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`TERMINA`,'%d/%m/%Y') and tipo='ASPIRANTES'"+
-			" and ifnull(CARRERA,'"+carrera+"')='"+carrera+"'";
+			" and if(CARRERA='','"+carrera+"',CARRERA)='"+carrera+"'";
 
 			parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 
