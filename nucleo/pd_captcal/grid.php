@@ -207,7 +207,7 @@ function cargarAct(){
 	    $.ajax({
 	           type: "GET",
 	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE "+                
-					   " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>'"+
+					   " FROM vcargasprof a where PROFESOR='<?php echo $_SESSION['usuario']?>'"+
 					   //" and CICLO=getciclo() "+
 					   " and CERRADOCAL='N'"),
 	           success: function(data){
