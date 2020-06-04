@@ -107,10 +107,12 @@ function mostrarico(){
 	    $('#modalDocument').modal({show:true});
 	    
 	elsql="SELECT nombre, nombre, icon FROM ICONOS order by 1";  
-	    
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite",sel:'0',tipo:"tree"}
+
 	$.ajax({
-        type: "GET",
-        url: 'dameselectima.php?sql='+encodeURI(elsql)+"&sel=0&bd=SQLite&tipo=tree", 
+		type: "POST",
+		data:parametros,
+        url: 'dameselectima.php', 
         success: function(data){  
         	$("#tree").html(data);
      },

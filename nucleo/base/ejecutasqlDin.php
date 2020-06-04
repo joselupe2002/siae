@@ -3,7 +3,7 @@
    session_start();
    header('Content-Type: text/html; charset='.$_SESSION['encode']);
    include("../.././includes/Conexion.php");
-   if ($_SESSION['inicio']==1) { 
+   if (($_SESSION['inicio']==1)  && ($_SESSION['idsesion']==$_POST["dato"])) { 
         $miSeg = new Conexion();
         $error="";
         $conn=$miSeg->tipoConex($_POST["bd"]);

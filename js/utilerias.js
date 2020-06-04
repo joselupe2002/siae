@@ -1093,10 +1093,14 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 		 if (resauto[0]=='SQL') {sqlauto=resauto[1];}
 		 if (resauto[0]=='AUTOMATICO') {sqlauto=""; $("#"+nombre).val("");}
 		 
-		 if (sqlauto.length>0) {
+
+		 if (sqlauto.length>0) {		 
+			     parametros={sql:sqlauto,dato:sessionStorage.co,bd:bd,numcol:'0'}
+
 				 $.ajax({
-		             type: "GET",
-		             url: "damedato.php?sql="+encodeURI(sqlauto)+"&numcol=0&bd="+bd, 
+					 type: "POST",
+					 data:parametros,
+		             url: "damedato.php", 
 		             success: function(data){  
 		            	  $("#"+nombre).val(parseInt(data)+1);
 		          },
@@ -1409,9 +1413,11 @@ if (tipo=="SELECT_MULTIPLE") {
 		xsql+=" WHERE "+campoid+"='"+dato+"'";
 		
 		param=buscarBD(bd,xsql);
+		parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],numcol:'1'}
 		$.ajax({
-             type: "GET",
-             url: "damedato.php?sql="+encodeURI(param[1])+"&numcol=1&bd="+param[0], 
+             type: "POST",
+			 url: "damedato.php", 
+			 data:parametros,
              success: function(data){            
             	 desc=data;            		
          		 cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label> "+
@@ -1462,9 +1468,11 @@ if (tipo=="SELECT_MULTIPLE") {
 		xsql+=" WHERE "+campoid+"='"+dato+"'";
 		
 		param=buscarBD(bd,xsql);
+		parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],numcol:'1'}
 		$.ajax({
-             type: "GET",
-             url: "damedato.php?sql="+encodeURI(param[1])+"&numcol=1&bd="+param[0], 
+			 type: "POST",
+			 data:parametros,
+             url: "damedato.php", 
              success: function(data){             	 
             	 desc=data;            		
          		 cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label> "+

@@ -121,7 +121,12 @@
 <script src="ex.js"></script>
 <script type="text/javascript">
        var curp="<?php echo $_SESSION["usuario"] ;?>";
-       var nombre="<?php echo $_SESSION["nombre"] ;?>";
+	   var nombre="<?php echo $_SESSION["nombre"] ;?>";
+	   
+	   co=Math.round(Math.random() * (999999 - 111111) + 111111); 
+	   parametros={cose:co}; $.ajax({type: "POST",url:  "../nucleo/base/iniciaPincipal.php", data:parametros, success: function(data){}});sessionStorage.setItem("co",co);
+		carrera="<?php echo $_SESSION["carrera"]?>";
+
 </script>
 
 </body>

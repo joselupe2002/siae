@@ -10,11 +10,14 @@ function reporteAsesorias(modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
 	 claveProf="";
 	 nombreProf="";
+	 sq="SELECT CONCAT(EMPL_NUMERO,'|',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) FROM pempleados where EMPL_USER='"+usuario+"'";
+	 parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql",numcol:'0',numlin:'0'}
+
 	 $.ajax({
-    	 type: "GET",
-    	 url:  "../base/damedatolin.php?numcol=0&numlin=0&bd=Mysql&sql="+encodeURI("SELECT CONCAT(EMPL_NUMERO,'|',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) FROM pempleados where EMPL_USER='"+usuario+"'"),
-    	 success: function(data){ 	        	
-    		                 
+		 type: "POST",
+		 data:parametros,
+    	 url:  "../base/damedatolin.php",
+    	 success: function(data){ 	        	    		                 
     	   	        	     claveProf=data.split("|")[0];
     	   	        	     nombreProf=data.split("|")[1];
     	   	        	     

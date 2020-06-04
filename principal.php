@@ -219,12 +219,14 @@
 
 			carreras="<?php echo $_SESSION["carrera"]?>";
 
+			elsql="SELECT CARR_DESCRIP,MISION,VISION from dashboard, ccarreras where  CARR_CLAVE=CARRERA AND CARRERA in ('"+carreras+"')";
+							
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-	   	           type: "GET",
-	   	           url:  "nucleo/base/getdatossql.php?bd=Mysql&sql=SELECT CARR_DESCRIP,MISION,VISION from dashboard, ccarreras "+
-	   	                 " where  CARR_CLAVE=CARRERA AND CARRERA in ('"+carreras+"')",
-	   	           success: function(data){  
-		   	             
+					  type: "POST",
+					  data:parametros,
+	   	              url:  "nucleo/base/getdatossqlSeg.php",
+	   	           success: function(data){  								   	             
 	   	        	      jQuery.each(JSON.parse(data), function(clave, valor) { 
 	   	        	    	
                               $("#lacarrera").html("<strong>"+utf8Decode(valor.CARR_DESCRIP)+"</strong>");

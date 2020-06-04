@@ -41,10 +41,13 @@ function comprueba_extension(nombreComponente,ext_permitidas) {
 
 function subirArchivoDrive(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera){		
 	var haymayor=false;	
+	        elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
+	        parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 			$.ajax({
-	   	           type: "GET",
-	   	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'",
-	   	           success: function(datosr){
+					  type: "POST",
+					  data:parametros,
+	   	              url:  "../base/getdatossqlSeg.php",
+	   	              success: function(datosr){
 	   	        	      
 	   	        	        var data = new FormData();
 			   	        	jQuery.each($('#'+nombreComponente)[0].files, function(i, file) {
@@ -100,9 +103,13 @@ function subirArchivoDrive(nombreComponente,carpeta,nombreImg, nombreInput, exte
 
 function subirArchivoDriveName(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera,nombre){		
 	var haymayor=false;	
+			elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
+
 			$.ajax({
-	   	           type: "GET",
-	   	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'",
+					  type: "POST",
+					  data:parametros,
+	   	           url:  "../base/getdatossqlSeg.php",
 	   	           success: function(datosr){
 	   	        	      
 	   	        	        var data = new FormData();
@@ -160,9 +167,14 @@ function subirArchivoDriveName(nombreComponente,carpeta,nombreImg, nombreInput, 
 function subirPDFDrive(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera){		
 	var haymayor=false;
 	elid=laruta.substring(laruta.indexOf('id=')+3,laruta.length);
+
+	elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
+
 	$.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(datosr){
 	        	       
 	        	        var data = new FormData();
@@ -313,9 +325,13 @@ function subirPDFDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, exte
 	var haymayor=false;
 	laruta=$("#"+nombreInput).attr("value"); 
 	elid=laruta.substring(laruta.indexOf('id=')+3,laruta.length);
+	
+	elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(datosr){
 	        	       
 	        	        var data = new FormData();
@@ -409,9 +425,12 @@ function subirImagenDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, e
 	var haymayor=false;
 	laruta=$("#"+nombreInput).attr("value"); 
 	elid=laruta.substring(laruta.indexOf('id=')+3,laruta.length);
+	elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(datosr){
 	        	       
 	        	        var data = new FormData();
@@ -651,9 +670,12 @@ function subirPDFDriveSaveAsp(nombreComponente,carpeta,nombreImg, nombreInput, e
 	var haymayor=false;
 	laruta=$("#"+nombreInput).attr("value"); 
 	elid=laruta.substring(laruta.indexOf('id=')+3,laruta.length);
+	elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
-	           type: "GET",
-	           url:  "../nucleo/base/getdatossql.php?bd=SQLite&sql=SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../nucleo/base/getdatossqlSeg.php",
 	           success: function(datosr){	        	       
 	        	    var data = new FormData();
 	   	        	jQuery.each($('#'+nombreComponente)[0].files, function(i, file) {

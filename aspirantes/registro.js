@@ -6,9 +6,11 @@ var elciclo="";
 
     jQuery(function($) { 
 		elsql="SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' order by CICL_ORDEN DESC";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
-			type: "GET",
-			url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+			type: "POST",
+			data:parametros,
+			url:  "../nucleo/base/getdatossqlSeg.php",
 			success: function(data){				 
 				   jQuery.each(JSON.parse(data), function(clave, valor) { 	
 				      elciclo=valor.CICL_CLAVE;			  
@@ -117,9 +119,11 @@ var elciclo="";
 			//mostrarEspera("esperaCURP","grid_registro","Cargando..");
 			//Verificamos si la CURP ya fue registrada anteriormente 
 			elsql="SELECT CURP, FINALIZADO FROM aspirantes where CURP='"+$("#CURP").val().toUpperCase()+"' and CICLO='"+elciclo+"'";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-					type: "GET",
-					url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+					type: "POST",
+					data:parametros,
+					url:  "../nucleo/base/getdatossqlSeg.php",
 					success: function(data){														 
 						jQuery.each(JSON.parse(data), function(clave, valor) { 
 								if (valor.FINALIZADO=='S') {
@@ -136,9 +140,11 @@ var elciclo="";
 									" pero no ha finalizado su registro se cargaran los datos capturados anteriormente para que "+
 									" finalize su registro</strong></span>","modal-lg");
 									elsqlbus="SELECT * from aspirantes where CURP='"+$("#CURP").val()+"' and CICLO='"+elciclo+"'";
+									parametros={sql:elsqlbus,dato:sessionStorage.co,bd:"Mysql"}
 									$.ajax({
-										type: "GET",
-										url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlbus),
+										type: "POST",
+										data:parametros,
+										url:  "../nucleo/base/getdatossqlSeg.php",
 										success: function(data){
 											datosasp=JSON.parse(data);													 
 											jQuery.each(datosasp, function(clave, valor) {
@@ -722,9 +728,11 @@ function cargarAdjuntos() {
 	         " from documaspirantes a "+
 	         "LEFT OUTER JOIN  adjaspirantes b  on (b.AUX=concat(a.CLAVE,'"+$("#CURP").val()+"'))"+
 			 " WHERE a.ENLINEA='S' order by TIPOADJ, DOCUMENTO";
+			 parametros={sql:elsqlAdj,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-		type: "GET",
-		url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlAdj),
+		type: "POST",
+		data:parametros,
+		url:  "../nucleo/base/getdatossqlSeg.php",
 		success: function(data){    
 			$("#listaadj").empty();		
 			$("#listaadj").append(

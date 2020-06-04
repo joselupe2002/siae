@@ -483,7 +483,8 @@ function setInscrito(id,valor){
 							if (micons>0) {
 								parametros={
 									bd:"mysql",
-									sql:elsqlpas							
+									sql:elsqlpas,
+									dato:sessionStorage.co							
 								};
 
 								$.ajax({
@@ -528,7 +529,8 @@ function inscribirAspirante(lafila,modulo,institucion, campus) {
 							if (micons>0) {
 								parametros={
 									bd:"mysql",
-									sql:"call inscribeAspirante('"+lafila[0][0]+"','"+mimat+"'); "					
+									sql:"call inscribeAspirante('"+lafila[0][0]+"','"+mimat+"'); ",
+									dato:sessionStorage.co				
 								};
 
 								$.ajax({

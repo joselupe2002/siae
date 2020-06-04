@@ -487,7 +487,8 @@ function getResultados(){
 function recursiva (arreglo,elindice,elmax) {
 	parametros={
 		bd:$("#labase").val(),
-		sql:arreglo[elindice]
+		sql:arreglo[elindice],
+		dato:sessionStorage.co	
 	}
 	$.ajax({		
 		type: "POST",

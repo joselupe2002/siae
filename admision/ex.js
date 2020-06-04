@@ -25,10 +25,12 @@ var arr_instpreg=[];
 
 
 function cargarFoto(){
-	sql="select RUTA from adjaspirantes  b where b.AUX='FOTO"+curp+"'";
+	elsql="select RUTA from adjaspirantes  b where b.AUX='FOTO"+curp+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
-		url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+		data:parametros,
+		url:  "../nucleo/base/getdatossqlSeg.php",
 		success: function (dataExa) {
 			laruta="";
 			jQuery.each(JSON.parse(dataExa), function(clave, valor) { 
@@ -63,9 +65,12 @@ function cargarFoto(){
 			" Between STR_TO_DATE(h.`INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`TERMINA`,'%d/%m/%Y') and tipo='ASPIRANTES'"+
 			" and ifnull(CARRERA,'"+carrera+"')='"+carrera+"'";
 
+			parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
+
 		$.ajax({
 			type: "POST",
-			url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
+			data:parametros,
+			url:  "../nucleo/base/getdatossqlSeg.php",
 			success: function (dataExa) {
 				jQuery.each(JSON.parse(dataExa), function(clave, valor) { 	
 					cadLinea="<tr>"+
@@ -130,9 +135,11 @@ function cargarFoto(){
 function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni,minAct){
     fechareal=""; horareal="";
 	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDEXAMEN="+idexa+" and IDPRESENTA='"+curp+"'";
+	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-		type: "POST",
-		url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
+		type: "POST",		
+        data:parametros,
+		url:  "../nucleo/base/getdatossqlSeg.php",
 		success: function (dataCon) {	
 	        idcon=0;  encontre=false;
 			jQuery.each(JSON.parse(dataCon), function(clave, valorCon) { 
@@ -261,14 +268,19 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 				"<button  class=\"btn btn-white btn-danger btn-bold pull-right\" onclick=\"aparecer(pregactiva,-1);\">"+
 				"<i class=\"ace-icon fa fa-arrow-left bigger-120 red\"></i><span>Atras</span></button>"+
 			"</div>"+
+			"<div class=\"bg-white\">"+
+			"     <div class=\"row\"><div class=\"col-sm-12\">"+"<br/><span id=\"observaciones\"></span><br/></div>"+
+			"</div>"+
 		"</div>";
 	$("#contenidoAsp").append(cad);
 
+	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
-		url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
+		data:parametros,
+		url:  "../nucleo/base/getdatossqlSeg.php",
 		success: function (dataPre) {		
-		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 
+		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 		
 				arr_nombresec[clave]=valorPre.SECCIOND;
 				arr_instsec[clave]=valorPre.INSTRUCCIONES;
 				arr_instpreg[clave]=valorPre.INSTRUCCIONESPREG;
@@ -319,9 +331,11 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 
 
 			sqRes="SELECT * from linrespuestas WHERE IDEXAMEN="+idexa+" and IDPRESENTA='"+curp+"'" ;
+			parametros={sql:sqRes,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
-				url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqRes),
+				data:parametros,
+				url:  "../nucleo/base/getdatossqlSeg.php",
 				success: function (dataRes) {	
 					jQuery.each(JSON.parse(dataRes), function(clave, valorRes) {						  
 						   $("#opcion_"+valorRes.IDPREGUNTA+"_"+valorRes.RESPUESTA).attr('checked', true);
@@ -341,6 +355,7 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 
 
 function colocarSeccion(item){
+
 	cad="<span class=\"fontAmaranthB bigger-100 label label-danger label-white middle\"> SECCIÓN: "+arr_nombresec[item]+"</span><br/>";
 	if (arr_instsec[item].length>0) {
 		cad+="<span class=\"fontAmaranthB bigger-100 label label-success label-white middle\"> INSTRUCCIÓN: "+arr_instsec[item]+"</span><br/>"; }
@@ -382,9 +397,11 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 	var minutosInicio=0;
 	var yaabrio=false;
 	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDEXAMEN="+id+" and IDPRESENTA='"+curp+"'";
+	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
-		url:  "../nucleo/base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
+		data:parametros,
+		url:  "../nucleo/base/getdatossqlSeg.php",
 		success: function (dataCon) {	
 	        idcon=0;  encontre=false;
 			jQuery.each(JSON.parse(dataCon), function(clave, valorCon) { 

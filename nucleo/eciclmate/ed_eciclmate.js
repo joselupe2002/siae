@@ -83,10 +83,12 @@ function changeCICL_MAPA(DATO, usuario, institucion, campus){
 function changeCICL_CICLO(DATO, usuario, institucion, campus){
 	elsql="SELECT CONCAT(CICL_DE, \"|\",CICL_A) FROM ciclosfor WHERE CICL_CLAVE='"+$("#CICL_CICLO").val()+"'";
 	
-	agregarEspera("imggif_CICL_CUATRIMESTRE",null);
+   agregarEspera("imggif_CICL_CUATRIMESTRE",null);
+   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",numcol:'0'}
 	$.ajax({
-        type: "GET",
-        url: 'damedato.php?sql='+encodeURI(elsql)+"&numcol=0&bd=Mysql", 
+        type: "POST",
+        data:parametros,
+        url: 'damedato.php', 
         success: function(data){  
         	 periodo=data.split("|");
         	  $("#CICL_CUATRIMESTRE").empty();
