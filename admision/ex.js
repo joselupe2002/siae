@@ -209,9 +209,9 @@ function escribir(debeterminar){
 }
 
 function cierraExamen(){
-	var hoy= new Date();
-	lahora=hoy.getHours()+":"+hoy.getMinutes();
-	lafecha=hoy.getDay()+"/"+hoy.getMonth()+"/"+hoy.getFullYear();
+	lahora=dameFecha("HORA");
+	lafecha=dameFecha("FECHA");
+	
 	parametros={
 		tabla:"lincontestar",
 		bd:"Mysql",
