@@ -228,9 +228,13 @@
 
 function cargarMaterias() {
 
+	elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";	
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() "),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
        	   losdatos=JSON.parse(data);
        	   cad1="";cad2="";
@@ -247,14 +251,19 @@ function cargarMaterias() {
 
 	
 
-	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
+	   elsql="select e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                  " e.GPOCVE AS GRUPO,"+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(PDOCVE,ALUCTR,MATCVE) and b.AUX='ENCUADRE' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAENCUADRE, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(PDOCVE,ALUCTR,MATCVE) and b.AUX='DIAGNOSTICA' ORDER BY IDDET DESC LIMIT 1),'') AS RUTADIAGNOSTICA "+     
         		  " from dlista e, cmaterias f where e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('T','AC')"+
-        		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.PDOCVE=getciclo()"),
+				  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.PDOCVE=getciclo()";
+				  
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
+	 $.ajax({
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
 
          success: function(data){
              
@@ -445,18 +454,20 @@ function impEncuadre(id, materia, descrip){
 		    $('#modalDocumentUni').modal({show:true, backdrop: 'static'});
 
 		  
-		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT UNID_ID, UNID_NUMERO, UNID_DESCRIP, "+
+			elsql="SELECT UNID_ID, UNID_NUMERO, UNID_DESCRIP, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EP' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAEP, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='ED' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAED, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EC' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAEC, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+ciclo+matricula+materia+"') and b.AUX='EA' ORDER BY IDDET DESC LIMIT 1),'') AS RUTAEA "+
-	                      "  FROM eunidades j where j.`UNID_MATERIA`='"+materia+"' and j.UNID_PRED='' order by UNID_NUMERO",
+						  "  FROM eunidades j where j.`UNID_MATERIA`='"+materia+"' and j.UNID_PRED='' order by UNID_NUMERO";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}	  
+		    $.ajax({
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 		        	      losdatos=JSON.parse(data);  
-		        	      generaTablaSubir(JSON.parse(data),"CAPTURA", ciclo, matricula, materia);
-		        	        		        	    
+		        	      generaTablaSubir(JSON.parse(data),"CAPTURA", ciclo, matricula, materia);		        	        		        	    
 		                 },
 		           error: function(data) {	                  
 		                      alert('ERROR: '+data);

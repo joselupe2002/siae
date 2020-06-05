@@ -174,13 +174,17 @@
 
 
 function verificarCorte(){
-    $('#dlgproceso').modal({show:true, backdrop: 'static'});
-    $.ajax({
-           type: "GET",
-		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from ecortescal where  CICLO=getciclo() "+
+	$('#dlgproceso').modal({show:true, backdrop: 'static'});
+	
+	elsql="select * from ecortescal where  CICLO=getciclo() "+
 		   " and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
 		   " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CALIFICACION' "+
-		   " order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 0,1"),
+		   " order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 0,1";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+    $.ajax({
+		   type: "POST",
+		   data:parametros,
+		   url:  "../base/getdatossqlSeg.php",
            success: function(data){
         	        haycorte=false;
         	        $("#stCorte").html("Corte Cerrado");                  
@@ -203,13 +207,16 @@ function verificarCorte(){
 
 
 function cargarAct(){
-	    $('#dlgproceso').modal({show:true, backdrop: 'static'});
-	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE "+                
+		$('#dlgproceso').modal({show:true, backdrop: 'static'});
+		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE "+                
 					   " FROM vcargasprof a where PROFESOR='<?php echo $_SESSION['usuario']?>'"+
 					   //" and CICLO=getciclo() "+
-					   " and CERRADOCAL='N'"),
+					   " and CERRADOCAL='N'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){
 	        	     generaTabla(JSON.parse(data));	 
 	        	     $('#dlgproceso').modal("hide");        	     

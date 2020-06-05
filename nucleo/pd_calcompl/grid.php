@@ -203,10 +203,13 @@ function confirma(id,matricula,ciclo){
 
 
 function cargarAct(){
+	    elsql="select a.CICLO, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
+			  " a.AULA from vecomplementaria a where   AUTORIZADO='S' and ABIERTA='S' and RESPONSABLE='"+<?php  echo $_SESSION["usuario"];?>+"';";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.CICLO, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
-	        		                                                   " a.AULA from vecomplementaria a where   AUTORIZADO='S' and ABIERTA='S' and RESPONSABLE='"+<?php  echo $_SESSION["usuario"];?>+"';"),
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){
 
 	        	     generaTabla(JSON.parse(data));	        	     

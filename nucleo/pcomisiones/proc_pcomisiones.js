@@ -127,9 +127,12 @@ function crearCopias(id,modulo){
 	var cad=String($("#lista").val());
 	var losdatos=[];
 	losprofes=cad.split(",");
+	 elsql="SELECT * FROM pcomisiones where COMI_ID="+id;
+	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
-        	type: "GET",
-        	url: "../base/getdatossql.php?bd=Mysql&sql=SELECT * FROM pcomisiones where COMI_ID="+id,
+			type: "POST",
+			data:parametros,
+        	url: "../base/getdatossqlSeg.php",
         	success: function(data){ 
         		original=JSON.parse(data);
         		 var loscampos = ["COMI_PROFESOR","COMI_FECHAINI","COMI_FECHAFIN","COMI_HORAINI","COMI_HORAFIN",

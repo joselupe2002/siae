@@ -171,10 +171,13 @@ var maxuni=0;
          
 
     function cargarMaterias() {
-    	$('#dlgproceso').modal({show:true, backdrop: 'static'});
+		$('#dlgproceso').modal({show:true, backdrop: 'static'});
+		elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
     	$.ajax({
-            type: "GET",
-            url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() "),
+			type: "POST",
+			data:parametros,
+            url:  "../base/getdatossqlSeg.php",
             success: function(data){
            	   losdatos=JSON.parse(data);
            	   cad1="";cad2="";
@@ -192,18 +195,23 @@ var maxuni=0;
            });
 
 
-    	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
-  	     $.ajax({
-          type: "GET",
-          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT MAX((select count(*) from eunidades l where "+
+		 $('#dlgproceso').modal({show:true, backdrop: 'static'});
+		 
+		 elsql="SELECT MAX((select count(*) from eunidades l where "+
                   "l.UNID_MATERIA=e.MATCVE and UNID_PRED='')) AS N from dlista e  where  "+
 				  "e.ALUCTR='<?php echo $_SESSION['usuario']?>'  and e.IDGRUPO IN "+
-				  "(select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')"),
+				  "(select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+  	     $.ajax({
+		  type: "POST",
+		  data:parametros,
+          url:  "../base/getdatossqlSeg.php",
           success: function(data){      	    
         	      jQuery.each(JSON.parse(data), function(clave, valor) { 	
                         maxuni=valor.N;
             	      });
 
+				
 			      sqlMat="select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                 	             "ifnull(LISCAL,0) as LISCAL,ifnull(LISPA1,0)  as LISPA1,ifnull(LISPA2,0) AS LISPA2,ifnull(LISPA3,0) as LISPA3,"+
 								 "ifnull(LISPA4,0) as LISPA4,ifnull(LISPA5,0) as LISPA5,ifnull(LISPA6,0) as LISPA6,ifnull(LISPA7,0) as LISPA7,"+
@@ -213,10 +221,12 @@ var maxuni=0;
         	                      " (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,"+
         	                      " getcuatrimatxalum(e.MATCVE,ALUCTR) AS SEM "+
         	                      " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+        	                      
-        	            		  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')"			  		  
+								  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N')"			  		  
+				parametros={sql:sqlMat,dato:sessionStorage.co,bd:"Mysql"}
         	      $.ajax({
-        	             type: "GET",
-        	             url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlMat),
+						 type: "POST",
+						 data:parametros,
+        	             url:  "../base/getdatossqlSeg.php",
         	             success: function(data){   
             	                 	    
         	          	        generaTabla(JSON.parse(data,maxuni));	   

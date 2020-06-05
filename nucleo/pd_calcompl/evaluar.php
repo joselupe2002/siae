@@ -244,9 +244,12 @@
 		          });
 
 				
+			 elsql=	"SELECT * from ecriterioseval where TIPO='ACTCOMPL' ORDER BY NUM";
+			 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}	  
 			 $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT * from ecriterioseval where TIPO='ACTCOMPL' ORDER BY NUM"),
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){
 			      		 losCriterios=JSON.parse(data)
 		        	     jQuery.each(losCriterios, function(clave, valor) { 	
@@ -260,11 +263,13 @@
 
 			      		lasCal=lasCal.substring(0,lasCal.length-1); 
 
-
+                        elsql="select a.ID, a.MATRICULA, a.NOMBRE, "+lasCal+" from veinscompl a "+
+						" left outer join  ecalificagen b on (a.MATRICULA=b.MATRICULA and a.ACTIVIDAD=b.ACTIVIDAD)where a.ACTIVIDAD='"+<?php echo $_GET["id"]?>+"'";
+						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
 			      		$.ajax({
-			  		           type: "GET",
-			  		           url:  "../base/getdatossql.php?&bd=Mysql&sql="+encodeURI("select a.ID, a.MATRICULA, a.NOMBRE, "+lasCal+" from veinscompl a "+
-			  		        		 " left outer join  ecalificagen b on (a.MATRICULA=b.MATRICULA and a.ACTIVIDAD=b.ACTIVIDAD)where a.ACTIVIDAD='"+<?php echo $_GET["id"]?>+"'"),
+								 type: "POST",
+								 data:parametros,
+			  		           url:  "../base/getdatossqlSeg.php",
 			  		           success: function(data){
 			  		        	 generaTabla(JSON.parse(data),numCal);     
 			  		                 },

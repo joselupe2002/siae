@@ -199,11 +199,14 @@
 
 
 function cargarMaterias() {
-
+	 elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";
+	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() "),
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){
+			  
         	   losdatos=JSON.parse(data);
         	   cad1="";cad2="";
         	   jQuery.each(losdatos, function(clave, valor) { cad1=valor.CICL_CLAVE; cad2=valor.CICL_DESCRIP;	 });   
@@ -217,19 +220,22 @@ function cargarMaterias() {
                 }
         });
 
-     
 
+	elsql="SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and a.DESC_CICLO=getciclo() ";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and a.DESC_CICLO=getciclo() "),
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){
-
+		
       	     generaTabla(JSON.parse(data));	        	     
                },
          error: function(data) {	                  
                     alert('ERROR: '+data);
                 }
-        });
+		});
+	
 }
 
 
@@ -240,7 +246,6 @@ function pad (str, max) {
 	
 
 function guadarPortafolio(id,campo,materia){
-	   alert ("entre");
 	    dato=$("#"+campo).val();
 	    alert (id+" "+dato+" "+campo);
 		if ((dato != null) && (dato != 'null')) {
@@ -351,19 +356,25 @@ function agregarActividad(id, descrip,modulo){
 	    
 	    $('#modalDocument').modal({show:true, backdrop: 'static'});
 
+		elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 	        	      losdatos=JSON.parse(data);  
 	        	        
 	        	      jQuery.each(losdatos, function(clave, valor) { hay=valor.NUM; });
-	        
+			
+						  
 	        	    	  if (hay>0) {	        	    			        	    	
-	        	    		  $.ajax({
-	        	   	           type: "GET",
-	        	   	           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * "+
-	        	   	                 " FROM eplandescarga WHERE PLAN_IDACT='"+id+"' order by PLAN_ORDEN",
+							elsql="SELECT * FROM eplandescarga WHERE PLAN_IDACT='"+id+"' order by PLAN_ORDEN";
+						    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								  type: "POST",
+								  data:parametros,
+	        	   	              url:  "../base/getdatossqlSeg.php",
 	        	   	           success: function(data){ 	        	   	        	
 	        	   	        	     generaTablaActividad(JSON.parse(data),"CAPTURA");
 	        	   	                 },
@@ -433,19 +444,25 @@ function agregarActividad(id, descrip,modulo){
 		    
 		    $('#modalDocument').modal({show:true, backdrop: 'static'});
 
+			elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'",
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 		        	      losdatos=JSON.parse(data);  
 		        	        
 		        	      jQuery.each(losdatos, function(clave, valor) { hay=valor.NUM; });
 		        
-		        	    	  if (hay>0) {	        	    			        	    	
+		        	    	  if (hay>0) {	  
+								  elsql=  "SELECT * FROM eplandescarga WHERE PLAN_IDACT='"+id+"' order by PLAN_ORDEN" ;
+								  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"} 	    			        	    	
 		        	    		  $.ajax({
-		        	   	           type: "GET",
-		        	   	           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * "+
-		        	   	                 " FROM eplandescarga WHERE PLAN_IDACT='"+id+"' order by PLAN_ORDEN",
+									  type: "POST",
+									  data:parametros,
+		        	   	           url:  "../base/getdatossqlSeg.php",
 		        	   	           success: function(data){ 	        	   	        	
 		        	   	        	     generaTablaActividad(JSON.parse(data),"VER");
 		        	   	                 },
@@ -544,7 +561,7 @@ function agregarActividad(id, descrip,modulo){
 	   	    var f = new Date();
 			fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
 
-           //alert (valor.PLAN_FECHAENTREGA+" año:"+valor.PLAN_FECHAENTREGA.substring(6,10)+" mes:"+valor.PLAN_FECHAENTREGA.substring(3,5)+" dia:"+valor.PLAN_FECHAENTREGA.substring(0,2));
+           //alert (valor.PLAN_FECHAENTREGA+" aï¿½o:"+valor.PLAN_FECHAENTREGA.substring(6,10)+" mes:"+valor.PLAN_FECHAENTREGA.substring(3,5)+" dia:"+valor.PLAN_FECHAENTREGA.substring(0,2));
 			
 			var f1 = new Date(f.getFullYear(), f.getMonth() +1, f.getDate());
 			var f2 = new Date(valor.PLAN_FECHAENTREGA.substring(6,10), valor.PLAN_FECHAENTREGA.substring(3,5), valor.PLAN_FECHAENTREGA.substring(0,2));

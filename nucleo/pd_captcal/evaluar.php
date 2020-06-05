@@ -162,9 +162,11 @@
 		            " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CALIFICACION' "+
 		            " order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
 			
+			parametros={sql:sqlCor,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlCor),
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
 		         success: function(dataCor){   
 					 iniCorte=""; finCorte=""; 		        				         
 		        	 jQuery.each(JSON.parse(dataCor), function(clave, valorCor) { 	
@@ -172,9 +174,12 @@
 					 });
 
 					//alert (iniCorte+" "+finCorte);
+					elsql="SELECT DGRU_MATERIA AS MATERIA,SIE FROM edgrupos p where p.`DGRU_ID`='<?php echo $_GET["base"]?>'";
+					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 					$.ajax({
-						type: "GET",
-						url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT DGRU_MATERIA AS MATERIA,SIE FROM edgrupos p where p.`DGRU_ID`='<?php echo $_GET["base"]?>'"),
+						type: "POST",
+						data:parametros,
+						url:  "../base/getdatossqlSeg.php",
 						success: function(data){    		        				         
 							jQuery.each(JSON.parse(data), function(clave, valor) { 
 								base_grupo=valor.SIE; base_materia=valor.MATERIA;    });
@@ -191,14 +196,17 @@
 										" AND STR_TO_DATE('"+finCorte+"','%d/%m/%Y') and b.NUMUNIDAD=a.UNID_NUMERO "+ 
 										" and b.MATERIA='"+base_materia+"' and b.GRUPO='"+base_grupo+"' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO3 "+
 										" from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''"
-				
+						
+				            parametros2={sql:sqlUni,dato:sessionStorage.co,bd:"Mysql"}
 							$.ajax({
-								type: "GET",
-								url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlUni),
+								type: "POST",
+								data:parametros2,
+								url:  "../base/getdatossqlSeg.php",
 								success: function(data){    
 									
-									jQuery.each(JSON.parse(data), function(clave, valor) {
+									jQuery.each(JSON.parse(data), function(clave, valor) {										
 										ab=parseInt(valor.ABIERTO)+parseInt(valor.ABIERTO2)+parseInt(valor.ABIERTO3);
+										
 										cadVer='C';
 										if (ab>0) {cadVer='A';}
 										$("#unidades").append("<option value=\""+valor.UNID_NUMERO+"\">"+utf8Decode(valor.UNID_NUMERO+" "+valor.UNID_DESCRIP)+" |"+cadVer+"|</option>");       	     
@@ -220,13 +228,16 @@
         	 launidad=parseInt($("#unidades").val());  
         	 abierto=$('#unidades option:selected').text().split("|")[1];
    
-	          
-			 $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE, LISPA"+launidad+" as CAL, LISFA"+launidad+" as FALTA"+
+			 elsql="select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE, LISPA"+launidad+" as CAL, LISFA"+launidad+" as FALTA"+
 				          " from dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.GPOCVE='<?php echo $_GET["grupo"];?>'"+
 				          " and PDOCVE='<?php echo $_GET["ciclo"];?>' and LISTC15='<?php echo $_GET["profesor"];?>'"+
-				          " and MATCVE='<?php echo $_GET["materia"];?>' order by ALUM_APEPAT,ALUM_APEMAT,ALUM_NOMBRE"),
+						  " and MATCVE='<?php echo $_GET["materia"];?>' order by ALUM_APEPAT,ALUM_APEMAT,ALUM_NOMBRE";
+						  
+	          parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			 $.ajax({
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
 		         success: function(data){    
 		        	 $("#latabla").empty();
 		        	 $("#latabla").append("<thead><tr id=\"titulo\"><th style=\"text-align: center;\">No. Control</th>"+ 
