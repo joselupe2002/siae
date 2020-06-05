@@ -169,7 +169,7 @@ function copiarima(){
 function changemodu_pred(elemento, usuario, institucion, campus){
 
 	elsql="SELECT modu_aplicacion FROM CMODULOS WHERE modu_modulo='"+$("#modu_pred").val()+"'";
-	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
 		type: "POST",
 		data:parametros,
