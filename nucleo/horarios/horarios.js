@@ -111,9 +111,12 @@ var matser="";
 			   " AND DGRU_CICLO='"+$("#selCiclos").val()+"' and MATE_CLAVE=DGRU_MATERIA and MATE_CLAVE=CICL_MATERIA "+
 			   " AND CICL_MAPA=DGRU_MAPA AND DGRU_MAPA='"+$("#selPlanes").val()+"' order by CICL_CUATRIMESTRE, MATE_DESCRIP";
 		mostrarEspera("esperahor","grid_horarios","Cargando Horarios...");
+
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+elsql,
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 				      
 					  generaTablaHorarios(JSON.parse(data));   
@@ -200,9 +203,11 @@ function agregarasignaturasemestre() {
 		elsql="  SELECT CICL_MATERIA, CICL_HT, CICL_HP,CICL_CUATRIMESTRE FROM eciclmate i where "+ 
               "  CICL_MAPA='"+$("#selPlanes").val()+"' AND CICL_CUATRIMESTRE='"+$("#selSem").val()+"' order by CICL_MATERIA";
 		mostrarEspera("esperainssem","grid_horarios","Insertando Horarios...");
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			  $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+elsql,
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 				   jQuery.each(JSON.parse(data), function(clave, valor) { 
 					   
@@ -391,9 +396,11 @@ function hacerFiltro(){
 		  " AND CICL_MAPA=DGRU_MAPA AND DGRU_MAPA='"+$("#selPlanes").val()+"'"+
 		  " and "+$("#selCampos").val()+" like '%"+$("#filtro").val()+"%'"+ 
 		  " order by CICL_CUATRIMESTRE, MATE_DESCRIP";
+		  parametros={sql:elsqlfil,dato:sessionStorage.co,bd:"Mysql"}
 		  $.ajax({
-			type: "GET",
-			url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlfil),
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
 			success: function(data){  				   
 				   $('#ventFiltros').modal("hide");
 				   mostrarEspera("esperahor","grid_horarios","Cargando Horarios...");
@@ -446,9 +453,11 @@ function getEspaciosAulas(){
 			cadFin="";
 			elsql="SELECT "+$("#selDiaEsp").val()+"_A, "+$("#selDiaEsp").val()+"_1 from vedgrupos b where b.CICLO='"+$("#selCiclosEsp").val()+"' "+
 				"and "+$("#selDiaEsp").val()+"_A<>'' order by "+$("#selDiaEsp").val()+"_A,"+$("#selDiaEsp").val()+"_1";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-				type: "GET",
-				url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
 				success: function(data){  
 
 					losdatos=JSON.parse(data);

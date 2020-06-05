@@ -365,9 +365,11 @@
 	   if (!(semestre=='')) { aux+=" and SEMESTRE= '"+semestre+"'";}
 	   
 	   elsql="SELECT * FROM reprobacion where ciclo="+elciclo+" and corte="+elcorte+" and "+cadCarrera+aux+" order by SEMESTRE,MATERIA";
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	   $.ajax({
-           type: "GET",
-           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		   type: "POST",
+		   data:parametros,
+           url:  "../base/getdatossqlSeg.php",
            success: function(data){
         	     generaTabla(JSON.parse(data));	        	
         	     $("#dlgMaterias").modal("show");     
@@ -388,12 +390,16 @@
 
        
        /*======================================REPROBACI�N POR CARRERA ===========================================*/
-       $("#chartdiv").empty();
+	   $("#chartdiv").empty();
+	   
+	   elsql="SELECT CARRERAD as x, ROUND(AVG(PORC_APR),2) AS y"+
+            "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+
+            " and "+cadCarrera+" group by CARRERA ORDER By 2"
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
   	   $.ajax({
-             type: "GET",
-             url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CARRERAD as x, ROUND(AVG(PORC_APR),2) AS y"+
-                                                                     "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+
-                                                                     " and "+cadCarrera+" group by CARRERA ORDER By 2"),
+			 type: "POST",
+			 data:parametros,
+             url:  "../base/getdatossqlSeg.php",
              success: function(data){ 
                          	  
           	  datosgraf=JSON.parse(data);  
@@ -423,12 +429,17 @@
   	   });
 
   	// ========================= cargamos los datos de la carrera del sistema===================================================
-  	     $("#graphmaterias").empty();
+		   $("#graphmaterias").empty();
+		   
+		   elsql="SELECT MATERIAD as x, ROUND(AVG(PORC_APR),2) AS y"+
+  		        "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+
+  		        " and "+cadCarrera+" group by MATERIAD ORDER By 2";
+		   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
   	 	  $.ajax({
-  		       type: "GET",
-  		       url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT MATERIAD as x, ROUND(AVG(PORC_APR),2) AS y"+
-  		                                                               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+
-  		                                                               " and "+cadCarrera+" group by MATERIAD ORDER By 2"),
+				 type: "POST",
+				 data:parametros,
+  		       url:  "../base/getdatossqlSeg.php",
   		       success: function(data){        	   
   		    	  datosgraf=JSON.parse(data);  
   		    	  
@@ -453,12 +464,15 @@
 
 
   	 	// ========================= cargamos los datos de SEMESTRE carrera de sistemas===================================================
-  	 	  $("#graphsemestre").empty();
+			 $("#graphsemestre").empty();
+			 elsql="SELECT SEMESTRE as x, ROUND(AVG(PORC_APR),2) AS y"+
+					 "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by SEMESTRE ORDER By 2"
+			 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
   	 	  $.ajax({
-  		       type: "GET",
-  		       url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT SEMESTRE as x, ROUND(AVG(PORC_APR),2) AS y"+
-  		                                                               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by SEMESTRE ORDER By 2"),
-  		       success: function(data){          	   
+				 type: "POST",
+				 data:parametros,
+  		       url:  "../base/getdatossqlSeg.php",
+  		       success: function(data){        	   
   		    	  datosgraf=JSON.parse(data);  
   		    	  
   		    	  graficaSemestre= Morris.Bar({
@@ -482,11 +496,14 @@
   		   });
 
   	 	// ========================= cargamos los datos de PROFESOR carrera de sistemas===================================================
-  	 	  $("#graphprofesor").empty();
+			 $("#graphprofesor").empty();
+			 elsql="SELECT PROFESOR as x, ROUND(AVG(PORC_APR),2) AS y"+
+																		 "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by PROFESOR ORDER By 2";
+             parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}																		 
   	 	  $.ajax({
-  		       type: "GET",
-  		       url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT PROFESOR as x, ROUND(AVG(PORC_APR),2) AS y"+
-  		                                                               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by PROFESOR ORDER By 2"),
+				 type: "POST",
+				 data:parametros,
+  		       url:  "../base/getdatossqlSeg.php",
   		       success: function(data){          	   
   		    	  datosgraf=JSON.parse(data);  
   		    	  graficaProfesor= Morris.Bar({
@@ -510,11 +527,15 @@
   		   });
   		   
   	 
-  	   $("#listaprin").empty();	
+		 $("#listaprin").empty();	
+		 
+		 elsql="SELECT CARRERA, CARRERAD, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
+               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERA ORDER By 4";
+		 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
   	   $.ajax({
-             type: "GET",
-             url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CARRERA, CARRERAD, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
-                                                                     "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERA ORDER By 4"),
+			 type: "POST",
+			 data:parametros,
+             url:  "../base/getdatossqlSeg.php",
              success: function(data){          	   
           	  carreras=JSON.parse(data);  
           	  
@@ -533,11 +554,14 @@
 
 
           	  elid++;
-                //Buscamos el promedio por semestre de las carreras 
+				//Buscamos el promedio por semestre de las carreras 
+				elsql="SELECT CARRERA, SEMESTRE, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
+					  "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERA, SEMESTRE ORDER BY 4 ";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
                 $.ajax({
-                          type: "GET",
-                          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CARRERA, SEMESTRE, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
-                                                                                  "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERA, SEMESTRE ORDER BY 4 "),
+						  type: "POST",
+						  data:parametros,
+                          url:  "../base/getdatossqlSeg.php",
                           success: function(data){          	   
                        	  semestres=JSON.parse(data);  
 
@@ -565,11 +589,14 @@
                 	   });  //del ajax de los semestre  
 
 
-                //Buscamos el promedio por MATERUA de las carreras 
+				//Buscamos el promedio por MATERUA de las carreras 
+				elsql="SELECT CONCAT(CARRERA,SEMESTRE) as CARSEM, PROFESOR,MATERIA, MATERIAD, SUM(ALUM_TOT) AS ALUM_TOT, SUM(ALUM_REP) AS ALUM_REP, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
+					"  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERA, SEMESTRE,PROFESOR, MATERIA,MATERIAD ORDER BY MATERIA,PROFESOR,7";
+					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}					
                 $.ajax({
-                          type: "GET",
-                          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CONCAT(CARRERA,SEMESTRE) as CARSEM, PROFESOR,MATERIA, MATERIAD, SUM(ALUM_TOT) AS ALUM_TOT, SUM(ALUM_REP) AS ALUM_REP, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
-                                                                                  "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERA, SEMESTRE,PROFESOR, MATERIA,MATERIAD ORDER BY MATERIA,PROFESOR,7"),
+						  type: "POST",
+						  data:parametros,
+                          url:  "../base/getdatossqlSeg.php",
                             success: function(data){          	   
                        	  materias=JSON.parse(data);  
 
@@ -610,11 +637,15 @@
   	// ========================= cargamos los datos de los profesors ===================================================
          elid=1;
 
-         $("#listaprinProf").empty();	
+		 $("#listaprinProf").empty();	
+		 elsql="SELECT CVEPROF,PROFESOR, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
+		 "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CVEPROF,PROFESOR ORDER By 4";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}															
+		 
          $.ajax({
-             type: "GET",
-             url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CVEPROF,PROFESOR, ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
-                                                                     "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CVEPROF,PROFESOR ORDER By 4"),
+			 type: "POST",
+			 data:parametros,
+             url:  "../base/getdatossqlSeg.php",
              success: function(data){          	   
           	  profesores=JSON.parse(data);  
           	  
@@ -634,11 +665,14 @@
 
 
           	  elid++;
-                //Buscamos las materias que da el profesor
+				//Buscamos las materias que da el profesor
+				elsql="SELECT CVEPROF,PROFESOR, MATERIA, MATERIAD,  SUM(ALUM_TOT) as ALUM_TOT,sum(ALUM_REP) as ALUM_REP,ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
+																				  "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by PROFESOR, MATERIA, MATERIAD ORDER BY 8";
+                parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}																				  
                 $.ajax({
-                          type: "GET",
-                          url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CVEPROF,PROFESOR, MATERIA, MATERIAD,  SUM(ALUM_TOT) as ALUM_TOT,sum(ALUM_REP) as ALUM_REP,ROUND(AVG(PORC_APR),2) AS PORC_APR, ROUND(AVG(PORC_REPR),2) AS PORC_REPR "+
-                                                                                  "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by PROFESOR, MATERIA, MATERIAD ORDER BY 8"),
+						  type: "POST",
+						  data:parametros,
+                          url:  "../base/getdatossqlSeg.php",
                           success: function(data){          	   
                        	materias=JSON.parse(data);  
                        	  jQuery.each(materias, function(clave, valorMat){	 
@@ -767,10 +801,13 @@
    function generaGrafica() {
 	   
 	   if ($("#checkrepmat").is(':checked')){ tipo='ROUND(AVG(PORC_REPR),2)'; } else {tipo='ROUND(AVG(PORC_APR),2)'; }
+	   elsql="SELECT MATERIAD as x, "+tipo+" AS y"+
+	   "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and CARRERA="+$("#lacarrera").val()+" group by MATERIAD ORDER By 2";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}														   
 	   $.ajax({
-	       type: "GET",
-	       url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT MATERIAD as x, "+tipo+" AS y"+
-	                                                               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and CARRERA="+$("#lacarrera").val()+" group by MATERIAD ORDER By 2"),
+		   type: "POST",
+		   data:parametros,
+	       url:  "../base/getdatossqlSeg.php",
 	       success: function(data){   
 	    	  datosgraf=JSON.parse(data);  	    	  
 	    	  graficaMateria.setData(datosgraf);
@@ -788,10 +825,13 @@
    function generaCarrera() {
 	   
 	   if ($("#checkrep").is(':checked')){ tipo='ROUND(AVG(PORC_REPR),2)'; } else {tipo='ROUND(AVG(PORC_APR),2)'; }
+	   elsql="SELECT CARRERAD as x, "+tipo+" AS y"+
+		"  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERAD ORDER By 2";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}														   
 	   $.ajax({
-	       type: "GET",
-	       url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CARRERAD as x, "+tipo+" AS y"+
-	                                                               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and "+cadCarrera+" group by CARRERAD ORDER By 2"),
+		   type: "POST",
+		   data:parametros,
+	       url:  "../base/getdatossqlSeg.php",
 	       success: function(data){   
 
 	    	  datosgraf=JSON.parse(data);  	    	  
@@ -808,10 +848,13 @@
  function generaGraficaSem() {
 
 	   if ($("#checkrepsem").is(':checked')){ tipo='ROUND(AVG(PORC_REPR),2)'; } else {tipo='ROUND(AVG(PORC_APR),2)'; }
+	   elsql="SELECT SEMESTRE as x, "+tipo+" AS y"+
+	   "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and CARRERA="+$("#elsemestre").val()+" group by SEMESTRE ORDER By 2";
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}  
 	   $.ajax({
-	       type: "GET",
-	       url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT SEMESTRE as x, "+tipo+" AS y"+
-	                                                               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and CARRERA="+$("#elsemestre").val()+" group by SEMESTRE ORDER By 2"),
+		   type: "POST",
+		   data:parametros,
+	       url:  "../base/getdatossqlSeg.php",
 	       success: function(data){   
 	    	  datosgraf=JSON.parse(data);  	    	  
 	    	  graficaSemestre.setData(datosgraf);	   
@@ -827,10 +870,13 @@
 
  function generaGraficaProf() {
 	   if ($("#checkrepprof").is(':checked')){ tipo='ROUND(AVG(PORC_REPR),2)'; } else {tipo='ROUND(AVG(PORC_APR),2)'; }
-	   $.ajax({
-	       type: "GET",
-	       url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT PROFESOR as x, "+tipo+" AS y"+
-	                                                               "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and CARRERA="+$("#elprofesor").val()+" group by PROFESOR ORDER By 2"),
+	   elsql="SELECT PROFESOR as x, "+tipo+" AS y"+
+	    "  from reprobacion where CICLO="+elciclo+" AND CORTE="+elcorte+" and CARRERA="+$("#elprofesor").val()+" group by PROFESOR ORDER By 2"
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+		   type: "POST",
+		   data:parametros,
+	       url:  "../base/getdatossqlSeg.php",
 	       success: function(data){   
 	    	  datosgraf=JSON.parse(data);  	    	  
 	    	  graficaProfesor.setData(datosgraf);	

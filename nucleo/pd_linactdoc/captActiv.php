@@ -165,10 +165,13 @@
 			 $("#laTabla").empty();
 			 $("#unidades").empty();
 			 $("#unidades").append("<option value=\"0\">Elija Unidad</option>");	
+			 elsql="select UNID_ID, UNID_NUMERO, UNID_DESCRIP"+		        		
+						 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			 $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select UNID_ID, UNID_NUMERO, UNID_DESCRIP"+		        		
-		        		 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''"),
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
 		         success: function(data){    		        	 
 		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 			        	 
 		        		 $("#unidades").append("<option value=\""+valor.UNID_ID+"\">"+utf8Decode(valor.UNID_NUMERO+ " "+valor.UNID_DESCRIP)+"</option>");       	     
@@ -268,13 +271,15 @@
 		
 
         function cargarActividades() {
-    	  
-			 $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from linactdoc a where "+
+    	     elsql="select * from linactdoc a where "+
 				          " GRUPO='<?php echo $_GET["grupo"];?>' and IDUNIDAD='"+$("#unidades").val()+"'"+
 				          " and CICLO='<?php echo $_GET["ciclo"];?>' and PROFESOR='<?php echo $_GET["profesor"];?>'"+
-				          " and MATERIA='<?php echo $_GET["materia"];?>' order by ID"),
+						  " and MATERIA='<?php echo $_GET["materia"];?>' order by ID";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			 $.ajax({
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
 		         success: function(data){    
 		        	 $("#lalista").empty();		                	
 		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 

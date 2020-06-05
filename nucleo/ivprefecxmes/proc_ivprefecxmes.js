@@ -39,15 +39,18 @@ function detInci(modulo,usuario,institucion, campus,essuper){
 	    
 	    $('#modalDocument').modal({show:true, backdrop: 'static'});
        	 
-	    
+		
+		elsql=select a.FECHA, a.DIA, a.HORA, b.MATERIAD, b.AULA, b.HORARIO, b.NOMBRE from vprefectura a, vdprefectura b  where a.ID=b.IDPREF"+
+		" and a.PREF_ANIO='"+table.rows('.selected').data()[0][1]+"'"+
+		" and a.PREF_MES='"+table.rows('.selected').data()[0][0]+"'"+
+		" and b.PROFESOR='"+table.rows('.selected').data()[0][2]+"'"+
+		" and b.INCIDENCIA='F' order by STR_TO_DATE(a.FECHA,'%d/%m/%Y')";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 	    $.ajax({
-	        	 type: "GET",
-	        	 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.FECHA, a.DIA, a.HORA, b.MATERIAD, b.AULA, b.HORARIO, b.NOMBRE from vprefectura a, vdprefectura b  where a.ID=b.IDPREF"+
-                                                                         " and a.PREF_ANIO='"+table.rows('.selected').data()[0][1]+"'"+
-                                                                         " and a.PREF_MES='"+table.rows('.selected').data()[0][0]+"'"+
-                                                                         " and b.PROFESOR='"+table.rows('.selected').data()[0][2]+"'"+
-                                                                         " and b.INCIDENCIA='F' order by STR_TO_DATE(a.FECHA,'%d/%m/%Y')"),
+				 type: "POST",
+				 data:parametros,
+	        	 url:  "../base/getdatossqlSeg.php",
 	        	 success: function(data){ 	        	   	        	
 	        	   	        	     generaTabla(JSON.parse(data));
 	        	   	                 },

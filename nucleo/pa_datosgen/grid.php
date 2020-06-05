@@ -239,17 +239,17 @@
 	
 	
 
-		
-		   $.ajax({
-		       type: "GET",
-		       url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT alum_matricula, alum_foto,alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
+		elsql="SELECT alum_matricula, alum_foto,alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
 		             " alum_carreraregd, alum_cicloins, getcuatrialum(alum_matricula, getciclo()) AS CUAT,"+
                      " alum_correo AS CORREO,alum_telefono AS TEL, alum_tutor AS TUTOR "+
-                     " FROM pvalumnos_cb  WHERE alum_matricula='<?php echo $_SESSION['usuario'];?>'",
+					 " FROM pvalumnos_cb  WHERE alum_matricula='<?php echo $_SESSION['usuario'];?>'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		   $.ajax({
+			   type: "POST",
+			   data:parametros,
+		       url:  "../base/getdatossqlSeg.php",
 		       success: function(data){  
-		    	      losdatos=JSON.parse(data);
-		    	      		    	     
-		    	        
+		    	      losdatos=JSON.parse(data);		    	      		    	    		    	        
 		    	      jQuery.each(losdatos, function(clave, valor) { 
 		    	    	
 		    	    	//text editable		    	  	   
@@ -292,13 +292,16 @@
 
 	  //Cargando el promedio 
 	      $('#promedio').html("<img width=\"25px\" height=\"25px\" src=\"../../imagenes/menu/preloader.gif\">");
-	      $('#reprobadas').html("<img width=\"25px\" height=\"25px\" src=\"../../imagenes/menu/preloader.gif\">");
-		   $.ajax({
-		       type: "GET",
-		       url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT "+
+		  $('#reprobadas').html("<img width=\"25px\" height=\"25px\" src=\"../../imagenes/menu/preloader.gif\">");
+		  elsql="SELECT "+
 		             " getpromedio (alum_matricula,'N') as PROM_SR, "+
 		             " getNumVecRep (alum_matricula) as NUMREP "+		                      
-                     " FROM pvalumnos_cb  WHERE alum_matricula='<?php echo $_SESSION['usuario'];?>'",
+					 " FROM pvalumnos_cb  WHERE alum_matricula='<?php echo $_SESSION['usuario'];?>'";
+		   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		   $.ajax({
+			   type: "POST",
+			   data:parametros,
+		       url:  "../base/getdatossqlSeg.php",
 		       success: function(data){  
 		    	      losdatos=JSON.parse(data);
 		    	      jQuery.each(losdatos, function(clave, valor) { 
@@ -372,13 +375,16 @@ function verMaterias(tipo){
                        $('#leyendap').addClass("label-danger"); 
                        $('#leyenda').html("Reprobadas");
                        coloric="red";
-                       } 
-	   $.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE, CONCAT(c.EMPL_NOMBRE,' ',c.EMPL_APEPAT,' ',c.EMPL_APEMAT) as PROFESORD "+
+					   } 
+	   elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE, CONCAT(c.EMPL_NOMBRE,' ',c.EMPL_APEPAT,' ',c.EMPL_APEMAT) as PROFESORD "+
                 " FROM dlista a, cmaterias b, pempleados c "+
      		   " where IFNULL(MATE_TIPO,'0') NOT IN ('T','I','AC') AND a.MATCVE=b.MATE_CLAVE and  a.LISTC15=c.EMPL_NUMERO and a.ALUCTR='<?php echo $_SESSION["usuario"];?>'"+eltipo+
-     		   " order by a.PDOCVE"),
+     		   " order by a.PDOCVE";
+       parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	   $.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){  
             losdatos=JSON.parse(data);                          
             jQuery.each(losdatos, function(clave, valor) { 

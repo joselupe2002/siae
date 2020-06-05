@@ -267,7 +267,7 @@
 
 		
 		$pdf->MultiCell(0,5,'La(El) que suscribe : '.utf8_decode($dataDepto[0]["NOMBRE"])." ".utf8_decode($dataDepto[0]["EMPL_FIRMAOF"]). ", por este medio se permite hacer de su ".
-		utf8_decode("conocimiento que lo(s) estudiantes que se enlistan a continuación de la carrera de ").$_GET["carrerad"]." han cumplido un total de ".
+		utf8_decode("conocimiento que lo(s) estudiantes que se enlistan a continuación de la carrera de ").utf8_decode($_GET["carrerad"])." han cumplido un total de ".
 		utf8_decode(" CINCO créditos."),0,'J', false);
 		$pdf->ln();
 		

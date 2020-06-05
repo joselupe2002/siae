@@ -104,9 +104,11 @@ function cargandoExamen(){
 		"</div>";
 	$("#contenido").append(cad);
 
+	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function (dataPre) {
 
 		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 
@@ -164,9 +166,11 @@ function cargandoExamen(){
 
 
 			sqRes="SELECT * from ed_respuestas WHERE matricula='"+usuario+"' and IDDETALLE='"+iddetalle+"'" ;
+			parametros={sql:sqRes,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
-				url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqRes),
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
 				success: function (dataRes) {	
 					jQuery.each(JSON.parse(dataRes), function(clave, valorRes) {						  
 						   $("#opcion_"+valorRes.IDPREGUNTA+"_"+valorRes.RESPUESTA).attr('checked', true);

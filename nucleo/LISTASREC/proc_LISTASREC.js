@@ -44,9 +44,12 @@ function listaInci(modulo,usuario,institucion, campus,essuper){
 	    $('#modalDocument').modal({show:true, backdrop: 'static'});
        	 
 
+		elsql="SELECT * FROM vdprefectura where IDPREF=" +table.rows('.selected').data()[0][0];
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	        	 type: "GET",
-	        	 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT * FROM vdprefectura where IDPREF=" +table.rows('.selected').data()[0][0]),
+				 type: "POST",
+				 data:parametros,
+	        	 url:  "../base/getdatossqlSeg.php",
 	        	 success: function(data){ 	        	   	        	
 	        	   	        	     generaTabla(JSON.parse(data));
 	        	   	                 },

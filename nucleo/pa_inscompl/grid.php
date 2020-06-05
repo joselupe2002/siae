@@ -309,13 +309,16 @@ function confirma(id,matricula,ciclo){
 
 
 function cargarActIns() {
-	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.ACTIVIDAD, b.ACTIVIDADD AS TIPO, b.ACTIVIDAD as NOMBREACT,b.INICIA, b.TERMINA, b.RESPONSABLED, b.CREDITOS,"+ 
+	elsql="SELECT a.ACTIVIDAD, b.ACTIVIDADD AS TIPO, b.ACTIVIDAD as NOMBREACT,b.INICIA, b.TERMINA, b.RESPONSABLED, b.CREDITOS,"+ 
         		 "c.PROM, b.LUNES, b.MARTES,b.MIERCOLES,b.JUEVES,b.VIERNES,b.SABADO,b.DOMINGO FROM einscompl a "+
         		 "left outer join ecalificagen c on (a.ACTIVIDAD=c.ACTIVIDAD and a.MATRICULA=c.MATRICULA)"+
         		 ", vecomplementaria b "+
-        		 "WHERE a.ACTIVIDAD=b.ID and a.MATRICULA='<?php echo $_SESSION['usuario']?>';"),
+				 "WHERE a.ACTIVIDAD=b.ID and a.MATRICULA='<?php echo $_SESSION['usuario']?>';"				 
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	 $.ajax({
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){
       	     generaTablaIns(JSON.parse(data));	        	     
                },
@@ -327,11 +330,14 @@ function cargarActIns() {
 
 
 function cargarAct(){
-	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.CICLO, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
+	    elsql="select a.CICLO, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
 	        		                                                   " a.AULA from vecomplementaria a where a.`CUPO`>a.INS AND a.`CICLO`=getciclo() and AUTORIZADO='VOLVERSLUEGO' "+
-	        		                                                   " and a.ID NOT IN (SELECT ACTIVIDAD FROM einscompl WHERE MATRICULA='<?php echo $_SESSION['usuario']?>');"),
+																	   " and a.ID NOT IN (SELECT ACTIVIDAD FROM einscompl WHERE MATRICULA='<?php echo $_SESSION['usuario']?>');"
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){
 
 	        	     generaTabla(JSON.parse(data));	        	     

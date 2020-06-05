@@ -181,10 +181,14 @@
 			 $("#laTabla").empty();
 			 $("#unidades").empty();
 			 $("#unidades").append("<option value=\"0\">Elija Unidad</option>");	
+			 elsql="select UNID_ID, UNID_NUMERO, UNID_DESCRIP"+		        		
+						 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''";
+			 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 			 $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select UNID_ID, UNID_NUMERO, UNID_DESCRIP"+		        		
-		        		 " from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''"),
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
 		         success: function(data){    		        	 
 		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 			        	 
 		        		 $("#unidades").append("<option value=\""+valor.UNID_ID+"\">"+utf8Decode(valor.UNID_NUMERO+ " "+valor.UNID_DESCRIP)+"</option>");       	     
@@ -203,12 +207,15 @@
 			 $("#laTabla").empty();
 			 $("#actividades").empty();
 			 $("#actividades").append("<option value=\"0\">Elija Unidad</option>");
-			 $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from linactdoc a where "+
+			 elsql="select * from linactdoc a where "+
 				          " GRUPO='<?php echo $_GET["grupo"];?>' and IDUNIDAD='"+$("#unidades").val()+"'"+
 				          " and CICLO='<?php echo $_GET["ciclo"];?>' and PROFESOR='<?php echo $_GET["profesor"];?>'"+
-				          " and MATERIA='<?php echo $_GET["materia"];?>' order by ID"),
+						  " and MATERIA='<?php echo $_GET["materia"];?>' order by ID";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			 $.ajax({
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
 		         success: function(data){    
 		        	 jQuery.each(JSON.parse(data), function(clave, valor) { 	
 		        		 $("#actividades").append("<option value=\""+valor.ID+"\">"+utf8Decode(valor.ACTIVIDAD)+"</option>");       	     
@@ -225,16 +232,19 @@
         function cargarAlumnos() {
 			 var ladefault="..\\..\\imagenes\\menu\\pdf.png";
 			 total=0; tne=0;
-			 $.ajax({
-		         type: "GET",
-				 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, "+
+			 elsql="select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, "+
 						 "concat(ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) AS NOMBRE, GPOCVE AS GRUPO, MATCVE AS MATERIA, LISTC5 AS PROFESOR,"+ 
 						 "(select count(*) from lintareasobs where MATRICULA=c.ALUM_MATRICULA and IDTAREA='"+$("#actividades").val()+"') AS NUMOBS,"+
 		        		 "PDOCVE as CICLO, ifnull(b.RUTA,'') AS RUTA, ifnull(b.FECHARUTA,'') as FECHARUTA,  ifnull(b.FECHAENV,'') as FECHAENV, b.REVISADA"+
 		        		 " from dlista a LEFT OUTER JOIN lintareas b ON (concat('"+$("#actividades").val()+"','_',a.ALUCTR)=b.AUX), falumnos c"+ 
 		        		 " where ALUCTR=ALUM_MATRICULA AND GPOCVE='<?php echo $_GET["grupo"];?>' "+
 		        		 " and PDOCVE='<?php echo $_GET["ciclo"];?>' and LISTC15='<?php echo $_GET["profesor"];?>'"+
-		        		 " and MATCVE='<?php echo $_GET["materia"];?>' ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE"),
+		        		 " and MATCVE='<?php echo $_GET["materia"];?>' ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE";
+			 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			 $.ajax({
+				 type: "POST",
+				 data:parametros,
+				 url:  "../base/getdatossqlSeg.php",
 		         success: function(data){    
 					   $("#laTabla").empty();										   
 		        	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
@@ -407,10 +417,13 @@
 		function mostrarObs(idact,matricula,numobs){
 			if (numobs>0) {
 				$("#infoObs").empty();
+				elsql="select * from lintareasobs where "+
+						"MATRICULA='"+matricula+"' and IDTAREA='"+idact+"'";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 				$.ajax({
-		         type: "GET",
-				 url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from lintareasobs where "+
-				        "MATRICULA='"+matricula+"' and IDTAREA='"+idact+"'"),
+				 type: "POST",
+				 data:parametros,
+				 url:  "../base/getdatossqlSeg.php",
 		         success: function(data){   
 					    cad="<ol>"; 
 					    jQuery.each(JSON.parse(data), function(clave, valor) { 

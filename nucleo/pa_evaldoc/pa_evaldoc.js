@@ -61,9 +61,11 @@ function cargarMaterias() {
     " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='EVALDOC'"+
     " and a.CICLO=b.CICL_CLAVE";
 
+    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
     $.ajax({
-    type: "GET",
-    url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+    type: "POST",
+    data:parametros,
+    url:  "../base/getdatossqlSeg.php",
     success: function(data){
         losdatos=JSON.parse(data);
         cad1="";cad2="";
@@ -71,16 +73,19 @@ function cargarMaterias() {
                 $("#elciclo").html(cad1);
                 $("#elciclod").html(cad2);
 
+
                 sqlmater="select e.ID, e.ALUCTR as MATRICULA,e.IDGRUPO,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
                 " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD, "+
                 " (select count(*) from ed_respuestas where IDDETALLE=e.ID and MATRICULA='"+elusuario+"' and TERMINADA='S') HIZO "+
                 " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE "+
                 " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE=getciclo() and e.BAJA='N'";
+                parametros={sql:sqlmater,dato:sessionStorage.co,bd:"Mysql"}
 
                 if (abierto>0) { 
                         $.ajax({
-                            type: "GET",
-                            url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlmater),
+                            type: "POST",
+                            data:parametros,
+                            url:  "../base/getdatossqlSeg.php",
                             success: function(data){        	    
                                     generaTabla(JSON.parse(data));	   
                                     $('#dlgproceso').modal("hide");      	     

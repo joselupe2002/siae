@@ -152,19 +152,25 @@ var matser="";
 
 	function cargaMapa () {
 		$("#mihoja").empty();
+		elsql="SELECT MAX(N) as N FROM (select CICL_CUATRIMESTRE,count(*) as N "+
+					   "from veciclmate where CICL_MAPA='<?php echo $_GET['mapa'];?>' group by CICL_CUATRIMESTRE) as miscuat ";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
-    		   type: "GET",
-    		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT MAX(N) as N FROM (select CICL_CUATRIMESTRE,count(*) as N "+
-    	    		   "from veciclmate where CICL_MAPA='<?php echo $_GET['mapa'];?>' group by CICL_CUATRIMESTRE) as miscuat "),
+			   type: "POST",
+			   data:parametros,
+    		   url:  "../base/getdatossqlSeg.php",
     		   success: function(data){  
     		       losdatos=JSON.parse(data);  
     		       jQuery.each(losdatos, function(clave, valor) { elmax=valor.N });
 
 
-    		       var elcampus=""; dircampus="";
+				   var elcampus=""; dircampus="";
+				   elsql="select * from campus where CAMP_CLAVE='<?php echo $_SESSION['CAMPUS'];?>'";
+				   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
     		       $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from campus where CAMP_CLAVE='<?php echo $_SESSION['CAMPUS'];?>'"),
+					   type: "POST",
+					   data:parametros,
+			           url:  "../base/getdatossqlSeg.php",
 			           success: function(dataEmpresa){  
 			           losdatosEmpr=JSON.parse(dataEmpresa);  
 			               jQuery.each(losdatosEmpr, function(clave, valor) {elcampus=valor.CAMP_DESCRIP; dircampus=valor.CAMP_DIRECCION;});			             
@@ -174,11 +180,14 @@ var matser="";
 
 	
 				 
-			       $.ajax({
-			           type: "GET",
-					   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select veciclmate.*, (SELECT COUNT(*) from `eseriacion` "+
+				   elsql="select veciclmate.*, (SELECT COUNT(*) from `eseriacion` "+
 					   " where seri_materia=cicl_materia and seri_mapa=CICL_MAPA) as numseriada from veciclmate "+
-					   " where CICL_MAPA='<?php echo $_GET['mapa'];?>' and (ifnull(CVEESP,0)=0 or ifnull(CVEESP,0)="+$("#especialidad").val()+") ORDER BY cicl_cuatrimestre, cicl_materia"),
+					   " where CICL_MAPA='<?php echo $_GET['mapa'];?>' and (ifnull(CVEESP,0)=0 or ifnull(CVEESP,0)="+$("#especialidad").val()+") ORDER BY cicl_cuatrimestre, cicl_materia";
+				   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				 $.ajax({
+					   type: "POST",
+					   data:parametros,
+					   url:  "../base/getdatossqlSeg.php",
 			           success: function(data){						
 			           losdatos=JSON.parse(data);  
 
@@ -364,10 +373,13 @@ var matser="";
 
 
 function getSeriadas(materia){
+	elsql="select * from eseriacion, cmaterias "+
+				"where SERI_MATERIAP=MATE_CLAVE and SERI_MAPA='<?php echo $_GET['mapa'];?>' and SERI_MATERIA='"+materia+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from eseriacion, cmaterias "+
-                "where SERI_MATERIAP=MATE_CLAVE and SERI_MAPA='<?php echo $_GET['mapa'];?>' and SERI_MATERIA='"+materia+"'"),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(dataSeriacion){  
         losdatosSer=JSON.parse(dataSeriacion);  
             jQuery.each(losdatosSer, function(claveSer, valorSer) {

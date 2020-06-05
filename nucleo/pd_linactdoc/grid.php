@@ -180,9 +180,12 @@
 
 function cargarMaterias() {
 	$('#dlgproceso').modal({show:true, backdrop: 'static'});
+	elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() "),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
        	   losdatos=JSON.parse(data);
        	   cad1="";cad2="";
@@ -201,13 +204,16 @@ function cargarMaterias() {
 
 
 	$('#dlgproceso').modal({show:true, backdrop: 'static'});
-	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, "+
+	elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='ENCUADRE'),'') AS RUTAENCUADRE, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='DIAGNOSTICA'),'') AS RUTADIAGNOSTICA "+                 
         		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>'"+
-				 " and CERRADOCAL='N'"),
+				 " and CERRADOCAL='N'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	 $.ajax({
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){        	    
       	        generaTabla(JSON.parse(data));	   
       	        $('#dlgproceso').modal("hide");      	     
