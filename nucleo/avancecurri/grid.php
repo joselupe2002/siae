@@ -351,12 +351,16 @@ var matser="";
 
    function getInfo(materia,elalumno){
 	   $('#lositems').empty();
-		
-	   $.ajax({
-           type: "GET",
-           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE, CONCAT(c.EMPL_NOMBRE,' ',c.EMPL_APEPAT,' ',c.EMPL_APEMAT) as PROFESORD "+
+
+	   elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE, CONCAT(c.EMPL_NOMBRE,' ',c.EMPL_APEPAT,' ',c.EMPL_APEMAT) as PROFESORD "+
                    " FROM dlista a, cmaterias b, pempleados c "+
-        		   " where a.MATCVE=b.MATE_CLAVE and  a.LISTC15=c.EMPL_NUMERO and a.ALUCTR='"+elalumno+"' and a.MATCVE='"+materia+"'"),
+        		   " where a.MATCVE=b.MATE_CLAVE and  a.LISTC15=c.EMPL_NUMERO and a.ALUCTR='"+elalumno+"' and a.MATCVE='"+materia+"'";
+
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	   $.ajax({
+		   type: "POST",
+		   data:parametros,
+           url:  "../base/getdatossqlSeg.php",
            success: function(data){  
                losdatos=JSON.parse(data);                          
                jQuery.each(losdatos, function(clave, valor) { 
@@ -385,11 +389,14 @@ var matser="";
 	   }
 
    function verAvance() {
-	   $.ajax({
-  		   type: "GET",
-  		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CARR_DESCRIP, ALUM_MAPA, CLAVEOF, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE "+
+	   elsql="SELECT CARR_DESCRIP, ALUM_MAPA, CLAVEOF, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE "+
 					   " FROM falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), "+
-					   " ccarreras b where ALUM_CARRERAREG=CARR_CLAVE and ALUM_MATRICULA='"+$("#alumnos").val()+"'"),
+					   " ccarreras b where ALUM_CARRERAREG=CARR_CLAVE and ALUM_MATRICULA='"+$("#alumnos").val()+"'";
+	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	   $.ajax({
+			 type: "POST",
+			 data:parametros,
+  		   url:  "../base/getdatossqlSeg.php",
   		   success: function(data){  
   			   losdatos=JSON.parse(data);  
 			   jQuery.each(losdatos, function(clave, valor) { 
@@ -416,20 +423,29 @@ var matser="";
     	$("#fondo").empty();
     	$("#fondo").append("<img src=\"../../imagenes/menu/esperar.gif\" style=\"background: transparent; width: 100px; height: 80px\"/>");
     	
-        $("#info").css("display","none");
+		$("#info").css("display","none");
+		
+		elsql="SELECT MAX(N) as N FROM (select CICL_CUATRIMESTRE,count(*) as N "+
+ 	    		   "from veciclmate where CICL_MAPA='"+elmapa+"' group by CICL_CUATRIMESTRE) as miscuat ";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
     	$.ajax({
- 		   type: "GET",
- 		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT MAX(N) as N FROM (select CICL_CUATRIMESTRE,count(*) as N "+
- 	    		   "from veciclmate where CICL_MAPA='"+elmapa+"' group by CICL_CUATRIMESTRE) as miscuat "),
+			type: "POST",
+			data:parametros,
+ 		   url:  "../base/getdatossqlSeg.php",
  		   success: function(data){  
  		       losdatos=JSON.parse(data);  
  		       jQuery.each(losdatos, function(clave, valor) { elmax=valor.N });
 
-			       $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select veciclmate.*, (SELECT COUNT(*) from `eseriacion` "+
+				   elsql2="select veciclmate.*, (SELECT COUNT(*) from `eseriacion` "+
 					   " where seri_materia=cicl_materia and seri_mapa=CICL_MAPA) as numseriada from veciclmate "+
-					   " where CICL_MAPA='"+elmapa+"' and (ifnull(CVEESP,0)=0 or ifnull(CVEESP,0)='"+laespecialidad+"') ORDER BY cicl_cuatrimestre, cicl_materia"),
+					   " where CICL_MAPA='"+elmapa+"' and (ifnull(CVEESP,0)=0 or ifnull(CVEESP,0)='"+laespecialidad+"') ORDER BY cicl_cuatrimestre, cicl_materia";
+
+				   parametros2={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}
+			       $.ajax({
+					   type: "POST",
+					   data:parametros2,
+			           url:  "../base/getdatossqlSeg.php",
 			           success: function(data){  
 			           losdatos=JSON.parse(data);  
 
@@ -496,12 +512,15 @@ var matser="";
 
 			    
 			    
-			    //buscamos las asignaturas que ya aprobo 
-
+				//buscamos las asignaturas que ya aprobo 
+				elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE FROM dlista a, cmaterias b "+
+							   " where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.LISCAL>=70";
+							   
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 				 $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE FROM dlista a, cmaterias b "+
-			        		   " where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.LISCAL>=70"),
+					   type: "POST",
+					   data:parametros,
+			           url:  "../base/getdatossqlSeg.php",
 			           success: function(data){  
 			               losdatos=JSON.parse(data);                            
 			               jQuery.each(losdatos, function(clave, valor) { 
@@ -514,10 +533,14 @@ var matser="";
 
 
 				//buscamos las asignaturas que cursa actualmente
+				elsql2="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL FROM dlista a, cmaterias b "+
+							   " where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.PDOCVE=getciclo()";
+							   
+				parametros2={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}
 				 $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL FROM dlista a, cmaterias b "+
-			        		   " where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.PDOCVE=getciclo()"),
+					   type: "POST",
+					   data:parametros2,
+			           url:  "../base/getdatossqlSeg.php",
 			           success: function(data){   
 			               losdatos=JSON.parse(data);                          
 			               jQuery.each(losdatos, function(clave, valor) { 
@@ -528,12 +551,14 @@ var matser="";
 			           }
 				 });
 
-
+				 elsql3="SELECT a.MATCVE, count(*) as N FROM dlista a"+
+			        		   " where a.ALUCTR='"+elalumno+"' GROUP BY MATCVE";
+				 parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
 				//numero de veces que ha cursado la asignatura
 				 $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.MATCVE, count(*) as N FROM dlista a"+
-			        		   " where a.ALUCTR='"+elalumno+"' GROUP BY MATCVE"),
+					   type: "POST",
+					   data:parametros3,
+			           url:  "../base/getdatossqlSeg.php",
 			           success: function(data){   
 			               losdatos=JSON.parse(data);                          
 			               jQuery.each(losdatos, function(clave, valor) { 
@@ -586,9 +611,12 @@ var matser="";
 					           " CARR_DESCRIP as CARRERA, getavance('"+elalumno+"') as CREDITOS, getAvanceMat('"+elalumno+"') as MATERIAS, "+
 					           " getPromedio('"+elalumno+"','N') as PROMEDIO_SR, getPromedio('"+elalumno+"','S') as PROMEDIO_CR   FROM falumnos a, ccarreras b"+
 							   " where a.ALUM_MATRICULA='"+elalumno+"' and a.ALUM_CARRERAREG=b.CARR_CLAVE";				
-				 $.ajax({
-			           type: "GET",
-			           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(misql),
+				
+				 parametros={sql:misql,dato:sessionStorage.co,bd:"Mysql"}			 
+			    $.ajax({
+					   type: "POST",
+					   data:parametros,
+			           url:  "../base/getdatossqlSeg.php",
 			           success: function(data){   
 						   losdatos=JSON.parse(data);   
 						                        
@@ -635,8 +663,10 @@ var matser="";
 			
 
 		misqlperfil="SELECT IDPER,DESCRIP,'100%' AS AVANCE FROM falumnos, perfilegreso where ALUM_MAPA=MAPA and ALUM_MATRICULA='"+elalumno+"' ORDER BY IDPER";				
-		$.ajax({type: "GET",
-			    url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(misqlperfil),
+		parametros={sql:misqlperfil,dato:sessionStorage.co,bd:"Mysql"}		
+		$.ajax({type: "POST",
+			    data:parametros,
+			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataperfil){   
 					losdatosperfil=JSON.parse(dataperfil);  
 					var cont=0; 
@@ -660,8 +690,10 @@ var matser="";
 								"	(SELECT MATERIA FROM vmatperfil WHERE MAPA='"+$("#elmapa").html()+"' and IDPERFIL="+$("#idper_"+i).html()+")) AS APROBADAS"+
 								" FROM DUAL ";		
 								
-						$.ajax({type: "GET",
-								url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(misqlav),
+						parametros={sql:misqlav,dato:sessionStorage.co,bd:"Mysql"}	
+						$.ajax({type: "POST",
+							    data:parametros,
+								url:  "../base/getdatossqlSeg.php",
 								success: function(dataav){   
 									losdatosav=JSON.parse(dataav);  
 									jQuery.each(losdatosav, function(claveav, valorav) { 

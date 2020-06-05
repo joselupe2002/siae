@@ -6,11 +6,13 @@ function changeACTIVIDAD(DATO, usuario, institucion, campus){
 	elsql="select y.ACTIVIDADD as TIPO, count(*) as N from einscompl x, vecomplementaria y where x.ACTIVIDAD=y.ID and x.MATRICULA='"+$("#MATRICULA").val()+"' and "+ 
           " y.TIPO in (select a.TIPO from ecomplementaria a where a.ID='"+$("#ACTIVIDAD").val()+"')";
 	
-	agregarEspera("imggif_ACTIVIDAD",null);
-	
+   agregarEspera("imggif_ACTIVIDAD",null);
+   
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url: 'getdatossql.php?sql='+encodeURI(elsql)+"&sel=0&bd=Mysql", 
+        type: "POST",
+        data:parametros,
+        url: 'getdatossqlSeg.php', 
         success: function(data){ 
         	 losdatos=JSON.parse(data);
         	 jQuery.each(losdatos, function(clave, valor){

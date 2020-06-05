@@ -119,9 +119,12 @@ function obtenerHorarios(id,elciclo,linea){
 	elsql="SELECT PROFESOR,PROFESORD,MATERIA,MATERIAD,SIE,LUNES_1,MARTES_1,MIERCOLES_1,JUEVES_1,VIERNES_1,SABADO_1,DOMINGO_1,"+
 	       "LUNES_A,MARTES_A,MIERCOLES_A,JUEVES_A, VIERNES_A, SABADO_A, DOMINGO_A "+
 		   " FROM `vedgrupos` b where b.`CICLO`='"+elciclo+"' and  IDDETALLE<>"+id;
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(data){  
 			
 			   for (x=3; x<=9; x++) { 
@@ -385,7 +388,7 @@ function addSELECTJSON(nombre,contenedor,eljson) {
     }); 
 }
 
-function generaTablaBus(modulo,contenedor, sql, titulos) {
+function generaTablaBus(modulo,contenedor, elsql, titulos) {
 	
 	$("#"+contenedor).empty();
 	$('.tableTools-container').empty();
@@ -396,9 +399,12 @@ function generaTablaBus(modulo,contenedor, sql, titulos) {
 	
 	mostrarEspera("esperaDatos","grid_"+modulo,"Cargando la información solicitada");
 	
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
         	losdatos=JSON.parse(data);
        	    var myTable = $('#G_'+contenedor).DataTable( {
@@ -542,10 +548,12 @@ function generaTablaBus(modulo,contenedor, sql, titulos) {
 
 
 /*================================================FUNCION PAR AGENERA TABLA DE TADOTS=================================================*/
-function generaTablaDin(nombreTabla, sql, titulos, campos) {
+function generaTablaDin(nombreTabla, elsql, titulos, campos) {
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
 			  
        	       losdatos=JSON.parse(data);	  
@@ -578,10 +586,12 @@ function generaTablaDin(nombreTabla, sql, titulos, campos) {
 }
 
 
-function generaTablaDinBtn(nombreTabla, sql, titulos, campos) {
+function generaTablaDinBtn(nombreTabla, elsql, titulos, campos) {
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
        	       losdatos=JSON.parse(data);	  
 				c=0;
@@ -700,9 +710,12 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
 
 	elsql=getSQLTipo(tipo,otrascondiciones);
 	if (tipo=='PROPIO') {elsql=sql;}
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
        	       losdatos=JSON.parse(data);   
        	       eltipo="";
@@ -730,9 +743,12 @@ function addSELECT_ST(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect,
 
 	elsql=getSQLTipo(tipo,otrascondiciones);
 	if (tipo=='PROPIO') {elsql=sql;}
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
        	       losdatos=JSON.parse(data);   
        	       eltipo="";
@@ -798,16 +814,19 @@ function setSesion(contenedor,campo){
 
 /*==================================================ACTUALIZA LOS DATOS DE UN SELECT =============================================*/
 
-function actualizaSelect(nombre,sql,tipoSelect,eltipo){
+function actualizaSelect(nombre,elsql,tipoSelect,eltipo){
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
 	 $("#"+nombre).empty();
 	 $("#"+nombre).append("<option value=\"0\">Elija una opci&oacute;n</option>");
 	 $("#"+nombre).trigger("chosen:updated");
 	 fuera="";
 	 if (eltipo=="FUERA") {fuera="nucleo/";}
+
+	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
-        type: "GET",
-        url:  "../"+fuera+"base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+		type: "POST",
+		data:parametros,
+        url:  "../"+fuera+"base/getdatossqlSeg.php",
         success: function(data){  
 			losdatos=JSON.parse(data);
        	 jQuery.each(JSON.parse(data), function(clave, valor) { 	
@@ -1300,7 +1319,7 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 					 type: "POST",
 					 data:parametros,
 		             url: "dameselectSeg.php", 
-		             success: function(data){    		            	  
+		             success: function(data){		            	  
 		                  $("#"+nombre).html(data);   
 		          },
 		          error: function(data) {
@@ -1650,11 +1669,13 @@ function verPlaneacion(materia,materiad, grupo, ciclo, contenedor){
 }
 
 function cargarFechas(materia,grupo,ciclo) {
-
+elsql="select * from  vfechasmateria a where a.MATCVE='"+materia+
+"' and GPOCVE='"+grupo+"' and PDOCVE='"+ciclo+"' order by TMACVE,SMACVE ";
+parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 $.ajax({
-   type: "GET",
-   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from  vfechasmateria a where a.MATCVE='"+materia+
-		   "' and GPOCVE='"+grupo+"' and PDOCVE='"+ciclo+"' order by TMACVE,SMACVE "),
+   type: "POST",
+   data:parametros,
+   url:  "../base/getdatossqlSeg.php",
    success: function(data){    
 		 $("#laTabla").empty();
 		 $("#laTabla").append("<table id=tabFechas class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
@@ -1705,10 +1726,14 @@ $.ajax({
 
 function cargarFechasEval(materia,grupo,ciclo) {
    var ladefault="..\\..\\imagenes\\menu\\pdf.png";	
+   elsql="select * from  eplaneacion a, eunidades b where a.MATERIA='"+materia+
+   "' and (a.NUMUNIDAD=b.UNID_NUMERO and a.MATERIA=b.UNID_MATERIA AND UNID_PRED='') and GRUPO='"+grupo+"' and CICLO='"+ciclo+"' order by NUMUNIDAD ";
+   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
    $.ajax({
-	  type: "GET",
-	  url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from  eplaneacion a, eunidades b where a.MATERIA='"+materia+
-			  "' and (a.NUMUNIDAD=b.UNID_NUMERO and a.MATERIA=b.UNID_MATERIA AND UNID_PRED='') and GRUPO='"+grupo+"' and CICLO='"+ciclo+"' order by NUMUNIDAD "),
+	  type: "POST",
+	  data:parametros,
+	  url:  "../base/getdatossqlSeg.php",
 	  success: function(data){    
 
 			$("#laTablaEval").empty();
@@ -1743,9 +1768,11 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 
 	mostrarEspera("esperacalculo","grid_"+modulo,"Calculando...");
 	sqlUni="select count(*) as N  from eunidades where UNID_MATERIA='"+materia+"' and UNID_PRED=''";
+	parametros={sql:sqlUni,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlUni),
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(data){    
 			   jQuery.each(JSON.parse(data), function(clave, valor) { 
 				     numUni=valor.N;
@@ -1764,9 +1791,11 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 						" from dlista a where a.PDOCVE='"+ciclo+"' and a.MATCVE='"+materia+"'"+
 						" and a.GPOCVE='"+grupo+"'";		
 			 
+			parametros={sql:sqlLista,dato:sessionStorage.co,bd:"Mysql"}
 			 $.ajax({
-				type: "GET",
-				url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlLista),
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
 				success: function(dataLista){  
 					   laLista=JSON.parse(dataLista);  
 					   jQuery.each(laLista, function(clave, valor) { 
@@ -1820,9 +1849,11 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 function colocarCiclo(contenedor,tipo) {
 	ciclo="SIN CICLO";
 	sqlCiclo="SELECT CICL_CLAVE, CICL_DESCRIP FROM ciclosesc where CICL_CLAVE=getciclo()";		
+	parametros={sql:sqlCiclo,dato:sessionStorage.co,bd:"Mysql"}
     $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlCiclo),
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){            
                 jQuery.each(JSON.parse(data), function(clave, valor) { 
 					if (tipo=="CLAVE") {cad=valor.CICL_CLAVE;}

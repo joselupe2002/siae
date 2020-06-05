@@ -91,9 +91,12 @@ contMat=1;
 		cadPeriodo+
 		" and b.ALUM_CARRERAREG="+$("#selCarreras").val()+" and b.ALUM_MAPA='"+$("#selPlanes").val()+"' ORDER BY ALUM_MATRICULA";
 		mostrarEspera("esperahor","grid_avancegral","Cargando Datos...");
+
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  				      
 					  generaTablaAvances(JSON.parse(data));   
 						 
@@ -101,9 +104,11 @@ contMat=1;
 								"IFNULL(CVEESP,0) as CVEESP from veciclmate a where a.CICL_MAPA='"+$("#selPlanes").val()+"'"+
 								" AND IFNULL(CICL_TIPOMAT,0) NOT IN ('T') "+
 								" order by IFNULL(CVEESP,0),CICL_CUATRIMESTRE, CICL_MATERIAD ";
+						parametros2={sql:elsqlMat,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlMat),
+							type: "POST",
+							data:parametros2,
+							url:  "../base/getdatossqlSeg.php",
 							success: function(dataMat){  											      
 									generaTablaMaterias(JSON.parse(dataMat));  
 									
@@ -111,22 +116,26 @@ contMat=1;
 										elsqlPaso="select ALUCTR,MATCVE, IF(MAX(PDOCVE)='"+$("#elciclo").html()+"','A','C') AS CICLO, max(LISCAL) AS LISCAL, count(*) as VECES "+
 										" from dlista n where ALUCTR='"+$("#alum_"+i).html()+"'"+ 
 										" group by ALUCTR,MATCVE";	
-														
+										parametros3={sql:elsqlPaso,dato:sessionStorage.co,bd:"Mysql"}			
 											$.ajax({
-												type: "GET",
-												url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,
+												type: "POST",
+												data:parametros3,
+												url:  "../base/getdatossqlSeg.php",
 												success: function(dataPaso){  											      
 													jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
 														for (j=1;j<contMat;j++) {														
 															if (valorPaso.MATCVE==$("#mat_"+j).html()) {
 																if  (valorPaso.CICLO=='A') { // asignaturas del ciclo A = Acctual 
-																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa green fa-thumbs-up bigger-160\"><i>"); 														
+																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa green fa-thumbs-up bigger-160\"><i>C"); 																	
+																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title","CURSANDO ACTUALMENTE "+$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title"));												
 																}
 																if ((valorPaso.CICLO=='C') && (valorPaso.LISCAL>=70)) {
-																	  $("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa blue fa-check bigger-160\"><i>"); 															
+																	  $("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa blue fa-check bigger-160\"><i>A"); 															
+																	  $("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title","APROBADA "+$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title"));												
 																} 
 																if ((valorPaso.CICLO=='C') && (valorPaso.LISCAL<70)) {
-																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa red fa-check bigger-160\"><i>"); 															
+																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa red fa-check bigger-160\"><i>R"); 	
+																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title","REPROBADA "+$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title"));																										
 															     }
 																$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).append("<span class=\"small text-danger\">"+valorPaso.VECES+"<span>"); 
 																//alert (valorPaso.ALUCTR+" "+ valorPaso.MATCVE+" "+$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html()+ " ");

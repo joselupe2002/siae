@@ -248,7 +248,7 @@
         $pdf->Ln(5);
         $pdf->SetX(120);
         $pdf->Cell(35,5,'CLAVE: :',0,0,'L');
-        $pdf->Cell(35,5,$dataGen[0]["inst_fechaof"],0,0,'L');
+        $pdf->Cell(35,5,$dataGen[0]["inst_claveof"],0,0,'L');
         $pdf->Ln(5);
         $pdf->SetX(120);
         $pdf->Cell(35,5,'ASUNTO: :',0,0,'L');

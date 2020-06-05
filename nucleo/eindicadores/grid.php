@@ -172,11 +172,12 @@ p
                     $("#tablaind").append("<table id=\"mitabla\" class=\"table  table-condensed table-striped table-bordered table-sm  table-hover\">"); 
 
 
-            	    
-                    //console.log("../base/getdatossql.php?sql=SELECT "+colsql+" FROM "+$("#indicador").val());
+            	    elsql="SELECT "+colsql+" FROM "+$("#indicador").val()";
+                    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
                     $.ajax({
-                        type: "GET",
-                        url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT "+colsql+" FROM "+$("#indicador").val(),
+						type: "POST",
+						data:parametros,
+                        url:  "../base/getdatossqlSeg.php",
                         success: function(data){  
                         	 losdatos=JSON.parse(data);
 

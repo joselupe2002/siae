@@ -168,9 +168,12 @@ function copiarima(){
 
 function changemodu_pred(elemento, usuario, institucion, campus){
 
+	elsql="SELECT modu_aplicacion FROM CMODULOS WHERE modu_modulo='"+$("#modu_pred").val()+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=SQLite&sql=SELECT modu_aplicacion FROM CMODULOS WHERE modu_modulo='"+$("#modu_pred").val()+"'",
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){  
      	      losdatos=JSON.parse(data);  
      	        

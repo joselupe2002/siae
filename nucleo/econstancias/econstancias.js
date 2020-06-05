@@ -182,18 +182,23 @@ function colocaPie(consec,matricula,nombre,carrera) {
 function creaConsCal (elciclo,matricula,consec,anio){
 	$("#encabezadoCons").empty();$("#cuerpoCons").empty();$("#calCons").empty();$("#pieCons").empty();
 	mostrarEspera("esperacons","grid_econstancias", "Cargando Datos..");
-    elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	
+	parametros={sql:elsqlGen,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?sql="+encodeURI(elsqlGen)+"&sel=0&bd=SQLite",
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(dataGen){ 
-			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_fechaof;});
+			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
 			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
 			
+			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-			    type: "GET",
-			    url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCic)+"&sel=0&bd=Mysql",
+				type: "POST",
+				data:parametros2,
+			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
 				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
@@ -208,9 +213,11 @@ function creaConsCal (elciclo,matricula,consec,anio){
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?sql="+encodeURI(elsqlAlu)+"&sel=0&bd=Mysql",
+							type: "POST",
+							data:parametros3,
+							url:  "../base/getdatossqlSeg.php",
 							success: function(dataAlu){ 
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
@@ -222,9 +229,11 @@ function creaConsCal (elciclo,matricula,consec,anio){
 									         "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,"+
 											 "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas "+											
 											 " where MATRICULA='"+matricula+"' AND CAL>=70 ORDER BY SEMESTRE, MATERIAD";
+									parametros4={sql:elsqlCal,dato:sessionStorage.co,bd:"Mysql"}
 									$.ajax({
-										type: "GET",
-										url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCal)+"&sel=0&bd=Mysql",
+										type: "POST",
+										data:parametros4,
+										url:  "../base/getdatossqlSeg.php",
 										success: function(dataCal){ 
 											//alert (dataCal);											
 											colocaCalificaciones(JSON.parse(dataCal));	
@@ -279,18 +288,23 @@ function colocaHorarios(dataCal) {
 function creaConsHor(elciclo,matricula,consec,anio){
 	$("#encabezadoCons").empty();$("#cuerpoCons").empty();$("#calCons").empty();$("#pieCons").empty();
 	mostrarEspera("esperacons","grid_econstancias", "Cargando Datos..");
-    elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	
+	parametros={sql:elsqlGen,dato:sessionStorage.co,bd:"SQLite"}
+
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?sql="+encodeURI(elsqlGen)+"&sel=0&bd=SQLite",
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(dataGen){ 
-			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_fechaof;});
+			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
 			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
-			
+			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-			    type: "GET",
-			    url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCic)+"&sel=0&bd=Mysql",
+				type: "POST",
+				data:parametros2,
+			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
 				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
@@ -305,9 +319,11 @@ function creaConsHor(elciclo,matricula,consec,anio){
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?sql="+encodeURI(elsqlAlu)+"&sel=0&bd=Mysql",
+							type: "POST",
+							data:parametros3,
+							url:  "../base/getdatossqlSeg.php",
 							success: function(dataAlu){ 
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
@@ -320,9 +336,11 @@ function creaConsHor(elciclo,matricula,consec,anio){
 									" AS REP from vhorarioscons a "+
 									"left outer join pempleados i on (i.EMPL_NUMERO=LISTC15) "+
 									" where a.ALUCTR='"+matricula+"' AND a.PDOCVE='"+elciclo+"'";
+									parametros4={sql:elsqlCal,dato:sessionStorage.co,bd:"Mysql"}
 									$.ajax({
-										type: "GET",
-										url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCal)+"&sel=0&bd=Mysql",
+										type: "POST",
+										data:parametros4,
+										url:  "../base/getdatossqlSeg.php",
 										success: function(dataCal){ 
 											//alert (dataCal);											
 											colocaHorarios(JSON.parse(dataCal));	
@@ -401,18 +419,21 @@ function colocaPeriodos(dataCal) {
 function creaConsPer(elciclo,matricula,consec,anio){
 	$("#encabezadoCons").empty();$("#cuerpoCons").empty();$("#calCons").empty();$("#pieCons").empty();
 	mostrarEspera("esperacons","grid_econstancias", "Cargando Datos..");
-    elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	parametros={sql:elsqlGen,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?sql="+encodeURI(elsqlGen)+"&sel=0&bd=SQLite",
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(dataGen){ 
-			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_fechaof;});
+			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
 			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
-			
+			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}			
 			$.ajax({
-			    type: "GET",
-			    url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCic)+"&sel=0&bd=Mysql",
+				type: "POST",
+				data:parametros2,
+			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
 				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
@@ -427,9 +448,11 @@ function creaConsPer(elciclo,matricula,consec,anio){
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?sql="+encodeURI(elsqlAlu)+"&sel=0&bd=Mysql",
+							type: "POST",
+							data:parametros3,
+							url:  "../base/getdatossqlSeg.php",
 							success: function(dataAlu){ 
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
@@ -442,9 +465,11 @@ function creaConsPer(elciclo,matricula,consec,anio){
 									"TCAL,TCALCONS, CICLO, CICLOD, CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM vconstperiodo "+
 									"where MATRICULA='"+matricula+"' AND CAL>=70 "+
 									"and TIPOMAT NOT IN ('T','I','AC','SS')  ORDER BY CICLO,SEMESTRE, MATERIAD";
+									parametros4={sql:elsqlCal,dato:sessionStorage.co,bd:"Mysql"}
 									$.ajax({
-										type: "GET",
-										url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCal)+"&sel=0&bd=Mysql",
+										type: "POST",
+										data:parametros4,
+										url:  "../base/getdatossqlSeg.php",
 										success: function(dataCal){ 
 											//alert (dataCal);											
 											colocaPeriodos(JSON.parse(dataCal));	
@@ -468,18 +493,21 @@ function creaConsPer(elciclo,matricula,consec,anio){
 function creaConsIns(elciclo,matricula,consec,anio){
 	$("#encabezadoCons").empty();$("#cuerpoCons").empty();$("#calCons").empty();$("#pieCons").empty();
 	mostrarEspera("esperacons","grid_econstancias", "Cargando Datos..");
-    elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	elsqlGen="SELECT * from INSTITUCIONES where _INSTITUCION='ITSM'";
+	parametros={sql:elsqlGen,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?sql="+encodeURI(elsqlGen)+"&sel=0&bd=SQLite",
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(dataGen){ 
-			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_fechaof;});
+			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
 			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
-			
+			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-			    type: "GET",
-			    url:  "../base/getdatossql.php?sql="+encodeURI(elsqlCic)+"&sel=0&bd=Mysql",
+				type: "POST",
+				data:parametros2,
+			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
 				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
@@ -494,9 +522,11 @@ function creaConsIns(elciclo,matricula,consec,anio){
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?sql="+encodeURI(elsqlAlu)+"&sel=0&bd=Mysql",
+							type: "post",
+							data:parametros3,
+							url:  "../base/getdatossqlSeg.php",
 							success: function(dataAlu){ 
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,

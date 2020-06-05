@@ -161,12 +161,16 @@ function agregarFiltros(modulo, nombre, latabla,elusuario){
 	     $("#tabCampos").append("<tbody id=\"cuerpo\">");
 
 	 	    
-	 	    
+		elsql="SELECT colum_name, comments,  IFNULL(derc_values,'') as derc_values FROM ALL_COL_COMMENT  a "+
+		" LEFT OUTER JOIN SDERCAMPOS ON (colum_name=derc_campo and derc_modulo=a.table_name and derc_usuario='"+elusuario+"')"+
+		" where a.table_name='"+latabla+"' ";
+
+		 parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
+
 	 	   $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=SQLite&sql="+encodeURI("SELECT colum_name, comments,  IFNULL(derc_values,'') as derc_values FROM ALL_COL_COMMENT  a "+
-                     " LEFT OUTER JOIN SDERCAMPOS ON (colum_name=derc_campo and derc_modulo=a.table_name and derc_usuario='"+elusuario+"')"+
-                     " where a.table_name='"+latabla+"' "),
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 	        	   
 	        	   todasColumnas=JSON.parse(data);  
@@ -194,14 +198,18 @@ table = $("#G_"+modulo).DataTable();
 if (table.rows('.selected').data().length>0) {   
 	  
 	    $('#modalPermisos').modal({show:true, backdrop: 'static'});
-	    	  
+			  
+		elsql="select distinct(modu_modulo) as modu_modulo, modu_pred, modu_descrip, "+
+		"modu_aplicacion, modu_tabla, modu_tablagraba, modu_version, modu_ejecuta, modu_icono, modu_imaico, modu_cancel, modu_teclarap, "+
+		"modu_auxiliar, modu_automatico, modu_pagina ,(SELECT count(*) FROM SPROCESOS WHERE proc_modulo=modu_modulo) as tieneproc"+
+		" from Cmodulos where  modu_cancel='N' and modu_auxiliar<>'S'"+
+		" order by modu_aplicacion, modu_pred, modu_descrip ASC";
+
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=SQLite&sql="+encodeURI("select distinct(modu_modulo) as modu_modulo, modu_pred, modu_descrip, "+
-	        		   "modu_aplicacion, modu_tabla, modu_tablagraba, modu_version, modu_ejecuta, modu_icono, modu_imaico, modu_cancel, modu_teclarap, "+
-                       "modu_auxiliar, modu_automatico, modu_pagina ,(SELECT count(*) FROM SPROCESOS WHERE proc_modulo=modu_modulo) as tieneproc"+
-                       " from Cmodulos where  modu_cancel='N' and modu_auxiliar<>'S'"+
-                       " order by modu_aplicacion, modu_pred, modu_descrip ASC"),
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 	           losdatos=JSON.parse(data);  
 	        	
@@ -263,9 +271,12 @@ if (table.rows('.selected').data().length>0) {
 		                             
 		                  //Buscamos si tiene procesos 
 		                  if (valor.tieneproc>0) {
+							  elsql="SELECT proc_proceso, proc_descrip from SPROCESOS where proc_modulo='"+valor.modu_modulo+"'";
+							  parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 			        	      $.ajax({ 
-			        	             type: "GET",
-			   	                     url:  "../base/getdatossql.php?bd=SQLite&sql="+encodeURI("SELECT proc_proceso, proc_descrip from SPROCESOS where proc_modulo='"+valor.modu_modulo+"'"),
+									 type: "POST",
+									 data:parametros,
+			   	                     url:  "../base/getdatossqlSeg.php",
 			   	                      success: function(data){  
 			   	                    	    	                    	  
 			   	                          misProcesos=JSON.parse(data);  
@@ -288,10 +299,14 @@ if (table.rows('.selected').data().length>0) {
 	        	      
 	        	
 	        	      
-	        	      // Buscamos los permisos que tiene el usuarios sobrelos procesos 
+					  // Buscamos los permisos que tiene el usuarios sobrelos procesos 
+					  elsql="SELECT derp_proceso from SDERPROCESOS where derp_usuario='"+table.rows('.selected').data()[0][0]+"'";
+
+					  parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	        	      $.ajax({ 
-	        	             type: "GET",
-	   	                     url:  "../base/getdatossql.php?bd=SQLite&sql="+encodeURI("SELECT derp_proceso from SDERPROCESOS where derp_usuario='"+table.rows('.selected').data()[0][0]+"'"),
+							 type: "POST",
+							 data:parametros,
+	   	                     url:  "../base/getdatossqlSeg.php",
 	   	                      success: function(data){  	   	                    	    	                    	 
 	   	                          misPermisosProc=JSON.parse(data);               
 	   	                           jQuery.each(misPermisosProc, function(clavePerProc, valorPerProc) {	   	                        	    
@@ -516,9 +531,12 @@ function ejecutaSQL(elsql){
 }
 
 function dameSQL (elsql,usuario) {
+	        misql="SELECT * from SDERMODU where derm_usuario='"+usuario+"'";
+	        parametros={sql:misql,dato:sessionStorage.co,bd:$("#labase").val()}
 			$.ajax({
-				type: "GET",
-				url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from SDERMODU where derm_usuario='"+usuario+"'")+"&bd="+$("#labase").val(),
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
 				success: function(data){					
 					losdatos=JSON.parse(data); 
 					jQuery.each(losdatos, function(clave, valor) { 
@@ -530,10 +548,14 @@ function dameSQL (elsql,usuario) {
 														  "','"+valor.derm_edita+"',"+"'"+valor.derm_borra+"')";
 					   $("#"+elsql).append(cad+"<;>\n");					  
 				   });   	
+
+				   otrosql="SELECT * from SDERPROCESOS where derp_usuario='"+usuario+"'"
+				   parametros={sql:otrosql,dato:sessionStorage.co,bd:$("#labase").val()}
 				   
 			        $.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?sql="+encodeURI("SELECT * from SDERPROCESOS where derp_usuario='"+usuario+"'")+"&bd="+$("#labase").val(),
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
 							success: function(data){
 								
 								losdatos=JSON.parse(data);  							      	      

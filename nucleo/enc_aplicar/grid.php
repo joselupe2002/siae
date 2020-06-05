@@ -147,9 +147,12 @@
 
 		function cargarCiclo() {
 
+			elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-		        type: "GET",
-		        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() "),
+				type: "POST",
+				data:parametros,
+		        url:  "../base/getdatossqlSeg.php",
 		        success: function(data){
 		       	   losdatos=JSON.parse(data);
 		       	   cad1="";cad2="";

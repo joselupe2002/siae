@@ -64,24 +64,33 @@ function horarios(modulo,usuario,institucion, campus,essuper){
 	        $("#grid_"+modulo).append(script);
 	    }
 	    
-	    $('#modalDocument').modal({show:true, backdrop: 'static'});
+		$('#modalDocument').modal({show:true, backdrop: 'static'});
+		
+		elsql="SELECT count(*) as NUM FROM edgrupos WHERE DGRU_GRUPO='"+table.rows('.selected').data()[0][0]+"'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT count(*) as NUM FROM edgrupos WHERE DGRU_GRUPO='"+table.rows('.selected').data()[0][0]+"'",
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 	        	      losdatos=JSON.parse(data);  
 	        	      
 	        	      jQuery.each(losdatos, function(clave, valor) { hay=valor.NUM; });
 	        
-	        	    	  if (hay<=0) {	        	    			        	    	
+	        	    	  if (hay<=0) {	 
+							  
+							 elsql="SELECT 'SN' as id, CICL_MATERIA as materia, CICL_MATERIAD as materiad,  '' as profesor, CICL_HT AS ht, CICL_HP as hp,"+
+							 "'' as lunes, '' as martes, '' as miercoles, '' as jueves, '' as viernes, '' as sabado, '' as domingo,  "+
+							 "'' as a_lunes, '' as a_martes, '' as a_miercoles, '' as a_jueves, '' as a_viernes, '' as a_sabado, '' as a_domingo, '30' as cupo "+
+							 
+							 " FROM veciclmate WHERE CICL_MAPA='"+table.rows('.selected').data()[0][5]+"' AND " +
+							   "CICL_CUATRIMESTRE='"+table.rows('.selected').data()[0][7]+"'";
+
+							 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	        	    		  $.ajax({
-	        	   	           type: "GET",
-	        	   	           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT 'SN' as id, CICL_MATERIA as materia, CICL_MATERIAD as materiad,  '' as profesor, CICL_HT AS ht, CICL_HP as hp,"+
-	        	   	                 "'' as lunes, '' as martes, '' as miercoles, '' as jueves, '' as viernes, '' as sabado, '' as domingo,  "+
-	        	   	                 "'' as a_lunes, '' as a_martes, '' as a_miercoles, '' as a_jueves, '' as a_viernes, '' as a_sabado, '' as a_domingo, '30' as cupo "+
-	        	   	                 
-	        	   	                 " FROM veciclmate WHERE CICL_MAPA='"+table.rows('.selected').data()[0][5]+"' AND " +
-	        	   	           		"CICL_CUATRIMESTRE='"+table.rows('.selected').data()[0][7]+"'",
+								  type: "POST",
+								  data:parametros,
+	        	   	           url:  "../base/getdatossqlSeg.php",
 	        	   	           success: function(data){ 
 	        	   	        	
 	        	   	        	     generaTabla(JSON.parse(data));
@@ -93,16 +102,20 @@ function horarios(modulo,usuario,institucion, campus,essuper){
 	        	   	   
 	        	    	  }
 	        	    	  else {
-	        	    		  
+							  
+							  elsql="SELECT DGRU_ID AS id, DGRU_MATERIA AS materia, MATE_DESCRIP AS materiad, "+
+							  " DGRU_PROFESOR AS profesor, CICL_HT AS ht, CICL_HP as hp, LUNES AS lunes, MARTES AS martes, MIERCOLES as miercoles,"+
+							  " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo,   "+
+							  " A_LUNES AS a_lunes, A_MARTES AS a_martes, A_MIERCOLES AS a_miercoles, A_JUEVES AS a_jueves, "+
+							  " A_VIERNES AS a_viernes, A_SABADO AS a_sabado, A_DOMINGO AS a_domingo, CUPO as cupo,SIE"+
+							  " FROM edgrupos, cmaterias, eciclmate WHERE DGRU_GRUPO='"+table.rows('.selected').data()[0][0]+"'"+
+							  " and MATE_CLAVE=DGRU_MATERIA and MATE_CLAVE=CICL_MATERIA AND CICL_MAPA='"+table.rows('.selected').data()[0][5]+"'";
+
+							  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	        	    		  $.ajax({
-		        	   	           type: "GET",
-		        	   	           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT DGRU_ID AS id, DGRU_MATERIA AS materia, MATE_DESCRIP AS materiad, "+
-		        	   	                 " DGRU_PROFESOR AS profesor, CICL_HT AS ht, CICL_HP as hp, LUNES AS lunes, MARTES AS martes, MIERCOLES as miercoles,"+
-		        	   	                 " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo,   "+
-		        	   	                 " A_LUNES AS a_lunes, A_MARTES AS a_martes, A_MIERCOLES AS a_miercoles, A_JUEVES AS a_jueves, "+
-		        	   	                 " A_VIERNES AS a_viernes, A_SABADO AS a_sabado, A_DOMINGO AS a_domingo, CUPO as cupo,SIE"+
-		        	   	                 " FROM edgrupos, cmaterias, eciclmate WHERE DGRU_GRUPO='"+table.rows('.selected').data()[0][0]+"'"+
-		        	   	                 " and MATE_CLAVE=DGRU_MATERIA and MATE_CLAVE=CICL_MATERIA AND CICL_MAPA='"+table.rows('.selected').data()[0][5]+"'",
+									  type: "POST",
+									  data:parametros,
+		        	   	           url:  "../base/getdatossqlSeg.php",
 		        	   	           success: function(data){  		        	   	        	 
 		        	   	        	     
 		        	   	        	     generaTabla(JSON.parse(data));

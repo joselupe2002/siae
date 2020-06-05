@@ -179,10 +179,12 @@ function confirma(id){
 }
 
 function cargarAsesorias(){
+	    elsql="SELECT * from vasesorias where ASES_MATRICULA="+ "'<?php echo $_SESSION['usuario']?>' AND ASES_STATUS='N' order by ASES_ID";
+	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT * from vasesorias where ASES_MATRICULA="+
-	    	                                                           "'<?php echo $_SESSION['usuario']?>' AND ASES_STATUS='N' order by ASES_ID"),
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){
 		                    	   	        	
 	        	     generaTabla(JSON.parse(data));
@@ -207,18 +209,22 @@ function insertarPrefectura(dia,numsem,mes,anio){
 			  PREF_HORA:$("#hora").val(),
 			  PREF_USUARIO:"<?php echo $_SESSION['usuario'];?>"};
 
-              $('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
+			  $('#dlgproceso').modal({backdrop: 'static', keyboard: false});	      
+			     
 			  $.ajax({
 			 		  type: "POST",
 			 		  url:"../base/inserta.php",
 			 	      data: parametros,
 			 	      success: function(data){ 
 
-	                        //Obtenemos el ID insertado 
-                           laurl="../base/getdatossql.php?sql="+encodeURI("select max(PREF_ID) as ID from eprefectura")+"&bd=Mysql";
-
+							//Obtenemos el ID insertado 
+						 
+						   elsql="select max(PREF_ID) as ID from eprefectura";
+                           laurl="../base/getdatossqlSeg.php";
+						   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
                            $.ajax({
-            	               type: "GET",
+							   type: "POST",
+							   data:parametros,
             	               url: laurl,
             	               success: function(data){  		                
             	            	   losdatos=JSON.parse(data);  
@@ -229,15 +235,18 @@ function insertarPrefectura(dia,numsem,mes,anio){
 
 			 			   			                                	                      
 			 			   if (!(data.substring(0,1)=="0"))	{ 					                	 			                  
-			                     //cargamos los horarios para el dia  
-			 				   laurl="../base/getdatossql.php?sql="+encodeURI("select IDDETALLE,CARRERA, CARRERAD,PROFESOR,PROFESORD,MATERIA, MATERIAD,"+dia+"_1 as HORARIO,"+dia+"_A as AULA"+
+								 //cargamos los horarios para el dia  
+								 
+							   elsql="select IDDETALLE,CARRERA, CARRERAD,PROFESOR,PROFESORD,MATERIA, MATERIAD,"+dia+"_1 as HORARIO,"+dia+"_A as AULA"+
 			 						 " from vedgrupos s where s.CICLO=getciclo() "+ 
-			 						 " and "+$("#hora").val()+"01 between  substr("+dia+"_S,1,4) and substr("+dia+"_S,5,4)")+"&bd=Mysql";
-
-			                   
+									  " and "+$("#hora").val()+"01 between  substr("+dia+"_S,1,4) and substr("+dia+"_S,5,4)";
+									  
+			 				   laurl="../base/getdatossqlSeg.php";
+								parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			 				  $.ajax({
-			 		               type: "GET",
-			 		               url: laurl,
+			 		               type: "POST",
+									url: laurl,
+									data:parametros,
 			 		               success: function(data){  		
 			 		            	   var losdatos=[];                
 			 		            	   losdatos=JSON.parse(data);  
@@ -300,8 +309,8 @@ function insertarPrefectura(dia,numsem,mes,anio){
 Date.prototype.getWeekNumber = function () {
     var d = new Date(+this);  //Creamos un nuevo Date con la fecha de "this".
     d.setHours(0, 0, 0, 0);   //Nos aseguramos de limpiar la hora.
-    d.setDate(d.getDate() + 4 - (d.getDay() || 7)); // Recorremos los días para asegurarnos de estar "dentro de la semana"
-    //Finalmente, calculamos redondeando y ajustando por la naturaleza de los números en JS:
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7)); // Recorremos los dï¿½as para asegurarnos de estar "dentro de la semana"
+    //Finalmente, calculamos redondeando y ajustando por la naturaleza de los nï¿½meros en JS:
     return Math.ceil((((d - new Date(d.getFullYear(), 0, 1)) / 8.64e7) + 1) / 7);
 };
 
@@ -317,14 +326,18 @@ Date.prototype.getWeekNumber = function () {
  			 eldia=dias[date.getDay()];
  			 numsem=date.getWeekNumber();
 
-			 laurl="../base/getdatossql.php?sql="+encodeURI("select COUNT(*) as NUM, PREF_ID from eprefectura where "+
+
+			 elsql="select COUNT(*) as NUM, PREF_ID from eprefectura where "+
 					 " PREF_FECHA='"+$("#fecha").val()+"'"+
 					 " AND PREF_USUARIO='<?php echo $_SESSION['usuario'];?>'"+
 					 " AND PREF_DIA='"+eldia+"'"+
-					 " AND PREF_HORA='"+$("#hora").val()+"'")+"&bd=Mysql";
+					 " AND PREF_HORA='"+$("#hora").val()+"'";
+			 laurl="../base/getdatossqlSeg.php?";
 
+			 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			 $.ajax({
-	               type: "GET",
+				   type: "POST",
+				   data:parametros,
 	               url: laurl,
 	               success: function(data){  		                
 	            	   losdatos=JSON.parse(data);  

@@ -2,9 +2,14 @@
 
 function changeTIPO(elemento, usuario, institucion, campus){
 	  var empl="";
+
+	  elsql="SELECT EMPL_NUMERO as NUM FROM pempleados WHERE EMPL_USER='"+usuario+"'";
+	  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 	  $.ajax({
-          type: "GET",
-          url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT EMPL_NUMERO as NUM FROM pempleados WHERE EMPL_USER='"+usuario+"'",
+		  type: "POST",
+		  data:parametros,
+          url:  "../base/getdatossqlSeg.php",
           success: function(data){  
        	      losdatos=JSON.parse(data);  
        	      jQuery.each(losdatos, function(clave, valor) { empl=valor.NUM; });    

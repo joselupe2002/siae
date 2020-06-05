@@ -1,10 +1,12 @@
 
 
 function changeCVEESP(DATO, usuario, institucion, campus){
-   elsql="SELECT CLAVE FROM especialidad o where ID='"+$("#CVEESP").val()+"'";      
+   elsql="SELECT CLAVE FROM especialidad o where ID='"+$("#CVEESP").val()+"'";   
+   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}   
    $.ajax({
-      type: "GET",
-      url: 'getdatossql.php?sql='+encodeURI(elsql)+"&bd=Mysql", 
+      type: "POST",
+      data:parametros,
+      url: 'getdatossqlSeg.php', 
       success: function(data){ 
          jQuery.each(JSON.parse(data), function(clave, valor) { 	
            $("#CVEESPSIE").val(valor.CLAVE);

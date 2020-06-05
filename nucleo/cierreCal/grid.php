@@ -214,11 +214,14 @@
 
 
 function cargarAct(){
-	    $('#dlgproceso').modal({show:true, backdrop: 'static'});
+		$('#dlgproceso').modal({show:true, backdrop: 'static'});
+		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
+			  " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' ";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
 	    $.ajax({
-	           type: "GET",
-	           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
-					   " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' "),
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){
 	        	     generaTabla(JSON.parse(data));	 
 	        	     $('#dlgproceso').modal("hide");        	     

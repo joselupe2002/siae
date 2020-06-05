@@ -232,7 +232,7 @@
 	                   
 
 	            	
-	                    //console.log("../base/getdatossql.php?sql=SELECT "+colsql+" FROM "+$("#indicador").val());
+	                    //console.log("../base/getdatossqlSeg.php?sql=SELECT "+colsql+" FROM "+$("#indicador").val());
 	                    
 	                    $.ajax({
 	                        type: "GET",

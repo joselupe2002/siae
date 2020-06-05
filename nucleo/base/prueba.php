@@ -239,7 +239,7 @@ function ver(){
    function dameMaterias(){
 	   $.ajax({
 	       type: "GET",
-	       url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * from dmateria3 ",
+	       url:  "../base/getdatossqlSeg.php?bd=Mysql&sql=SELECT * from dmateria3 ",
 	       success: function(data){  
 	    	      losdatos=JSON.parse(data);	 
 	    	      		    	   
@@ -270,7 +270,7 @@ function ver(){
    function dameFechasEval(){
 	   $.ajax({
 	       type: "GET",
-	       url:  "../base/getdatossql.php?bd=Mysql&sql=select a.MATCVE, a.GPOCVE, b.MATUNI, UNI01P,UNI02P,UNI03P,UNI04P,UNI05P,UNI06P,UNI07P,"+
+	       url:  "../base/getdatossqlSeg.php?bd=Mysql&sql=select a.MATCVE, a.GPOCVE, b.MATUNI, UNI01P,UNI02P,UNI03P,UNI04P,UNI05P,UNI06P,UNI07P,"+
 	    	   "UNI08P,UNI09P,UNI10P,UNI11P,UNI12P,UNI13P,UNI14P,UNI15P, "+
 	    	   "UNI01R,UNI02R,UNI03R,UNI04R,UNI05R,UNI06R,UNI07R,"+
 	    	   "UNI08R,UNI09R,UNI10R,UNI11R,UNI12R,UNI13R,UNI14R,UNI15R"+
@@ -302,7 +302,7 @@ function ver(){
    function damesubtemas(){
 	   $.ajax({
 	       type: "GET",
-	       url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * from smater  order by MATCVE,TMACVE LIMIT 15000,5000",
+	       url:  "../base/getdatossqlSeg.php?bd=Mysql&sql=SELECT * from smater  order by MATCVE,TMACVE LIMIT 15000,5000",
 	       success: function(data){  
 	    	      losdatos=JSON.parse(data);	
 	    	      alert (data); 
