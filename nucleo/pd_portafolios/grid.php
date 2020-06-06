@@ -190,11 +190,14 @@
 
 function cargarMaterias() {
 
-	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT a.ID, a.CICLO, a.MATERIA, b.MATE_DESCRIP, a.PROFESOR, a.RUTA "+
+elsql="SELECT a.ID, a.CICLO, a.MATERIA, b.MATE_DESCRIP, a.PROFESOR, a.RUTA "+
         		 " FROM eportafoliosd a, cmaterias b where a.PROFESOR='<?php echo $_SESSION['usuario']?>' and a.CICLO=getciclo() "+
-        		 " and a.MATERIA=b.MATE_CLAVE "),
+        		 " and a.MATERIA=b.MATE_CLAVE ";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	 $.ajax({
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){
 
       	     generaTabla(JSON.parse(data));	        	     

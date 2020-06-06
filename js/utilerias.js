@@ -1618,59 +1618,85 @@ function showErrorAlert (reason, detail) {
 
 
 /*=====================================CARGA DE LAS FECHAS DE PLANEACION =====================================*/
-function verPlaneacion(materia,materiad, grupo, ciclo, contenedor){
-	script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
-	   "   <div class=\"modal-dialog modal-lg \" role=\"document\">"+
-	   "      <div class=\"modal-content\">"+
-	   "          <div class=\"modal-header bg-info\" >"+
-	   "             <span><i class=\"menu-icon green fa-2x fa fa-book\"></i>"+
-	   "                   <span class=\"text-success \"><strong>"+materiad+"</strong><i class=\"menu-icon green fa fa-angle-double-right\"></i></span>"+    		   
-	   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\"  aria-label=\"Cancelar\">"+
-	   "                  <span aria-hidden=\"true\">&times;</span>"+
-	   "             </button>"+
-	   "          </div>"+
-	   "          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto; height:300px;\">"+
-	   "               <ul class=\"nav nav-tabs\" > "+
-	   "                  <li class=\"active\"><a data-toggle=\"tab\" href=\"#tabTemas\"><i class=\"menu-icon green fa fa-thumbs-down\"></i><span class=\"menu-text\">Temas</span></a></li> "+
-	   "                  <li><a data-toggle=\"tab\" href=\"#tabEval\"><i class=\"menu-icon blue fa fa-group\"></i><span class=\"menu-text\"> Evaluaciones</span></a></li> "+
-	   "               </ul> "+
+function verPlaneacion(materia,materiad, grupo, ciclo, contenedor,esjefe){
 
-	   "               <div class=\"tab-content\">"+
-	   "                   <div id=\"tabTemas\" class=\"tab-pane fade in active\">"+		
-	   "                        <div class=\"row\">"+
-	   "                             <div class=\"col-sm-1\"></div> "+
-	   "                             <div class=\"col-sm-10\" id=\"laTabla\"></div> "+
-	   "                             <div class=\"col-sm-1\"></div> "+
-	   "                        </div>"+	
-	   "                   </div>"+
-	   "                   <div id=\"tabEval\" class=\"tab-pane fade\">"+		
-	   "                        <div class=\"row\">"+
-	   "                             <div class=\"col-sm-1\"></div> "+
-	   "                             <div class=\"col-sm-10\" id=\"laTablaEval\"></div> "+
-	   "                             <div class=\"col-sm-1\"></div> "+
-	   "                        </div>"+	
-	   "                   </div>"+
-	   "              </div>"+ 	     
-	   "          </div>"+
-	   "      </div>"+
-	   "   </div>"+
-	   " <select id=\"aulas\" style=\"visibility:hidden\"></select> "
-	   "</div>";
- 
-	$("#modalDocument").remove();
-	if (! ( $("#modalDocument").length )) {
-		$("#"+contenedor).append(script); }
-	
-	
-	$('#modalDocument').modal({show:true, backdrop: 'static'});
-	cargarFechas(materia,grupo,ciclo);	
-	cargarFechasEval  (materia,grupo,ciclo);	  
-	   
+	var abierto=false;
+	elsql="select count(*) as N from ecortescal where  CICLO='"+ciclo+"'"+
+	" and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
+	" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
+	" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='PLANEACION' "+
+	" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
+
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){
+			if (JSON.parse(data)[0]["N"]>0) {				
+				abierto=true;
+			}
+			script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+			"   <div class=\"modal-dialog modal-lg \" role=\"document\">"+
+			"      <div class=\"modal-content\">"+
+			"          <div class=\"modal-header bg-info\" >"+
+			"             <span><i class=\"menu-icon green fa-2x fa fa-book\"></i>"+
+			"                   <span class=\"text-success \"><strong>"+materiad+"</strong><i class=\"menu-icon green fa fa-angle-double-right\"></i></span>"+    		   
+			"             <button type=\"button\" class=\"close\" data-dismiss=\"modal\"  aria-label=\"Cancelar\">"+
+			"                  <span aria-hidden=\"true\">&times;</span>"+
+			"             </button>"+
+			"          </div>"+
+			"          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto; height:300px;\">"+
+			"               <ul class=\"nav nav-tabs\" > "+
+			"                  <li class=\"active\"><a data-toggle=\"tab\" href=\"#tabTemas\"><i class=\"menu-icon green fa fa-thumbs-down\"></i><span class=\"menu-text\">Temas</span></a></li> "+
+			"                  <li><a data-toggle=\"tab\" href=\"#tabEval\"><i class=\"menu-icon blue fa fa-group\"></i><span class=\"menu-text\"> Evaluaciones</span></a></li> "+
+			"               </ul> "+
+
+			"               <div class=\"tab-content\">"+
+			"                   <div id=\"tabTemas\" class=\"tab-pane fade in active\">"+		
+			"                        <div class=\"row\">"+			
+			"                             <div class=\"col-sm-12\" id=\"laTabla\"></div> "+			
+			"                        </div>"+	
+			"                   </div>"+
+			"                   <div id=\"tabEval\" class=\"tab-pane fade\">"+		
+			"                        <div class=\"row\">"+			
+			"                             <div class=\"col-sm-12\" id=\"laTablaEval\"></div> "+		
+			"                        </div>"+	
+			"                   </div>"+
+			"              </div>"+ 	     
+			"          </div>"+
+			"      </div>"+
+			"   </div>"+
+			" <select id=\"aulas\" style=\"visibility:hidden\"></select> "
+			"</div>";
+		
+			$("#modalDocument").remove();
+			if (! ( $("#modalDocument").length )) {
+				$("#"+contenedor).append(script); }
+			
+			
+			$('#modalDocument').modal({show:true, backdrop: 'static'});
+			cargarFechas(materia,grupo,ciclo,abierto,esjefe);	
+			cargarFechasEval  (materia,grupo,ciclo,abierto,esjefe);
+			
+		}
+	});   
 }
 
-function cargarFechas(materia,grupo,ciclo) {
-elsql="select * from  vfechasmateria a where a.MATCVE='"+materia+
-"' and GPOCVE='"+grupo+"' and PDOCVE='"+ciclo+"' order by TMACVE,SMACVE ";
+
+function cargarFechas(materia,grupo,ciclo, abierto, esjefe) {
+	cargandoSubtemas=true;
+elsql="SELECT l.UNID_PRED AS TMACVE, "+
+	  "(SELECT UNID_DESCRIP FROM eunidades i WHERE i.UNID_MATERIA=l.UNID_MATERIA and i.UNID_NUMERO=l.UNID_PRED  "+
+	  "		   and i.UNID_PRED='' LIMIT 1) AS TEMA,"+
+	  "UNID_NUMERO AS SMACVE, UNID_DESCRIP AS SUBTEMA, "+
+	  "IFNULL((SELECT j.PGRFEPI from pgrupo j where  j.PDOCVE='"+ciclo+"' and j.MATCVE=l.UNID_MATERIA AND j.GPOCVE='"+grupo+"' "+
+      "        AND j.TMACVE=l.UNID_PRED and j.SMACVE=l.UNID_NUMERO),'') AS FECHAINIPROG,"+
+	  "IFNULL((SELECT j.PGRFEPT from pgrupo j where  j.PDOCVE='"+ciclo+"' and j.MATCVE=l.UNID_MATERIA AND j.GPOCVE='"+grupo+"'  "+
+	  "        AND j.TMACVE=l.UNID_PRED and j.SMACVE=l.UNID_NUMERO),'') AS FECHAFINPROG "+
+      " FROM eunidades l where l.UNID_MATERIA='"+materia+"'  and l.UNID_PRED<>''"+
+	  " order by UNID_PRED,UNID_NUMERO ";
 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 $.ajax({
    type: "POST",
@@ -1679,7 +1705,9 @@ $.ajax({
    success: function(data){    
 		 $("#laTabla").empty();
 		 $("#laTabla").append("<table id=tabFechas class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-				 "<thead><tr><th>SUBTEMA</th><th>INICIA</th><th>TERMINA</th></tr>"+ 
+				 "<thead><tr><th>SUBTEMA</th>"+
+				 "<th style=\"text-align:center;\" ><span class=\"badge badge-success\"><i class=\"fa fa-sign-out\"></i> FECHA INICIO</span><span>&nbsp&nbsp&nbsp&nbsp&nbsp</span>"+
+				 "<span class=\"badge badge-danger\"><i class=\"fa fa-flag\"></i> FECHA FIN</span></th></tr>"+ 
 				 "</thead></table> ");
 
 	   $("#cuerpoFechas").empty();
@@ -1690,7 +1718,7 @@ $.ajax({
 
 
 		   $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
-		   $("#row"+c).append("<td colspan=\"3\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
+		   $("#row"+c).append("<td width=\"50%\" colspan=\"2\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
 		   $("#row"+c).append("</tr>");
 		   c++;
 
@@ -1698,20 +1726,42 @@ $.ajax({
 		  jQuery.each(JSON.parse(data), function(clave, valor) { 
 		   if (!(elTema==valor.TMACVE)) {
 			  $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
-			   $("#row"+c).append("<td colspan=\"3\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.TMACVE+" "+utf8Decode(valor.TEMA)+"</span></td>");
+			   $("#row"+c).append("<td width=\"50%\" colspan=\"1\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.TMACVE+" "+utf8Decode(valor.TEMA)+"</span></td>");
 			   $("#row"+c).append("</tr>");
 			   elTema=valor.TMACVE;
 			   c++;
 			   }
-				 
+		
 			 $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");   		          
 			 $("#row"+c).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold; white-space: normal;\">"+valor.SMACVE+" "+utf8Decode(valor.SUBTEMA)+"</span></td>");	   		          	             		         
-			 $("#row"+c).append("<td><span class=\"label label-success label-white middle\">"+valor.FECHAINIPROG+"</span></td>");
-			 $("#row"+c).append("<td><span class=\"label label-danger label-white middle\">"+valor.FECHAFINPROG+"</span></td>");
+			
+			 htmlfecini="<span class=\"label label-success label-white middle\">"+valor.FECHAINIPROG+"</span>";
+			 htmlfecfin="<span class=\"label label-danger label-white middle\">"+valor.FECHAFINPROG+"</span>";
+
+			 if ((abierto)||(esjefe=='S')) { 
+				 htmlfecini= "<div class=\"input-group\">"+
+							 "     <input onchange=\"grabafechaplan('"+materia+"','"+grupo+"','"+ciclo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+c+"');\" "+
+							 "            value=\""+valor.FECHAINIPROG+"\" class=\"form-control date-picker\" id=\"fecini"+c+"\" "+
+				             "            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" /> "+
+							 "     <span class=\"input-group-addon\"><i class=\"fa green fa-calendar bigger-110\"></i></span>"+
+							 "</div>";
+				htmlfecfin= "<div class=\"input-group\">"+
+				             "     <input onchange=\"grabafechaplan('"+materia+"','"+grupo+"','"+ciclo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+c+"');\" "+
+				             "            value=\""+valor.FECHAFINPROG+"\" class=\"form-control date-picker\" id=\"fecfin"+c+"\" "+
+							"            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" /> "+
+							"     <span class=\"input-group-addon\"><i class=\"fa red fa-calendar bigger-110\"></i></span>"+
+							"</div>";
+			 }
+
+			 $("#row"+c).append("<td><div class=\"row\"> <div class=\"col-md-6\">"+htmlfecini+"</div>"+
+			                    "                        <div class=\"col-md-6\">"+htmlfecfin+"</div>"+				
+			                    "</td>");			
 			 $("#row"+c).append("</tr>");    	
-			 c++;	         
-		});
-		 
+			 c++;					    			
+		});					
+		$('.date-picker').datepicker({autoclose: true,todayHighlight: true});		
+		cargandoSubtemas=false;	//Para que no ejecute el procedimiento de grabar 
+
 	  },
   error: function(data) {	  
 			$('#dlgproceso').modal("hide");                 
@@ -1721,13 +1771,47 @@ $.ajax({
 }
 
 
+function grabafechaplan(materia,grupo,ciclo,tema,subtema,id){
+	if (!(cargandoSubtemas)) {
+		console.log("entre "+ciclo+" "+materia+" "+grupo+" "+tema+" "+subtema+"cs:"+cargandoSubtemas); 
+		var losdatos=[];
+		losdatos[0]=ciclo+"|"+materia+"|"+grupo+"|"+tema+"|"+subtema+"|"+
+		            $("#fecini"+id).val()+"|"+$("#fecfin"+id).val()+"|"+$("#fecini"+id).val()+"|"+$("#fecfin"+id).val();
+    var loscampos = ["PDOCVE","MATCVE","GPOCVE","TMACVE","SMACVE","PGRFEPI","PGRFEPT","PGRFERI","PGRFERT",];
+		   parametros={
+			 tabla:"pgrupo",
+			 campollave:"concat(PDOCVE,MATCVE,GPOCVE,TMACVE,SMACVE)",
+			 bd:"Mysql",
+			 valorllave:ciclo+materia+grupo+tema+subtema,
+			 eliminar: "S",
+			 separador:"|",
+			 campos: JSON.stringify(loscampos),
+			 datos: JSON.stringify(losdatos)
+		   };
+
+		  $.ajax({
+			 type: "POST",
+			 url:"../base/grabadetalle.php",
+			 data: parametros,
+			 success: function(data){		
+				 if (data.length>0) {alert ("Ocurrio un error: "+data);}					                      	                                        					          
+			 }					     
+		 });    	 
+	}
+}
 
 
+function cargarFechasEval(materia,grupo,ciclo,abierto, esjefe) {
+	cargandoTemas=true;
+    elsql="SELECT l.UNID_NUMERO, UNID_DESCRIP, "+
+	  "IFNULL((SELECT j.FECHA from eplaneacion j where  j.CICLO='"+ciclo+"' and j.MATERIA=l.UNID_MATERIA AND j.GRUPO='"+grupo+"' "+
+      "        AND j.NUMUNIDAD=l.UNID_NUMERO),'') AS FECHA"+
+      " FROM eunidades l where l.UNID_MATERIA='"+materia+"'  and l.UNID_PRED=''"+
+	  " order by UNID_PRED,UNID_NUMERO ";
+	
 
-function cargarFechasEval(materia,grupo,ciclo) {
+
    var ladefault="..\\..\\imagenes\\menu\\pdf.png";	
-   elsql="select * from  eplaneacion a, eunidades b where a.MATERIA='"+materia+
-   "' and (a.NUMUNIDAD=b.UNID_NUMERO and a.MATERIA=b.UNID_MATERIA AND UNID_PRED='') and GRUPO='"+grupo+"' and CICLO='"+ciclo+"' order by NUMUNIDAD ";
    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
    $.ajax({
@@ -1735,24 +1819,36 @@ function cargarFechasEval(materia,grupo,ciclo) {
 	  data:parametros,
 	  url:  "../base/getdatossqlSeg.php",
 	  success: function(data){    
-
 			$("#laTablaEval").empty();
 			$("#laTablaEval").append("<table id=tabFechasEval class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
-					"<thead><tr><th>UNIDAD</th><th>PROGRAMADA</th><th>REAL</th></tr>"+ 
+					"<thead><tr><th>UNIDAD</th><th>FECHA EVALUACIÓN</th></tr>"+ 
 					"</thead></table> ");
  
-		  $("#cuerpoFechasEval").empty();
+		     $("#cuerpoFechasEval").empty();
 			$("#tabFechasEval").append("<tbody id=\"cuerpoFechasEval\">");
 		 
 			c=0;
 			 jQuery.each(JSON.parse(data), function(clave, valor) { 
 				 $("#cuerpoFechasEval").append("<tr id=\"rowEval"+c+"\">");
 				  $("#rowEval"+c).append("<td><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.UNID_NUMERO+" "+utf8Decode(valor.UNID_DESCRIP)+"</span></td>");             	    		      		             	   		          	             		       
-				   $("#rowEval"+c).append("<td><span class=\"label label-success label-white middle\">"+valor.FECHA+"</span></td>");
-				   $("#rowEval"+c).append("<td><span class=\"label label-danger label-white middle\">"+valor.FECHAR+"</span></td>");
+				
+				  htmlfecha="<span class=\"label label-danger label-white middle\">"+valor.FECHA+"</span>";
+
+				  if ((abierto)||(esjefe=='S')) {
+						htmlfecha= "<div class=\"input-group\">"+
+									"     <input onchange=\"grabafechaeval('"+materia+"','"+grupo+"','"+ciclo+"','"+valor.UNID_NUMERO+"','"+c+"');\" "+
+									"            value=\""+valor.FECHA+"\" class=\"form-control date-picker\" id=\"evalfecha"+c+"\" "+
+									"            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" /> "+
+									"     <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span>"+
+									"</div>";
+					}
+
+				   $("#rowEval"+c).append("<td>"+htmlfecha+"</td>");				   
 				   $("#rowEval"+c).append("</tr>");    	
 				c++;	         
 		   });
+		   $('.date-picker').datepicker({autoclose: true,todayHighlight: true});		   		
+		   cargandoTemas=false;	//Para que no ejecute el procedimiento de grabar 
 			
 		 },
 	 error: function(data) {	  
@@ -1761,6 +1857,41 @@ function cargarFechasEval(materia,grupo,ciclo) {
 			}
 	});
  }
+
+
+ 
+function grabafechaeval(materia,grupo,ciclo,tema,id){
+	if (!(cargandoTemas)) {
+		console.log("entre "+ciclo+" "+materia+" "+grupo+" "+tema+"cs:"+cargandoTemas); 
+		var losdatos=[];
+		losdatos[0]=ciclo+"|"+materia+"|"+grupo+"|"+tema+"|"+
+		            $("#evalfecha"+id).val()+"|"+$("#evalfecha"+id).val();
+    var loscampos = ["CICLO","MATERIA","GRUPO","NUMUNIDAD","FECHA","FECHAR",];
+		   parametros={
+			 tabla:"eplaneacion",
+			 campollave:"concat(CICLO,MATERIA,GRUPO,NUMUNIDAD)",
+			 bd:"Mysql",
+			 valorllave:ciclo+materia+grupo+tema,
+			 eliminar: "S",
+			 separador:"|",
+			 campos: JSON.stringify(loscampos),
+			 datos: JSON.stringify(losdatos)
+		   };
+
+		  $.ajax({
+			 type: "POST",
+			 url:"../base/grabadetalle.php",
+			 data: parametros,
+			 success: function(data){	
+				 alert (data);	
+				 if (data.length>0) {alert ("Ocurrio un error: "+data);}					                      	                                        					          
+			 }					     
+		 });    	 
+	}
+}
+
+
+
 /*==============================================================================================*/
 
 /*===============================CALCULO DE LAS CALIFICACIONES POR GRUPOS ===================================*/

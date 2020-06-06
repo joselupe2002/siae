@@ -21,6 +21,11 @@
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-skins.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-datepicker3.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-timepicker.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/daterangepicker.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-datetimepicker.min.css" />
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>estilos/preloader.css" type="text/css" media="screen">         
         <link href="imagenes/login/sigea.png" rel="image_src" />
@@ -48,6 +53,7 @@
 				   	<thead>  
 					    <tr style="background-color: #042893; color: white;">
 					        <th style="text-align: center;">ID</th> 
+							<th style="text-align: center;">Ciclo</th> 
 					        <th style="text-align: center;">Sem</th> 
 					        <th style="text-align: center;">Grupo</th> 
 					        <th style="text-align: center;">Clave</th> 					        
@@ -123,7 +129,10 @@
 
 <script type="text/javascript">
         var todasColumnas;
-        var global,globalUni;
+		var global,globalUni;
+		var cargandoSubtemas=true;
+		var cargandoTemas=true;
+
 		$(document).ready(function($) { var Body = $('body'); Body.addClass('preloader-site');});
 		$(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
 
@@ -145,16 +154,20 @@
     
     	    
     	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
-    	    $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
+			$("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
+			$("#row"+valor.ID).append("<td>"+valor.CICLO+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SEM+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.SIE+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.MATERIAD+"</td>");
 
-    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"verPlaneacion('"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','grid_pd_portasegui');\" title=\"Fechas de planeaci&oacute;n de unidades\" "+
+
+    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"verPlaneacion('"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','grid_pd_portasegui','N');\" title=\"Fechas de planeaci&oacute;n de unidades\" "+
                     "class=\"btn btn-white btn-warning btn-bold\">"+
              "<i class=\"ace-icon fa fa-calendar-o bigger-160 red \"></i>"+
-             "</a></td>");
+			 "</a></td>");
+			 
+
             
     	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"captEncuadre('"+valor.ID+"','"+valor.MATERIA+"','"+valor.MATERIAD+"');\" title=\"Capturar encuadre de la asignatura\" "+
     	    	                                  "class=\"btn btn-white btn-info btn-bold\">"+
@@ -249,9 +262,12 @@
 
 function cargarMaterias() {
 
+	elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() "),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){
        	   losdatos=JSON.parse(data);
        	   cad1="";cad2="";
@@ -268,12 +284,16 @@ function cargarMaterias() {
 
 	
 
-	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, "+
+	elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='ENCUADRE'),'') AS RUTAENCUADRE, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='DIAGNOSTICA'),'') AS RUTADIAGNOSTICA "+                 
-        		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>' and CICLO=getciclo() "),
+				 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>' "+
+				 " and CERRADOCAL='N' ";
+   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}				 				 
+	 $.ajax({
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){
 
       	     generaTabla(JSON.parse(data));	        	     
@@ -401,20 +421,27 @@ function impEncuadre(id, materia, descrip){
 		    
 		    $('#modalDocumentEnc').modal({show:true, backdrop: 'static'});
 
-		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT  UNID_NUMERO, UNID_DESCRIP, UNID_ID,IFNULL(ENCU_FECHAEVAL,'') AS ENCU_FECHAEVAL,"+
+			elsql="SELECT  UNID_NUMERO, UNID_DESCRIP, UNID_ID,IFNULL(ENCU_FECHAEVAL,'') AS ENCU_FECHAEVAL,"+
 		                  " IFNULL(ENCU_ID,'') AS ENCU_ID, IFNULL(ENCU_EC,'') AS EC, IFNULL(ENCU_EP,'') AS EP,"+
 		                  " IFNULL(ENCU_ED,'') AS ED, IFNULL(ENCU_EA,'') AS EA  FROM eunidades j "+
 		                  " left outer join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+id+")"+
-		        	      " where j.`UNID_MATERIA`='"+materia+"' and UNID_PRED='' order by UNID_NUMERO",
+						  " where j.`UNID_MATERIA`='"+materia+"' and UNID_PRED='' order by UNID_NUMERO";
+			
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		    $.ajax({
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 		        	      losdatos=JSON.parse(data);  
 		        	      generaTablaActividad(JSON.parse(data),"CAPTURA");
-                          //cargamos los datos adicionales
+						  //cargamos los datos adicionales
+						  elsql="SELECT * from encuadresadd where ENCU_IDDETGRUPO="+id;
+						  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		        	      $.ajax({
-		   		           type: "GET",
-		   		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * from encuadresadd where ENCU_IDDETGRUPO="+id,
+							  type: "POST",
+							  data:parametros,
+		   		           url:  "../base/getdatossqlSeg.php",
 		   		           success: function(data){  
 		   		        	      losdatos=JSON.parse(data);  
 		   		        	      jQuery.each(losdatos, function(clave, valor) { 
@@ -479,7 +506,7 @@ function impEncuadre(id, materia, descrip){
       function guardarActividades(){
 
 	 	    var losdatos=[];
-	 	   var losdatosadd=[];
+	 	    var losdatosadd=[];
 	        var i=1; 
 	        var j=0; var cad="";
 	        var c=-1;
@@ -598,31 +625,29 @@ function impEncuadre(id, materia, descrip){
 			   "</div>";
 		 
 			
-			
-	 		 
-			 $("#modalDocumentUni").remove();
-		    if (! ( $("#modalDocumentUni").length )) {
-		        $("#grid_<?php echo $_GET['modulo']; ?>").append(script);
-		    }
-
-		    $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
-		    
-		    $('#modalDocumentUni').modal({show:true, backdrop: 'static'});
-
-
-		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT ENCU_ID, UNID_NUMERO, UNID_DESCRIP, "+
+			elsql="SELECT ENCU_ID, UNID_NUMERO, UNID_DESCRIP, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EP'),'') AS RUTAEP, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='ED'),'') AS RUTAED, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EC'),'') AS RUTAEC, "+
 		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EA'),'') AS RUTAEA "+
 	                      "  FROM eunidades j "+
 		                  " join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+id+")"+
-		        	      " where j.`UNID_MATERIA`='"+materia+"' and j.UNID_PRED='' order by UNID_NUMERO",
+						  " where j.`UNID_MATERIA`='"+materia+"' and j.UNID_PRED='' order by UNID_NUMERO";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		    $.ajax({
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
-		        	      losdatos=JSON.parse(data);  
-		        	      generaTablaSubir(JSON.parse(data),"CAPTURA",materia,descrip,grupo);
+						  losdatos=JSON.parse(data);  
+						  if (JSON.parse(data).length<=0) {alert ("Para poder visualizar las Unidades debe primero capturar su encuadre");}
+						  else { 							  
+							    $("#modalDocumentUni").remove();
+								if (! ( $("#modalDocumentUni").length )) {$("#grid_<?php echo $_GET['modulo']; ?>").append(script);}
+								$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});								
+								$('#modalDocumentUni').modal({show:true, backdrop: 'static'});
+								generaTablaSubir(JSON.parse(data),"CAPTURA",materia,descrip,grupo);
+							}
 		        	        		        	    
 		                 },
 		           error: function(data) {	                  
@@ -633,11 +658,12 @@ function impEncuadre(id, materia, descrip){
 
 	}
 
-    function generaTablaSubir(grid_data, op,materia,materiad,grupo){		
+    function generaTablaSubir(grid_data, op,materia,materiad,grupo){			          
 			       $("#cuerpoUnidades").empty();
 				   $("#tabUnidades").append("<tbody id=\"cuerpoUnidades\">");
 			       c=1;	
 				   globalUni=1; 
+				  
 		           jQuery.each(grid_data, function(clave, valor) { 	
 			             
 		                 var f = new Date();

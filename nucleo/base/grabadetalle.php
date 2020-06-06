@@ -14,7 +14,8 @@
        $conn->beginTransaction();
        
        if ($_POST['eliminar']=='S') {
-       	  $sqlel='DELETE FROM '.$_POST['tabla']. " WHERE ".$_POST['campollave']."='".$_POST['valorllave']."'";
+             $sqlel='DELETE FROM '.$_POST['tabla']. " WHERE ".$_POST['campollave']."='".$_POST['valorllave']."'";
+            
        	  $res=$miConex->afectaSQL_conex($conn,$_POST["bd"],$sqlel);
        	  echo $res;
        }

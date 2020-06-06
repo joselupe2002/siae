@@ -21,13 +21,16 @@
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-skins.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-datepicker3.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-timepicker.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/daterangepicker.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-datetimepicker.min.css" />
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>estilos/preloader.css" type="text/css" media="screen">         
         <link href="imagenes/login/sigea.png" rel="image_src" />
-        <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-
-        
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
 			
 
         <style type="text/css">
@@ -39,7 +42,7 @@
 
 
 	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
-	    
+	
 	    
 	    <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
 
@@ -134,8 +137,17 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/bootbox.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-datepicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-timepicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/moment.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/daterangepicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-datetimepicker.min.js"></script>
 
 
+<!-- -------------------Segundo ----------------------->
+<script src="<?php echo $nivel; ?>assets/js/jquery-ui.custom.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/chosen.jquery.min.js"></script>
 
 <!-- -------------------Medios ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/jquery.inputlimiter.min.js"></script>
@@ -174,6 +186,9 @@
      
 
 		jQuery(function($) { 
+
+			  $('.date-picker').datepicker({autoclose: true,todayHighlight: true});	
+
 			   var Body = $('body'); Body.addClass('preloader-site');
 
 			   $(".input-mask-hora").mask("99:99");
