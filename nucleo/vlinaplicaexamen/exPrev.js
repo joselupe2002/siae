@@ -44,9 +44,11 @@ function cargandoExamen(idexa){
 		"</div>";
 	$("#contenidoAsp").append(cad);
 
+	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function (dataPre) {		
 		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 
 				arr_nombresec[clave]=valorPre.SECCIOND;
@@ -168,11 +170,14 @@ function cierraExamen(idexa){
 	$("#contenidoAsp").append(cad);
 
 	sq="SELECT * from vlinpreguntas WHERE IDEXAMEN="+elexamen+" order by IDSECCION,ORDEN,IDPREG" ;
+	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
+
 	mipuntaje=0;
 	laseccion="";
 	$.ajax({
 		type: "POST",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sq),
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function (dataPre) {		
 		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 
 				            if ((clave==0)||!(laseccion==valorPre.IDSECCION)) {		

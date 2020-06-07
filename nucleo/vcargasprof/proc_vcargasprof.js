@@ -117,16 +117,18 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 	    
 	    
 	   
-		 
-		 
+		 elsql="SELECT edescarga.DESC_ID AS id, edescarga.DESC_ACTIVIDAD AS actividad, "+
+		 " edescarga.DESC_DESCRIP AS descrip, "+
+		 " LUNES AS lunes, MARTES AS martes, MIERCOLES as miercoles,"+
+			 " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo, DESC_HORAS as horas"+
+			 " FROM edescarga, etipodescarga WHERE DESC_ACTIVIDAD=DESC_CLAVE AND DESC_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
+			 " and DESC_CICLO='"+table.rows('.selected').data()[0][2]+"'";
+
+		 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-        	type: "GET",
-        	url: "../base/getdatossql.php?bd=Mysql&sql=SELECT edescarga.DESC_ID AS id, edescarga.DESC_ACTIVIDAD AS actividad, "+
-        	     " edescarga.DESC_DESCRIP AS descrip, "+
-                 " LUNES AS lunes, MARTES AS martes, MIERCOLES as miercoles,"+
-	                 " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo, DESC_HORAS as horas"+
-	                 " FROM edescarga, etipodescarga WHERE DESC_ACTIVIDAD=DESC_CLAVE AND DESC_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
-	                 " and DESC_CICLO='"+table.rows('.selected').data()[0][2]+"'",
+			type: "POST",
+			data:parametros,
+        	url: "../base/getdatossqlSeg.php",
         	success: function(data){ 
 							   
 				               elsql="SELECT DESC_CLAVE, DESC_DESCRIP FROM etipodescarga ORDER BY DESC_DESCRIP";
@@ -145,21 +147,26 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 					       			
 					       	        	   
 					       	        	   generaTablaDescarga(JSON.parse(data));
-			        	   	        	    
+											   
+											elsql2="SELECT GRUP_MAPA AS mapa, DGRU_ID AS id, DGRU_MATERIA AS materia, MATE_DESCRIP AS materiad, "+
+											" LUNES AS lunes, MARTES AS martes, MIERCOLES as miercoles,"+
+											   " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo,   "+
+											   " A_LUNES AS a_lunes, A_MARTES AS a_martes, A_MIERCOLES AS a_miercoles, A_JUEVES AS a_jueves, "+
+											   " A_VIERNES AS a_viernes, A_SABADO AS a_sabado, A_DOMINGO AS a_domingo, CUPO as cupo"+
+											   " FROM egrupos, edgrupos, cmaterias WHERE DGRU_BASE IS NULL and GRUP_CLAVE=DGRU_GRUPO AND DGRU_MATERIA=MATE_CLAVE AND DGRU_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
+											   " and GRUP_CICLO='"+table.rows('.selected').data()[0]["CICLO"]+"'";
+										
+											parametros={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}
+
 			        	   	        	    $.ajax({
-			        	   		        	type: "GET",
-			        	   		        	url: "../base/getdatossql.php?bd=Mysql&sql=SELECT GRUP_MAPA AS mapa, DGRU_ID AS id, DGRU_MATERIA AS materia, MATE_DESCRIP AS materiad, "+
-			        	   		                 " LUNES AS lunes, MARTES AS martes, MIERCOLES as miercoles,"+
-			        	   	   	                 " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo,   "+
-			        	   	   	                 " A_LUNES AS a_lunes, A_MARTES AS a_martes, A_MIERCOLES AS a_miercoles, A_JUEVES AS a_jueves, "+
-			        	   	   	                 " A_VIERNES AS a_viernes, A_SABADO AS a_sabado, A_DOMINGO AS a_domingo, CUPO as cupo"+
-			        	   	   	                 " FROM egrupos, edgrupos, cmaterias WHERE DGRU_BASE IS NULL and GRUP_CLAVE=DGRU_GRUPO AND DGRU_MATERIA=MATE_CLAVE AND DGRU_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
-			        	   	   	                 " and GRUP_CICLO='"+table.rows('.selected').data()[0][2]+"'",
-			        	   		        	success: function(data){ 			        	   		        		                 
-			        	   		        	   	        	     generaTabla(JSON.parse(data));
+											   type: "POST",
+											   data:parametros,
+			        	   		        	   url: "../base/getdatossqlSeg.php",
+			        	   		        	success: function(dataMat){ 														          	   		        		                 
+			        	   		        	   	        	     generaTabla(JSON.parse(dataMat));
 			        	   		        	   	                 },
 			        	   		        	error: function(data) {	                  
-			        	   		        	   	                      alert('ERROR: '+data);
+			        	   		        	   	                      alert('ERROR: '+dataMat);
 			        	   		        	   	                  }
 			        	   		        	});
 			        	   	        	    

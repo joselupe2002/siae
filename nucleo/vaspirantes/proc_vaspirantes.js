@@ -101,9 +101,11 @@ function verDocumentos(modulo,usuario,essuper){
 			       "(SELECT ifnull(RUTA,'') AS RUTA FROM adjaspirantes b where b.AUX=CONCAT(a.CLAVE,'"+table.rows('.selected').data()[0]["CURP"]+"')) AS RUTA "+
 		           " from documaspirantes a Where ENLINEA='S' order by IDDOC";
 
+			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
 		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlAsp),
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 		        	      losdatos=JSON.parse(data);  
 						  generaTablaSubirAsp(JSON.parse(data));						       
@@ -180,10 +182,12 @@ function verPago(modulo,usuario,essuper){
 
 		    
 			sqlAsp="SELECT ifnull(RUTA,'') AS RUTA FROM adjaspirantes b where "+
-			       " b.AUX=CONCAT('PAGO','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
+				   " b.AUX=CONCAT('PAGO','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
+			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
 		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sqlAsp),
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 						  losdatos=JSON.parse(data);  
 						  entre=false;

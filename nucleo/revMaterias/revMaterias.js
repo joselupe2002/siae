@@ -47,9 +47,11 @@ contMat=1;
 		elsql="SELECT ALUM_MAPA, IFNULL(ALUM_ESPECIALIDAD,'0') as ESP, IFNULL(b.CLAVEOF,'SE') AS ESPD FROM falumnos a "+
 		" LEFT OUTER JOIN especialidad b on (b.ID=a.ALUM_ESPECIALIDAD)"+
 		" WHERE ALUM_MATRICULA='"+$("#selAlumnos").val()+"'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
-			type: "GET",
-			url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
 			success: function(data){  				      			      
 				 $("#elmapa").html(JSON.parse(data)[0]["ALUM_MAPA"]);  
 				 $("#laesp").html(JSON.parse(data)[0]["ESP"]);  
@@ -76,13 +78,14 @@ contMat=1;
 				" FROM veciclmate c where c.CICL_MAPA='"+$("#elmapa").html()+"'"+
 				" and if(c.CVEESP=0,'"+$("#laesp").html()+"',CVEESP)='"+$("#laesp").html()+"' AND CICL_MATERIA NOT IN "+
 			    " (SELECT MATCVE from  dlista WHERE ALUCTR='"+$("#selAlumnos").val()+"' and LISCAL>=70) order by CICL_CUATRIMESTRE, CICL_MATERIAD";
-			   
+			   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 			
 				mostrarEspera("esperahor","grid_revMaterias","Cargando Datos...");
 				$.ajax({
-					type: "GET",
-					url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
 					success: function(data){  	
 						   		      			      
 							generaTablaMaterias(JSON.parse(data));   													
@@ -216,12 +219,14 @@ function verCalificaciones() {
 	  
     $('#modalDocument').modal({show:true, backdrop: 'static'});
 
-	sql="select ID AS ID, MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, LISCAL AS CAL "+
+	elsql="select ID AS ID, MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, LISCAL AS CAL "+
 	    " from dlista a, cmaterias b where MATCVE=MATE_CLAVE AND a.ALUCTR='"+$("#selAlumnos").val()+"'"+
-	    " and a.GPOCVE='REV' ORDER BY ID DESC";
+		" and a.GPOCVE='REV' ORDER BY ID DESC";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-			type: "GET",
-			url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(sql),
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
 			success: function(data){  
 				generaMateriasRev(JSON.parse(data));
 				ocultarEspera("esperahor"); 

@@ -124,7 +124,14 @@
 			function LoadDatosCursando()
 			{				
                 $miConex = new Conexion();
-                $sql="SELECT * FROM vinscripciones where MATRICULA='".$_GET["matricula"]."' ORDER BY  MATERIAD";
+                $eltip=($_GET["carrera"]=="10")?"I":"OC";
+                if (($_GET["carrera"]=="10") || ($_GET["carrera"]=="12")) {
+                    $sql="SELECT * FROM vinscripciones_oc where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."' and TIPOMAT IN ('".$eltip."') ORDER BY  MATERIAD";
+                }
+                else 
+                  {
+                     $sql="SELECT * FROM vinscripciones where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."' ORDER BY  MATERIAD";
+                  }
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -137,7 +144,7 @@
             function LoadDatosCreditos()
 			{				
                 $miConex = new Conexion();
-                $sql="SELECT sum(CREDITOS) FROM vinscripciones where MATRICULA='".$_GET["matricula"]."'";
+                $sql="SELECT sum(CREDITOS) FROM vinscripciones where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."' ORDER BY  MATERIAD";
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {

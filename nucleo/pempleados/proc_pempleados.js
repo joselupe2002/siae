@@ -6,9 +6,12 @@ function crearUsuario(lafila,modulo,institucion, campus) {
 	var table = $("#G_"+modulo).DataTable();
   //  var lafila = table.rows(elReg).data();
 	
+	elsql="select count(*) as n from CUSUARIOS where usua_usuario='"+lafila[0][0]+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
     $.ajax({
-        type: "GET",
-        url: 'getdatossql.php?bd=SQLite&sql='+encodeURI("select count(*) as n from CUSUARIOS where usua_usuario='"+lafila[0][0]+"'"), 
+		type: "POST",
+		data:parametros,
+        url: 'getdatossqlSeg.php', 
         success: function(data){           	
         	 losdatos=JSON.parse(data);
         	 jQuery.each(losdatos, function(clave, valor){

@@ -77,9 +77,11 @@ contMat=1;
 			  " and a.CARRERA="+$("#selCarreras").val()+"  ORDER BY SEMESTRE,MATERIAD";
 	  
 		mostrarEspera("esperahor","grid_resEvalDoc","Cargando Datos...");
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  				      			      
 					generaTablaMaterias(JSON.parse(data));   													
 				    ocultarEspera("esperahor");  																											
@@ -156,10 +158,12 @@ function cargarInformacionP(){
 		  " GROUP BY   CICLO, PROFESOR, PROFESORD, z.EMPL_DEPTO" +
 		  "  ORDER BY  CICLO, z.EMPL_DEPTO, PROFESORD";
 
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	mostrarEspera("esperahor","grid_resEvalDoc","Cargando Datos...");
 	$.ajax({
-		   type: "GET",
-		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		   type: "POST",
+		   data:parametros,
+		   url:  "../base/getdatossqlSeg.php",
 		   success: function(data){  				      			      
 				generaTablaProfesores(JSON.parse(data));   													
 				ocultarEspera("esperahor");  																											
@@ -216,10 +220,12 @@ function verMaterias(ciclo,profesor){
 	"(select count(*) from dlista where IDGRUPO=a.IDDETALLE AND BAJA='N') AS ALUM "+
 	" from vedgrupos a where a.CICLO='"+ciclo+"' and PROFESOR='"+profesor+"'"+ " ORDER BY SEMESTRE,MATERIAD";
 
+	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
 
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlMa),
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(data){  				      			      
 			cad="<ol>";
 			jQuery.each(JSON.parse(data), function(clave, valor) {
@@ -270,11 +276,12 @@ function cargarInformacionA(){
 	" and b.ALUM_CARRERAREG='"+$("#selCarreras").val()+"'"+
 	" group by PDOCVE,ALUCTR";
 
-	
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	mostrarEspera("esperahor","grid_resEvalDoc","Cargando Datos...");
 	$.ajax({
-		   type: "GET",
-		   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+		   type: "POST",
+		   data:parametros,
+		   url:  "../base/getdatossqlSeg.php",
 		   success: function(data){  				      			      
 				generaTablaAlumnos(JSON.parse(data));   													
 				ocultarEspera("esperahor");  																											
@@ -321,10 +328,12 @@ function verMateriasA(ciclo,alumno){
 	elsqlMa=elsql="select MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, getcuatrimatxalum(MATCVE,ALUCTR) AS SEM "+
 	" from dlista a, cmaterias c  where  PDOCVE='"+ciclo+"'  and  a.MATCVE=c.MATE_CLAVE AND ALUCTR='"+alumno+"'  ORDER BY 3,1";
 
+	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
 
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlMa),
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(data){  				      			      
 			cad="<ol>";
 			jQuery.each(JSON.parse(data), function(clave, valor) {

@@ -28,13 +28,16 @@ function cargarCalificaciones(unidad,grupo,ciclo, profesor, materia) {
 								          "table-bordered table-hover nowrap\" ></table>"+
                              "</div>");
 
+	elsql="select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE,"+
+	" LISPA"+launidad+" as CAL, LISFA"+launidad+" as FALTA"+
+	" from dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.GPOCVE='"+grupo+"'"+
+	" and PDOCVE='"+ciclo+"' and LISTC15='"+profesor+"'"+
+	" and MATCVE='"+materia+"' order by 2";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
-		type: "GET",
-		url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE,"+
-		         " LISPA"+launidad+" as CAL, LISFA"+launidad+" as FALTA"+
-				 " from dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.GPOCVE='"+grupo+"'"+
-				 " and PDOCVE='"+ciclo+"' and LISTC15='"+profesor+"'"+
-				 " and MATCVE='"+materia+"' order by 2"),
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
 		success: function(data){    
 			$("#latablaCal").empty();
 			$("#latablaCal").append("<thead><tr id=\"titulo\"><th style=\"text-align: center;\">No. Control</th>"+ 

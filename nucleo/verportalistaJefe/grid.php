@@ -168,9 +168,14 @@
 
 		function cargarCiclos() {
 			  $('#dlgproceso').modal({show:true, backdrop: 'static'});
+
+			  elsql="SELECT CICL_CLAVE AS CICLO, CICL_DESCRIP as CICLOD from ciclosesc order by CICL_CLAVE desc";
+			  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 			  $.ajax({
-		         type: "GET",
-		         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT CICL_CLAVE AS CICLO, CICL_DESCRIP as CICLOD from ciclosesc order by CICL_CLAVE desc"),
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
 		         success: function(data){
 		        	   $("#ciclo").append("<option value=\"0\">Elija Ciclo</option>");
 		        	   jQuery.each(JSON.parse(data), function(clave, valor) { 
@@ -193,11 +198,15 @@
 
 		function cargarProfesores() {
 			    $('#dlgproceso').modal({show:true, backdrop: 'static'});
-			    elciclo=$("#ciclo").val();
+				elciclo=$("#ciclo").val();
+				
+				elsql="SELECT DISTINCT(PROFESOR), PROFESORD, CICLO "+                               
+							 " FROM vcargasprof a  WHERE CICLO="+$("#ciclo").val()+" order by MATERIAD";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		 	    $.ajax({
-			         type: "GET",
-			         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT DISTINCT(PROFESOR), PROFESORD, CICLO "+                               
-			        		 " FROM vcargasprof a  WHERE CICLO="+$("#ciclo").val()+" order by MATERIAD"),
+					 type: "POST",
+					 data:parametros,
+			         url:  "../base/getdatossqlSeg.php",
 			         success: function(data){						        	     
 			        	     $("#asignaturas").empty();
 			        	     $("#unidades").empty();
@@ -224,11 +233,14 @@
 
 function cargarMaterias() {
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
-	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO "+                               
+	 elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO "+                               
         		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and "+
-        		 " PROFESOR='"+$("#profesor").val()+"' and CICLO="+$("#ciclo").val()+" order by MATERIAD"),
+				 " PROFESOR='"+$("#profesor").val()+"' and CICLO="+$("#ciclo").val()+" order by MATERIAD";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	 $.ajax({
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){
                   $("#laTabla").empty();
   	              $("#asignaturas").empty();
@@ -252,9 +264,13 @@ function cargarUnidades(){
 	 $("#laTabla").empty();
 	 $("#unidades").empty();
 	 $("#unidades").append("<option value=\"0\">Elija Unidad</option>");
+	 elsql="select * from eunidades a where a.UNID_MATERIA='"+lamateria+"' and UNID_PRED=''";
+	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 	 $.ajax({
-         type: "GET",
-         url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select * from eunidades a where a.UNID_MATERIA='"+lamateria+"' and UNID_PRED=''"),
+		 type: "POST",
+		 data:parametros,
+         url:  "../base/getdatossqlSeg.php",
          success: function(data){    
         	 jQuery.each(JSON.parse(data), function(clave, valor) { 	
         		 $("#unidades").append("<option value=\""+valor.UNID_ID+"\">"+utf8Decode(valor.UNID_DESCRIP)+"("+valor.UNID_NUMERO+")"+"</option>");       	     
@@ -276,9 +292,7 @@ function cargarPortafolios(){
 	 var launidad=$("#unidades").val();
 	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
-	 $.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select  "+
+	 elsql="select  "+
         		   " ALUCTR AS MATRICULA,"+
         		   " concat(ALUM_APEPAT, ' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS `NOMBRE`,"+
         		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EP'),'') AS RUTAEP,"+
@@ -288,7 +302,13 @@ function cargarPortafolios(){
         		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='ENCUADRE'),'') AS RUTAENCU,"+
         		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
         		   " from dlista u, falumnos z where u.ALUCTR=z.ALUM_MATRICULA and u.MATCVE='"+lamateria+"'"+
-        		   " AND u.LISTC15='"+ $("#profesor").val()+"' and u.GPOCVE='"+elgrupo+"' and u.PDOCVE='"+elciclo+"' ORDER BY ALUM_APEPAT, ALUM_APEMAT"),
+				   " AND u.LISTC15='"+ $("#profesor").val()+"' and u.GPOCVE='"+elgrupo+"' and u.PDOCVE='"+elciclo+"' ORDER BY ALUM_APEPAT, ALUM_APEMAT";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
+	 $.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){   
         	   $("#laTabla").empty();
         	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+

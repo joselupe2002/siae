@@ -71,19 +71,25 @@ function verPlan(modulo,usuario,institucion, campus,essuper){
  
  $('#modalDocument').modal({show:true, backdrop: 'static'});
 
+ elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+table.rows('.selected').data()[0]["ID"]+"'";
+ parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+ 
+
  $.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+table.rows('.selected').data()[0]["ID"]+"'",
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){  
      	      losdatos=JSON.parse(data);  
      	        
      	      jQuery.each(losdatos, function(clave, valor) { hay=valor.NUM; });
      
      	    	  if (hay>0) {	        	    			        	    	
+					   elsql="SELECT *  FROM eplandescarga WHERE PLAN_IDACT='"+table.rows('.selected').data()[0]["ID"]+"' order by PLAN_ORDEN";
+					   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
      	    		  $.ajax({
-     	   	           type: "GET",
-     	   	           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT * "+
-     	   	                 " FROM eplandescarga WHERE PLAN_IDACT='"+table.rows('.selected').data()[0]["ID"]+"' order by PLAN_ORDEN",
+     	   	           type: "POST",
+     	   	           url:  "../base/getdatossqlSeg.php",
      	   	           success: function(data){ 	        	   	        	
      	   	        	     generaTablaActividad(JSON.parse(data));
      	   	                 },

@@ -53,22 +53,26 @@ var contFila=1;
 		 
 	function change_SELECT(elemento) {
         if (elemento=='selCarreras') {
-			actualizaSelect("selAlumnos","SELECT ALUM_MATRICULA,CONCAT(ALUM_MATRICULA,' ',ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) "+
-		                    " from falumnos where ALUM_CARRERAREG='"+$("#selCarreras").val()+"' order by ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE","BUSQUEDA");
+			if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) { //Lengua ext.
+			      actualizaSelect("selAlumnos","SELECT ALUM_MATRICULA,CONCAT(ALUM_MATRICULA,' ',ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) "+
+							" from falumnos where ALUM_ACTIVO IN (1,2) order by ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE","BUSQUEDA");}
+			else 
+			{
+				actualizaSelect("selAlumnos","SELECT ALUM_MATRICULA,CONCAT(ALUM_MATRICULA,' ',ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) "+
+						  " from falumnos where ALUM_ACTIVO IN (1,2) and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' order by ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE","BUSQUEDA");}
 			}
 		if (elemento=='selCarreras') {	
 			$("#selAlumnos").empty();
 			$("#tabHorariosReins").empty();
 		}
 		if (elemento=='selAlumnos') {
-			cargarHorarios();		
+			if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
 		}
         
     }
 
 
-    function cargarHorarios(){
-		
+    function cargarHorarios(){		
 		script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
 	   	   "        <thead>  "+
@@ -101,15 +105,19 @@ var contFila=1;
 		elsql="SELECT * FROM vinscripciones y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
 		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' order by SEMESTRE, MATERIAD";
 		mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+elsql,
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 						elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, PLACM1 FROM falumnos, mapas where "+
 						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'"	
+						parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
-							type: "GET",
-							url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlmapa,
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
 							success: function(dataMapa){  	
 								losdatos=JSON.parse(data);
 								losdatosMapa=JSON.parse(dataMapa);
@@ -140,6 +148,86 @@ var contFila=1;
 	        	   	                  }
 	    });	        	   	   	        	    	 
 		
+}
+
+
+function cargarHorariosExt(){		
+	script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
+			">"+
+		  "        <thead>  "+
+	   "             <tr>"+
+	   "                <th><input type=\"checkbox\" id=\"chkTodos\" onclick=\"selTodos();\"/>Sel</th> "+	
+	   "                <th>R</th> "+
+	   "                <th class=\"hidden\">ID</th> "+		
+	   "                <th>CVE_Asig</th> "+	   
+	   "                <th>Asignatura</th> "+	
+	   "                <th>SEM</th> "+	   
+	   "                <th>Grupo</th> "+
+	   "                <th>Carrera</th> "+
+	   "                <th>Cupo</th> "+	   
+	   "                <th>Ins</th> "+
+	   "                <th style=\"text-align:center\">Lunes</th> "+
+	   "                <th style=\"text-align:center\">Martes</th> "+
+	   "                <th style=\"text-align:center\">Miercoles</th> "+
+	   "                <th style=\"text-align:center\">Jueves</th> "+
+	   "                <th style=\"text-align:center\">Viernes</th> "+
+	   "                <th style=\"text-align:center\">Sabado</th> "+
+	   "                <th style=\"text-align:center\">Domingo</th> "+	  	
+	   "                <th style=\"text-align:center\">Cred.</th> "+	 
+	   "                <th>Profesor</th> "+	   
+	   "             </tr> "+
+	   "            </thead>" +
+	   "         </table>";
+	   $("#loshorarios").empty();
+	   $("#loshorarios").append(script);
+			
+	var eltip=($("#selCarreras").val()=='10')?"I":"OC";
+	elsql="SELECT * FROM vinscripciones_oc y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+		   "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' AND y.TIPOMAT='"+eltip+"' order by SEMESTRE, MATERIAD";
+	mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		   type: "POST",
+		   data:parametros,
+		   url:  "../base/getdatossqlSeg.php",
+		   success: function(data){  
+					elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, PLACM1 FROM falumnos, mapas where "+
+					" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'"	
+					parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
+					$.ajax({
+						type: "POST",
+						data:parametros,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(dataMapa){  	
+							losdatos=JSON.parse(data);
+							losdatosMapa=JSON.parse(dataMapa);
+							jQuery.each(losdatosMapa, function(clave, valor) { 
+												
+								generaTablaHorarios(losdatos,"INSCRITAS");   
+								
+								cargaMateriasDerExt();
+								$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
+								$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
+								$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);	
+								$("#CMA").html(losdatosMapa[0]["PLACMA"]);
+								$("#CMI").html(losdatosMapa[0]["PLACMI"]);	
+								$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
+								$("#CM1").html(losdatosMapa[0]["PLACM1"]);									
+								validarCondiciones(false);	
+							});
+
+							ocultarEspera("esperahor");     	      					  					  
+						},
+						error: function(data) {	                  
+									alert('ERROR: '+data);
+												}
+					});	          	      					  					  
+			},
+			error: function(data) {	                  
+					   alert('ERROR: '+data);
+									 }
+	});	        	   	   	        	    	 
+	
 }
 
 
@@ -227,17 +315,20 @@ function selTodos() {
 
 
 function cargaMateriasDer(vmapa,vesp){
+	parametros={matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],data:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
 	$.ajax({
-		type: "GET",
-		url:  "getMaterias.php?bd=Mysql&matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0]+
-		       "&vmapa="+vmapa+"&vesp="+vesp,
+		type: "POST",
+		data:parametros,
+		url:  "getMaterias.php",
 		success: function(data){ 
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and SEMESTRE<=getPeriodos('"+$("#selAlumnos").val()+"','"+$("#elciclo").html().split("|")[0]+"') "+
 				  " and MAPA='"+vmapa+"' ORDER BY SEMESTRE, MATERIAD";
+			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-				type: "GET",
-				url:  "../base/getdatossql.php?bd=Mysql&sql="+sqlNI,
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
 				success: function(dataNI){ 
 					losdatosNI=JSON.parse(dataNI);				
 					generaTablaHorarios(losdatosNI,"NOINSCRITAS");				  					  
@@ -252,6 +343,41 @@ function cargaMateriasDer(vmapa,vesp){
 								  }
  });	       
 }
+
+
+function cargaMateriasDerExt(){
+
+	parametros={lacarrera:$("#selCarreras").val(),matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],
+	dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "getMateriasExt.php",
+		success: function(data){ 
+			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
+				  "' and ADICIONAL='"+$("#selCarreras").val()+"'"+
+				  " ORDER BY SEMESTRE, MATERIAD";
+
+			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(dataNI){ 
+					losdatosNI=JSON.parse(dataNI);				
+					generaTablaHorarios(losdatosNI,"NOINSCRITAS");				  					  
+				 },
+				 error: function(data) {	                  
+							alert('ERROR: '+data);
+										  }
+		     });	       			  					  
+		 },
+		 error: function(data) {	                  
+					alert('ERROR: '+data);
+								  }
+ });	       
+}
+
 
 
 /*=====================================AGREGAR VENTANA ASIGNATURA CON CONDICIONES================================*/
@@ -317,9 +443,11 @@ function agregarCondiciones(){
 function addAsigCond(id){
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and IDDETALLE="+id+" ORDER BY SEMESTRE, MATERIAD";
+			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-				type: "GET",
-				url:  "../base/getdatossql.php?bd=Mysql&sql="+sqlNI,
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
 				success: function(dataNI){ 
 					losdatosNI=JSON.parse(dataNI);				
 					generaTablaHorarios(losdatosNI,"NO INSCRITAS COND");	
@@ -349,10 +477,12 @@ function verInfo(){
 			misql="SELECT CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
 						   " CARR_DESCRIP as CARRERA, getavance('"+elalumno+"') as CREDITOS, getAvanceMat('"+elalumno+"') as MATERIAS, "+
 						   " getPromedio('"+elalumno+"','N') as PROMEDIO_SR, getPromedio('"+elalumno+"','S') as PROMEDIO_CR   FROM falumnos a, ccarreras b"+
-						   " where a.ALUM_MATRICULA='"+elalumno+"' and a.ALUM_CARRERAREG=b.CARR_CLAVE";				
+						   " where a.ALUM_MATRICULA='"+elalumno+"' and a.ALUM_CARRERAREG=b.CARR_CLAVE";		
+			parametros={sql:misql,dato:sessionStorage.co,bd:"Mysql"}		
 			 $.ajax({
-				   type: "GET",
-				   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(misql),
+				   type: "POST",
+				   data:parametros,
+				   url:  "../base/getdatossqlSeg.php",
 				   success: function(data){   
 					   losdatos=JSON.parse(data);   
 											
@@ -539,7 +669,7 @@ function guardarRegistros(){
 			ocultarEspera("guardandoReins");
 			
 			if ($("#imprimirBoletaCheck").prop("checked")) {
-				window.open("boletaMat.php?matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank');                                 	                                        					          
+				window.open("boletaMat.php?carrera="+$("#selCarreras").val()+"&matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank');                                 	                                        					          
 			}
 			$("#tabHorariosReins").empty();
 		}					     
@@ -592,7 +722,7 @@ function verKardex(){
 }
 
 function imprimeBoleta(){
-	window.open("boletaMat.php?matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank'); 
+	window.open("boletaMat.php?carrera="+$("#selCarreras").val()+"&matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank'); 
 }
 
 

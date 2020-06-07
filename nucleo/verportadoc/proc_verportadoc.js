@@ -51,20 +51,22 @@ function verPortafolioD(modulo,usuario,essuper){
 		    $('#modalDocumentUni').modal({show:true, backdrop: 'static'});
 
 		    
-	
+	        elsql="SELECT ENCU_ID, UNID_NUMERO, UNID_DESCRIP, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EP'),'') AS RUTAEP, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='ED'),'') AS RUTAED, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EC'),'') AS RUTAEC, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EA'),'') AS RUTAEA, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='ENCUADRE'),'') AS RUTAENCU, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
+			"  FROM eunidades j "+
+			" join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+table.rows('.selected').data()[0]["ID"]+")"+
+			" where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["MATERIA"]+"' and j.UNID_PRED=''  order by UNID_NUMERO";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT ENCU_ID, UNID_NUMERO, UNID_DESCRIP, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EP'),'') AS RUTAEP, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='ED'),'') AS RUTAED, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EC'),'') AS RUTAEC, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EA'),'') AS RUTAEA, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='ENCUADRE'),'') AS RUTAENCU, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
-	                      "  FROM eunidades j "+
-		                  " join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+table.rows('.selected').data()[0]["ID"]+")"+
-		        	      " where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["MATERIA"]+"' and j.UNID_PRED=''  order by UNID_NUMERO",
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 		        	      losdatos=JSON.parse(data);  
 		        	      generaTablaSubir(JSON.parse(data),"CAPTURA");

@@ -75,11 +75,13 @@ contMat=1;
 		//" AND getAvanceMatCiclo(ALUM_MATRICULA,'"+$("#selCiclosAnt").val()+"')<100";
 
 
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	  
 		mostrarEspera("esperaInf","grid_vstdesxciclo","Cargando Datos...Puede tardar");
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 				      			      
 					generaTablaInformacion(JSON.parse(data));   
@@ -114,9 +116,12 @@ function generaTablaInformacion(grid_data){
 		
 		
 		elsqlAv="select getAvanceMatCiclo('"+valor.MATRICULA+"','"+$("#selCiclosAnt").val()+"') as AVANCE from dual";      					  
+		parametros={sql:elsqlAv,dato:sessionStorage.co,bd:"Mysql"}
+
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlAv),
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(dataAv){ 
 				   
 				    jQuery.each(JSON.parse(dataAv), function(claveAv, valorAv) {

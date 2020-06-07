@@ -89,16 +89,17 @@ contMat=1;
 		" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' and PDOCVE='"+$("#selCiclos").val()+"'"+
 		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','T','AC','OC','RP') and GPOCVE<>'REV' "+
 		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
-	  
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		
+
 		mostrarEspera("esperaInf","grid_vstrepxmatxcic","Cargando Datos...");
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
-	           success: function(data){  
-				      			      
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
+	           success: function(data){  				      			      
 					generaTablaInformacion(JSON.parse(data));   
-					ocultarEspera("esperaInf");  	
-																																							
+					ocultarEspera("esperaInf");  																																								
 			    },
 			    error: function(dataMat) {	                  
 					alert('ERROR: '+dataMat);

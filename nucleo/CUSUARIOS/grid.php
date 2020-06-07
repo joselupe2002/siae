@@ -233,10 +233,20 @@
 
 	            	
 	                    //console.log("../base/getdatossqlSeg.php?sql=SELECT "+colsql+" FROM "+$("#indicador").val());
-	                    
+						
+						parametros={
+							modulo:"<?php echo $_GET['modulo'];?>",
+							bd:"<?php echo $_GET['bd'];?>",
+							loscamposf:loscamposf,
+							losdatosf:losdatosf,
+							limitar:"<?php echo $_GET['limitar'];?>",
+							dato:sessionStorage.co						
+						}
+
 	                    $.ajax({
-	                        type: "GET",
-	                        url:  "../base/getdatossqlfiltro.php?modulo=<?php echo $_GET['modulo'];?>&bd=<?php echo $_GET['bd'];?>",
+							type: "POST",
+							data:parametros,
+	                        url:  "../base/getdatossqlfiltro.php",
 	                        success: function(data){ 
 	                        	
 	                        	 losdatos=JSON.parse(data);

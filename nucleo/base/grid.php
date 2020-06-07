@@ -235,17 +235,23 @@
 						$("#tablaind").append("<table id=\"G_<?php echo $_GET["modulo"]; ?>\" class=\"display table-condensed "+
 						"table-striped table-sm table-bordered table-hover nowrap \" style=\"width:100%;  font-size:12px; \">"); 
 	                   
-	                    	               
-	                  
-		                laurl="../base/getdatossqlfiltro.php?modulo=<?php echo $_GET['modulo'];?>&bd=<?php echo $_GET['bd'];?>&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&limitar=<?php echo $_GET['limitar'];?>";			                 					      
+	                    	               	                 					      
 
-		                
+		                parametros={
+							modulo:"<?php echo $_GET['modulo'];?>",
+							bd:"<?php echo $_GET['bd'];?>",
+							loscamposf:loscamposf,
+							losdatosf:losdatosf,
+							limitar:"<?php echo $_GET['limitar'];?>",
+							dato:sessionStorage.co						
+						}
+						
+						laurl="../base/getdatossqlfiltro.php"
 	                    $.ajax({
-	                        type: "GET",
+							type: "POST",
+							data:parametros,
 	                        url:  laurl,
-	                        success: function(data){ 
-
-	                        	
+	                        success: function(data){ 					        	
 	                        	 $('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');
 	                        
 	                        	 losdatos=JSON.parse(data);

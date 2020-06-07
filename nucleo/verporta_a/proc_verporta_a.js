@@ -52,18 +52,22 @@ function verPortafolioA(modulo,usuario,essuper){
 
 		    
 	
+			elsql="SELECT UNID_NUMERO, UNID_DESCRIP, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='EP'),'') AS RUTAEP, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='ED'),'') AS RUTAED, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='EC'),'') AS RUTAEC, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='EA'),'') AS RUTAEA, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='ENCUADRE'),'') AS RUTAENCU, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
+			"  FROM eunidades j "+		                 
+			" where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["MATERIA"]+"' and j.UNID_PRED=''  order by UNID_NUMERO"
+		
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 		    $.ajax({
-		           type: "GET",
-		           url:  "../base/getdatossql.php?bd=Mysql&sql=SELECT UNID_NUMERO, UNID_DESCRIP, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='EP'),'') AS RUTAEP, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='ED'),'') AS RUTAED, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='EC'),'') AS RUTAEC, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(UNID_ID,'"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='EA'),'') AS RUTAEA, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='ENCUADRE'),'') AS RUTAENCU, "+
-		                  "IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+table.rows('.selected').data()[0]["CICLO"]+"','"+table.rows('.selected').data()[0]["MATRICULA"]+"',UNID_MATERIA) and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
-	                      "  FROM eunidades j "+		                 
-		        	      " where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["MATERIA"]+"' and j.UNID_PRED=''  order by UNID_NUMERO",
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 		        	      losdatos=JSON.parse(data);  
 		        	      generaTablaSubir(JSON.parse(data),"CAPTURA");

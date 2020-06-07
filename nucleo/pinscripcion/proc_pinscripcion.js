@@ -8,9 +8,13 @@ function crearUsuario(lafila,modulo,institucion, campus) {
 	var table = $("#G_"+modulo).DataTable();
   //  var lafila = table.rows(elReg).data();
 	
+	elsql="select count(*) as n from CUSUARIOS where usua_usuario='"+lafila[0][0]+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
+
     $.ajax({
-        type: "GET",
-        url: 'getdatossql.php?bd=SQLite&sql='+encodeURI("select count(*) as n from CUSUARIOS where usua_usuario='"+lafila[0][0]+"'"), 
+		type: "POST",
+		data:parametros,
+        url: 'getdatossqlSeg.php', 
         success: function(data){           	
         	 losdatos=JSON.parse(data);
         	 jQuery.each(losdatos, function(clave, valor){
@@ -252,13 +256,17 @@ function documentos(modulo,usuario,institucion, campus,essuper){
 		    if (! ( $("#modalDocument").length )) {
 		    $("#grid_"+modulo).append(script);
 		    }
-		    
+			
+			
+			elsql="select a.DOCU_CLAVE, CONCAT(a.DOCU_DESCRIP,' (',a.DOCU_ORIGINAL,'|',a.DOCU_COPIAS,')') AS DOCU_DESCRIP,"+
+			"(SELECT COUNT(*) FROM edocumalum Y WHERE Y.DOCU_CLAVE=a.DOCU_CLAVE AND "+
+			" Y.DOCU_MATRICULA='"+table.rows('.selected').data()[0][0]+"') AS ESTA from  edocument a  where a.DOCU_ACTIVO='S'";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		
 		    $.ajax({
-                type: "GET",
-                url: 'getdatossql.php?bd=Mysql&sql='+encodeURI("select a.DOCU_CLAVE, CONCAT(a.DOCU_DESCRIP,' (',a.DOCU_ORIGINAL,'|',a.DOCU_COPIAS,')') AS DOCU_DESCRIP,"+
-                                                      "(SELECT COUNT(*) FROM edocumalum Y WHERE Y.DOCU_CLAVE=a.DOCU_CLAVE AND "+
-                                                      " Y.DOCU_MATRICULA='"+table.rows('.selected').data()[0][0]+"') AS ESTA from  edocument a  where a.DOCU_ACTIVO='S'"), 
+				type: "POST",
+				data:parametros,
+                url: 'getdatossqlSeg.php', 
                 success: function(data){                   	 
                 	 losdatos=JSON.parse(data);
                 	 

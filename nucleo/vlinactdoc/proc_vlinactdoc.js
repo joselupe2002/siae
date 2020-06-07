@@ -84,14 +84,18 @@ function verEvidencias(modulo,usuario,institucion, campus,essuper){
 function cargarAlumnos(grupo, ciclo,profesor,materia,actividad) {
 	  total=0; tne=0;
 	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";	
+	 elsql="select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) AS NOMBRE,"+ 
+	 "PDOCVE as CICLO, ifnull(b.RUTA,'') AS RUTA, ifnull(b.FECHARUTA,'') as FECHARUTA,  ifnull(b.FECHAENV,'') as FECHAENV"+
+	 " from dlista a LEFT OUTER JOIN lintareas b ON (concat('"+actividad+"','_',a.ALUCTR)=b.AUX), falumnos c"+ 
+	 " where ALUCTR=ALUM_MATRICULA AND GPOCVE='"+grupo+"' "+
+	 " and PDOCVE='"+ciclo+"' and LISTC15='"+profesor+"'"+
+	 " and MATCVE='"+materia+"' ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE";
+	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
 	 $.ajax({
-        type: "GET",
-        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI("select a.ID AS ID, c.ALUM_MATRICULA AS MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) AS NOMBRE,"+ 
-       		 "PDOCVE as CICLO, ifnull(b.RUTA,'') AS RUTA, ifnull(b.FECHARUTA,'') as FECHARUTA,  ifnull(b.FECHAENV,'') as FECHAENV"+
-       		 " from dlista a LEFT OUTER JOIN lintareas b ON (concat('"+actividad+"','_',a.ALUCTR)=b.AUX), falumnos c"+ 
-       		 " where ALUCTR=ALUM_MATRICULA AND GPOCVE='"+grupo+"' "+
-       		 " and PDOCVE='"+ciclo+"' and LISTC15='"+profesor+"'"+
-       		 " and MATCVE='"+materia+"' ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE"),
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
         success: function(data){    
        	 $("#laTabla").empty();
        	   $("#laTabla").append("<table id=tabHorarios class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+

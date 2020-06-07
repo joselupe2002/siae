@@ -67,12 +67,13 @@ contMat=1;
 		elsql="select ALUM_CICLOINS AS CICLO, COUNT(*)  as TOTAL from falumnos where ALUM_CICLOINS>='"+$("#selCiclosAnt").val()+"'"+
 		" AND ALUM_CARRERAREG='"+$("#selCarreras").val()+"'"+
 		" GROUP BY ALUM_CICLOINS ORDER by ALUM_CICLOINS ASC ";
-		
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 		mostrarEspera("esperaInf","grid_vstdesxgen","Cargando Datos...Puede tardar");
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  				      			      
 					generaTablaInformacion(JSON.parse(data));   
 					ocultarEspera("esperaInf");  
@@ -100,9 +101,11 @@ function generaTablaInformacion(grid_data){
 		
 		
 		elsqlAv="select CICL_CLAVE AS CICLO, CICL_DESCRIP  AS CICLOD from ciclosesc where CICL_CLAVE>'"+$("#selCiclosAnt").val()+"' and RIGHT(CICL_CLAVE,1) IN (1,3)";      					  
+		parametros={sql:elsqlAv,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlAv),
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(dataAv){ 				   
 				    jQuery.each(JSON.parse(dataAv), function(claveAv, valorAv) {
 						 $("#headMaterias").append("<th class=\"ciclosid\">"+valorAv.CICLO+"</th>");						
@@ -129,9 +132,11 @@ function generaTablaInformacion(grid_data){
 										" SELECT DISTINCT(l.ALUCTR) FROM dlista l where l.PDOCVE="+cicloNuevo+" and l.ALUCTR=a.ALUCTR "+
 										")) j";	
 										//mostrarEspera("esperaInf","grid_vstdesxgen","Cargando Datos...Puede tardar");	
+										parametros={sql:elsqlDes,dato:sessionStorage.co,bd:"Mysql"}
 										$.ajax({
-												type: "GET",
-												url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlDes),
+												type: "POST",
+												data:parametros,
+												url:  "../base/getdatossqlSeg.php",
 												success: function(dataDes){ 	
 													ayuda1="Alumnos de la generación "+valor.CICLO+" que no se inscribieron al ciclo ";
 													ayuda2="Alumnos de la generación "+valor.CICLO+" que no se inscribieron al ciclo y estaban inscritos en el ciclo anterior: ";

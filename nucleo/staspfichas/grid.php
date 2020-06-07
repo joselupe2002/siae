@@ -164,9 +164,11 @@
        var Body = $('body'); 
        Body.addClass('preloader-site');
        elsqlCiclo="SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' order by CICL_ORDEN DESC";
+       parametros={sql:elsqlCiclo,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
-			type: "GET",
-			url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlCiclo),
+            type: "POST",
+            data:parametros,
+			url:  "../base/getdatossqlSeg.php",
 			success: function(data){	
 		 
                    jQuery.each(JSON.parse(data), function(clave, valor) {elciclo=valor.CICL_CLAVE;	 });
@@ -175,18 +177,22 @@
                     //Cargamos las solicitudes que se han capturado
                     $("#solicitudes").html(ladefault);
                     elsqlSol="SELECT count(*) from aspirantes where CICLO='"+elciclo+"'";
+                    parametros={sql:elsqlSol,dato:sessionStorage.co,bd:"Mysql"}
                     $.ajax({
-                        type: "GET",
-                        url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlSol),
+                        type: "POST",
+                        data:parametros,
+                        url:  "../base/getdatossqlSeg.php",
                         success: function(dataSol){                     
                             $("#solicitudes").html(JSON.parse(dataSol)[0][0]);
 
                             //Cargamos las solicitudes que se han finalizado
                             $("#solicitudesFin").html(ladefault);
                             elsqlSolFin="SELECT count(*) from aspirantes where CICLO='"+elciclo+"' and FINALIZADO='S'";
+                            parametros={sql:elsqlSolFin,dato:sessionStorage.co,bd:"Mysql"}
                             $.ajax({
-                                type: "GET",
-                                url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlSolFin),
+                                type: "POST",
+                                data:parametros,
+                                url:  "../base/getdatossqlSeg.php",
                                 success: function(dataSolFin){   
                                     solfin=parseInt(JSON.parse(dataSolFin)[0][0]);  
                                     $("#solicitudesFin").html(solfin);                      
@@ -197,9 +203,11 @@
                              //Cargamos las solicitudes que se han cotejado
                              $("#solicitudesFin").html(ladefault);
                             elsqlSolCot="SELECT count(*) from aspirantes where CICLO='"+elciclo+"' and COTEJADO='S'";
+                            parametros={sql:elsqlSolCot,dato:sessionStorage.co,bd:"Mysql"}
                             $.ajax({
-                                type: "GET",
-                                url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlSolCot),
+                                type: "POST",
+                                data:parametros,
+                                url:  "../base/getdatossqlSeg.php",
                                 success: function(dataSolCot){   
 
                                     solcot=parseInt(JSON.parse(dataSolCot)[0][0]);  
@@ -211,9 +219,11 @@
                             //Cargamos las solicitudes que se han aceptado
                             $("#solicitudesFin").html(ladefault);
                             elsqlSolAc="SELECT count(*) from aspirantes where CICLO='"+elciclo+"' and ACEPTADO='S'";
+                            parametros={sql:elsqlSolAc,dato:sessionStorage.co,bd:"Mysql"}
                             $.ajax({
-                                type: "GET",
-                                url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlSolAc),
+                                type: "POST",
+                                data:parametros,
+                                url:  "../base/getdatossqlSeg.php",
                                 success: function(dataSolAc){   
                                     solac=parseInt(JSON.parse(dataSolAc)[0][0]);  
                                     $("#solicitudesAc").html(solac);                      
@@ -230,9 +240,11 @@
                                        "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"'"+
                                        " and CARRERA=CARR_CLAVE) AS NUM FROM ccarreras a WHERE a.CARR_OFERTAR='S' order by CARR_DESCRIP";                                                       
                             c=0;
+                            parametros={sql:elsqlSolCar,dato:sessionStorage.co,bd:"Mysql"}
                             $.ajax({
-                                type: "GET",
-                                url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlSolCar),
+                                type: "POST",
+                                data:parametros,
+                                url:  "../base/getdatossqlSeg.php",
                                 success: function(dataCar){   
                                     jQuery.each(JSON.parse(dataCar), function(clave, valor) {
                                          $("#lascarreras").append("<span title=\""+valor.CARRERA+"\" class=\"btn btn-app btn-sm "+colorbtn[c]+" no-hover\">"+
@@ -251,9 +263,11 @@
                                        "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"' and FINALIZADO='S' "+
                                        " and CARRERA=CARR_CLAVE) AS NUM FROM ccarreras a WHERE a.CARR_OFERTAR='S' order by CARR_DESCRIP";                                                       
                             c2=0;
+                            parametros={sql:elsqlSolCarFin,dato:sessionStorage.co,bd:"Mysql"}
                             $.ajax({
-                                type: "GET",
-                                url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsqlSolCarFin),
+                                type: "POST",
+                                data:parametros,
+                                url:  "../base/getdatossqlSeg.php",
                                 success: function(dataCarFin){   
                                     jQuery.each(JSON.parse(dataCarFin), function(clave, valor) {
                                          $("#lascarrerasFin").append("<span title=\""+valor.CARRERA+"\" class=\"btn btn-app btn-sm "+colorbtn[c2]+" no-hover\">"+
@@ -289,9 +303,11 @@
             var elsql="SELECT CARRERAD as x, count(*)  AS y"+
                     "  from vaspirantes where CICLO='"+elciclo+"' group by CARRERAD ORDER By 2";
 
+            parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
             $.ajax({
-                    type: "GET",
-                    url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+                    type: "POST",
+                    data:parametros,
+                    url:  "../base/getdatossqlSeg.php",
                     success: function(data){ 
                                     
                     datosgraf=JSON.parse(data);  

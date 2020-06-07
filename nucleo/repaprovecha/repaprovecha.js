@@ -82,18 +82,22 @@ contMat=1;
 			  " and a.CARRERA="+$("#selCarreras").val()+"  ORDER BY SEMESTRE,MATERIAD";
 	  
 		mostrarEspera("esperahor","grid_avancegral","Cargando Datos...");
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
-	           type: "GET",
-			   url:  "../base/getdatossql.php?bd=Mysql&sql="+encodeURI(elsql),
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 				      			      
 					generaTablaProfesores(JSON.parse(data));   
 				  	
 					for (i=1;i<contAlum;i++) {
 							elsqlPaso="select IDGRUPO,count(*) AS N from dlista where IDGRUPO="+$("#IDDETALLE_"+i).html()+ " AND BAJA='N'";															
+							parametros={sql:elsqlPaso,dato:sessionStorage.co,bd:"Mysql"}
 							$.ajax({
-								type: "GET",
-								url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlPaso,
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
 								success: function(dataPaso){  
 																				      
 									jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
@@ -108,9 +112,11 @@ contMat=1;
 												elsqlUni="select IDGRUPO,"+unidades.substring(0,unidades.length-1)+" from dlista where IDGRUPO="+valorPaso.IDGRUPO+
 												"   GROUP BY IDGRUPO";	
 											
+												parametros={sql:elsqlUni,dato:sessionStorage.co,bd:"Mysql"}
 												$.ajax({
-													type: "GET",
-													url:  "../base/getdatossql.php?bd=Mysql&sql="+elsqlUni,
+													type: "POST",
+													data:parametros,
+													url:  "../base/getdatossqlSeg.php",
 													success: function(dataUni){  
 														
 														cont=0;	
