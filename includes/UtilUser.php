@@ -79,6 +79,7 @@ class UtilUser {
 			}
 			$data[0]["CONT_FECHA"]=$fecha_actual;
 			$data[0]["CONT_NUMOFI"]=$numofi;
+			$data[0]["CONT_SOLO"]=$ofisolo;
 		}
 		else {
 			$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'");
