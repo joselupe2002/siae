@@ -59,6 +59,7 @@ contMat=1;
 		   "                <th>No.</th> "+
 		   "                <th>Ciclo</th> "+
 		   "                <th>Gpo</th> "+	
+		   "                <th>Sem</th> "+	
 		   "                <th>Materia</th> "+	
 		   "                <th>MateriaD</th> "+	
 		   "                <th>Profesor</th> "+
@@ -81,6 +82,7 @@ contMat=1;
 				
 		elsql="select a.PDOCVE AS CICLO, a.MATCVE AS MATERIA,c.MATE_DESCRIP AS MATERIAD,IFNULL(a.LISTC15,0) AS PROFESOR,"+
 		"CONCAT(d.EMPL_NOMBRE,' ',d.EMPL_APEPAT, ' ',d.EMPL_APEMAT) AS PROFESORD,a.GPOCVE AS GRUPO, "+
+		"getcuatrimat(a.MATCVE,b.ALUM_MAPA) AS SEMESTRE,"+
 		"b.ALUM_CARRERAREG AS CARRERA, e.CARR_DESCRIP AS CARRERAD,SUM(IF (ALUM_SEXO=1,1,0)) AS HOMBRE,"+
 		"SUM(IF (ALUM_SEXO=2,1,0)) AS MUJER,SUM(IF (LISCAL>=70 AND ALUM_SEXO=1,1,0)) AS APR_HOMBRE,"+
 		"SUM(IF (LISCAL>=70 AND ALUM_SEXO=2,1,0)) AS APR_MUJER, COUNT(*) as TOTAL "+		
@@ -89,6 +91,7 @@ contMat=1;
 		" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' and PDOCVE='"+$("#selCiclos").val()+"'"+
 		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','T','AC','OC','RP') and GPOCVE<>'REV' "+
 		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
+		
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		
 
@@ -124,6 +127,7 @@ function generaTablaInformacion(grid_data){
 		$("#rowM"+contR).append("<td>"+contR+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.CICLO+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.GRUPO+"</td>");
+		$("#rowM"+contR).append("<td>"+valor.SEMESTRE+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.MATERIA+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.MATERIAD+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.PROFESOR+"</td>");

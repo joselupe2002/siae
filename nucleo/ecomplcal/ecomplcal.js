@@ -14,7 +14,7 @@ contMat=1;
 		$(".input-mask-hora").mask("99:99");
 		$(".input-mask-horario").mask("99:99-99:99");
 		$(".input-mask-numero").mask("99");
-
+        
 		$("#losciclossel").append("<span class=\"label label-danger\">Ciclo Escolar Proceso</span>");
 		addSELECT("selCiclos","losciclossel","PROPIO", "SELECT CICL_CLAVE, CICL_DESCRIP FROM ciclosesc order by cicl_clave desc", "","");  			      
 	
