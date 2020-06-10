@@ -161,7 +161,7 @@ function promediar(){
 			var ciclo = $(this).find("td").eq(1).html();
 			//alert (profesor+' '+materia+' '+materiad+' '+grupo+' '+ciclo);
 			console.log("Promediado: "+profesor+' '+materia+' '+materiad+' '+grupo+' '+ciclo);
-			calcularFinal(profesor,materia,materiad,grupo,ciclo, 'grid_vstrepxmatxcic');
+			calcularFinal(profesor,materia,materiad,grupo,ciclo, 'vstrepxmatxcic');
 			
 		}
 		c++;		
