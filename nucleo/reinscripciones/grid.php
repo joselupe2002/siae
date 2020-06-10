@@ -96,7 +96,7 @@
 										</button>
 
 										<button title="Agregar asignaturas de otros periodos con condiciones" onclick="agregarCondiciones();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-											<i class="ace-icon green fa fa-legal bigger-140"></i>Otros Planes<span class="btn-small"></span>            
+											<i class="ace-icon green fa fa-legal bigger-140"></i> Condiciones<span class="btn-small"></span>            
 										</button>	
 								   		<button title="Ver informaci&oacute;n del Alumno" id="btnfiltrar" onclick="verInfo();" class="btn btn-white btn-success btn-round" value="Agregar"> 
 											<i class="ace-icon red fa fa-info bigger-140"></i> Info<span class="btn-small"></span>            
