@@ -587,7 +587,7 @@ function guardarFila(nombre,id,fila){
 					A_VIERNES:$("#c_"+fila+"_7B").val(),
 					A_SABADO:$("#c_"+fila+"_8B").val(),
 					A_DOMINGO:$("#c_"+fila+"_9B").val(),
-					CUPO:$("#c_"+fila+"_10B").val(),
+					CUPO:$("#c_"+fila+"_10").val(),
 					SIE:$("#c_"+fila+"_2SIE").val()
 					};
 

@@ -43,28 +43,22 @@
 		  <div class="widget-box widget-color-blue" id="principal">
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >		                    		
-						<div id="losciclos" class="col-sm-2" >				              										
+						<div id="losciclos" class="col-sm-2" >	
+
 						</div>			
 						<div id="lascarreras" class="col-sm-3">
 						</div>       			 
 						<div id="losalumnos" class="col-sm-4" >
 						</div>
-						<div class="col-sm-3" style="padding-top:14px;">
-						    <button title="Agregar asignaturas de otros periodos con condiciones" onclick="agregarCondiciones();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-legal bigger-140"></i><span class="btn-small"></span>            
-							</button>							
-							<button title="Ver informaci&oacute;n del Alumno" id="btnfiltrar" onclick="verInfo();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-								<i class="ace-icon red fa fa-info bigger-140"></i><span class="btn-small"></span>            
-							</button>
-							<button title="Ver kardex del alumno" id="btnfiltrar" onclick="verKardex();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-								<i class="ace-icon pink fa fa-file-text bigger-140"></i><span class="btn-small"></span>            
-							</button>
+						<div class="col-sm-3" style="padding-top:14px;">		
+						    <button title="Cargar Datos Alumnos" onclick="cargarDatosAlumno();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
+							</button>				  
+						   												
 							<button title="Guardar Todos los registros" onclick="guardarTodos();" class="btn btn-white btn-purple  btn-round"> 
-								<i class="ace-icon purple fa fa-save bigger-140"></i><span class="btn-small"></span>            
+								<i class="ace-icon purple fa fa-save bigger-140"></i>Guardar<span class="btn-small"></span>            
 							</button>
-							<button title="Imprimir boleta de reinscripción" onclick="imprimeBoleta();" class="btn btn-white btn-purple  btn-round"> 
-								<i class="ace-icon text-warning fa fa-clipboard bigger-140"></i><span class="btn-small"></span>            
-							</button>
+							
 						</div>
 		            </div> 
 		      </div>
@@ -79,17 +73,14 @@
 					<div class="widget-footer bg-primary" style="padding-top:5px;">
 					     <div class='row'>
 						      <div class="col-sm-2">
-								  <span class="text-white">Créditos:  <span id="selCreditos" class="badge badge-primary">0</span></span>
-							  </div> 
-							  <div class="col-sm-2">
-								  <span class="text-white">Repitiendo:  <span id="selRepitiendo" class="badge badge-warning">0</span></span>
-							  </div> 
-							  <div class="col-sm-2">
-								  <span class="text-white">Especial:  <span id="selEspecial" class="badge badge-danger">0</span></span>
-							  </div> 
-							  <div class="col-sm-2">
+								  <span class="text-white">Créditos:  <span id="selCreditos" class="badge badge-primary">0</span></span> <br/>
 								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span></span>
 							  </div> 
+							  <div class="col-sm-2">
+								  <span class="text-white">Repitiendo:  <span id="selRepitiendo" class="badge badge-warning">0</span></span><br/>
+								  <span class="text-white">Especial:  <span id="selEspecial" class="badge badge-danger">0</span></span>
+							  </div> 
+
 							  <div class="col-sm-2">
 							        <div class="checkbox" style="padding:0px; margin: 0px;">
 										 <label>
@@ -97,7 +88,24 @@
 												<span class="lbl"> Imp. Bol.</span>
 										</label>
 									</div>
-							  </div> 							  
+							  </div> 	
+							  <div class="col-sm-6">
+							      
+										<button title="Imprimir boleta de reinscripción" onclick="imprimeBoleta();" class="btn btn-white btn-purple  btn-round"> 
+											<i class="ace-icon text-warning fa fa-clipboard bigger-140"></i>Boleta<span class="btn-small"></span>            
+										</button>
+
+										<button title="Agregar asignaturas de otros periodos con condiciones" onclick="agregarCondiciones();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+											<i class="ace-icon green fa fa-legal bigger-140"></i>Otros Planes<span class="btn-small"></span>            
+										</button>	
+								   		<button title="Ver informaci&oacute;n del Alumno" id="btnfiltrar" onclick="verInfo();" class="btn btn-white btn-success btn-round" value="Agregar"> 
+											<i class="ace-icon red fa fa-info bigger-140"></i> Info<span class="btn-small"></span>            
+										</button>
+										<button title="Ver kardex del alumno" id="btnfiltrar" onclick="verKardex();" class="btn btn-white btn-success btn-round" value="Agregar"> 
+											<i class="ace-icon pink fa fa-file-text bigger-140"></i> Kardex<span class="btn-small"></span>            
+										</button>
+								
+							  </di>					  
 						</div>
 					</div>
 			   </div>

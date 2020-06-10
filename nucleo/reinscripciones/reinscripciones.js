@@ -31,6 +31,10 @@ var contFila=1;
 		   });
 		
 		$("#losalumnos").append("<span class=\"label label-danger\">Alumno</span>");
+
+			
+		addSELECT("selCiclos","losciclos","PROPIO", "SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,'|',CICL_DESCRIP) FROM ciclosesc  ORDER BY CICL_CLAVE DESC", "","BUSQUEDA");  			      
+
 		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA,CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) FROM falumnos where ALUM_MATRICULA='0'", "","BUSQUEDA");  			      
 
 		addSELECT_ST("aulas","grid_reinscripciones","PROPIO", "select AULA_CLAVE, AULA_DESCRIP from eaula where "+
@@ -65,12 +69,16 @@ var contFila=1;
 			$("#selAlumnos").empty();
 			$("#tabHorariosReins").empty();
 		}
-		if (elemento=='selAlumnos') {
-			if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
+
+		if (elemento=='selCiclos') {
+			$("#elciclo").html($("#selCiclos option:selected").text());
 		}
         
     }
 
+    function cargarDatosAlumno(){
+		if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
+	}
 
     function cargarHorarios(){		
 		script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
@@ -315,14 +323,16 @@ function selTodos() {
 
 
 function cargaMateriasDer(vmapa,vesp){
-	parametros={matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],data:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
+	parametros={matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
 	$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "getMaterias.php",
 		success: function(data){ 
+
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and SEMESTRE<=getPeriodos('"+$("#selAlumnos").val()+"','"+$("#elciclo").html().split("|")[0]+"') "+
+				  " and INS<CUPO"+
 				  " and MAPA='"+vmapa+"' ORDER BY SEMESTRE, MATERIAD";
 			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -449,9 +459,14 @@ function addAsigCond(id){
 				data:parametros,
 				url:  "../base/getdatossqlSeg.php",
 				success: function(dataNI){ 
-					losdatosNI=JSON.parse(dataNI);				
-					generaTablaHorarios(losdatosNI,"NO INSCRITAS COND");	
-					validarCondiciones(false);			  					  
+					losdatosNI=JSON.parse(dataNI);	
+					if 	(losdatosNI[0]["INS"]<losdatosNI[0]["CUPO"]) {
+						generaTablaHorarios(losdatosNI,"NO INSCRITAS COND");	
+						validarCondiciones(false);	
+					}
+					else {
+						alert ("El cupo de esta asignatura "+losdatosNI[0]["MATERIAD"]+" es: "+losdatosNI[0]["CUPO"]+" Ya hay inscritos: "+losdatosNI[0]["INS"]);
+					}		  					  
 				 },
 				 error: function(data) {	                  
 							alert('ERROR: '+data);

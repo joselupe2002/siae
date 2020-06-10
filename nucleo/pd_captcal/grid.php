@@ -211,7 +211,7 @@ function cargarAct(){
 		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE "+                
 					   " FROM vcargasprof a where PROFESOR='<?php echo $_SESSION['usuario']?>'"+
 					   //" and CICLO=getciclo() "+
-					   " and CERRADOCAL='N'";
+					   " and CERRADOCAL='N' order by CICLO DESC,MATERIA";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",

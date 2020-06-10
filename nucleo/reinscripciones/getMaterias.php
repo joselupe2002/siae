@@ -3,7 +3,7 @@
    session_start();
    header('Content-Type: text/html; charset='.$_SESSION['encode']);
    include("../.././includes/Conexion.php");
-   if (($_SESSION['inicio']==1) && ($_SESSION['idsesion']==$_POST[["dato"])) { 
+   if (($_SESSION['inicio']==1) && ($_SESSION['idsesion']==$_POST["dato"])) { 
        $miConex = new Conexion();
 
        $sqld="DELETE FROM dlistatem where MATRICULA='".$_POST["matricula"]."'";
@@ -40,8 +40,8 @@
                                                             "                         and (LISCAL>=70 or PDOCVE='".$_POST["ciclo"]."'))   ".     
                                                    "    )".
                                         "   )";
-
-     
+       
+       //echo $sql;
        $res=$miConex->afectaSQL($_SESSION["bd"],$sql);   
        $msj="";
        if (!($res=='')) {
