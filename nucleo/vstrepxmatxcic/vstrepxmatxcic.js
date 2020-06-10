@@ -166,5 +166,5 @@ function promediar(){
 		}
 		c++;		
 		});
-		//cargarInformacion();
+		cargarInformacion();
 }
