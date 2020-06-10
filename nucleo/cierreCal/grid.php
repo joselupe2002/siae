@@ -203,9 +203,6 @@
     	    $("#rowCierre"+valor.ID).append("<td style=\"text-align: center;\"><button title=\""+tit+" boleta de calificación\" onclick=\"cerrarBoleta('"+valor.ID+"','"+$("#selProfesores").val()+"','"+
     	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"','"+accion+"');\""+
 											  " class=\"btn btn-xs btn-white btn-primary btn-round\"><i class=\"ace-icon "+iconcierre+" bigger-120\"></i></button></td>");
-			
-			
-
         });
 }		
 

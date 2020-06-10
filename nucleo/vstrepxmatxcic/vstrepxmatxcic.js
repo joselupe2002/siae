@@ -150,3 +150,21 @@ function generaTablaInformacion(grid_data){
 } 
 
 
+function promediar(){
+	c=0;
+	$('#tabInformacion tr').each(function () {
+		if (c>0) {
+			var profesor = $(this).find("td").eq(6).html();
+			var materia = $(this).find("td").eq(4).html();
+			var materiad = $(this).find("td").eq(5).html();
+			var grupo = $(this).find("td").eq(2).html();
+			var ciclo = $(this).find("td").eq(1).html();
+			//alert (profesor+' '+materia+' '+materiad+' '+grupo+' '+ciclo);
+			console.log("Promediado: "+profesor+' '+materia+' '+materiad+' '+grupo+' '+ciclo);
+			calcularFinal(profesor,materia,materiad,grupo,ciclo, 'grid_vstrepxmatxcic');
+			
+		}
+		c++;		
+		});
+		//cargarInformacion();
+}

@@ -54,6 +54,10 @@
 						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
 							</button>
+							<button title="Buscar Registros" onclick="promediar();" 
+							    class="btn btn-white btn-success btn-round" > 
+								<i class="ace-icon blue fa fa-strikethrough bigger-140"></i> Promediar<span class="btn-small"></span>            
+							</button>
 							<button title="Buscar Registros" onclick="convertirDataTable('tabInformacion');" 
 							    class="btn btn-white btn-success btn-round" value="Agregar"> 
 								<i class="ace-icon blue fa fa-wrench bigger-140"></i><span class="btn-small"></span>            
