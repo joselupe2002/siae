@@ -200,12 +200,12 @@ function cargarPortafolios(){
 	 elsql="select  "+
         		   " ALUCTR AS MATRICULA,"+
         		   " concat(ALUM_APEPAT, ' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS `NOMBRE`,"+
-        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EP'),'') AS RUTAEP,"+
-        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='ED'),'') AS RUTAED,"+ 
-        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EC'),'') AS RUTAEC,"+ 
-        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EA'),'') AS RUTAEA, "+
-        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='ENCUADRE'),'') AS RUTAENCU,"+
-        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
+        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EP' order by IDDET DESC LIMIT 1),'') AS RUTAEP,"+
+        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='ED' order by IDDET DESC LIMIT 1),'') AS RUTAED,"+ 
+        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EC' order by IDDET DESC LIMIT 1),'') AS RUTAEC,"+ 
+        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EA' order by IDDET DESC LIMIT 1),'') AS RUTAEA, "+
+        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='ENCUADRE' order by IDDET DESC LIMIT 1),'') AS RUTAENCU,"+
+        		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='DIAGNOSTICA' order by IDDET DESC LIMIT 1),'') AS RUTADIAG "+
         		   " from dlista u, falumnos z where u.ALUCTR=z.ALUM_MATRICULA and u.MATCVE='"+lamateria+"'"+
 				   " AND u.LISTC15='<?php echo $_SESSION['usuario']?>' and u.GPOCVE='"+elgrupo+"' and u.PDOCVE='"+elciclo+"' ORDER BY ALUM_APEPAT, ALUM_APEMAT";				   
 	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
