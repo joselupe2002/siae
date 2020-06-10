@@ -64,9 +64,7 @@ var matser="";
 			$("#selPlanes").empty();
 			$("#selCarreras option[value=0]").attr("selected","true");	
 		}
-		if (elemento=='selPlanes') {
-			cargarHorarios();		
-		}
+
         
     }
 

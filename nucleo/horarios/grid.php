@@ -31,7 +31,7 @@
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
+	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
        
 	      <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
                 
@@ -45,18 +45,16 @@
 						<div id="losplanes" class="col-sm-3" >
 						</div>
 						<div id="losplanes" class="col-sm-3" style="padding-top:14px;">
+						    <button title="Buscar Registros" onclick="cargarHorarios();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
+							</button>
 						    <button title="Agregar Asignaturas" onclick="agregarAsignatura();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-book bigger-140"></i><span class="btn-small"></span>            
-							</button>
-							<button title="Buscar Espacios en aulas" onclick="buscarEspacios();" class="btn btn-white btn-warning btn-round" value="Agregar"> 
-								<i class="ace-icon blue fa fa-trello bigger-140"></i><span class="btn-small"></span>            
-							</button>
-							<button title="Filtrar Horarios" disabled="disabled" id="btnfiltrar" onclick="filtrarHorarios();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-								<i class="ace-icon red fa fa-filter bigger-140"></i><span class="btn-small"></span>            
+								<i class="ace-icon green fa fa-book bigger-140"></i>Agregar Asig.<span class="btn-small"></span>            
 							</button>
 							<button title="Guardar Todos los registros" onclick="guardarTodos();" class="btn btn-white btn-purple  btn-round"> 
-								<i class="ace-icon purple fa fa-save bigger-140"></i><span class="btn-small"></span>            
+										<i class="ace-icon purple fa fa-save bigger-140"></i><span class="btn-small"></span>            
 							</button>
+							
 						</div>
 		            </div> 
 		      </div>
@@ -64,10 +62,24 @@
               <div class="widget-body">
 				   <div class="widget-main">
 				       <div class="row">	
-					       <div id="loshorarios" class="col-sm-12" style="overflow-x: scroll; height:370px;" >    
+					       <div id="loshorarios" class="col-sm-12" style="overflow-x: scroll; height:320px;" >    
 						   </div>
                        </div>
                     </div>
+					<div class="widget-footer bg-primary" style="padding-top:5px;">
+					     <div class='row'>
+						      <div class="col-sm-12">
+									<button title="Buscar Espacios en aulas" onclick="buscarEspacios();" class="btn btn-white btn-warning btn-round" value="Agregar"> 
+										<i class="ace-icon blue fa fa-trello bigger-140"></i>Bucar Espacios<span class="btn-small"></span>            
+									</button>
+									<button title="Filtrar Horarios" disabled="disabled" id="btnfiltrar" onclick="filtrarHorarios();" class="btn btn-white btn-success btn-round" value="Agregar"> 
+										<i class="ace-icon red fa fa-filter bigger-140"></i>Filtrar Horarios<span class="btn-small"></span>            
+									</button>
+									
+							  </div> 
+							  			  
+						</div>
+					</div>
 			   </div>
 		</div>
 		 							
