@@ -269,7 +269,7 @@ function cargarInformacionA(){
 			
 	elsql="select PDOCVE AS CICLO,ALUM_MATRICULA as MATRICULA, concat (ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) as NOMBRE, "+
 	" count(*) as NMAT,"+
-	" (SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestas l where l.TERMINADA='S' and l.CICLO='"+$("#selCiclos").val()+"' and l.MATRICULA=b.ALUM_MATRICULA) AS RES"+
+	" (SELECT COUNT(DISTINCT(l.IDGRUPO)) FROM ed_respuestas l where l.TERMINADA='S' and l.CICLO='"+$("#selCiclos").val()+"' and l.MATRICULA=b.ALUM_MATRICULA) AS RES"+
 	" from dlista a, falumnos b, cmaterias c  where PDOCVE='"+$("#selCiclos").val()+"'"+
 	" and a.ALUCTR=b.ALUM_MATRICULA"+
 	" and a.MATCVE=c.MATE_CLAVE"+
