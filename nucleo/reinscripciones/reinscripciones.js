@@ -460,7 +460,7 @@ function addAsigCond(id){
 				url:  "../base/getdatossqlSeg.php",
 				success: function(dataNI){ 
 					losdatosNI=JSON.parse(dataNI);	
-					if 	(losdatosNI[0]["INS"]<losdatosNI[0]["CUPO"]) {
+					if 	(parseInt(losdatosNI[0]["INS"])<parseInt(losdatosNI[0]["CUPO"])) {
 						generaTablaHorarios(losdatosNI,"NO INSCRITAS COND");	
 						validarCondiciones(false);	
 					}

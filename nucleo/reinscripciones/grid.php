@@ -251,7 +251,7 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.gritter.min.js"></script>
 
 <script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
-<script src="<?php echo $nivel; ?>nucleo/reinscripciones/reinscripciones.js"></script>
+<script src="<?php echo $nivel; ?>nucleo/reinscripciones/reinscripciones.js?v=<?php echo date('YmdHis'); ?>"></script>
 
 </body>
 <?php } else {header("Location: index.php");}?>
