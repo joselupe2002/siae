@@ -95,7 +95,6 @@ contMat=1;
 		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','T','AC','OC','RP') and GPOCVE<>'REV' "+
 		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
 
-		alert (elsql);
 		
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		
