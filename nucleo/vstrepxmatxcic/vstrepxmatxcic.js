@@ -51,6 +51,9 @@ contMat=1;
 
 
     function cargarInformacion(){
+
+		$("#opcionestabInformacion").addClass("hide");
+		$("#botonestabInformacion").empty();
 	
 		script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
@@ -91,6 +94,8 @@ contMat=1;
 		" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' and PDOCVE='"+$("#selCiclos").val()+"'"+
 		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','T','AC','OC','RP') and GPOCVE<>'REV' "+
 		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
+
+		alert (elsql);
 		
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		

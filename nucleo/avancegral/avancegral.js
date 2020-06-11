@@ -66,6 +66,10 @@ contMat=1;
 	}
 
     function cargarAvances(){
+
+		$("#opcionestabAvances").addClass("hide");
+		$("#botonestabAvances").empty();
+
 		if (!($("#selPeriodos").val()=='99')) {
 			cadPeriodo=" and getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"')="+$("#selPeriodos").val();}
 		else {cadPeriodo="";}

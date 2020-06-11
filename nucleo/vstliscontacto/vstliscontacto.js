@@ -51,7 +51,9 @@ contMat=1;
 
 
     function cargarInformacion(){
-	
+		$("#opcionestabInformacion").addClass("hide");
+		$("#botonestabInformacion").empty();
+		
 		script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
 	   	   "        <thead >  "+

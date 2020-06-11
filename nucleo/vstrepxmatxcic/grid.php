@@ -140,7 +140,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="vstrepxmatxcic.js"></script>
+<script src="vstrepxmatxcic.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
  
 </script>

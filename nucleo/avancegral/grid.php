@@ -133,7 +133,7 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
 
 
-<script src="avancegral.js"></script>
+<script src="avancegral.js?v=<?php echo date('YmdHis'); ?>"></script>
 
 <!-- -------------------Exportación de tabla a excel----------------------->
 <script src="<?php echo $nivel; ?>js/FileSaver.min.js"></script>
