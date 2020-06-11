@@ -71,7 +71,7 @@ contMat=1;
 		   $("#informacion").append(script);
 				
 		elsql="select a.IDDETALLE, PROFESOR, PROFESORD, MATERIA, MATERIAD, SEMESTRE, SIE AS GRUPO, "+
-			  "(SELECT COUNT(DISTINCT(l.IDGRUPO)) FROM ed_respuestas l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE) AS RES, "+
+			  "(SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestas l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE) AS RES, "+
 			  "(select count(*) from dlista where IDGRUPO=a.IDDETALLE AND BAJA='N') AS ALUM "+
 		      " from vedgrupos a where a.CICLO='"+$("#selCiclos").val()+"'"+ 
 			  " and a.CARRERA="+$("#selCarreras").val()+"  ORDER BY SEMESTRE,MATERIAD";
@@ -151,7 +151,7 @@ function cargarInformacionP(){
 	   $("#informacion").append(script);
 			
 	elsql="select CICLO,PROFESOR, PROFESORD, z.EMPL_DEPTO as DEPTO, ifnull(URES_DESCRIP,'') AS DEPTOD,"+
-		  "SUM((SELECT COUNT(DISTINCT(l.IDGRUPO)) FROM ed_respuestas l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE)) AS RES, "+
+		  "SUM((SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestas l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE)) AS RES, "+
 		  "SUM((select count(*) from dlista where IDGRUPO=a.IDDETALLE AND BAJA='N')) AS ALUM "+
 		  " from vedgrupos a, pempleados z LEFT OUTER JOIN  fures y ON (z.EMPL_DEPTO=y.URES_URES)  where a.CICLO='"+$("#selCiclos").val()+"'"+ 
 		  " and a.PROFESOR=z.EMPL_NUMERO "+
@@ -216,7 +216,7 @@ jQuery.each(grid_data, function(clave, valor) {
 
 function verMaterias(ciclo,profesor){
 	elsqlMa=elsql="select a.IDDETALLE, PROFESOR, PROFESORD, MATERIA, MATERIAD, SEMESTRE, SIE AS GRUPO, "+
-	"(SELECT COUNT(DISTINCT(l.IDGRUPO)) FROM ed_respuestas l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE) AS RES, "+
+	"(SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestas l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE) AS RES, "+
 	"(select count(*) from dlista where IDGRUPO=a.IDDETALLE AND BAJA='N') AS ALUM "+
 	" from vedgrupos a where a.CICLO='"+ciclo+"' and PROFESOR='"+profesor+"'"+ " ORDER BY SEMESTRE,MATERIAD";
 
@@ -269,7 +269,7 @@ function cargarInformacionA(){
 			
 	elsql="select PDOCVE AS CICLO,ALUM_MATRICULA as MATRICULA, concat (ALUM_APEPAT,' ',ALUM_APEMAT,' ', ALUM_NOMBRE) as NOMBRE, "+
 	" count(*) as NMAT,"+
-	" (SELECT COUNT(DISTINCT(l.IDGRUPO)) FROM ed_respuestas l where l.TERMINADA='S' and l.CICLO='"+$("#selCiclos").val()+"' and l.MATRICULA=b.ALUM_MATRICULA) AS RES"+
+	" (SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestas l where l.TERMINADA='S' and l.CICLO='"+$("#selCiclos").val()+"' and l.MATRICULA=b.ALUM_MATRICULA) AS RES"+
 	" from dlista a, falumnos b, cmaterias c  where PDOCVE='"+$("#selCiclos").val()+"'"+
 	" and a.ALUCTR=b.ALUM_MATRICULA"+
 	" and a.MATCVE=c.MATE_CLAVE"+
