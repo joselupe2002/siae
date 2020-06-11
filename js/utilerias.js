@@ -829,11 +829,13 @@ function actualizaSelect(nombre,elsql,tipoSelect,eltipo){
         url:  "../"+fuera+"base/getdatossqlSeg.php",
         success: function(data){  
 			losdatos=JSON.parse(data);
+			
        	 jQuery.each(JSON.parse(data), function(clave, valor) { 	
        		 $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");       	     
               });
        	
-       	 if (tipoSelect=='BUSQUEDA') {               
+       	 if (tipoSelect=='BUSQUEDA') {    
+          
        		$("#"+nombre).trigger("chosen:updated");		
        		}
        	 
