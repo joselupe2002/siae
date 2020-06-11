@@ -116,7 +116,7 @@
 <script src="<?php echo $nivel; ?>js/sha/sha512.js"></script>
 
 <script src="<?php echo $nivel; ?>js/utilerias.js"></script>
-<script src="pa_evaldoc.js"></script>
+<script src="pa_evaldoc.js?v=<?php echo date('YmdHis'); ?>"></script>
 
 
 
