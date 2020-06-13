@@ -212,8 +212,7 @@
 		<script type="text/javascript">
 
 
-		$(document).ready(function(){		
-
+		$(document).ready(function(){					
 			co=Math.round(Math.random() * (999999 - 111111) + 111111); 
 			parametros={cose:co}; $.ajax({type: "POST",url:  "nucleo/base/iniciaPincipal.php", data:parametros, success: function(data){}});sessionStorage.setItem("co",co);
 
