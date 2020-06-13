@@ -1898,18 +1898,9 @@ function grabafechaeval(materia,grupo,ciclo,tema,id){
 
 /*===============================CALCULO DE LAS CALIFICACIONES POR GRUPOS ===================================*/
 function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
-
+	
 	mostrarEspera("esperacalculo","grid_"+modulo,"Calculando...");
-	sqlUni="select count(*) as N  from eunidades where UNID_MATERIA='"+materia+"' and UNID_PRED=''";
-	parametros={sql:sqlUni,dato:sessionStorage.co,bd:"Mysql"}
-	$.ajax({
-		type: "POST",
-		data:parametros,
-		url:  "../base/getdatossqlSeg.php",
-		success: function(data){    
-			   jQuery.each(JSON.parse(data), function(clave, valor) { 
-				     numUni=valor.N;
-			 });
+	
 			 sqlLista="select ID, "+
 						"IFNULL(LISPA1,'0') AS LISPA1,IFNULL(LISPA2,'0') AS LISPA2,IFNULL(LISPA3,'0') AS LISPA3,"+
 						"IFNULL(LISPA4,'0') AS LISPA4,IFNULL(LISPA5,'0') AS LISPA5,IFNULL(LISPA6,'0') AS LISPA6,"+
@@ -1920,7 +1911,8 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
                         "IFNULL(LISFA4,'0') AS LISFA4,IFNULL(LISFA5,'0') AS LISFA5,IFNULL(LISFA6,'0') AS LISFA6,"+
 						"IFNULL(LISFA7,'0') AS LISFA7,IFNULL(LISFA8,'0') AS LISFA8,IFNULL(LISFA9,'0') AS LISFA9,"+
 						"IFNULL(LISFA10,'0') AS LISFA10,IFNULL(LISFA11,'0') AS LISFA11,IFNULL(LISFA12,'0') AS LISFA12,"+
-						"IFNULL(LISFA13,'0') AS LISFA13,IFNULL(LISFA14,'0') AS LISFA14,IFNULL(LISFA15,'0') AS LISFA15"+
+						"IFNULL(LISFA13,'0') AS LISFA13,IFNULL(LISFA14,'0') AS LISFA14,IFNULL(LISFA15,'0') AS LISFA15,"+
+						"(select count(*) as N  from eunidades where UNID_MATERIA=MATCVE and UNID_PRED='') AS NUMUNI"+
 						" from dlista a where a.PDOCVE='"+ciclo+"' and a.MATCVE='"+materia+"'"+
 						" and a.GPOCVE='"+grupo+"'";		
 			 
@@ -1934,12 +1926,12 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 					   jQuery.each(laLista, function(clave, valor) { 
 						   suma=0; sumaF=0;
 						   promedio=0;
-						   for (x=1;x<=numUni;x++) {
-							   if (laLista[clave][x]<70) {suma=(numUni*60); break; }
+						   for (x=1;x<=valor.NUMUNI;x++) {
+							   if (laLista[clave][x]<70) {suma=(valor.NUMUNI*60); break; }
 							   suma+=parseFloat(laLista[clave][x]);
 						   }	
-						   for (y=1;y<=numUni;y++) {sumaF+=parseFloat(laLista[clave][y+15]);}		    	 
-						   promedio=Math.round((suma/numUni));
+						   for (y=1;y<=valor.NUMUNI;y++) {sumaF+=parseFloat(laLista[clave][y+15]);}		    	 
+						   promedio=Math.round((suma/valor.NUMUNI));
 						  
 						   parametros={
 							tabla:"dlista",
@@ -1969,11 +1961,6 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 					  }
 			  });
 			  
-		   },
-	   error: function(data) {	  				
-				  alert('ERROR: '+data);  
-			  }
-	  });
 }
 
 
@@ -2095,9 +2082,9 @@ function Decenas(num){
     }
 }//Unidades()
 
-function DecenasY(strSin, numUnidades) {
-    if (numUnidades > 0)
-    return strSin + " Y " + Unidades(numUnidades)
+function DecenasY(strSin, NUMUNIdades) {
+    if (NUMUNIdades > 0)
+    return strSin + " Y " + Unidades(NUMUNIdades)
     return strSin;
 }//DecenasY()
 
