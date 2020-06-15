@@ -92,7 +92,7 @@ contMat=1;
 		" from dlista a left outer join pempleados d on (d.EMPL_NUMERO=IFNULL(a.LISTC15,0)), falumnos b, cmaterias c, ccarreras e"+
 		" where a.ALUCTR=b.ALUM_MATRICULA  and a.MATCVE=c.MATE_CLAVE and b.ALUM_CARRERAREG=e.CARR_CLAVE"+
 		" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' and PDOCVE='"+$("#selCiclos").val()+"'"+
-		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','T','AC','OC','RP') and GPOCVE<>'REV' "+
+		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','AC','OC','RP') and GPOCVE<>'REV' "+
 		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
 
 		

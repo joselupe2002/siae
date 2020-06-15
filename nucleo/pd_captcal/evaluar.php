@@ -228,11 +228,12 @@
         	 launidad=parseInt($("#unidades").val());  
         	 abierto=$('#unidades option:selected').text().split("|")[1];
    
-			 elsql="select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE, LISPA"+launidad+" as CAL, LISFA"+launidad+" as FALTA"+
+			 elsql="select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE, IFNULL(LISPA"+launidad+",'0') as CAL, IFNULL(LISFA"+launidad+",'0') as FALTA"+
 				          " from dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.GPOCVE='<?php echo $_GET["grupo"];?>'"+
 				          " and PDOCVE='<?php echo $_GET["ciclo"];?>' and LISTC15='<?php echo $_GET["profesor"];?>'"+
 						  " and MATCVE='<?php echo $_GET["materia"];?>' order by ALUM_APEPAT,ALUM_APEMAT,ALUM_NOMBRE";
-						  
+				
+			
 	          parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			 $.ajax({
 				 type: "POST",
@@ -249,9 +250,6 @@
 				    	    $("#row"+valor.ID).append("<td id=\"matricula_"+valor.ID+"\">"+valor.ALUM_MATRICULA+"</td>");
 				    	    $("#row"+valor.ID).append("<td id=\"nombre_"+valor.ID+"\">"+utf8Decode(valor.NOMBRE)+"</td>");
 
-
-				    	   
-                            
 				    	    if (abierto=='A') {
 
 				    	    	//Para capturar calificaciones

