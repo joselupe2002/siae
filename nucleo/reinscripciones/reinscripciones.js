@@ -404,8 +404,7 @@ function agregarCondiciones(){
 							"           </div>"+
 							"       </div>");
 
-		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+
-		"' and SEMESTRE>getPeriodos('"+$("#selAlumnos").val()+"','"+$("#elciclo").html().split("|")[0]+"')"+
+		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+"'"+
 		" ORDER BY SEMESTRE, MATERIAD";
 
         var titulos = [{titulo: "SEL",estilo: "text-align: center;"},
