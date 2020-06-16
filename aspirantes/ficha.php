@@ -288,7 +288,7 @@
                     $logo = file_get_contents($lafoto);
                     $this->MemImage($logo,20,37,22,28);
                 }
-
+*/
                  
                 $fecha=date("d/m/Y"); 
                 $this->SetFont('Montserrat-SemiBold','B',10);
@@ -478,7 +478,7 @@
             $this->setX(70);
             $this->Cell(65,1,"",1,1,'C',true);
             $this->Cell(170,5,utf8_decode($dataAlum[0]["NOMBRE"]." ".$dataAlum[0]["APEPAT"]." ".$dataAlum[0]["APEMAT"]),'T',0,'C',false);
-*/
+
 
             }
 
