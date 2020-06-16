@@ -277,9 +277,12 @@
             
             function ficha() {
                 $dataAlum = $this->LoadDatosAspirantes();             
+               /*
                 $dataCiclo = $this->LoadDatosCiclo();
                 $dataFoto = $this->LoadFoto();
                 $miutil = new UtilUser();    
+               
+               
                 if (!empty($dataFoto)) { 
                     $lafoto=$dataFoto[0][0]; 
                     $logo = file_get_contents($lafoto);
@@ -474,7 +477,7 @@
             $this->setX(70);
             $this->Cell(65,1,"",1,1,'C',true);
             $this->Cell(170,5,utf8_decode($dataAlum[0]["NOMBRE"]." ".$dataAlum[0]["APEPAT"]." ".$dataAlum[0]["APEMAT"]),'T',0,'C',false);
-
+*/
 
             }
 
@@ -488,8 +491,8 @@
 		$pdf->SetAutoPageBreak(true,30); 
         $pdf->AddPage();
          
-       // $pdf->ficha(0);
-       $pdf->Cell(65,1,"INTENTE MAS TARDE",1,1,'C',true);
+        $pdf->ficha(0);
+       //$pdf->Cell(65,1,"INTENTE MAS",1,1,'C',true);
  
         $pdf->Output(); 
 
