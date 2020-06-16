@@ -264,7 +264,7 @@
 							"</div>");  	   
 		    c++;	
 		$("#lisact").html(c);
-		if (valor.RUTA=='') { 								
+		if ((valor.RUTA=='') || (valor.RUTA==null)) { 								
 								 $('#enlace_'+valor.ACTIVIDAD).click(function(evt) {evt.preventDefault();});
 			                     $('#enlace_'+valor.ACTIVIDAD).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
 								 $('#pdf_'+valor.ACTIVIDAD).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
