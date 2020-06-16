@@ -277,7 +277,7 @@
             
             function ficha() {
                 $dataAlum = $this->LoadDatosAspirantes();             
-               /*
+              
                 $dataCiclo = $this->LoadDatosCiclo();
                 $dataFoto = $this->LoadFoto();
                 $miutil = new UtilUser();    
@@ -289,6 +289,7 @@
                     $this->MemImage($logo,20,37,22,28);
                 }
 
+                 /*
                 $fecha=date("d/m/Y"); 
                 $this->SetFont('Montserrat-SemiBold','B',10);
 
