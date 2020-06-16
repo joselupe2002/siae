@@ -167,7 +167,7 @@
 
 
 <?php if ($tieneProc=='S') {?>
-    <script src="<?php echo $nivel; ?>nucleo/<?php echo $_GET["modulo"];?>/proc_<?php echo $_GET["modulo"];?>.js"></script>
+    <script src="<?php echo $nivel; ?>nucleo/<?php echo $_GET["modulo"];?>/proc_<?php echo $_GET["modulo"];?>.js?v=<?php echo date('YmdHis'); ?>"></script>
 <?php }?>
 
 <script type="text/javascript">
