@@ -74,7 +74,6 @@ function verPlan(modulo,usuario,institucion, campus,essuper){
  elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+table.rows('.selected').data()[0]["ID"]+"'";
  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
  
-
  $.ajax({
 		type: "POST",
 		data:parametros,
@@ -89,7 +88,8 @@ function verPlan(modulo,usuario,institucion, campus,essuper){
 					   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
      	    		  $.ajax({
      	   	           type: "POST",
-     	   	           url:  "../base/getdatossqlSeg.php",
+					   data:parametros,   
+					   url:  "../base/getdatossqlSeg.php",
      	   	           success: function(data){ 	        	   	        	
      	   	        	     generaTablaActividad(JSON.parse(data));
      	   	                 },
