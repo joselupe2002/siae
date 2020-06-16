@@ -217,7 +217,7 @@
 
             function LoadFoto()
 			{	
-                //$data=[];			
+                $data=[];			
                 $miConex = new Conexion();
                 $sql="select RUTA from adjaspirantes a where a.AUX='FOTO".$_GET["curp"]."'";
                 
@@ -285,7 +285,7 @@
                 if (!empty($dataFoto)) { 
                     $lafoto=$dataFoto[0][0]; 
                     $logo = file_get_contents($lafoto);
-                    $this->MemImage($logo,20,37,22,28);
+                    //$this->MemImage($logo,20,37,22,28);
                 }
 
                  
