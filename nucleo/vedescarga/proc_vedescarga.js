@@ -144,9 +144,8 @@ function generaTablaActividad(grid_data){
 		 
 		 
 		 if (valor.RUTA=='') { 								
-			$('#enlace_I_'+valor.PLAN_ID).click(function(evt) {evt.preventDefault();});
-			$("#enlace_I_"+valor.PLAN_ID).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
-			$("pdf_"+valor.PLAN_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
+			$('#enlace_I_'+valor.PLAN_ID).click(function(evt) {evt.preventDefault();});			
+			$("#pdf_"+valor.PLAN_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
 		  }
 
   		c++;
