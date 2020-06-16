@@ -140,7 +140,15 @@ function generaTablaActividad(grid_data){
 	     $("#row"+c).append("<td id=\"a_"+c+"_1\">"+valor.PLAN_ORDEN+"</td>");		
 	   	 $("#row"+c).append("<td id=\"a_"+c+"_2\">"+valor.PLAN_ACTIVIDAD+"</td>");	
 	   	 $("#row"+c).append("<td id=\"a_"+c+"_3\">"+valor.PLAN_ENTREGABLE+"</td>");	
-	     $("#row"+c).append("<td id=\"a_"+c+"_4\">"+valor.PLAN_FECHAENTREGA+"</td>");	  		   
+		 $("#row"+c).append("<td id=\"a_"+c+"_4\">"+valor.PLAN_FECHAENTREGA+"</td>");	  	
+		 
+		 
+		 if (valor.RUTA=='') { 								
+			$('#enlace_I_'+valor.PLAN_ID).click(function(evt) {evt.preventDefault();});
+			$("#enlace_I_"+valor.PLAN_ID).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+			$("pdf"+valor.PLAN_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
+		  }
+
   		c++;
   		global=c;
   	});
