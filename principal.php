@@ -359,7 +359,7 @@
 	    	      	 
 
 	    	      	   if (existeUrl("nucleo/"+modulo+"/grid.php?modulo="+modulo)) {
-	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=S"+"&automatico="+automatico+"&bd="+bd;
+	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=N"+"&automatico="+automatico+"&bd="+bd;
 	    	      	   }
 	    	      	  
 

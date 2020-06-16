@@ -248,7 +248,7 @@
 							data:parametros,
 	                        url:  "../base/getdatossqlfiltro.php",
 	                        success: function(data){ 
-	                        	
+								
 	                        	 losdatos=JSON.parse(data);
 
 	                        	 
