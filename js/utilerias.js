@@ -1885,7 +1885,6 @@ function grabafechaeval(materia,grupo,ciclo,tema,id){
 			 url:"../base/grabadetalle.php",
 			 data: parametros,
 			 success: function(data){	
-				 alert (data);	
 				 if (data.length>0) {alert ("Ocurrio un error: "+data);}					                      	                                        					          
 			 }					     
 		 });    	 

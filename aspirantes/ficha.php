@@ -233,6 +233,7 @@
                 $data=[];			
                 $miConex = new Conexion();
                 $sql="select * from vaspirantes where CURP='".$_GET["curp"]."' and CICLO='".$_GET["ciclo"]."'";
+        
                //echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -241,15 +242,6 @@
 				return $data;
             }
 
-			function LoadDatosGen()
-			{
-				$miConex = new Conexion();
-				$resultado=$miConex->getConsulta("SQLite","SELECT * from INSTITUCIONES where _INSTITUCION='".$_SESSION['INSTITUCION']."'");
-				foreach ($resultado as $row) {
-					$data[] = $row;
-				}
-				return $data;
-			}
 			
 			function Header()
 			{
@@ -282,24 +274,6 @@
 			}
 			
 			
-
-			function Footer()
-			{				
-               
-			
-			}
-			
-			function LoadProf($matricula)
-			{
-				$miConex = new Conexion();
-				$resultado=$miConex->getConsulta($_SESSION['bd'],
-						"select  EMPL_NUMERO, CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) as NOMBRE, EMPL_CORREOINS ".
-						"from pempleados where EMPL_NUMERO='".$matricula."'");
-				foreach ($resultado as $row) {
-					$data[] = $row;
-				}
-				return $data;
-            }
             
             function ficha() {
                 $dataAlum = $this->LoadDatosAspirantes();             
@@ -502,135 +476,6 @@
             $this->Cell(170,5,utf8_decode($dataAlum[0]["NOMBRE"]." ".$dataAlum[0]["APEPAT"]." ".$dataAlum[0]["APEMAT"]),'T',0,'C',false);
 
 
-
-
-
-                /*
-                $this->Cell(170,5,utf8_decode("Exámen Nacional de Ingreso a la Educación Superior: ".
-                                             $dataCiclo[0]["CICL_FECHAADMISION"]. "   Hora: ".$dataCiclo[0]["CICL_HORADMISION"]),'LR',1,'L',false);
-                $this->Cell(170,5,utf8_decode("Favor de presentarse 30 Min. antes del Exámen con: "),'LR',1,'L',false);
-                $this->Cell(170,5,utf8_decode("Formato Impreso con la clave de registro CENEVAL "),'LR',1,'L',false); 
-                $this->Cell(170,5,utf8_decode("Lápiz Mirado No. 2"),'LR',1,'L',false);                                             
-                $this->Cell(170,5,utf8_decode("Sacapuntas"),'LR',1,'L',false);  
-                $this->Cell(170,5,utf8_decode("Borrador"),'LR',1,'L',false); 
-                $this->Cell(170,5,utf8_decode("Identificación con Fotografía"),'LR',1,'L',false);  
-                $this->Cell(170,5,utf8_decode("Solictud impresa de la Ficha"),'LR',1,'L',false);   
-                $this->Cell(170,5,utf8_decode("Cálculadora básica"),'LR',1,'L',false);
-                $this->Cell(170,5,utf8_decode("NOTA: ES REQUISITO PARA SU INSCRIPCIÓN LLEVAR LOS CURSOS DE INDUCCIÓN"),'LRB',1,'L',false);
-*/
-
-
-                
-                
-
-                
-/*
-                $this->SetFont('Montserrat-SemiBold','B',10);
-                $this->setX(50);
-                $this->Cell(0,4,utf8_decode('CARGA ACADÉMICA'),0,0,'L');
-
-                $this->setX(140);
-                $this->Cell(0,4,utf8_decode('PERIODO:'),0,0,'L');
-                $this->setX(170);
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(0,4,utf8_decode($dataCiclo[0][1]),0,1,'L');
-
-                $fecha=date("d/m/Y"); 
-                $this->SetFont('Montserrat-SemiBold','B',10);
-                $this->setX(50);
-                $this->Cell(0,4,utf8_decode('FECHA DE IMPRESIÓN:'),0,0,'L');
-                $this->setX(100);
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(0,4,utf8_decode($fecha),0,0,'L');
-                
-                $this->setX(140);
-                $this->Cell(0,5,utf8_decode('FECHA INS:'),0,0,'L');
-                $this->setX(170);
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(0,4,utf8_decode($data[0]["FECHAINS"]),0,1,'L');
-
-                $this->SetFont('Montserrat-Black','B',10);
-                $this->setX(20);
-                $this->Cell(30,4,utf8_decode($dataAlum[0]["ALUM_MATRICULA"]),0,0,'L');
-                $this->Cell(90,4,utf8_decode($dataAlum[0]["NOMBRE"]),0,0,'L');
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(30,4,utf8_decode("NPRDO:"),0,0,'L');
-                $this->Cell(30,4,utf8_decode($dataAlum[0]["PERIODOS"]),0,1,'L');
-
-                $this->SetFont('Montserrat-Black','B',10);
-                $this->setX(20);
-                $this->Cell(30,4,utf8_decode("CARRERA:"),0,0,'L');
-                $this->SetFont('Montserrat-SemiBold','',8);
-                $this->Cell(90,4,utf8_decode($dataAlum[0]["CARRERAD"]),0,0,'L');
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(30,4,utf8_decode("CREDITOS:"),0,0,'L');
-                $this->Cell(30,4,utf8_decode($dataCreditos[0][0]),0,1,'L');
-
-                $this->Ln(2);
-                $this->SetFillColor(172,31,8);
-                $this->SetTextColor(255);  
-                $this->SetFont('Montserrat-ExtraBold','B',7);
-                $this->Cell(15,3,'CLAVE',1,0,'C',true);
-                $this->Cell(70,3,'MATERIA/DOCENTE',1,0,'C',true);
-                $this->Cell(15,3,'LUNES',1,0,'C',true);
-                $this->Cell(15,3,'MARTES',1,0,'C',true);
-                $this->Cell(15,3,'MIERCOLES',1,0,'C',true);
-                $this->Cell(15,3,'JUEVES',1,0,'C',true);
-                $this->Cell(15,3,'VIERNES',1,0,'C',true);
-                $this->Cell(15,3,'SABADO',1,0,'C',true);
-                $this->Cell(15,3,'DOMINGO',1,0,'C',true);
-                $this->Cell(7,3,'C/A',1,0,'C',true);
-                $this->Ln();
-
-                $this->SetFont('Montserrat-Medium','',6);       
-                $this->SetFillColor(172,31,6);
-                $this->SetTextColor(0);
-                $this->SetWidths(array(15,70,15, 15,15,15,15,15,15,7));
-                $n=1;
-                foreach($data as $row) {
-                    $st="";
-                    if ($row["REP"]==1) {$st="R";}
-                    if ($row["REP"]>1) {$st="E";}
-                    $this->Row(array( utf8_decode($row["MATERIA"]." ".$row["GRUPO"]),
-                                    utf8_decode($row["MATERIAD"]."\n".$row["PROFESORD"]),
-                                    utf8_decode($row["LUNES"]),
-                                    utf8_decode($row["MARTES"]),
-                                    utf8_decode($row["MIERCOLES"]),
-                                    utf8_decode($row["JUEVES"]),
-                                    utf8_decode($row["VIERNES"]),
-                                    utf8_decode($row["SABADO"]),
-                                    utf8_decode($row["DOMINGO"]),
-                                    $st
-                                    )
-                            );
-                    $n++;
-                }
-
-                $miutil = new UtilUser();
-                $nombre=$miutil->getJefe('303');//Nombre del puesto de control escolar7
-
-                $this->SetFont('Montserrat-Medium','',6);
-                $this->Cell(0,5,utf8_decode("NOTA:ACEPTO TODAS LAS CONDICIONES DEL REGLAMENTO PARA ALUMNOS DEL INSTITUTO ". 
-                "TECNOLÓGICO SUPERIOR DE MACUSPANA"),'',0,'C');
-                $this->Ln(2);
-                $this->Cell(0,5,utf8_decode("LAS MATERIAS INDICADAS CON * NO CUMPLEN CON EL PERIODO REQUERIDO"),'',0,'C');
-
-                $this->SetFont('Montserrat-ExtraBold','',8);
-                
-                $this->setX(10);$this->setY(($linea+122));        
-                $this->Cell(80,5,utf8_decode($nombre),'T',0,'L');
-                $this->setX(10);$this->setY(($linea+125));
-                $this->SetFont('Montserrat-SemiBold','',8);
-                $this->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",'',0,'L');
-
-            
-                $this->setX(0);$this->setY(140);
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(0,1,"",'B',0,'L');
-                */
-
-
-
             }
 
 		}
@@ -643,8 +488,8 @@
 		$pdf->SetAutoPageBreak(true,30); 
         $pdf->AddPage();
          
-        $pdf->ficha(0);
-        
+       // $pdf->ficha(0);
+       $pdf->Cell(65,1,"INTENTE MAS TARDE",1,1,'C',true);
  
         $pdf->Output(); 
 
