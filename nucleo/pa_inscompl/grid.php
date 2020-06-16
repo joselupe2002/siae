@@ -48,16 +48,24 @@
              
          <div class="tabbable">
 			 <ul class="nav nav-tabs" id="myTab">
-				 <li class="active">
-					 <a data-toggle="tab" href="#ins"><i class="green ace-icon fa fa-home bigger-120"></i>Inscripciones</a>
-			     </li>
-                 <li>
+			 	 <li class="active">
 					  <a data-toggle="tab" href="#act">Actividades<span id="lisact" class="badge badge-danger">0</span></a>
 				 </li>
+				 <li >
+					 <a data-toggle="tab" href="#ins"><i class="green ace-icon fa fa-home bigger-120"></i>Inscripciones</a>
+			     </li>
+                
 		     </ul>
 		     
 		     <div class="tab-content">
-					  <div id="ins" class="tab-pane fade in active">
+			 		  <div id="act" class="tab-pane fade in active">
+					       <h3 class="header smaller lighter red">Actividades Complementarias Inscritas</h3>
+					   
+					             <div id="fichas" class="row"> </div>
+		
+					  </div>
+
+					  <div id="ins" class="tab-pane">
 							 <h3 class="header smaller lighter red">Listado de Actividades Complementarias</h3>
 			                 <div  class="table-responsive">
 				                 <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
@@ -83,12 +91,7 @@
 					              </table>	
 				              </div>
 					  </div>
-					  <div id="act" class="tab-pane">
-					       <h3 class="header smaller lighter red">Actividades Complementarias Inscritas</h3>
-					   
-					             <div id="fichas" class="row"> </div>
-		
-					  </div>
+					  
 			</div>			
       </div>
 
@@ -221,10 +224,7 @@
 		                 "<td style=\"text-align: center;\"><small class=\"text-primary\">"+valor.SABADO+"</small></td>"+ 
 	                 "</tr>"+
                  "</tbody></div></div>";
-                  
-
-       
-
+            
 
     	 $("#fichas").append("<div class=\"col-md-6\">"+
 		                         "<div class=\"thumbnail search-thumbnail\">"+
@@ -233,8 +233,14 @@
 			   							"<div class=\"space-12\"></div>"+
 			  							"<h5 class=\"text-primary\" style=\"text-align: center\"><strong>"+valor.NOMBREACT+"</strong></h5>"+
 			  							"<div class=\"row\">"+
-			  					             "<div class=\"col-sm-6\"><span class=\"label label-success label-white middle\">INICIA: "+valor.INICIA+"</span></div>"+
-			  					             "<div class=\"col-sm-6\" style=\"text-align:right\"><span class=\"label label-danger label-white middle\">TERMINA: "+valor.TERMINA+"</span></div>"+		  						        
+			  					             "<div class=\"col-sm-5\"><span class=\"label label-success label-white middle\">INICIA: "+valor.INICIA+"</span></div>"+
+											   "<div class=\"col-sm-5\" style=\"text-align:right\"><span class=\"label label-danger label-white middle\">TERMINA: "+valor.TERMINA+"</span></div>"+		  						        
+											   "<div class=\"col-sm-2\">"+
+											          "<a target=\"_blank\" id=\"enlace_"+valor.ACTIVIDAD+"\" href=\""+valor.RUTA+"\">"+
+                                                      "     <img width=\"40px\" height=\"40px\" id=\"pdf_"+valor.ACTIVIDAD+"\" name=\"pdf_\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
+                                                      "</a>"+
+											   "</div>"+		  						        
+											   
 			  					         "</div>"+
               							cadDias+   
               							"<div class=\"space-6\"></div>"+          
@@ -257,7 +263,12 @@
 								"</div>"+
 							"</div>");  	   
 		    c++;	
-	    $("#lisact").html(c);
+		$("#lisact").html(c);
+		if (valor.RUTA=='') { 								
+								 $('#enlace_'+valor.ACTIVIDAD).click(function(evt) {evt.preventDefault();});
+			                     $('#enlace_'+valor.ACTIVIDAD).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+								 $('#pdf_'+valor.ACTIVIDAD).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
+		               	    }
 	    	
       });
 
@@ -310,7 +321,7 @@ function confirma(id,matricula,ciclo){
 
 function cargarActIns() {
 	elsql="SELECT a.ACTIVIDAD, b.ACTIVIDADD AS TIPO, b.ACTIVIDAD as NOMBREACT,b.INICIA, b.TERMINA, b.RESPONSABLED, b.CREDITOS,"+ 
-        		 "c.PROM, b.LUNES, b.MARTES,b.MIERCOLES,b.JUEVES,b.VIERNES,b.SABADO,b.DOMINGO FROM einscompl a "+
+        		 "c.PROM, b.LUNES, b.MARTES,b.MIERCOLES,b.JUEVES,b.VIERNES,b.SABADO,b.DOMINGO, c.COMP_LIBERACION as RUTA  FROM einscompl a "+
         		 "left outer join ecalificagen c on (a.ACTIVIDAD=c.ACTIVIDAD and a.MATRICULA=c.MATRICULA)"+
         		 ", vecomplementaria b "+
 				 "WHERE a.ACTIVIDAD=b.ID and a.MATRICULA='<?php echo $_SESSION['usuario']?>';"				 
