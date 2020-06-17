@@ -83,7 +83,7 @@ contMat=1;
 		   $("#informacion").append(script);
 
 				
-		elsql="select a.PDOCVE AS CICLO, a.MATCVE AS MATERIA,c.MATE_DESCRIP AS MATERIAD,IFNULL(a.LISTC15,0) AS PROFESOR,"+
+		elsql="select a.PDOCVE AS CICLO, IDGRUPO, a.MATCVE AS MATERIA,c.MATE_DESCRIP AS MATERIAD,IFNULL(a.LISTC15,0) AS PROFESOR,"+
 		"CONCAT(d.EMPL_NOMBRE,' ',d.EMPL_APEPAT, ' ',d.EMPL_APEMAT) AS PROFESORD,a.GPOCVE AS GRUPO, "+
 		"getcuatrimat(a.MATCVE,b.ALUM_MAPA) AS SEMESTRE,"+
 		"b.ALUM_CARRERAREG AS CARRERA, e.CARR_DESCRIP AS CARRERAD,SUM(IF (ALUM_SEXO=1,1,0)) AS HOMBRE,"+
@@ -93,7 +93,8 @@ contMat=1;
 		" where a.ALUCTR=b.ALUM_MATRICULA  and a.MATCVE=c.MATE_CLAVE and b.ALUM_CARRERAREG=e.CARR_CLAVE"+
 		" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' and PDOCVE='"+$("#selCiclos").val()+"'"+
 		" and IFNULL(c.MATE_TIPO,'99') not in ('SS','AC','OC','RP') and GPOCVE<>'REV' "+
-		" GROUP BY PDOCVE, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
+		" GROUP BY PDOCVE, IDGRUPO, MATCVE, GPOCVE, LISTC15,b.ALUM_CARRERAREG";
+
 
 		
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -136,7 +137,11 @@ function generaTablaInformacion(grid_data){
 		$("#rowM"+contR).append("<td>"+valor.MATERIAD+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.PROFESOR+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.PROFESORD+"</td>");
-		$("#rowM"+contR).append("<td><span title=\""+tit+"\" class=\"badge badge-success\">"+valor.TOTAL+"</span></td>");
+		verboleta=" onclick=\"window.open('../cierreCal/boleta.php?grupo="+valor.GRUPO+"&ciclo="+valor.CICLO+"&profesor="+valor.PROFESOR+"&materia="+
+		valor.MATERIA+"&materiad="+valor.MATERIAD+"&id="+valor.IDGRUPO+"&semestre="+valor.SEMESTRE+"','_blank');\"";
+
+		//alert (verboleta);
+		$("#rowM"+contR).append("<td><span style=\"cursor:pointer;\" title=\""+tit+"\" "+verboleta+" class=\"badge badge-success\">"+valor.TOTAL+"</span></td>");
 		$("#rowM"+contR).append("<td><span title=\""+tit+"\" class=\"badge badge-info\"><i class=\"fa fa-male\"></i> "+valor.HOMBRE+"</span></td>");
 		$("#rowM"+contR).append("<td><span title=\""+tit+"\" class=\"badge badge-pink\"><i class=\"fa fa-female\"></i> "+valor.MUJER+"</span></td>");
 		$("#rowM"+contR).append("<td><i title=\""+tit+"\" class=\"fa fa-male blue\"></i> <span class=\"fontRobotoBk bigger-110 blue\"><strong>"+valor.APR_HOMBRE+"</strong></span></td>");
