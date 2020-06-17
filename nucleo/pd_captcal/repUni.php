@@ -139,7 +139,8 @@
 			}
             
             function LoadDatosGrupo()
-			{				
+			{	
+                $data=[];			
                 $miConex = new Conexion();
                 $sql="select * from vedgrupos a where a.IDDETALLE='".$_GET["id"]."'";
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				

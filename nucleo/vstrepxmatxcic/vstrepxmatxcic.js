@@ -137,7 +137,7 @@ function generaTablaInformacion(grid_data){
 		$("#rowM"+contR).append("<td>"+valor.MATERIAD+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.PROFESOR+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.PROFESORD+"</td>");
-		verboleta=" onclick=\"window.open('../cierreCal/boleta.php?grupo="+valor.GRUPO+"&ciclo="+valor.CICLO+"&profesor="+valor.PROFESOR+"&materia="+
+		verboleta=" onclick=\"window.open('../pd_captcal/repUni.php?grupo="+valor.GRUPO+"&ciclo="+valor.CICLO+"&profesor="+valor.PROFESOR+"&materia="+
 		valor.MATERIA+"&materiad="+valor.MATERIAD+"&id="+valor.IDGRUPO+"&semestre="+valor.SEMESTRE+"','_blank');\"";
 
 		//alert (verboleta);
