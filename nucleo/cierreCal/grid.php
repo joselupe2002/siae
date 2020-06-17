@@ -227,7 +227,9 @@ function cargarAct(){
 	        	          $('#dlgproceso').modal("hide");                 
 	                      alert('ERROR: '+data);	                      
 	                  }
-	          });
+			  });
+			  
+	  
 }
 
 
@@ -237,26 +239,30 @@ function cerrarBoleta(id,profesor,materia,materiad,grupo,ciclo, base,valor){
 		fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
 		res="";
 	 
-	    parametros={
-    		tabla:"edgrupos",
-    		bd:"Mysql",
-    		campollave:"DGRU_ID",
-    	    valorllave:id,
-			DGRU_CERRADOCAL:valor,
-			FECHACIERRECAL:fechacap,
-			USERCIERRECAL:"<?php echo $_SESSION["usuario"];?>"    	
-        };
+	    parametros={tabla:"edgrupos",bd:"Mysql",campollave:"DGRU_ID",valorllave:id,DGRU_CERRADOCAL:valor,
+			FECHACIERRECAL:fechacap,USERCIERRECAL:"<?php echo $_SESSION["usuario"];?>"};
         $.ajax({
             type: "POST",
             url:"../base/actualiza.php",
             data: parametros,
             success: function(data){       
 
-        	if (!(data.substring(0,1)=="0"))	{ cargarAct();}	
+        	if (!(data.substring(0,1)=="0"))	{ 
+				parametros2={tabla:"dlista",bd:"Mysql",campollave:"IDGRUPO",valorllave:id,CERRADO:valor};
+				$.ajax({
+						type: "POST",
+						url:"../base/actualiza.php",
+						data: parametros2,
+						success: function(data){       
+						if (!(data.substring(0,1)=="0"))	{ cargarAct();}	
+						else {alert (" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}																															
+						}					     
+				}); 
+			}
             else {alert (" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
                                            	                                        					         
             }					     
-	   });    	  
+	   });  
 	
 	}
 }

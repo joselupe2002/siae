@@ -126,8 +126,10 @@
                 $miConex = new Conexion();
                 $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,". 
                 "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,".
-                "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 ORDER BY SEMESTRE, MATERIAD";
-                
+                "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas ".
+                " where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 AND CERRADO='S' ORDER BY SEMESTRE, MATERIAD";
+            
+           
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
 					$data[] = $row;
@@ -151,7 +153,7 @@
             function LoadDatosCursando($ciclo)
 			{				
                 $miConex = new Conexion();
-                $sql="SELECT * FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' and CICLO='".$ciclo."' ORDER BY SEMESTRE, MATERIAD";
+                $sql="SELECT * FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' and CICLO='".$ciclo."' AND CERRADO='N' ORDER BY SEMESTRE, MATERIAD";
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -186,12 +188,6 @@
 			}
 
 
-
-
-            
-
-
-      
             function LoadDatosAlumnos()
 			{				
                 $miConex = new Conexion();
@@ -203,7 +199,8 @@
                 " getPromedio('".$_GET["matricula"]."','N') as PROMEDIO_SR,".
                 " getPromedio('".$_GET["matricula"]."','S') as PROMEDIO_CR, ".
                 " getPeriodos('".$_GET["matricula"]."',getciclo()) AS PERIODOS,".
-                " (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='".$_GET["matricula"]."') AS CRECUR ".
+                " (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and CERRADO='N' and a.MATRICULA='".$_GET["matricula"]."') AS CRECUR, ".
+                " (select SUM(a.CREDITO) from kardexcursadas a where CERRADO='S' and a.cal>=70 and a.MATRICULA='".$_GET["matricula"]."') AS CREDACUM ".
                 " from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where ".
                 " CARR_CLAVE=ALUM_CARRERAREG".
                 " and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='".$_GET["matricula"]."'";
@@ -351,7 +348,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(30);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["MAPA"]),0,1,'L');
         
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(115); $pdf->Cell(0,0,'CRE.ACU: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,explode("|",$dataAlum[0]["AVANCE"])[1],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,$dataAlum[0]["CREDACUM"],0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'NP.CONV: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,"0",0,1,'L');
@@ -468,7 +465,7 @@
                              utf8_decode($row["MATERIA"]),
                              utf8_decode($row["MATERIAD"]),
                              utf8_decode($row["CREDITO"]),
-                             utf8_decode($row["CAL"]),
+                             "",
                              utf8_decode($row["TCAL"]),
                              utf8_decode($row["PRIMERA"]),
                              utf8_decode($row["SEGUNDA"]),
