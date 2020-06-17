@@ -141,13 +141,13 @@ function generaTablaInformacion(grid_data){
 		$("#rowM"+contR).append("<td><span title=\""+tit+"\" class=\"badge badge-pink\"><i class=\"fa fa-female\"></i> "+valor.MUJER+"</span></td>");
 		$("#rowM"+contR).append("<td><i title=\""+tit+"\" class=\"fa fa-male blue\"></i> <span class=\"fontRobotoBk bigger-110 blue\"><strong>"+valor.APR_HOMBRE+"</strong></span></td>");
 		$("#rowM"+contR).append("<td><i title=\""+tit+"\" class=\"fa fa-female pink\"></i> <span class=\"fontRobotoBk bigger-110 blue\"><strong>"+valor.APR_MUJER+"</strong></span></td>");	
-		$("#rowM"+contR).append("<td><i title=\""+tit+"\" class=\"fa fa-male pink\"></i> <span class=\"bigger-110 red\"><strong>"+(parseInt(valor.HOMBRE)-parseInt(valor.APR_HOMBRE))+"</strong></span></td>");
+		$("#rowM"+contR).append("<td><i title=\""+tit+"\" class=\"fa fa-male blue\"></i> <span class=\"bigger-110 red\"><strong>"+(parseInt(valor.HOMBRE)-parseInt(valor.APR_HOMBRE))+"</strong></span></td>");
 		$("#rowM"+contR).append("<td><i title=\""+tit+"\" class=\"fa fa-female pink\"></i> <span class=\"bigger-110 red\"><strong>"+(parseInt(valor.MUJER)-parseInt(valor.APR_MUJER))+"</strong></span></td>");
 		prm=0; if (valor.MUJER>0) {prm=Math.round(((parseInt(valor.MUJER)-parseInt(valor.APR_MUJER))/parseInt(valor.MUJER)*100) );}
 		prh=0; if (valor.HOMBRE>0) {prh=Math.round(((parseInt(valor.HOMBRE)-parseInt(valor.APR_HOMBRE))/parseInt(valor.HOMBRE)*100));}
 
-		$("#rowM"+contR).append("<td><span title=\""+tit+"\" class=\"badge badge-primary\">"+prm+"%</span></td>");
-		$("#rowM"+contR).append("<td><span title=\""+tit+" "+valor.PROFESORD+"\" class=\"badge badge-pink\">"+prh+"%</td>");		
+		$("#rowM"+contR).append("<td><span title=\""+tit+"\" class=\"badge badge-primary\">"+prh+"%</span></td>");
+		$("#rowM"+contR).append("<td><span title=\""+tit+" "+valor.PROFESORD+"\" class=\"badge badge-pink\">"+prm+"%</td>");		
 	    contR++;      			
 	});	
 	
