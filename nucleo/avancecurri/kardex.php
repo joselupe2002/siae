@@ -431,7 +431,7 @@
         }
 
         $pdf->parseVar('{matapr}',$n-1); // convertimos la variable.
-
+        $materiasaprobadas=$n-1;
 
 //=====================================================================================================
         $pdf->Ln(5);
@@ -476,6 +476,7 @@
             $n++;
         }
         $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
+        $materiascursando=$n-1;
 
 
         $data3 = $pdf->LoadDatosporCursar($elciclo); 
@@ -522,6 +523,17 @@
             $n++;
         }
         $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
+
+        $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
+                str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).
+                 "|MATAPR:".$materiasaprobadas.
+                 "|CURSANDO:".$materiascursando."|AVANCE:".explode("|",$dataAlum[0]["AVANCE"])[2];
+                 
+                 
+                 
+        $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',170,150,40);
+        
+        
 
 
         /*
