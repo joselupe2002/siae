@@ -531,7 +531,7 @@
                  
                  
                  
-        $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',170,150,40);
+        $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,170,40,40);
         
         
 
