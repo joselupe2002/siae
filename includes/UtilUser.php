@@ -89,6 +89,38 @@ class UtilUser {
 	}
 	
 	
+	function getConsecutivoDocumento($tipo,$elidControl){
+		$fecha_actual=date("d/m/Y");
+		$anio=date("Y");
+		$miConex = new Conexion();
+		
+		$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT count(*) as N from econstancias where TIPO='".$tipo."' and MATRICULA='".$elidControl."'");
+		foreach ($resultado as $row) {$hay=$row["N"];}
+		
+		if ($hay==0) {
+			$numofi="NO HAY CONSECUTIVO";
+			$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT CONSECUTIVO from econsoficial where ANIO='".$anio."' and TIPO='".$tipo."'");
+			foreach ($resultado as $row) {$ofisolo=$row["CONSECUTIVO"]; $numofi=$row["CONSECUTIVO"]."/".$anio;}
+			$res=$miConex->afectaSQL($_SESSION['bd'],"UPDATE econsoficial set CONSECUTIVO=CONSECUTIVO+1 where ANIO='".$anio."' and TIPO='".$tipo."'");
+			
+			if (!($numofi=="NO HAY CONSECUTIVO")){				
+
+				$res=$miConex->afectaSQL($_SESSION['bd'],"INSERT INTO econstancias (CONSECUTIVO,MATRICULA,FECHA, ".
+				        "TIPO,USUARIO,_INSTITUCION,_CAMPUS) VALUES (".
+						"'".$numofi."','".$elidControl."','".$fecha_actual."','".$tipo."',".
+						"'".$_SESSION['usuario']."','".$_SESSION['INSTITUCION']."','".$_SESSION['CAMPUS']."');");
+			}
+			$data[0]["FECHA"]=$fecha_actual;
+			$data[0]["CONSECUTIVO"]=$numofi;
+		}
+		else {
+			$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from econstancias where TIPO='".$tipo."' and MATRICULA='".$elidControl."'");
+			foreach ($resultado as $row) {$data[] = $row;}
+		}
+		return $data;
+	}
+	
+
 	public function getJefe($depto){
 		
 		$resul="";
@@ -218,7 +250,7 @@ class UtilUser {
 	
 	public function getFecha($fecha,$tipo) {
 		$dias=["Domingo","Lunes", "Martes", "Miercoles", "Jueves","Viernes","Sabado"];
-		$meses=["Enero","Febrero", "Marzo","Abril","Mayo","Juniuo","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+		$meses=["Enero","Febrero", "Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 		
 		if ($tipo=="DIA") {
 		    return($dias[date("w", strtotime($fecha))-1]);
@@ -230,13 +262,13 @@ class UtilUser {
 	}
 
 	public function getMesLetra($num) {
-		$meses=["Enero","Febrero", "Marzo","Abril","Mayo","Juniuo","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];		
+		$meses=["Enero","Febrero", "Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];		
 			return($meses[$num-1]);		    
 	}
 
 	
 	public function  getPie($pdf,$orienta){	
-		$top1=257; $top2=253; $left1=20; $left2=170;
+		$top1=257; $top2=253; $left1=20; $left2=190;
 		if ($orienta=='H') {$top1=192; $top2=188; $left1=20; $left2=250;}
 		
 		$pdf->Image('../../imagenes/empresa/pie1.png',$left1,$top1,20);

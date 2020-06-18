@@ -197,6 +197,7 @@
 										" and b.MATERIA='"+base_materia+"' and b.GRUPO='"+base_grupo+"' and b.CICLO='<?php echo $_GET["ciclo"]?>') as ABIERTO3 "+
 										" from eunidades a where a.UNID_MATERIA='<?php echo $_GET["materia"]?>' and UNID_PRED=''"
 						
+		
 				            parametros2={sql:sqlUni,dato:sessionStorage.co,bd:"Mysql"}
 							$.ajax({
 								type: "POST",

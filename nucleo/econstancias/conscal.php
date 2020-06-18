@@ -313,9 +313,9 @@
 
         $nombre=$miutil->getJefe('303');//Nombre del puesto DECONTRL ESCOLAR
         $pdf->SetFont('Montserrat-ExtraBold','B',11);
-        $pdf->Cell(0,15,$nombre,0,1,'C');
+        $pdf->Cell(0,15,utf8_decode($nombre),0,1,'C');
         $pdf->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",0,1,'C');
-            
+   
 
          $pdf->Output(); 
 

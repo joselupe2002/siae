@@ -280,7 +280,7 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
         });
 		 
 		elsql2="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
-		parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
+		parametros2={sql:elsql2,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
 	  $.ajax({
 		  type: "POST",
 		  data:parametros2,

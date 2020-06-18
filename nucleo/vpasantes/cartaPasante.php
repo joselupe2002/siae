@@ -107,7 +107,7 @@
 					return $nl;
 		}
 		
-		
+/*============================================================================================*/		
    	
    	        var $eljefe="";
    	        var $eljefepsto="";
@@ -117,8 +117,8 @@
 			{	
 				$data=[];			
 				$miConex = new Conexion();
-				$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from falumnos a, ecalcertificado b, ccarreras c, ciclosesc d ".				
-				" where  ALUM_MATRICULA=MATRICULA and ALUM_CARRERAREG=CARR_CLAVE AND CICLO=CICL_CLAVE and MATRICULA='".$_GET["matricula"]."'");				
+				$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from falumnos a, ccarreras c".				
+				" where  ALUM_CARRERAREG=CARR_CLAVE and ALUM_MATRICULA='".$_GET["ID"]."'");				
 				foreach ($resultado as $row) {
 					$data[] = $row;
 				}
@@ -168,28 +168,15 @@
 				$miutil->getPie($this,'V');
 
 
-				$nombre=$miutil->getJefe('303');//Nombre del puesto DECONTRL ESCOLAR
+				$nombre=$miutil->getJefe('101');//Nombre del puesto DIRECTOR GENERAL
                 $this->SetFont('Montserrat-ExtraBold','B',11);
-
-				$this->SetY(-55);
-				$this->SetFont('Montserrat-ExtraBold','B',8);
-				$this->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
-
-				$this->SetY(-52);
-		        $this->SetFont('Montserrat-ExtraLight','I',8);
-				$this->Cell(0,0,utf8_decode('Excelencia en Educación Tecnológica'),0,1,'L');
-				
 
 				$this->SetFont('Montserrat-ExtraBold','B',11);
                 $this->setY(-50);
-                $this->Cell(0,15,$nombre,0,1,'L');
+                $this->Cell(0,15,utf8_decode($nombre),0,1,'C');
                 $this->setY(-40);
-				$this->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",0,1,'L');
+				$this->Cell(0,5,"DIRECTOR GENERAL",0,1,'C');
 				
-
-				$this->SetY(-30);
-				$this->SetFont('Montserrat-Medium','',8);
-				$this->Cell(0,0,"c.c.p. Archivo.",0,1,'L');
 				
 				
 			}
@@ -201,7 +188,7 @@
 		header("Content-Type: text/html; charset=UTF-8");
 		
 		$pdf->SetFont('Arial','',10);
-		$pdf->SetMargins(20, 25 , 25);
+		$pdf->SetMargins(50, 25 , 25);
 		$pdf->SetAutoPageBreak(true,45); 
 		$pdf->AddPage();
 		 
@@ -209,43 +196,78 @@
 		$miutil = new UtilUser();
 	
 		$data=$pdf->LoadData();
-		$dataGen = $pdf->LoadDatosGen();
+        $dataGen = $pdf->LoadDatosGen();
 		$nombre=$miutil->getJefe('303');//Nombre del puesto Control escolar
 		$elpsto="DEPARTAMENTO DE SERVICIOS ESCOLARES";
-		
+        
 		//Para el numero de oficio 
-		$dataof=$miutil->getConsecutivoDocumento("LIBCOMPLEMENTARIAS",$data[0]["ALUM_MATRICULA"]);
-		
-
+		$dataof=$miutil->getConsecutivoDocumento("CARTAPASANTE",$data[0]["ALUM_MATRICULA"]);
+	
 		$fechadecof=$miutil->formatFecha($dataof[0]["FECHA"]);
 		$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
 	
-		
+        $pdf->Image("../../imagenes/empresa/marcofoto.png",10,70,31,41);
+        
 		$pdf->Ln(3);
-        $pdf->SetFont('Montserrat-ExtraBold','B',11);
+        $pdf->SetFont('Montserrat-Medium','B',10);
         $pdf->SetX(120);
-        $pdf->Cell(35,5,'DEPENDENCIA:',0,0,'L');
-        $pdf->Cell(35,5,'DPTO DE SERV.ESCS',0,0,'L');
-        $pdf->Ln(5);
-        $pdf->SetX(120);
-        $pdf->Cell(35,5,'OFICIO NO:',0,0,'L');
+        $pdf->Cell(50,5,'CARTA DEL PASANTE NO.',0,0,'L');
         $pdf->Cell(35,5,$dataof[0]["CONSECUTIVO"],0,0,'L');
-		$pdf->Ln(5);
-		$pdf->SetX(120);
-        $pdf->Cell(35,5,'FECHA:',0,0,'L');
-        $pdf->Cell(35,5,$dataof[0]["FECHA"],0,0,'L');
+        
+        $pdf->Ln(20);        
+        $pdf->Cell(50,5,'EN VIRTUD QUE EL C.',0,1,'L');
+        $pdf->Ln(10);
+        $pdf->SetFont('Montserrat-ExtraBold','B',14);
+        $pdf->Cell(0,0,utf8_decode($data[0]["ALUM_NOMBRE"].' '.$data[0]["ALUM_APEPAT"].' '.$data[0]["ALUM_APEMAT"]),0,1,'C');
+
+        $pdf->Ln(10);
+        $pdf->SetFont('Montserrat-Medium','B',10);     
+        $pdf->Cell(50,5,'HA REALIZADO LOS ESTUDIOS CORRESPONDIENTES A LA CARRERA DE',0,1,'L');
+        $pdf->Ln(10);
+        
+        $pdf->SetFont('Montserrat-ExtraBold','B',14);
+        $pdf->Cell(0,0,utf8_decode($data[0]["CARR_DESCRIP"]),0,1,'C');
+
+        $pdf->Ln(10);
+        $pdf->SetFont('Montserrat-Medium','B',10);     
+        $pdf->Cell(0,0,'EN EL',0,1,'C');
+        $pdf->Ln(10);
+
+        $pdf->SetFont('Montserrat-ExtraBold','B',14);
+        $pdf->MultiCell(0,5,utf8_decode($dataGen[0]["inst_razon"]),0,'C',FALSE);
+        
+
+        $pdf->Ln(10);
+        $pdf->SetFont('Montserrat-Medium','B',10);     
+        $pdf->MultiCell(0,5,utf8_decode("SEGÚN CONSTANCIAS QUE EXISTEN EN EL EXPEDIENTE NO. ".$data[0]["ALUM_MATRICULA"].
+        ", QUE OBRA EN EL ARCHIVO DEL DEPARTAMENTO DE SERVICIOS ESCOLARES DE ESTA INSTITUCIÓN, SE LE CONSIDERA"),0,'J',FALSE);
+        $pdf->Ln(10);
+
+        $pdf->SetFont('Montserrat-ExtraBold','B',14);
+        $pdf->Cell(0,0,utf8_decode("PASANTE"),0,1,'C');
+
+        $fechapie=$miutil->aletras(date("d", strtotime($fechadecof)))." DÍAS DEL MES DE ".
+				  $miutil->getMesLetra(date("m", strtotime($fechadecof)))." DEL AÑO ". 
+                  $miutil->aletras(date("Y", strtotime($fechadecof)));
+                  
+        $pdf->Ln(10);
+        $pdf->SetFont('Montserrat-Medium','B',10);     
+        $pdf->MultiCell(0,5,utf8_decode("DE ACUERDO CON LO QUE ESTABLECE LA LEY GENERAL DE PROFESIONES Y EL REGLAMENTO ".
+        "RESPECTIVO, EXPIDIÉNDOSE LA PRESENTE EN LA CIUDAD DE MACUSPANA, ESTADO DE TABASCO, A LOS ".strtoupper($fechapie)),0,'J',FALSE);
         $pdf->Ln(5);
-        $pdf->SetX(120);
-        $pdf->Cell(35,5,'CLAVE:',0,0,'L');
-        $pdf->Cell(35,5,$dataGen[0]["inst_claveof"],0,0,'L');
-        $pdf->Ln(5);
-        $pdf->SetX(120);
-        $pdf->Cell(35,5,'ASUNTO:',0,0,'L');
-        $pdf->Cell(35,5,utf8_decode("LIBERACIÓN DE"),0,0,'L');
-        $pdf->Cell(35,5,'',0,0,'L');
-        $pdf->Ln(5);
-        $pdf->SetX(120);
-        $pdf->Cell(35,5,'        ',0,0,'L');
+
+        $pdf->setX(10);
+        $pdf->SetFont('Montserrat-medium','B',6);
+        $pdf->MultiCell(30,3,utf8_decode("EL JEFE DE DEPARTAMENTO DE SERVICIOS ESCOLARES"),0,'J',false);
+
+        $escolares=$miutil->getJefe('303');//Nombre del puesto CONTROL ESCOLAR
+        
+        $pdf->Ln(10);
+        $pdf->setX(10);
+        $pdf->SetFont('Montserrat-medium','B',6);
+        $pdf->MultiCell(30,3,utf8_decode($escolares),0,'J',false);
+
+       /* 
         $pdf->SetFont('Montserrat-ExtraBold','B',11);
 		$pdf->Cell(35,5,"ACTIVIDADES",0,0,'L');
 		$pdf->Ln(5);
@@ -285,76 +307,7 @@
         $pdf->MultiCell(0,5,utf8_decode(" SIN MÁS POR EL MOMENTO."),0,'J',FALSE);
         $pdf->Ln(5);
 
-		
-/*
-		
-		$pdf->eljefe=$dataDepto[0]["EMPL_ABREVIA"]." ".$dataDepto[0]["NOMBRE"];
-		$pdf->eljefepsto=$dataDepto[0]["EMPL_FIRMAOF"];
-		
-		
-		$pdf->SetFont('Montserrat-SemiBold','',10);		
-
-		
-		$pdf->MultiCell(0,5,'La(El) que suscribe : '.utf8_decode($dataDepto[0]["NOMBRE"])." ".utf8_decode($dataDepto[0]["EMPL_FIRMAOF"]). ", por este medio se permite hacer de su ".
-		utf8_decode("conocimiento que lo(s) estudiantes que se enlistan a continuación de la carrera de ").utf8_decode($_GET["carrerad"])." han cumplido un total de ".
-		utf8_decode(" CINCO créditos."),0,'J', false);
-		$pdf->ln();
-		
-		
-		
-		$data = $pdf->LoadData();
-		
-	
-		$lasmatricula="";
-		foreach($data as $rowdes)
-		{
-			$pdf->SetFont('Montserrat-SemiBold','',10);
-			$pdf->MultiCell(0,5,$rowdes["MATRICULA"]." ".$rowdes["NOMBRE"],0,'J', false);
-			$dataCompl=$pdf->lasComplementarias($rowdes["MATRICULA"]);			
-			$header = array('ACTIVIDAD', 'RESPONSABLE', utf8_decode('CREDITOS'),'CAL.','LETRA');
-			
-			$pdf->SetFont('Montserrat-ExtraBold','B',8);
-			$pdf->SetWidths(array(60,60,15,15,18));
-			$pdf->SetAligns(array('J','J','C','C','C'));
-			$pdf->SetFillColor(172,31,6);
-			$pdf->SetTextColor(255);
-			$pdf->SetDrawColor(0,0,0);
-			$pdf->SetLineWidth(.2);
-			$w = array(60,60,15,15,18);
-			for($i=0;$i<count($header);$i++) {$pdf->Cell($w[$i],7,$header[$i],1,0,'C',true);}
-			$pdf->Ln();
-			// Restauraci�n de colores y fuentes
-			$pdf->SetFillColor(255,255,255);
-			$pdf->SetTextColor(0);
-			$pdf->SetFont('');
-			// Datos
-			$fill = false;
-			$pdf->SetFont('Montserrat-Medium','',7);
-			$suma=0;
-			$alto=3;
-			
-			if ($dataCompl) {
-			     foreach($dataCompl as $rowcomp){ 	
-							$pdf->Row(array(utf8_decode($rowcomp[0]),utf8_decode($rowcomp[1]),utf8_decode($rowcomp[2]),
-							utf8_decode($rowcomp[3]),utf8_decode($rowcomp[4])
-							));				   
-			     }									
-			}
-			$pdf->Ln(5);
-
-			$lasmatricula.=$rowdes["MATRICULA"].",";
-			
-		}
-		$pdf->Ln(5);
-		
-		$elsql="UPDATE contoficios set ".
-		"CONT_INFO='".substr($lasmatricula,0,strlen($lasmatricula)-1)."' WHERE CONT_CONTROL='".$depto."-".date("dmY")."'".
-		" and CONT_SOLO='".$dataof[0]["CONT_SOLO"]."'";
-
-		//echo $elsql;
-		$res=$miConex->afectaSQL($_SESSION['bd'],$elsql);	    
-		
-*/
+		*/
 		$pdf->Output(); 
  } else {header("Location: index.php");}
  

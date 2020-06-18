@@ -279,64 +279,6 @@
        
       
 
-
-
-        /*
-        $pdf->Ln(5);
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(255);  
-        $pdf->SetFont('Montserrat-ExtraBold','B',7);
-        
-        $pdf->Cell(20,5,'GRUPO',1,0,'C',true);
-        $pdf->Cell(35,5,'MATERIA.',1,0,'C',true);
-        $pdf->Cell(10,5,'CRED.',1,0,'C',true);
-        $pdf->Cell(15,5,'LUNES',1,0,'C',true);
-        $pdf->Cell(15,5,'MARTES',1,0,'C',true);
-        $pdf->Cell(15,5,'MIERCOLES',1,0,'C',true);
-        $pdf->Cell(15,5,'JUEVES',1,0,'C',true);
-        $pdf->Cell(15,5,'VIERNES',1,0,'C',true);
-        $pdf->Cell(15,5,'SABADO',1,0,'C',true);
-        $pdf->Cell(10,5,'REP.',1,0,'C',true);
-
-        $pdf->Ln();
-        $pdf->SetFont('Montserrat-Medium','',6);
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(0);
-        $pdf->SetWidths(array(20,35,10,15,15,15,15,15,15,10));
-        $n=1;
-        foreach($data as $row) {
-            $pdf->Row(array( utf8_decode($row["MATCVE"].$row["GPOCVE"]),
-                             utf8_decode($row["MATERIAD"]),
-                             utf8_decode($row["CREDITOS"]),
-                             utf8_decode($row["LUNES"]),
-                             utf8_decode($row["MARTES"]),
-                             utf8_decode($row["MIERCOLES"]),
-                             utf8_decode($row["JUEVES"]),
-                             utf8_decode($row["VIERNES"]),
-                             utf8_decode($row["SABADO"]),
-                             utf8_decode($row["REP"])
-                             )
-                      );
-            $n++;
-        }
-
-
-        $pdf->SetFont('Montserrat-Medium','',11);
-		$fechaof=$miutil->aletras(date("d"))." DÍAS DEL MES DE ".$miutil->getMesLetra(date("m"))." DEL AÑO ". $miutil->aletras(date("Y"));
-        $pdf->Ln(5);
-   
-
-        $pdf->MultiCell(0,5,utf8_decode("SE EXTIENDE LA PRESENTE EN LA CIUDAD DE MACUSPANA, ESTADO DE TABASCO A LOS ".
-        strtoupper($fechaof).", PARA LOS FINES QUE CONVENGAN AL INTERESADO."),0,'J',FALSE);
-        
-        $pdf->Ln(15);
-
-        $nombre=$miutil->getJefe('303');//Nombre del puesto DECONTRL ESCOLAR
-        $pdf->SetFont('Montserrat-ExtraBold','B',11);
-        $pdf->Cell(0,15,$nombre,0,1,'C');
-        $pdf->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",0,1,'C');
-            
-*/
          $pdf->Output(); 
 
 
