@@ -141,7 +141,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="econstancias.js"></script>
+<script src="econstancias.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
      elusuario="<?php echo $_SESSION["usuario"];?>";
 </script>

@@ -28,7 +28,7 @@ contMat=1;
 		colocarCiclo("elciclo","CLAVE");
 		$("#selCiclos").val($("#elciclo").html());
 
-		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) from falumnos WHERE ALUM_ACTIVO IN (1,2)", "","BUSQUEDA");  			      
+		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) from falumnos ", "","BUSQUEDA");  			      
 		
 		addSELECT("selTipos","lostipos","PROPIO", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPCONSTANCIAS' ORDER BY CATA_DESCRIP", "","");  			      
 		
