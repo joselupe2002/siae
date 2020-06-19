@@ -42,16 +42,31 @@ contMat=1;
 		   
 		
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
-		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
+		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong><br/>"+
+		                       "<span title=\"Total de puntos en el examen\" class=\"badge badge-warning\" id=\"totalp\"></span>");
 		colocarCiclo("elciclo","CLAVE");
+
 		
 	});
 	
 	
 		 
 	function change_SELECT(elemento) {
-		if (elemento=='selExamenes') {	
-			actualizaSelect("selAlumnos","SELECT DISTINCT MATRICULA, concat(MATRICULA,' ',MATRICULAD) from vlinrespuestas where IDEXAMEN="+$("#selExamenes").val(),"BUSQUEDA","");
+		if (elemento=='selExamenes') {
+			elsql="select SUM(PUNTAJE) from linpreguntas a where a.IDEXAMEN="+$("#selExamenes").val();
+		    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  
+						$("#totalp").html(JSON.parse(data)[0][0]);	
+					},
+				error: function(data) {	                  
+						   alert('ERROR: '+data);
+						   $('#dlgproceso').modal("hide");  
+					   }
+			   });
 		}  
     }
 
@@ -135,7 +150,7 @@ function generaTablaMaterias(grid_data,campos){
 		$("#rowM"+contAlum).append("<td style=\"font-size:10px;\">"+valor.MATRICULAD+"</td>");
 	
 		campos.forEach(element => {
-			$("#rowM"+contAlum).append("<td style=\"font-size:10px;\">"+grid_data[clave][element]+"</td>"); 
+			$("#rowM"+contAlum).append("<td style=\"text-align:center\"><span class=\"badge badge-warning\">"+grid_data[clave][element]+"</span></td>"); 
 		});
 
 		evento="onclick=\"showResultExamen('"+valor.IDEXAMEN+"','"+valor.MATRICULA+"','grid_linresexa','"+valor.MATRICULAD+"');\"";
