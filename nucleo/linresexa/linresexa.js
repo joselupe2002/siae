@@ -54,7 +54,10 @@ contMat=1;
 				j=0;
 				jQuery.each(JSON.parse(data), function(clave, valor) {  
 					cadSeccion+="<th>"+valor.DESCRIP+"</th>";
-					cadSecSql+="(SELECT SUM(PUNTOS) from vlinrespuestas z where z.MATRICULA=x.MATRICULA and z.IDEXAMEN=x.IDEXAMEN AND z.IDSECCION="+valor.IDSECC+") AS "+valor.DESCRIP+",";
+					cadSecSql+="(SELECT SUM(if (z.RESPUESTA=y.CORRECTA,y.PUNTAJE*1,y.PUNTAJE*0)) from linrespuestas z, "+
+							   " linpreguntas y where z.IDPREGUNTA=y.IDPREG AND z.IDPRESENTA=x.MATRICULA "+
+							   " and z.IDEXAMEN=x.IDEXAMEN AND y.IDSECCION="+valor.IDSECC+") AS "+valor.DESCRIP+",";
+								
 					campos[j]=valor.DESCRIP;
 					j++;
 				});  
