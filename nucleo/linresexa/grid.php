@@ -46,24 +46,17 @@
 				        <div id="losciclos" class="col-sm-1">
 						</div> 	
          				
-						<div id="losexamenes" class="col-sm-3">
+						<div id="losexamenes" class="col-sm-4">
 						</div>     
 
-						<div id="losalumnos" class="col-sm-3">
+						<div id="losalumnos" class="col-sm-4">
 						</div>			 
 					
-						<div class="col-sm-5" style="padding-top:14px;">
+						<div class="col-sm-3" style="padding-top:14px;">
 						    <button title="Ver Resultados por sección" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-book bigger-100"></i><span class="btn-small"> Materias</span>            
+								<i class="ace-icon green fa fa-crosshairs bigger-100"></i><span class="btn-small"> Resultados</span>            
 							</button>
-							<button title="Ver avance de evaluaciones por profesores, Imprimir reporte de evaluación" onclick="cargarInformacionP();" 
-							    class="btn btn-white btn-success btn-round"> 
-								<i class="ace-icon blue fa fa-user bigger-100"></i><span class="btn-small"> Profesores</span>            
-							</button>	
-							<button title="Ver avance de evaluación por Alumnos" onclick="cargarInformacionA();" 
-							    class="btn btn-white btn-success btn-round" > 
-								<i class="ace-icon red fa fa-group bigger-100"></i><span class="btn-small"> Alumnos</span>            
-							</button>	
+				
 
 							<button title="Convertir a tabla para exportar" onclick="convertirDataTable('tabMaterias');" 
 							    class="btn btn-white btn-success btn-round"> 
