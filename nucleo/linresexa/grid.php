@@ -49,7 +49,7 @@
 						<div id="losexamenes" class="col-sm-4">
 						</div>     
 
-						<div id="losalumnos" class="col-sm-4">
+						<div id="lascarreras" class="col-sm-4">
 						</div>			 
 					
 						<div class="col-sm-3" style="padding-top:14px;">

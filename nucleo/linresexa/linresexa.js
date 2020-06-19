@@ -21,10 +21,26 @@ contMat=1;
 		 
 		elsql="SELECT IDEXA, DESCRIP from linexamenes";
 		if (essup!='S') { elsql="SELECT IDEXA, DESCRIP from linexamenes WHERE USUARIO='"+usuario+"'"; }
-		
 		addSELECT("selExamenes","losexamenes","PROPIO",elsql, "",""); 
-		addSELECT("selAlumnos","losalumnos","PROPIO","SELECT ID, NOMBRE FROM vaspalumnos WHERE ID=0", "","BUSQUEDA"); 
 
+		
+
+		$("#lascarreras").append("<span class=\"label label-warning\">Carrera</span>");
+		 
+		$.ajax({
+			type: "GET",
+			url:  "../base/getSesion.php?bd=Mysql&campo=carrera",
+			success: function(data){  
+				addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
+				" and CARR_CLAVE IN ("+data+") union select '%', 'TODOS' from dual", "",""); 			
+				},
+			error: function(data) {	                  
+					   alert('ERROR: '+data);
+					   $('#dlgproceso').modal("hide");  
+				   }
+		   });
+		   
+		
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 		colocarCiclo("elciclo","CLAVE");
@@ -79,7 +95,7 @@ contMat=1;
 						$("#informacion").append(script);
 								
 						elsql="select MATRICULA,IDEXAMEN,MATRICULAD,CARRERA, CARRERAD,"+cadSecSql+" SUM(PUNTOS) as TOTAL from vlinrespuestas x where "+
-						"IDEXAMEN="+$("#selExamenes").val()+" GROUP BY MATRICULA,IDEXAMEN, MATRICULAD ORDER BY MATRICULA, MATRICULAD,CARRERA,CARRERAD";
+						"IDEXAMEN="+$("#selExamenes").val()+" AND CARRERA LIKE '"+$("#selCarreras").val()+"' GROUP BY MATRICULA,IDEXAMEN, MATRICULAD ORDER BY MATRICULA, MATRICULAD,CARRERA,CARRERAD";
 	
 						
 						mostrarEspera("esperahor","grid_linresexa","Cargando Datos...");
@@ -121,7 +137,7 @@ function generaTablaMaterias(grid_data,campos){
 			$("#rowM"+contAlum).append("<td style=\"font-size:10px;\">"+grid_data[clave][element]+"</td>"); 
 		});
 
-		evento="onclick=\"showResultExamen('"+valor.IDEXAMEN+"','"+valor.MATRICULA+"','grid_linresexa');\"";
+		evento="onclick=\"showResultExamen('"+valor.IDEXAMEN+"','"+valor.MATRICULA+"','grid_linresexa','"+valor.MATRICULAD+"');\"";
 		$("#rowM"+contAlum).append("<td><span "+evento+" class=\"badge badge-info\" style=\"cursor:pointer;\">"+valor.TOTAL+"</span></td>");
 		$("#rowM"+contAlum).append("<td>"+valor.CARRERA+"</td>");
 		$("#rowM"+contAlum).append("<td>"+valor.CARRERAD+"</td>");

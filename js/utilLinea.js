@@ -1,4 +1,5 @@
-function showResultExamen(idexa,idpresenta,contenedor){
+
+function showResultExamen(idexa,idpresenta,contenedor, nombre){
     script="<div class=\"modal fade\" id=\"resultado_"+idexa+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
 	"   <div class=\"modal-dialog modal-lg\"  role=\"document\">"+
 	"      <div class=\"modal-content\">"+
@@ -23,11 +24,19 @@ function showResultExamen(idexa,idpresenta,contenedor){
 	var cad="";
 	
 	cad="<div class=\"widget-box widget-color-blue\" style=\"width:100%;\"  >"+		   
-           "<div class=\"widget-body\" style=\"padding:10px;\">"+
-                  "<button title=\"Imprimir\" onclick=\"imprimirDiv('resultado_"+idexa+"');\" class=\"btn btn-xs btn-white btn-primary btn-round\">"+ 
+           "<div class=\"widget-body\" style=\"padding:10px;\">"+                 
+				  "<div id=\"contpreg\">"+
+				  "<div class=\"row\">"+
+				  "   <div class=\"col-sm-10\" style=\"text-align:center;\">"+
+				  "         <span class=\"text-primary bigger-130\"><strong>"+nombre+"</strong></span>"+
+				  "    </div>"+ 
+				  "   <div class=\"col-sm-1\">"+
+				  "         <button title=\"Imprimir\" onclick=\"imprimirDiv('resultado_"+idexa+"');\" class=\"btn btn-xs btn-white btn-primary btn-round\">"+ 
 				  "				<i class=\"ace-icon blue fa fa-print bigger-160\"></i><span class=\"btn-small\"></span>"+            
 				  "			</button>"+
-			      "<div id=\"contpreg\"></div>"+					    			
+				  "    </div>"+ 
+				  "</div>"
+				  "</div>"+					    			
 			"</div>"+
 		"</div>";
     $("#body_"+idexa).append(cad);
