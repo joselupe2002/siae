@@ -70,14 +70,16 @@ contMat=1;
 						"                <th>Nombre</th> "+	
 						cadSeccion+
 						"                <th>Total</th> "+	
+						"                <th>CVE</th> "+	
+						"                <th>CARRERA</th> "+	
 						"             </tr> "+
 						"            </thead>" +
 						"         </table>";
 						$("#informacion").empty();
 						$("#informacion").append(script);
 								
-						elsql="select MATRICULA,MATRICULAD,"+cadSecSql+" SUM(PUNTOS) as TOTAL from vlinrespuestas x where "+
-						"IDEXAMEN="+$("#selExamenes").val()+" GROUP BY MATRICULA, MATRICULAD ORDER BY CARRERA,MATRICULAD";
+						elsql="select MATRICULA,IDEXAMEN,MATRICULAD,CARRERA, CARRERAD,"+cadSecSql+" SUM(PUNTOS) as TOTAL from vlinrespuestas x where "+
+						"IDEXAMEN="+$("#selExamenes").val()+" GROUP BY MATRICULA,IDEXAMEN, MATRICULAD ORDER BY MATRICULA, MATRICULAD,CARRERA,CARRERAD";
 	
 						
 						mostrarEspera("esperahor","grid_linresexa","Cargando Datos...");
@@ -118,7 +120,13 @@ function generaTablaMaterias(grid_data,campos){
 		campos.forEach(element => {
 			$("#rowM"+contAlum).append("<td style=\"font-size:10px;\">"+grid_data[clave][element]+"</td>"); 
 		});
-		$("#rowM"+contAlum).append("<td><span class=\"badge badge-info\" >"+valor.TOTAL+"</span></td>");
+
+		evento="onclick=\"showResultExamen('"+valor.IDEXAMEN+"','"+valor.MATRICULA+"','grid_linresexa');\"";
+		$("#rowM"+contAlum).append("<td><span "+evento+" class=\"badge badge-info\" style=\"cursor:pointer;\">"+valor.TOTAL+"</span></td>");
+		$("#rowM"+contAlum).append("<td>"+valor.CARRERA+"</td>");
+		$("#rowM"+contAlum).append("<td>"+valor.CARRERAD+"</td>");
+		
+		
 		/*
 		evento="onclick=\"window.open('../pd_captcal/repUni.php?materia="+valor.MATERIA+"&grupo="+valor.GRUPO+
 		"&ciclo="+$("#selCiclos").val()+"&profesor="+valor.PROFESOR+"&id="+valor.IDDETALLE+
