@@ -77,7 +77,7 @@ contMat=1;
 					campos[j]=valor.DESCRIP;
 					j++;
 				});  
-				alert (cadSeccion);
+			
 				script="<table id=\"tabMaterias\" name=\"tabMaterias\" class= \"table table-condensed table-bordered table-hover\" "+
 								">"+
 						"        <thead >  "+
