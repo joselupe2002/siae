@@ -7,7 +7,7 @@ function showResultExamen(idexa,idpresenta,contenedor, nombre){
 	"             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\">"+
 	"                  <span aria-hidden=\"true\">&times;</span>"+
 	"             </button>"+
-	"             <span><i class=\"menu-icon fa fa-list-ol\"></i><span class=\"text-success lead \"> <strong>Resultados de Evaluación</strong></span></span>"+	   
+	"             <span><i class=\"menu-icon glyphicon red glyphicon-copy bigger-160\"></i><span class=\"text-success lead \"> <strong>Resultados de Evaluación</strong></span></span>"+	   
 	"          </div>"+
 	"          <div id=\"body_"+idexa+"\" class=\"modal-body\"  style=\"height:330px; overflow-y: auto;\">"+	
 	"          </div>"+
@@ -34,8 +34,9 @@ function showResultExamen(idexa,idpresenta,contenedor, nombre){
 				  "         <button title=\"Imprimir\" onclick=\"imprimirDiv('resultado_"+idexa+"');\" class=\"btn btn-xs btn-white btn-primary btn-round\">"+ 
 				  "				<i class=\"ace-icon blue fa fa-print bigger-160\"></i><span class=\"btn-small\"></span>"+            
 				  "			</button>"+
-				  "    </div>"+ 
-				  "</div>"
+				  "    </div>"+ 				 
+				  "</div>"+
+				  "<div class=\"space-10\"></div>"+
 				  "</div>"+					    			
 			"</div>"+
 		"</div>";
