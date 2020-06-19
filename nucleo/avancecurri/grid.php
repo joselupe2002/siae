@@ -510,7 +510,8 @@ var matser="";
 			    }); //Ajax de busqueda de las materias 
 
 
-			    
+				
+				alert ("marcare");
 			    
 				//buscamos las asignaturas que ya aprobo 
 				elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE FROM dlista a, cmaterias b "+
