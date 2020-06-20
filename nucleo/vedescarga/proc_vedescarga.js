@@ -1,5 +1,5 @@
 function setAutorizado(id,valor,actualiza){
-	 $('#modalDocument').modal({show:true, backdrop: 'static'});	 
+	 $('#dlgproceso').modal({show:true, backdrop: 'static'});	 
 		parametros={
 			tabla:"edescarga",
 			campollave:"DESC_ID",
@@ -247,9 +247,9 @@ function abrirTodo(modulo,usuario,institucion, campus,essuper){
 	table.rows().iterator('row', function(context, index){		
 	    var node = $(this.row(index).node());
 	    setAutorizado(node.find("td").eq(0).html(),'S',false);
-	    node.find("td").eq(2).html("S");
+	    node.find("td").eq(1).html("S");
 	});
-	// window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
+ window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
 }
 
 function cerrarTodo(modulo,usuario,institucion, campus,essuper){
@@ -257,9 +257,9 @@ function cerrarTodo(modulo,usuario,institucion, campus,essuper){
 	table.rows().iterator('row', function(context, index){		
 	    var node = $(this.row(index).node());
 	    setAutorizado(node.find("td").eq(0).html(),'N',false);
-	    node.find("td").eq(2).html("N");
+	    node.find("td").eq(1).html("N");
 	});
-	// window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
+	window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
 }
 
 
