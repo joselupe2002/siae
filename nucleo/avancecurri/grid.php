@@ -62,6 +62,10 @@
 							</button>
 							<button title="Kardex del alumno" onclick="imprimirKardex();" class="btn btn-xs btn-white btn-primary btn-round"> 
 								<i class="ace-icon green glyphicon glyphicon-list-alt bigger-150"></i><span class="btn-small"></span>            
+							</button>	
+
+							<button title="Marcar las materias" onclick="marcarMaterias();" class="btn btn-xs btn-white btn-primary btn-round"> 
+								<i class="ace-icon blue glyphicon glyphicon-pushpin bigger-150"></i><span class="btn-small"></span>            
 							</button>							
 						</div>	  			 
 						<div class="col-sm-2">	
@@ -509,12 +513,27 @@ var matser="";
 				
 			    }); //Ajax de busqueda de las materias 
 
+			    marcarMaterias();
+			
+				 /*
+				 
 
+				 */
 				
-				alert ("marcare");
-			    
-				//buscamos las asignaturas que ya aprobo 
-				elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE FROM dlista a, cmaterias b "+
+				 $('#dlgproceso').modal("hide");  
+
+		      } //success del primer ajax
+	   
+        });//ajax del semestre que mas asignaturas tiene
+    	
+
+        }
+
+
+    function marcarMaterias() {
+	elalumno=$("#alumnos").val();
+	//buscamos las asignaturas que ya aprobo 
+	elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE FROM dlista a, cmaterias b "+
 							   " where a.MATCVE=b.MATE_CLAVE and a.ALUCTR='"+elalumno+"' and a.LISCAL>=70";
 							   
 				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -570,21 +589,11 @@ var matser="";
 			           }
 				 });
 
-				 /*
-				 
 
-				 */
-				
-				 $('#dlgproceso').modal("hide");  
+	}
+	
+	
 
-		      } //success del primer ajax
-	   
-        });//ajax del semestre que mas asignaturas tiene
-    	
-
-        }
-
-    
     function imprimir(nombreDiv) {
     
         var contenido= document.getElementById(nombreDiv).innerHTML;
