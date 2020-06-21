@@ -152,7 +152,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="revMaterias.js"></script>
+<script src="revMaterias.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 	var institucion="<?php echo $_SESSION["INSTITUCION"]; ?>";
 	var campus="<?php echo $_SESSION["CAMPUS"]; ?>";

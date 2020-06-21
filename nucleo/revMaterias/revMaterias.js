@@ -139,6 +139,7 @@ function guardarCal (materia,materiad){
 				MATCVE:materia, 
 				GPOCVE:"REV", 
 				LISCAL:$("#"+materia+"_cal").val(),
+				CERRADO:"S",
 				TCACVE:$("#selTipos").val(),
 				LISTC15:"9999",
 				USUARIO: usuario,

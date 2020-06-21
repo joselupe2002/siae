@@ -190,7 +190,7 @@ function generaTablaMaterias(grid_data){
 
 
 function guardarCal (matricula,lacal,laletra, alumno){
-    alert ("entre a guardas");
+    
 	if (confirm("¿Seguro que desea asignar la Cal al alumno: "+alumno+"?")) {
 		elsql="select VMAT_MATERIA from vmatciclo a, falumnos b where b.ALUM_MAPA=a.VMAT_MAPA AND a.VMAT_TIPOMAT in ('AC') AND b.ALUM_MATRICULA='17E40113' ";
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -207,6 +207,7 @@ function guardarCal (matricula,lacal,laletra, alumno){
 							LISCAL:100,
 							TCACVE:1,
 							LISTC15:"9999",
+							CERRADO:"S",
 							USUARIO: usuario,
 							FECHAINS:fecha,
 							_INSTITUCION: institucion, 

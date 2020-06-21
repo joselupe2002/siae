@@ -266,6 +266,12 @@ class UtilUser {
 			return($meses[$num-1]);		    
 	}
 
+
+	public function getMesRomano($num) {
+		$meses=["I","II", "III","IV","V","VI","VII","VIII","IX","X","XI","XII"];		
+			return($meses[$num-1]);		    
+	}
+
 	
 	public function  getPie($pdf,$orienta){	
 		$top1=257; $top2=253; $left1=20; $left2=190;
