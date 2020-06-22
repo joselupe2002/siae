@@ -108,7 +108,7 @@ function abrirCerrarUno(modulo,usuario,institucion, campus,essuper){
 		     val_ac='S';
 		    if ( table.rows('.selected').data()[0][2]=='S') {val_ac='N';} 		    
 			  actualizaCompl(table.rows('.selected').data()[0][0],val_ac);
-		
+		      alert("ya actualice");
 		      window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
 	}
 	else {
