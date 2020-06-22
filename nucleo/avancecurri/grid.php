@@ -279,6 +279,7 @@
 var id_unico="";
 var estaseriando=false;
 var matser="";
+var rtrim = / /g;
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -420,7 +421,7 @@ var matser="";
 	    }
    
 
-    function cargaMapa(elmapa,elalumno){
+    function cargaMapa(elmapa,elalumno){		
     	$("#mihoja").empty();
         laespera="<img src=\"../../imagenes/menu/esperar.gif\" style=\"background: transparent; width: 30%; height:30%;\"/>"
     	$("#fondo").css("display","block");
@@ -492,14 +493,16 @@ var matser="";
 			        	   estiloPadre="style= \"background-color:white; position: absolute; left: "+left+"mm; top: "+arriba+"mm; width: "+ancho+"mm; height:"+alto+"mm; border: 0.1mm solid;\"";
 			               estiloAsignatura="style=\"font-size:7px; font-weight:bold; text-align: center; word-wrap: break-word;  "+
 			                                        "cursor:pointer; position:absolute; left: 0mm; top: 0mm; width:100%; height:"+altoasig+"mm; border-bottom: 0.1mm solid;\""+ 
-			                                        "id=\""+valor.CICL_MATERIA+"\" elcolor=\""+valor.CICL_COLOR+"\" seleccionado=\"0\" onclick=\"getInfo('"+valor.CICL_MATERIA+"','"+elalumno+"');\"";
-			 			        		
-                         cad="<div id=\""+valor.CICL_MATERIA+"\""+estiloPadre+">"+                                     
+			                                        "id=\""+valor.CICL_MATERIA.replace(rtrim, '')+"\" elcolor=\""+valor.CICL_COLOR+"\" seleccionado=\"0\" onclick=\"getInfo('"+valor.CICL_MATERIA+"','"+elalumno+"');\"";
+										 
+						 
+						//alert (valor.CICL_MATERIA.replace(rtrim, ''));
+                         cad="<div id=\""+valor.CICL_MATERIA.replace(rtrim, '')+"\""+estiloPadre+">"+                                     
 		                            "<div "+estiloAsignatura+">"+valor.CICL_MATERIAD+" ("+valor.CICL_CLAVEMAPA+")"+
 		                            "</div>"+
-		                            "<div title=\"Calificaci&oacute;n con la que aprobo la asignatura\" id=\""+valor.CICL_MATERIA+"_CAL\" style=\"font-size:9px; font-weight:bold; text-align: center; color:blue; position: absolute; left: 0mm; top: "+altoasig+"mm; width:"+eltam+"mm; height:"+(alto-altoasig)+"mm; border-top: 0.1mm solid black;\"></div>"+
-		                            "<div title=\"Numero de veces que ha cursado la asignatura\"id=\""+valor.CICL_MATERIA+"_NVE\" style=\"font-size:9px; font-weight:bold; text-align: center; color:green;  position: absolute; left: "+eltam+"mm; top: "+altoasig+"mm; width:"+eltam+"mm; height:"+(alto-altoasig)+"mm; border-top: 0.1mm solid black;\"></div>"+
-		                            "<div title=\"Ciclo en el que se aprobo la asignatura\" id=\""+valor.CICL_MATERIA+"_BAN\" style=\"font-size:9px; font-weight:bold; text-align: center; color:red;  position: absolute; left: "+eltam*2+"mm; top: "+altoasig+"mm; width:"+(tamfin-0.1)+"mm; height:"+(alto-altoasig)+"mm; border-top: 0.1mm solid black;\"></div>"+		                      
+		                            "<div title=\"Calificaci&oacute;n con la que aprobo la asignatura\" id=\""+valor.CICL_MATERIA.replace(rtrim, '')+"_CAL\" style=\"font-size:9px; font-weight:bold; text-align: center; color:blue; position: absolute; left: 0mm; top: "+altoasig+"mm; width:"+eltam+"mm; height:"+(alto-altoasig)+"mm; border-top: 0.1mm solid black;\"></div>"+
+		                            "<div title=\"Numero de veces que ha cursado la asignatura\"id=\""+valor.CICL_MATERIA.replace(rtrim, '')+"_NVE\" style=\"font-size:9px; font-weight:bold; text-align: center; color:green;  position: absolute; left: "+eltam+"mm; top: "+altoasig+"mm; width:"+eltam+"mm; height:"+(alto-altoasig)+"mm; border-top: 0.1mm solid black;\"></div>"+
+		                            "<div title=\"Ciclo en el que se aprobo la asignatura\" id=\""+valor.CICL_MATERIA.replace(rtrim, '')+"_BAN\" style=\"font-size:9px; font-weight:bold; text-align: center; color:red;  position: absolute; left: "+eltam*2+"mm; top: "+altoasig+"mm; width:"+(tamfin-0.1)+"mm; height:"+(alto-altoasig)+"mm; border-top: 0.1mm solid black;\"></div>"+		                      
 		                          "</div>";
 		                   //console.log(cad);
                         $("#mihoja").append(cad);
@@ -544,9 +547,9 @@ var matser="";
 			           success: function(data){  
 			               losdatos=JSON.parse(data);                            
 			               jQuery.each(losdatos, function(clave, valor) { 
-                                 $("#"+valor.MATCVE).css("background-color","#6EF2AE");
-                                 $("#"+valor.MATCVE+"_CAL").html(valor.LISCAL);
-                                 $("#"+valor.MATCVE+"_BAN").html(valor.PDOCVE);
+                                 $("#"+valor.MATCVE.replace(rtrim, '')).css("background-color","#6EF2AE");
+                                 $("#"+valor.MATCVE.replace(rtrim, '')+"_CAL").html(valor.LISCAL);
+                                 $("#"+valor.MATCVE.replace(rtrim, '')+"_BAN").html(valor.PDOCVE);
 				               });
 			           }
 				 });
@@ -564,7 +567,7 @@ var matser="";
 			           success: function(data){   
 			               losdatos=JSON.parse(data);                          
 			               jQuery.each(losdatos, function(clave, valor) { 
-                               $("#"+valor.MATCVE).css("background-color","#77B5FF");
+                               $("#"+valor.MATCVE.replace(rtrim, '')).css("background-color","#77B5FF");
 				               });
 
 			               
@@ -582,7 +585,7 @@ var matser="";
 			           success: function(data){   
 			               losdatos=JSON.parse(data);                          
 			               jQuery.each(losdatos, function(clave, valor) { 
-                               $("#"+valor.MATCVE+"_NVE").html(valor.N);
+                               $("#"+valor.MATCVE.replace(rtrim, '')+"_NVE").html(valor.N);
 				               });
 
 			               
