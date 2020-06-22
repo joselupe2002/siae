@@ -127,7 +127,7 @@
                 $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,". 
                 "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,".
                 "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas ".
-                " where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 AND CERRADO='S' ORDER BY SEMESTRE, MATERIAD";
+                " where MATRICULA='".$_GET["matricula"]."' AND CERRADO='S' ORDER BY SEMESTRE, MATERIAD";
             
            
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
@@ -171,14 +171,14 @@
                 " where o.ALUM_MAPA=p.VMAT_MAPA and  ifnull(p.CVEESP,'0')='0' ".
                 " and o.ALUM_MATRICULA='".$_GET["matricula"]."' and VMAT_TIPOMAT NOT IN ('T') ".
                 " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where ".
-                " h.ALUCTR='".$_GET["matricula"]."' and (LISCAL>=70 or PDOCVE='".$ciclo."'))".
+                " h.ALUCTR='".$_GET["matricula"]."' and (PDOCVE='".$ciclo."'))".
                 " UNION ".
                 " select p.VMAT_MATERIA AS MATERIA, p.VMAT_MATERIAD AS MATERIAD,p.VMAT_CUATRIMESTRE AS SEMESTRE,".
                 " p.`VMAT_CREDITO` AS CREDITO from falumnos o, vmatciclo p ".
                 " where o.ALUM_MAPA=p.VMAT_MAPA  and o.ALUM_MATRICULA='".$_GET["matricula"]."' ".
                 " and VMAT_TIPOMAT NOT IN ('T') AND ifnull(p.CVEESP,'0')=ALUM_ESPECIALIDAD ".
                 " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_GET["matricula"]."' ".
-                " and (LISCAL>=70 or PDOCVE='".$ciclo."'))";
+                " and ( PDOCVE='".$ciclo."'))";
                // echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
