@@ -133,15 +133,13 @@
 			function LoadDatosCursadas()
 			{				
                 $miConex = new Conexion();
-                $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,". 
+                $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE, GPOCVE,". 
                 "(CASE WHEN TIPOMAT='AC' THEN (select CALLET from ecalcertificado i where i.MATRICULA=a.MATRICULA and i.MATERIA=a.MATERIA limit 1)".
                 "      WHEN TIPOMAT='SS' THEN (select CALLET from ecalcertificado i where i.MATRICULA=a.MATRICULA and i.MATERIA=a.MATERIA limit 1) ".
                 " ELSE CAL END) AS CAL,".
                 "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas a ".
                 " where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 AND CERRADO='S' ORDER BY SEMESTRE, MATERIAD";
             
-
-           
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
 					$data[] = $row;
@@ -267,8 +265,10 @@
         $sumacal=0;
         $totcred=0;
         foreach($data as $row) {    
+            $cadRev='';
+            if (($row["GPOCVE"]=='REV') && (($row["TIPOMAT"]!='AC') && ($row["TIPOMAT"]!='SS'))) {$cadRev='*';}
             $pdf->Row(array( "",
-                             utf8_decode($row["MATERIAD"]),
+                             utf8_decode($row["MATERIAD"]." ".$cadRev),
                              utf8_decode($row["CAL"]),
                              "",
                              str_pad($row["CREDITO"],  2, "0",STR_PAD_LEFT)                             
@@ -278,8 +278,7 @@
             if  (($row["TIPOMAT"]!='AC') && ($row["TIPOMAT"]!='SS')) {
                 $sumacal+=$row["CAL"];
                 $n++;
-            }
-            
+            }            
         }
 
         //echo $pdf->getY();
