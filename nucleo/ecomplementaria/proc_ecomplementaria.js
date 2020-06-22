@@ -102,13 +102,13 @@ function cerrarTodo(modulo,usuario,institucion, campus,essuper){
 
 
 function abrirCerrarUno(modulo,usuario,institucion, campus,essuper){
-	alert ("entre");
+
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
 		     val_ac='S';
 		    if ( table.rows('.selected').data()[0][2]=='S') {val_ac='N';} 		    
 			  actualizaCompl(table.rows('.selected').data()[0][0],val_ac);
-			  alert ("actualice");
+		
 		      window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
 	}
 	else {
