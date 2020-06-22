@@ -1,3 +1,8 @@
+	function dameMesLetra(nummes) {
+		var meses=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
+        return meses[nummes-1];
+	}
+	
 	function utf8Encode(unicodeString) {
 		    if (typeof unicodeString != 'string') throw new TypeError('parameter ‘unicodeString’ is not a string');
 		    const utf8String = unicodeString.replace(

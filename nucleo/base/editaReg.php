@@ -160,7 +160,7 @@
 <script src="<?php echo $nivel; ?>assets/js/ace.min.js"></script>
 <script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
 <script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
-<script src="<?php echo $nivel; ?>js/utilerias.js"></script>
+<script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 <?php  if (file_exists($nivel."nucleo/".$_GET["modulo"]."/ed_".$_GET["modulo"].".js")) { ?>
