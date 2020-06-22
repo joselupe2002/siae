@@ -143,7 +143,7 @@ var matser="";
 
 
     jQuery(function($) { 
-		actualizaSelect("especialidad","SELECT ID, DESCRIP FROM especialidad i where i.MAPA='<?php echo $_GET['mapa'];?>'"+
+		actualizaSelect("especialidad","SELECT ID, CONCAT(CLAVEOF,' ',DESCRIP) AS DESCRIP FROM especialidad i where i.MAPA='<?php echo $_GET['mapa'];?>'"+
 					   "ORDER BY DESCRIP");
 		$("#especialidad").append("<option value=\"0\">Mapa curricular</option>");		   
 		$("#especialidad").change(function(){cargaMapa();}); 	      
