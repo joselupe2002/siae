@@ -395,6 +395,11 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,$dataAlum[0]["PROMEDIO_SR"],0,1,'L');
         
         $pdf->Ln(5);
+        $pdf->setX(30);
+        $pdf->SetFont('Montserrat-Medium','',9);
+        $pdf->Cell(10,5,'MATERIAS CURSADAS ',0,0,'C');
+
+        $pdf->Ln(5);
         $pdf->SetFillColor(172,31,6);
         $pdf->SetTextColor(255);  
         $pdf->SetFont('Montserrat-ExtraBold','B',7);
