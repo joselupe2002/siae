@@ -79,7 +79,8 @@ contMat=1;
 					elsqlCon=elsqlCon.replace(/IN {CARRERA}/gi,tagCarreras);
 					elsqlCon=elsqlCon.replace(/IN {CICLO}/gi,tagCiclos);
 					miscampos=JSON.parse(data)[0]["CAMPOS"].split("|");
-		            misclases=JSON.parse(data)[0]["CLASES"].split("|");
+					misclases=JSON.parse(data)[0]["CLASES"].split("|");
+					miseventos=JSON.parse(data)[0]["EVENTOS"].split("|");
 					parametros={sql:elsqlCon,dato:sessionStorage.co,bd:"Mysql"}
 	
 					$.ajax({
@@ -99,7 +100,7 @@ contMat=1;
 
 					        $("#informacion").empty();
 							$("#informacion").append(script);
-							 generaTablaInformacion(JSON.parse(data),miscampos,misclases);   
+							 generaTablaInformacion(JSON.parse(data),miscampos,misclases,miseventos);   
 							 ocultarEspera("esperaInf");  
 						}
 					});	
@@ -116,7 +117,7 @@ contMat=1;
 
 
 
-function generaTablaInformacion(grid_data,miscampos,misclases){
+function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
 	
 	contR=1;
 	$("#cuerpoInformacion").empty();
@@ -130,7 +131,19 @@ function generaTablaInformacion(grid_data,miscampos,misclases){
 			if (!(misclases[index]=="")) {
 				cadDato="<span class=\""+misclases[index]+"\">"+grid_data[contR-1][index]+"</span></td>";
 			}
-			$("#rowM"+contR).append("<td>"+cadDato+"</td>");
+
+			cadEvento="";
+			if (!(miseventos[index]=="")) {
+				miev=miseventos[index].split(",");			
+				cadEvento=" style=\"cursor:pointer;\" onclick=\""+ miev[0]+"('grid_vstGenerales',";
+				miev.forEach(function callback(currentValue, index, array) {					
+					if (index>0) {cadEvento+="'"+grid_data[contR-1][currentValue]+"',";}
+				});
+				cadEvento=cadEvento.substring(0,cadEvento.length-1)+");\"";				
+			}
+			
+
+			$("#rowM"+contR).append("<td "+cadEvento+"}>"+cadDato+"</td>");
 		});	
 	    contR++;      			
 	});	

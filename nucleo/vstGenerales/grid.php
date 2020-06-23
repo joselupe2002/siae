@@ -124,7 +124,7 @@
 <script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
 <script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
 <script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
-<script src="<?php echo $nivel; ?>js/utilerias.js"></script>
+<script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/bootbox.js"></script>
@@ -138,7 +138,9 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
+
 <script src="vstGenerales.js?v=<?php echo date('YmdHis'); ?>"></script>
+<script src="eventos.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
  miscarreras="";
 </script>

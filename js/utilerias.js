@@ -324,6 +324,7 @@ function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,
 
 function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
 	tamMsj="110";
+	
 	$("#"+nombre).remove();
 	if (tam="modal-lg") {tamMsj="160";} 
 	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
@@ -349,6 +350,7 @@ function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
                "</div>";
 	$("#"+contenedor).append(script);
 	$('#'+nombre).modal({show:true, backdrop: 'static'});
+	
 }
 
 
