@@ -124,10 +124,12 @@
 			function LoadDatosCursadas()
 			{				
                 $miConex = new Conexion();
-                $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,". 
-                "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,".
-                "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas ".
-                " where MATRICULA='".$_GET["matricula"]."' AND CERRADO='S' ORDER BY SEMESTRE, MATERIAD";
+                $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA, ".
+                "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE max(CAL) END) AS CAL,".
+                " MAX(TCAL) as TCAL FROM kardexcursadas  where MATRICULA='".$_GET["matricula"]."' AND CERRADO='S' ".
+                " GROUP BY  MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA ".
+                " ORDER BY SEMESTRE, MATERIAD";
+                
             
            
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
@@ -414,12 +416,13 @@
         $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
         $n=1;
         foreach($data as $row) {
-    
+            $lacal=$row["CAL"];
+            if ($row["CAL"]<70) {$lacal='NA';}
             $pdf->Row(array( str_pad($n,  3, "0",STR_PAD_LEFT),
                              utf8_decode($row["MATERIA"]),
                              utf8_decode($row["MATERIAD"]),
                              utf8_decode($row["CREDITO"]),
-                             utf8_decode($row["CAL"]),
+                             utf8_decode($lacal),
                              utf8_decode($row["TCAL"]),
                              utf8_decode($row["PRIMERA"]),
                              utf8_decode($row["SEGUNDA"]),
