@@ -434,7 +434,7 @@ function impEncuadre(id, materia, descrip){
 		           url:  "../base/getdatossqlSeg.php",
 		           success: function(data){  
 						  losdatos=JSON.parse(data);  
-						  alert (data);
+						 
 		        	      generaTablaActividad(JSON.parse(data),"CAPTURA");
 						  //cargamos los datos adicionales
 						  elsql="SELECT * from encuadresadd where ENCU_IDDETGRUPO="+id;
