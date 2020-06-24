@@ -45,9 +45,9 @@
 			      <div class="row" >	
 				         <div id="losciclos" class="col-sm-1">
 						</div> 	
-						<div id="losreportes" class="col-sm-3" >
+						<div id="losreportes" class="col-sm-4" >
 						</div>   
-						<div id="losciclossel" class="col-sm-3" >
+						<div id="losciclossel" class="col-sm-2" >
 						</div>                    				
 						<div id="lascarreras" class="col-sm-3">
 						</div>       			 
@@ -143,6 +143,7 @@
 <script src="eventos.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
  miscarreras="";
+ usuario="<?php echo $_SESSION['usuario']; ?>";
 </script>
 
 

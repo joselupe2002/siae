@@ -40,9 +40,16 @@ contMat=1;
 	
 		actualizaSelect("selCiclos", "SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc UNION SELECT '%','TODOS LOS CICLO' FROM DUAL order by 1 DESC", "",""); 
 		
-		$("#losreportes").append("<span class=\"label label-danger\">Reporte</span>");
-		addSELECT("selReportes","losreportes","PROPIO", "SELECT ID, NOMBRE FROM strepgenerales order by NOMBRE DESC", "","");  			      
 
+		
+		$("#losreportes").append("<span class=\"label label-danger\">Reporte</span>");
+		$("#losreportes").append("<select id=\"selReportes\"  class=\" chosen-select form-control text-success\" ></select>");	
+		$('.chosen-select').chosen({allow_single_deselect:true}); 			
+		$(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+		$(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+		 $("#selReportes").trigger("chosen:updated");	
+
+		cargaReportes();
 	
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
@@ -54,10 +61,50 @@ contMat=1;
 		 
 	function change_SELECT(elemento) {
 	
-    }
+	}
+	
+	function cargaReportes(){
+		mostrarEspera("esperaInf","grid_vstGenerales","Cargando Datos...");
+		elsql="SELECT usua_usuader, usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
+		elsql2="";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  
+					losroles=JSON.parse(data)[0][0].split(",");
+					if (JSON.parse(data)[0][1]!='S') {
+						losroles.forEach(function callback(currentValue, index, array) {					
+							elsql2+="(SELECT ID, CONCAT(CATEGORIA,' ',NOMBRE) AS NOMBRE FROM strepgenerales where USUARIOSPERM LIKE '%"+currentValue+"%' ORDER BY CATEGORIA,NOMBRE) UNION ";
+						});
+                        elsql2=elsql2.substring(0,elsql2.length-7);   
+					}
+					else {
+                       elsql2="SELECT ID, CONCAT(CATEGORIA,' ',NOMBRE) AS NOMBRE FROM strepgenerales order by NOMBRE DESC";
+					}
+
+					parametrosw={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}				
+					$.ajax({
+							type: "POST",
+							data:parametrosw,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data2){  
+								jQuery.each(JSON.parse(data2), function(clave, valor) { 
+								     $("#selReportes").append("<option value=\""+valor.ID+"\">"+valor.NOMBRE+"</option>");
+								});
+								$("#selReportes").trigger("chosen:updated");	
+								ocultarEspera("esperaInf");  
+							}
+						});
+				}
+			});
+	}
 
 
     function cargarInformacion(){
+		
+
 		$("#opcionestabInformacion").addClass("hide");
 		$("#botonestabInformacion").empty();
 		
@@ -68,6 +115,8 @@ contMat=1;
 		tagCiclos="="+$("#selCiclos").val();
 		if ($("#selCiclos").val()=='%') {tagCiclos="LIKE '%'";}
 		
+
+
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
   		mostrarEspera("esperaInf","grid_vstGenerales","Cargando Datos...");
 		$.ajax({
@@ -82,13 +131,12 @@ contMat=1;
 					misclases=JSON.parse(data)[0]["CLASES"].split("|");
 					miseventos=JSON.parse(data)[0]["EVENTOS"].split("|");
 					parametros={sql:elsqlCon,dato:sessionStorage.co,bd:"Mysql"}
-	
+
 					$.ajax({
 						type: "POST",
 						data:parametros,
 						url:  "../base/getdatossqlSeg.php",
-						success: function(data){ 
-
+						success: function(data){ 							
 							cadCampos="";
 							miscampos.forEach(element => cadCampos+="<th>"+element+"</th>");
 
