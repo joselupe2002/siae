@@ -411,7 +411,7 @@ function impEncuadre(id, materia, descrip){
 		 
 			
 			
-	 		 
+			
 			 $("#modalDocumentEnc").remove();
 		    if (! ( $("#modalDocumentEnc").length )) {
 		        $("#grid_<?php echo $_GET['modulo']; ?>").append(script);
@@ -471,24 +471,26 @@ function impEncuadre(id, materia, descrip){
 		   $("#tabActividad").append("<tbody id=\"cuerpoActividad\">");
 	       c=1;	
 		   global=1; 
-           jQuery.each(grid_data, function(clave, valor) { 	
+           jQuery.each(grid_data, function(clave, valor) { 				 
                  var f = new Date();
 			     fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
-                 $("#cuerpoActividad").append("<tr id=\"row"+c+"\">");
-				 $("#row"+c).append("<td>"+c+"</td>");
-				 $("#row"+c).append("<td>"+valor.UNID_ID+"</td>");
-				 $("#row"+c).append("<td>"+valor.UNID_NUMERO+"</td>");
-				 $("#row"+c).append("<td>"+valor.UNID_DESCRIP+"</td>");	
+                 $("#cuerpoActividad").append("<tr id=\"rowe"+c+"\">");
+				 $("#rowe"+c).append("<td>"+c+"</td>");
+				 $("#rowe"+c).append("<td>"+valor.UNID_ID+"</td>");
+				 $("#rowe"+c).append("<td>"+valor.UNID_NUMERO+"</td>");
+				 $("#rowe"+c).append("<td>"+valor.UNID_DESCRIP+"</td>");	
+
+				// alert ($("#rowe"+c).html());
 				 /*
 				 $("#row"+c).append("<td><div style=\"width:150px;\" class=\"input-group\"><input id=\"a_"+c+"_1\" value=\""+valor.ENCU_FECHAEVAL+"\" class=\"form-control date-picker\" id=\"fechaeval\" "+
 					       "                  type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" /> "+
 					       "                  <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
 						   "             </div></td>");	
 						   */
-				 $("#row"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_2\" value=\""+valor.EP+"\" class=\"form-control\" id=\"ep\"></input></td>");	
-				 $("#row"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_3\" value=\""+valor.ED+"\" class=\"form-control\" id=\"ep\"></input></td>");
-				 $("#row"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_4\" value=\""+valor.EC+"\" class=\"form-control\" id=\"ep\"></input></td>");	
-				 $("#row"+c).append("<td><input  readonly style=\"width:150px;\" id=\"a_"+c+"_5\" value=\""+"PORTFOLIO DE EVIDENCIA"+"\" class=\"form-control\" id=\"ep\"></input></td>");	       		   
+				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_2\" value=\""+valor.EP+"\" class=\"form-control\" id=\"ep\"></input></td>");	
+				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_3\" value=\""+valor.ED+"\" class=\"form-control\" id=\"ep\"></input></td>");
+				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_4\" value=\""+valor.EC+"\" class=\"form-control\" id=\"ep\"></input></td>");	
+				 $("#rowe"+c).append("<td><input  readonly style=\"width:150px;\" id=\"a_"+c+"_5\" value=\""+"PORTFOLIO DE EVIDENCIA"+"\" class=\"form-control\" id=\"ep\"></input></td>");	       		   
 				 	c++;
 			   		global=c;
 			   	});
@@ -659,7 +661,8 @@ function impEncuadre(id, materia, descrip){
 
 	}
 
-    function generaTablaSubir(grid_data, op,materia,materiad,grupo){			          
+    function generaTablaSubir(grid_data, op,materia,materiad,grupo){		
+		          
 			       $("#cuerpoUnidades").empty();
 				   $("#tabUnidades").append("<tbody id=\"cuerpoUnidades\">");
 			       c=1;	
