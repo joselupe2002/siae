@@ -20,6 +20,7 @@ function CAMPOSclicadd(){
 }
 
 function ELSQLclicadd(){	
-	var str = $("#ELSQL").val().replace(/\n|\r/g, " ");
+   var str = $("#ELSQL").val().replace(/\n|\r/g, " ");
+   var str = str.replace(/'/g, "''");
 	$("#ELSQL").val(str);
 }

@@ -131,6 +131,8 @@ contMat=1;
 					miseventos=JSON.parse(data)[0]["EVENTOS"].split("|");
 					parametros={sql:elsqlCon,dato:sessionStorage.co,bd:"Mysql"}
 
+				
+
 					$.ajax({
 						type: "POST",
 						data:parametros,
@@ -175,6 +177,7 @@ function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
 		$("#rowM"+contR).append("<td>"+contR+"</td>");
 		miscampos.forEach(function callback(currentValue, index, array) {
 			cadDato=grid_data[contR-1][index];
+		
 			if (!(misclases[index]=="")) {
 				cadDato="<span class=\""+misclases[index]+"\">"+grid_data[contR-1][index]+"</span></td>";
 			}
