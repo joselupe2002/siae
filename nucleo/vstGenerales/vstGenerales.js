@@ -24,9 +24,8 @@ contMat=1;
 			type: "GET",
 			url:  "../base/getSesion.php?bd=Mysql&campo=carrera",
 			success: function(data){  
-				actualizaSelect("selCarreras", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
-				" and CARR_CLAVE IN ("+data+")", "",""); 
-				$("#selCarreras").append("<option value=\"%\">TODAS LAS CARRERAS</option>");
+				actualizaSelect("selCarreras", "(SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
+				" and CARR_CLAVE IN ("+data+")) UNION (SELECT '%', 'TODAS LAS CARRERAS' FROM DUAL)", "",""); 				
 				miscarreras=data;
 				},
 			error: function(data) {	                  
