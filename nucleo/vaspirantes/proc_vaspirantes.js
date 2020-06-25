@@ -450,7 +450,9 @@ function insInd(modulo,usuario,essuper){
 					}
 				}
 				else {
-					  alert ("El aspirante ya se encuentra inscrito");
+					  if (confirm("El aspirante ya se encuentra inscrito, desea deshacer su inscripción recuerde que el consecutivo no se regresa")){
+						  eliminarMatricula(table.rows('.selected').data()[0]["IDASP"],table.rows('.selected').data()[0]["MATRICULA"]);
+					  }
 					}
 				} 	
 	         else {alert ("El aspirante no ha sido aceptado");}
@@ -458,6 +460,39 @@ function insInd(modulo,usuario,essuper){
 		else { alert ("Debe seleccionar un Registro"); return 0; }
 }
 	
+
+function eliminarMatricula(id,lamatricula){
+  
+   $('#modalDocument').modal({show:true, backdrop: 'static'});	 
+   parametros={ tabla:"aspirantes", campollave:"IDASP",bd:"Mysql",valorllave:id,INSCRITO: 'N',MATRICULA:''};
+   $.ajax({
+		type: "POST",
+		url:"actualiza.php",
+		data: parametros,
+		success: function(data){
+			//eliminamos de dlista
+			$('#modalDocument').modal({show:true, backdrop: 'static'});	 
+			parametros={ tabla:"dlista", campollave:"ALUCTR",bd:"Mysql",valorllave:lamatricula};
+			$.ajax({
+				 type: "POST",
+				 url:"eliminar.php",
+				 data: parametros,
+				 success: function(data){
+					   //eliminamos de falumnos
+					$('#modalDocument').modal({show:true, backdrop: 'static'});	 
+					parametros={ tabla:"falumnos", campollave:"ALUM_MATRICULA",bd:"Mysql",valorllave:lamatricula};
+					$.ajax({
+							type: "POST",
+							url:"eliminar.php",
+							data: parametros,
+							success: function(data){ window.parent.document.getElementById('FRvaspirantes').contentWindow.location.reload(); }
+						}); 
+				 }
+			 });
+		}
+	});
+   
+}
 
 
 function setInscrito(id,valor){
