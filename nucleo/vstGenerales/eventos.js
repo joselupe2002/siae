@@ -57,3 +57,6 @@ function cargaMateriasCal(contenedor, ciclo,alumno){
     });	  
 
 }
+
+
+
