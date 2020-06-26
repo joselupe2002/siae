@@ -121,7 +121,7 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.maskedinput.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/select2.min.js"></script>
 
-<script src="ex.js"></script>
+<script src="ex.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
        var curp="<?php echo $_SESSION["usuario"] ;?>";
 	   var nombre="<?php echo $_SESSION["nombre"] ;?>";
@@ -129,8 +129,16 @@
 	   co=Math.round(Math.random() * (999999 - 111111) + 111111); 
 	   parametros={cose:co}; $.ajax({type: "POST",url:  "../nucleo/base/iniciaPincipal.php", data:parametros, success: function(data){}});sessionStorage.setItem("co",co);
 	   carrera="<?php echo $_SESSION["carrera"]?>";
-	   abierto="<?php echo $_SESSION["abierto"]?>";
+	   abiertoExa="<?php echo $_SESSION["abiertoExa"]?>";
+	   abiertoRes="<?php echo $_SESSION["abiertoRes"]?>";
 	   aceptado="<?php echo $_SESSION["aceptado"]?>";
+	   carrerad="<?php echo $_SESSION["carrerad"]?>";
+	   usuario="<?php echo $_SESSION["usuario"]?>";
+	   idasp="<?php echo $_SESSION["idasp"]?>";
+	   enviodocins="<?php echo $_SESSION["enviodocins"]?>";
+	   
+
+	   
 
 </script>
 

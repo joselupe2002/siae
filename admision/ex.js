@@ -1,3 +1,4 @@
+
 var elciclo="";
 var pregactiva=0;
 var contPreg=1;	
@@ -12,21 +13,64 @@ var arr_instpreg=[];
 
 
     jQuery(function($) { 
+		
 		$(document).bind("contextmenu",function(e){return false;});
-
 		window.location.hash="red";
 	    window.location.hash="Red" //chrome
 		window.onhashchange=function(){window.location.hash="red";}
 		
-		if ((aceptado=='N') && (abierto=='S')) {
-			cargarFoto();
+		
+		cargarFoto();
+		if ((aceptado=='N') && (abiertoExa=='S')) {			
 			cargarExamenes();
+		} 
+		else if ((abiertoRes=='S')) {
+			cargarResultados(aceptado);
+		}
+		else {
+			cargarMensajeEspera();
 		}
 		
 		    
 		}); 
 
 
+
+function cargarResultados(resultado) {
+	cad="Para el <strong> Instituto Tecnológico Superior de Macuspana</strong>, es un honor y privilegio informarle que ha sido "+
+		"<span class=\"text-success\"><strong>ACEPTADO</strong></span>"+" en nuestra casa de estudios para cursar la "+
+		" carrera de <strong>"+utf8Decode(carrerad)+".</strong><br/> Para continuar con su proceso de admisión e iniciar su inscripción a la Institución "+
+		" es necesario que suba en el sistema la siguiente documentación:";
+
+	$("#contenidoAsp").append("<div class='space-7'></div>"+
+	"   <div class=\"row\">"+
+	"        <div class=\"col-sm-18 text-center\">"+
+	"              <span class=\"fontAmaranthB text-danger bigger-200\">"+
+	"                    <strong>RESULTADO DE EXÁMEN DE ADMISIÓN</strong>"+
+	"              </span>"+ 
+	"        </div>"+
+	"   </div>"+
+	"   <div class=\"row\"> "+
+	"        <div class=\"col-sm-1\"></div>"+
+	"        <div class=\"col-sm-10\" style=\"text-align:justify;\">"+
+	"             <span class=\"fontRoboto text-light bigger-180\">"+cad+
+	"             </span> "+
+	"        </div>"+
+	"        <div class=\"col-sm-1\"></div>"+
+	"   </div><br/>"+
+	"   <div class=\"row\">"+
+	"        <div class=\"col-sm-1\"></div>"+
+	"        <div id=\"listaadj\" class=\"col-sm-10\"></div>"+
+	"        <div class=\"col-sm-1\"></div>"+
+	"   </div>"
+	);
+
+	if (resultado=='S') {
+		if (enviodocins=='N') {cargarAdjuntos();}
+		if (enviodocins=='S') {cargaMensajeEnvio();}
+		
+	}
+}
 
 function cargarFoto(){
 	elsql="select RUTA from adjaspirantes  b where b.AUX='FOTO"+curp+"'";
@@ -44,6 +88,7 @@ function cargarFoto(){
 		else{$("#fotoAsp").attr("src","../imagenes/menu/default.png");}
 		}
 	});
+
 }
 
 	function cargarExamenes(){
@@ -486,3 +531,206 @@ function cambioRespuesta(idpreg,num,opcion,puntaje,idexa){
 			 }					     
 		 });    	 
 }
+
+/*============================CARGA DE DATOS ADJUNTOS ===============================*/
+
+function cargarAdjuntos() {
+	contFila=0;
+	contDatos=1;
+	elsqlAdj="select IDDOC, DOCUMENTO, ifnull(b.RUTA,'') as RUTA, CLAVE, TIPOADJ, "+
+			 " (SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' ORDER BY CICL_ORDEN DESC LIMIT 1) AS CICLO "+
+	         " from documaspirantes a "+
+	         "LEFT OUTER JOIN  adjaspirantes b  on (b.AUX=concat(a.CLAVE,'"+usuario+"'))"+
+			 " WHERE a.ENLINEA='S' and a.MODULO='INSCRIPCION' order by TIPOADJ, DOCUMENTO";
+			 parametros={sql:elsqlAdj,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../nucleo/base/getdatossqlSeg.php",
+		success: function(data){    
+			botonAdj="<div class=\"row\">"+
+						"<div class=\"col-sm-9\"></div>"+
+						"  <div class=\"col-sm-2\">"+
+						"     <button title=\"Enviar los documentos al Departamento de Control Escolar\" "+
+						"             onclick=\"enviarDocumentos();\" class=\"btn btn-white btn-purple "+
+						"             btn-danger btn-round\"> "+
+						"        <i class=\"ace-icon blue fa fa-rocket bigger-140\"></i>Enviar Documentación"+
+						"        <span class=\"btn-small\"></span> "+
+						"      </button>"+
+						"  </div>"+
+						"</div>"+
+						"<div class=\"space-20\"></div>";
+
+			$("#listaadj").empty();	
+			$("#listaadj").append(botonAdj);	
+			$("#listaadj").append(
+				                "<div class=\"alert alert-danger\" style=\"padding:0px; margin:0px;\">"+
+								"   <div class=\"row\" style=\"padding:0px;  margin:0px;\">"+								  
+			                      "    <div class=\"col-sm-1\" style=\"padding:0px; margin:0px;\" ></div>"+
+								  "    <div class=\"col-sm-8\" style=\"padding:0px; margin:0px;\">"+								  
+								  "             <p><strong><span class=\"text-success\">Nota:</span>"+
+								  "	              <span class=\"text-primary \">Todos los documentos a excepción de la FOTO se deben adjuntar en formato PDF. </span>"+
+								  " 	          <span class=\"text-danger\"> Máximo 4MB</span>"+								                       
+								  "             </strong></p> "+
+								  "    </div>"+								  								
+								  "    <div class=\"col-sm-2\" style=\"padding:0px; margin:0px;\">"+								  
+								  "            <a href=\"https://www.ilovepdf.com/es/jpg_a_pdf\" target=\"_blank\">"+
+								  "                 <span title=\"Click para ir a una página que le ayude en la conversión de imagenes a formato PDF\" "+
+								  "                       class=\"label  label-danger label-white middle\">Convertir Imagen-PDF</span>"+
+								  "            </a>"+
+								  "    </div>"+								 
+								  "    <div class=\"col-sm-1\" style=\"padding:0px; margin:0px;\"></div>"+
+								  "</div>"+								
+								  "<div class=\"row\" style=\"padding:0px;  margin:0px;\"  >"+								  
+								  "    <div class=\"col-sm-1\" style=\"padding:0px; margin:0px;\"></div>"+
+								  "    <div class=\"col-sm-8\" style=\"padding:0px; margin:0px;\" >"+
+								  "             <p><strong><span class= \"text-success\">FOTO INFANTIL:</span>"+
+								  "	              <span class=\"text-primary \">Deberá ser en formato <span class=\"badge badge-pink\">PNG</span>"+
+								  "	              <span class=\"badge badge-success\">JPEG</span>"+
+								  " 	          <span class=\"text-danger\"> Máximo 4MB</span> blanco y negro o a color </span>"+
+								  "             </strong></p> "+
+								  "     </div>"+
+								  "     <div class=\"col-sm-3\" style=\"padding:0px; margin:0px;\">"+
+								  "               <a href=\"https://www.iloveimg.com/es/recortar-imagen\" target=\"_blank\">"+
+								  "                      <span title=\"Click para ir a una página que le ayude a recortar imágenes\" "+
+								  "                      class=\"label  label-purple label-white middle\">   Recortar Imágen</span>"+
+								  "                </a>"+
+								  "               <a href=\"https://imagen.online-convert.com/es/convertir-a-png\" target=\"_blank\">"+
+								  "                      <span title=\"Click para ir a una página que le ayude a convertir imagenes a PNG\" "+
+								  "                      class=\"label  label-pink label-white middle\">Convertir a PNG</span>"+
+								  "                </a>"+
+								  "     </div>"+
+								  "</div>"+
+								"</div>"); 
+
+								
+
+			jQuery.each(JSON.parse(data), function(clave, valor) { 
+				   stElim="display:none; cursor:pointer;";
+					if (valor.RUTA.length>0) { stElim="cursor:pointer; display:block; ";} 
+					
+					cadFile="<div class=\"col-sm-4\">"+											
+					"            <span class=\"text-primary\"><strong>"+utf8Decode(valor.DOCUMENTO)+"</strong></span>"+											
+					"            <input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.CLAVE+"\""+
+					"                   onchange=\"subirPDFDriveSaveAsp('file_"+valor.CLAVE+"','ASPIRANTES_"+valor.CICLO+"','pdf_"+
+												  valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','S','ID','"+valor.CLAVE+
+												  "',' DOCUMENTO  "+valor.DOCUMENTO+" ','adjaspirantes','alta','"+valor.CLAVE+usuario+"');\">"+
+					"           <input  type=\"hidden\" value=\""+valor.RUTA+"\"  name=\"RUTA_"+valor.CLAVE+"\" id=\"RUTA_"+valor.CLAVE+"\"  placeholder=\"\" />"+
+					"        </div>"+
+					"        <div class=\"col-sm-1\" style=\"padding-top:5px;\">"+
+					"           <a target=\"_blank\" id=\"enlace_RUTA_"+valor.CLAVE+"\" href=\""+valor.RUTA+"\">"+
+					"                 <img class=\"imgadj\" cargado=\"S\" width=\"40px\" height=\"40px\" id=\"pdf_"+valor.CLAVE+"\" name=\"pdf_"+valor.CLAVE+"\" src=\"..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
+					"           </a>"+
+					"           <i style=\""+stElim+"\"  id=\"btnEli_RUTA_"+valor.CLAVE+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
+					"            onclick=\"eliminarEnlaceDriveAsp('file_"+valor.CLAVE+"','ASPIRANTES_"+valor.CICLO+"',"+
+					"                      'pdf_"+valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','S','ID','"+valor.CLAVE+"','"+valor.DOCUMENTO+"-DOCUMENTO',"+
+					"                      'adjaspirantes','alta','"+valor.CLAVE+usuario+"');\"></i> "+              				                        
+					"      </div> ";
+
+					
+
+					if ((contDatos % 2)==1) {contFila++; fila="<div class=\"row\" style=\"padding:0px;\" id=\"fila"+contFila+"\"><div  class=\"col-sm-1\"></div></div>"; }
+					else {fila="";}
+					
+					$("#listaadj").append(fila);
+					$("#fila"+contFila).append(cadFile);
+					
+					contDatos++;	
+						
+					
+				   if (valor.RUTA=='') { 
+					   $('#enlace_RUTA'+valor.CLAVE).attr('disabled', 'disabled');					  
+					   $('#enlace_RUTA'+valor.CLAVE).attr('href', '../imagenes/menu/pdfno.png');
+					   $('#pdf_'+valor.CLAVE).attr('src', "../imagenes/menu/pdfno.png");
+					   $('#pdf_'+valor.CLAVE).attr('cargado', 'N');		                    
+					  }
+				
+					if (((valor.TIPOADJ.indexOf("png")>=0) || (valor.TIPOADJ.indexOf("bmp")>=0)) && !(valor.RUTA=='')) {			
+						$('#pdf_'+valor.CLAVE).attr('src', valor.RUTA);	
+					}
+												
+			  });
+
+
+			$("#listaadj").append(botonAdj);
+
+			$('.fileSigea').ace_file_input({
+				no_file:'Sin archivo ...',
+				btn_choose:'Buscar',
+				btn_change:'Cambiar',
+				droppable:false,
+				onchange:null,
+				thumbnail:false, //| true | large
+				whitelist:'pdf|jpg|png|bmp',
+				blacklist:'exe|php'
+				//onchange:''
+				//
+			});
+				
+			},
+		error: function(data) {	                  
+				   alert('ERROR: '+data);
+			   }
+	   });
+   }
+
+
+   function enviarDocumentos(){
+	todos=true;
+	$( ".imgadj" ).each(function( index ) {
+		if ($(this).attr("src").indexOf("pdfno.png")>=0) {
+			todos=false;
+		}	
+	});
+
+	if (todos) {
+		mostrarConfirm("confirmFinalizar", "grid_registro", "Finalizar Proceso",
+		"<span class=\"lead text-danger\"><strong> Al finalizar el proceso ya no podrá realizar "+
+		"cambios en los documentos adjuntos ",
+		"¿Esta usted Seguro?","Finalizar Proceso", "finalizar();","modal-lg");
+	}
+	else {
+		mostrarIfo("infoFalta", "grid_registro", "Documentos Adjuntos",
+				   "<span class=\"lead text-danger\"><strong>Su registro no puede ser Finalizado </strong></span> "+
+				   "<span class=\"lead text-warning\"><strong> Al parecer no ha adjuntado todos los documentos, "+
+									" si tiene problema con algún documento puede continuar otro día ingresando con su CURP y Contraseña</strong></span>","modal-lg");
+	}
+   }
+
+   function finalizar(){
+	parametros={
+		tabla:"aspirantes",
+		bd:"Mysql",
+		campollave:"IDASP",
+		valorllave:idasp,
+		ENVIODOCINS:"S"
+		};
+
+		$('#confirmFinalizar').modal("hide");
+		$.ajax({
+			type: "POST",
+			url:"../nucleo/base/actualiza.php",
+			data: parametros,
+			success: function(data){  				
+				enviodocins='S';   
+				cargaMensajeEnvio(); 			        	
+				//location.reload();										 
+		},
+		error: function(data) {	                  
+				alert('ERROR: '+data);
+			}					     
+		}); 
+   }
+
+
+ function cargaMensajeEnvio(){
+	$("#listaadj").empty();	
+	$("#listaadj").append(
+						"<div class=\"alert alert-success\" style=\"padding:0px; margin:0px;\">"+
+						"   <div class=\"row\" style=\"padding:0px;  margin:0px;\">"+								  						  
+						  "    <div class=\"col-sm-12 fontRoboto\" style=\"padding:0px; margin:0px; text-align:center;\">"+								  
+						  "             <p class=\"bigger-160\">Tus documentos fueron enviados. Gracias.</p> "+
+						  "    </div>"+								  														  
+						  "</div>");
+					
+ }
