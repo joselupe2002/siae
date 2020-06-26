@@ -46,7 +46,7 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 		   "                                 </div>"+
 		   "                                <div class=\"col-sm-1\" style=\"padding-top:12px;\"> "+
 		   "                                      <button type=\"button\" class=\"btn btn-white btn-success btn-bold\" onclick=\"guardarHorario('"+institucion+"','"+campus+"');\">"+
-		   "                                      <i class=\"ace-icon fa fa-floppy-o bigger-120 success\"></i></button>"+
+		   "                                      <i class=\"ace-icon fa fa-floppy-o bigger-120 success\"></i> Guardar Descarga</button>"+
 		   "                                 </div>"+		   
 		   "                           </div>"+  //div del row
 		   "                           <div class=\"space-10\"></div>"+
@@ -131,7 +131,7 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
         	url: "../base/getdatossqlSeg.php",
         	success: function(data){ 
 							   
-				               elsql="SELECT DESC_CLAVE, DESC_DESCRIP FROM etipodescarga ORDER BY DESC_DESCRIP";
+				               elsql="SELECT DESC_CLAVE, concat(DESC_CLAVE,' ',DESC_DESCRIP) FROM etipodescarga ORDER BY DESC_DESCRIP";
 			                   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
 			
         		               $.ajax({
