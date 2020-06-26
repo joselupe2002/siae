@@ -12,7 +12,7 @@ function changeMATRICULA(DATO, usuario, institucion, campus){
       data:parametros,
       url: 'getdatossqlSeg.php', 
       success: function(data){ 
-         alert (data);
+         
          jQuery.each(JSON.parse(data), function(clave, valor) { 	
            $("#CVEESPECIALIDAD").val(valor.ALUM_ESPECIALIDAD);
            $("#CVEESPECIALIDAD").prop('disabled', true);
@@ -25,7 +25,7 @@ function changeMATRICULA(DATO, usuario, institucion, campus){
            $("#INICIO").trigger("chosen:updated");	  
            $("#TERMINO").trigger("chosen:updated");	
 
-           alert (valor.CICL_INICIO+" "+valor.CICL_INICIO+" "+valor.CICL_INICIO.split("/")[1]);
+           
            $("#GENERACION").val(dameMesLetra(valor.CICL_INICIO.split("/")[1])+" DEL "+valor.CICL_INICIO.split("/")[2]+
            " A "+ dameMesLetra(valor.CICL_FIN.split("/")[1])+" DEL "+valor.CICL_FIN.split("/")[2] );
        
