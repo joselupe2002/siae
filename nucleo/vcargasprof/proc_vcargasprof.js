@@ -153,7 +153,7 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 											   " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo,   "+
 											   " A_LUNES AS a_lunes, A_MARTES AS a_martes, A_MIERCOLES AS a_miercoles, A_JUEVES AS a_jueves, "+
 											   " A_VIERNES AS a_viernes, A_SABADO AS a_sabado, A_DOMINGO AS a_domingo, CUPO as cupo"+
-											   " FROM dgrupos, cmaterias WHERE DGRU_BASE IS NULL AND DGRU_MATERIA=MATE_CLAVE AND DGRU_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
+											   " FROM edgrupos, cmaterias WHERE DGRU_BASE IS NULL AND DGRU_MATERIA=MATE_CLAVE AND DGRU_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
 											   " and DGRU_CICLO='"+table.rows('.selected').data()[0]["CICLO"]+"'";
 										
 											parametros={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}
