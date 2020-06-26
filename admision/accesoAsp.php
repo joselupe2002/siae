@@ -7,7 +7,8 @@ $miConex = new Conexion();
 $miUtil = new UtilUser(); 
 
 
-$res=$miConex->getConsulta("Mysql","SELECT * FROM aspirantes WHERE CURP='".$_POST["login"]."'");
+$res=$miConex->getConsulta("Mysql","SELECT * FROM aspirantes, ciclosesc WHERE CURP='".$_POST["login"]."'".
+" and CICLO=CICL_CLAVE");
 if (count($res)>0) {
 	//if ($res[0]["usua_clave"]==sha1($_POST["password"])){	
 	if ( $_POST["password"]==$res[0]["CLAVE"]) {
@@ -19,6 +20,8 @@ if (count($res)>0) {
 		$_SESSION['CAMPUS'] = $res[0]["_CAMPUS"];
 		$_SESSION['encode'] = "ISO-8859-1";
 		$_SESSION['carrera'] = $res[0]["CARRERA"];
+		$_SESSION['aceptado'] = $res[0]["ACEPTADO"];
+		$_SESSION['abierto'] = $res[0]["CICL_ADMISION"];
 		$_SESSION['carrera2'] = $res[0]["CARRERA2"];
 		$_SESSION['titApli'] = "Sistema Gesti&oacute;n Escolar - Administrativa";
 		$_SESSION['bd'] = "Mysql";

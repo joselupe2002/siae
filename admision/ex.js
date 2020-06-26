@@ -17,9 +17,13 @@ var arr_instpreg=[];
 		window.location.hash="red";
 	    window.location.hash="Red" //chrome
 		window.onhashchange=function(){window.location.hash="red";}
-	
-		cargarFoto();
-		cargarExamenes();
+		
+		if ((aceptado=='N') && (abierto=='S')) {
+			cargarFoto();
+			cargarExamenes();
+		}
+		
+		    
 		}); 
 
 

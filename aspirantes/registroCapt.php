@@ -814,7 +814,7 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.maskedinput.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/select2.min.js"></script>
 
-<script src="registro.js"></script>
+<script src="registro.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 
     co=Math.round(Math.random() * (999999 - 111111) + 111111); 

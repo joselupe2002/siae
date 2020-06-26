@@ -56,6 +56,9 @@
               <div class="col-md-4" style="padding-top: 20px; text-align: right;">
                   <img class="imgRedonda" id="fotoAsp" src="" width="35px" height="40px"></img> 
 			      <span class="fontAmaranthB" style="color:lavenderblush; font-size:10px;"><?php echo $_SESSION["nombre"]; ?></span>
+				 <br/> 
+				  <span id="cierra" onclick="window.open('cierraSesion.php','_self');" class="badge badge-warning fontAmaranthB" 
+				        style="cursor:pointer;"><i class="fa fa-reply-all bigger-110"></i> Cerrar Sesión</span>
 			  </div>
         </div>
     </div>
@@ -125,7 +128,9 @@
 	   
 	   co=Math.round(Math.random() * (999999 - 111111) + 111111); 
 	   parametros={cose:co}; $.ajax({type: "POST",url:  "../nucleo/base/iniciaPincipal.php", data:parametros, success: function(data){}});sessionStorage.setItem("co",co);
-		carrera="<?php echo $_SESSION["carrera"]?>";
+	   carrera="<?php echo $_SESSION["carrera"]?>";
+	   abierto="<?php echo $_SESSION["abierto"]?>";
+	   aceptado="<?php echo $_SESSION["aceptado"]?>";
 
 </script>
 

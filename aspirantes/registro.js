@@ -727,7 +727,7 @@ function cargarAdjuntos() {
 			 " (SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' ORDER BY CICL_ORDEN DESC LIMIT 1) AS CICLO "+
 	         " from documaspirantes a "+
 	         "LEFT OUTER JOIN  adjaspirantes b  on (b.AUX=concat(a.CLAVE,'"+$("#CURP").val()+"'))"+
-			 " WHERE a.ENLINEA='S' order by TIPOADJ, DOCUMENTO";
+			 " WHERE a.ENLINEA='S' and a.MODULO='REGISTRO' order by TIPOADJ, DOCUMENTO";
 			 parametros={sql:elsqlAdj,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
