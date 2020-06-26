@@ -370,7 +370,7 @@ function guardarRegistros(matricula){
 
 function inscribir(){
 	
-	if (($("#selCarreras").val()>0) && ($("#selGrupos").val()>0)) {
+//	if (($("#selCarreras").val()>0) && ($("#selGrupos").val()>0)) {
 		mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
 		for (u=1; u<contFilaAlum; u++){
 			cad="";		
@@ -379,10 +379,10 @@ function inscribir(){
 			}
 		}
 		ocultarEspera("guardandoReins");
-	}
-	else {
-		alert ("Debe elegir una carrera y un Grupo")
-	}
+//	}
+//	else {
+//		alert ("Debe elegir una carrera y un Grupo")
+//	}
 	
 }
 
