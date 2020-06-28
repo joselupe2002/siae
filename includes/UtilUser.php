@@ -13,12 +13,10 @@ require 'phpmailer/src/Exception.php';
 
 class UtilUser {
 
-
-
 	public function enviarCorreo($receptor,$asunto,$cuerpo,$adj1) {
 		$res="";
-		$emisor="sigeli.webcore@gmail.com";
-		$clave="esazxhyljzwtxagn";
+		$emisor="sigea@macuspana.tecnm.mx";
+		$clave="Emanuel2010";
 		
 		$mail = new PHPMailer(); // create a new object
 		$mail->IsSMTP(); // enable SMTP
@@ -52,12 +50,60 @@ class UtilUser {
 		if(!$mail->Send()) {
 			$res="Ocurrio error al enviar correo a: ".$receptor." (". $mail->ErrorInfo.")";
 		} else {
-			$res="";
+			$res=$cuerpo;
 		}
 		
 		return $res;
 	}
 	
+
+	public function enviarCorreoAdj($receptor,$asunto,$cuerpo,$adj1) {
+		$res="";
+		//$emisor="sigeli.webcore@gmail.com";
+		//$clave="esazxhyljzwtxagn";
+	
+		$emisor="sigea@macuspana.tecnm.mx";
+		$clave="Emanuel2010";
+	
+
+		$mail = new PHPMailer(); // create a new object
+		$mail->IsSMTP(); // enable SMTP
+		$mail->SMTPDebug = 0; // debugging: 1 = errors and messages, 2 = messages only
+		$mail->SMTPAuth = true; // authentication enabled
+		//$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+		$mail->SMTPOptions = array(
+				'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+				)
+		);
+		$mail->Host = "smtp.gmail.com";		
+		$mail->Port = 587; // or 587
+		$mail->IsHTML(true);
+		$mail->Username = $emisor;
+		$mail->Password = $clave;
+		$mail->SetFrom($emisor,$asunto);
+		$mail->Subject = $asunto;
+		$mail->Body =$cuerpo;
+		$mail->AddAddress($receptor);
+		$mail->CharSet = 'ISO-8859-1';
+		
+		if (!($adj1=="")) {
+			$mail->AddAttachment($adj1,$adj1);
+		}
+		
+		if(!$mail->Send()) {
+			$res="Ocurrio error al enviar correo a: ".$receptor." (". $mail->ErrorInfo.")";
+		} else {
+			$res=$cuerpo;
+		}
+		
+		return $res;
+	}
+	
+
+
 	function verificaOficio($depto,$tipo,$elidControl){
 		$fecha_actual=date("d/m/Y");
 		$anio=date("Y");

@@ -25,9 +25,6 @@ function setFinalizado(id,valor){
 
 
 
-
-
-
 function noFinalizada(modulo,usuario,essuper){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
@@ -601,3 +598,118 @@ function inscribirAspirante(lafila,modulo,institucion, campus) {
 	}
      
 }
+
+
+/*======================================Envio de Correos =====================================*/
+
+
+function enviaMail(modulo){
+	
+	$("#confirmFinalizar").modal("hide");
+	if (!($("#vtnRes").is(":visible"))) { 
+		mostrarVentRes('vtnRes','txtResultados','grid_'+modulo,'Resultads','modal-lg');
+	}
+	
+	var table =  $("#G_"+modulo).DataTable();	
+	var lafila = table.rows(elReg).data();
+
+	mensaje=$("#msjCorreo").val();
+
+	lista=dameParametrosSeparados(mensaje,"{","}");
+	for (var i = 0; i < lista.length; i++) {
+		var regex = new RegExp("{" + lista[i]  + "}", "gi");
+		mensaje=mensaje.replace(regex,lafila[0][lista[i]]);
+	}
+	
+    elcorreo=lafila[0]["CORREO"]; if ($("#inpPrueba").val().length>0) {elcorreo=$("#inpPrueba").val();}
+
+    var parametros = {
+		"MENSAJE": mensaje,
+		"ADJSERVER": 'S',
+		"ASUNTO": $("#elasunto").val(),
+		"CORREO" :  elcorreo,
+		"NOMBRE" :  lafila[0]["NOMBRE"]+" "+lafila[0]["APEPAT"],
+		"ADJUNTO":''
+    };
+
+    $.ajax({
+        data:  parametros,
+        type: "POST",
+        url: "../base/enviaCorreo.php",
+        success: function(response)
+        {
+            $('#txtResultados').val($('#txtResultados').val()+(elReg+1)+" de "+(nreg)+" "+response+"\n");
+            elReg++;
+            if (nreg>=elReg) {enviaMail(modulo);}
+        },
+        error : function(error) {
+            console.log(error);
+            $('#txtResultados').val($('#txtResultados').val()+"Error en ajax "+error.toString()+"\n");
+        }
+	});
+
+}
+
+function envioCorreo(modulo,usuario,essuper) {
+	res="";
+	var table = $("#G_"+modulo).DataTable();	
+	nreg=0;
+	elReg=0;
+	table.rows().iterator('row', function(context, index){nreg++;});
+
+	mostrarConfirm2("confirmFinalizar", "grid_"+modulo, "Envio de Correo Electrónico",
+		      "<div class=\"row\">"+
+			  "    <div class=\"col-sm-6\" style=\"text-align:justify;\">"+
+			  "         <span class=\"label label-success\">Tipo de Correo</span><BR/>"+
+			  "         <select id=\"opcorreo\" onchange=\"cargaMsj();\">"+
+			  "              <option value=\"0\">Elija una opción</option> "+
+			  "              <option value=\"1\">Clave y Usuario</option>"+
+			  "              <option value=\"2\">Correo General</option>"+
+			  "         </select>"+
+			  "     </div>"+
+			  "    <div class=\"col-sm-6\" style=\"text-align:justify;\">"+
+			  "         <span class=\"label label-success\">Correo de Prueba</span>"+
+			  "         <input class=\"form-control\" id=\"inpPrueba\" value=\"joselupe_2002@hotmail.com\"></input>"+
+			  "    </div>"+
+			  "</div>"+
+			  "<br/>"+
+			  "<div class=\"row\">"+
+			  "    <div class=\"col-sm-12\">"+
+			  "         <span class=\"label label-primary\">Asunto del Correo</span>"+
+			  "         <input class=\"form-control\"  id=\"elasunto\" row=\"20\" style=\"width:100%;\"></input>"+
+			  "         <span class=\"label label-success\">Mensaje de Correo</span>"+
+			  "         <textarea class=\"form-control\"  id=\"msjCorreo\"  style=\"width:100%; height:100px;\"></textarea>"+
+			  "     </div>"+	  
+		      "</div>","Enviar Correo", "enviaMail('"+modulo+"');","modal-lg");
+}
+
+function cargaMsj(){
+	$("#elasunto").val();
+	$("#msjCorreo").html();
+
+	if  ($("#opcorreo").val()=='1') {
+		$("#elasunto").val("ITSM: ENTREGA DE USUARIO Y CLAVE PARA EXÁMEN DE ADMISIÓN");
+		$("#msjCorreo").html("ESTIMADO ASPIRANTE <BR/>\n"+"<b>{NOMBRE} {APEPAT} {APEMAT}</b></BR/></BR/>\n"+
+		" EL PRESENTE CORREO ES PARA INDICARLE EL USUARIO Y CLAVE PARA EL EXÁMEN DE ADMISIÓN:<BR/><BR/>\n"+
+		" <b>USUARIO:</b>{CURP}<BR/>\n"+
+		" <b>CLAVE:</b> {CLAVE}<BR/>\n"+
+		" <b>PAGINA</b> :<a href=\"https://escolar.webcoretic.com/admision/\">https://escolar.webcoretic.com/admision/</a><BR/>\n"+
+		" <b>FECHA:</b> 03/08/2020<BR/>\n"+
+		" <b>HORA:</b> 10:00<BR/><BR/>\n"+
+		" <b>POR FAVOR CONSULTE EL MANUAL Y VÍDEO PARA LA APLICACIÓN DEL EXÁMEN DE ADMISIÓN</b></BR/>\n"+
+		" <a href=\"https://escolar.webcoretic.com/admision/\">Manual</a><BR/>\n"+
+		" <a href=\"https://escolar.webcoretic.com/admision/\">Video</a><BR/>\n"
+		);
+	}
+
+	if  ($("#opcorreo").val()=='2') {
+		$("#elasunto").val("ITSM: LEYENDA DEL ASUNTO");
+		$("#msjCorreo").html("PARA UN SALTO DE LINEA USE <br/>\n"+
+		" PARA COLOCAR NEGRITAS ENCIERRE ENTRE <b>ESTO VA NEGRITA</b>\n"+
+		" PARA COLOCAR INFORMACIÓN DEL ASPIRANTE UN CAMPO {TITULO_COLUMNA} EJEMPLO {NOMBRE}\n"+
+		" PARA COLOCAR UN ENLACE <a href=\"https://escolar.webcoretic.com/admision/\">Texto del Enlace</a><BR/>\n"
+		);
+	}
+
+}
+

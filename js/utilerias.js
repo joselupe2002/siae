@@ -321,6 +321,35 @@ function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,
 	$('#'+nombre).modal({show:true, backdrop: 'static'});
 }
 
+function mostrarConfirm2 (nombre,contenedor, titulo, mensajeInfo,mensajebtn, eventoConfirm,tam){
+	$("#"+nombre).remove();
+	tamMsj="110";
+	if (tam="modal-lg") {tamMsj="160";} 
+	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog "+tam+"\" role=\"document\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-info\" >"+
+			   "                  <span><i class=\"menu-icon green fa-2x fa fa-info\"></i>"+
+			   "                        <span class=\"text-success lead \"> <strong>"+titulo+"</strong></span>"+
+			   "                  </span>"+
+			   "                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"> "+
+               "                        <span aria-hidden=\"true\">&times;</span> "+
+               "                  </button> "+
+    		   "             </div>"+
+			   "             <div class=\"modal-body\" style=\"text-align: center;\">"+
+			                        mensajeInfo+
+			   "             </div>"+     
+			   "             <div class=\"modal-footer\"> "+               
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-danger btn-round\" data-dismiss=\"modal\">Cancelar</button>"+
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" onclick=\""+eventoConfirm+"\"><strong>"+mensajebtn+"</strong></button>"+
+               "             </div>"+
+               "         </div>"+
+               "   </div>"+
+               "</div>";
+	$("#"+contenedor).append(script);
+	$('#'+nombre).modal({show:true, backdrop: 'static'});
+}
+
 
 function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
 	tamMsj="110";
@@ -352,6 +381,35 @@ function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
 	$('#'+nombre).modal({show:true, backdrop: 'static'});
 	
 }
+
+
+
+function mostrarVentRes(nombre,nombretext,contenedor, titulo,tam){
+	tamMsj="110";
+	$("#"+nombre).remove();
+	if (tam="modal-lg") {tamMsj="160";} 
+	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog "+tam+"\" role=\"document\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-success\">"+
+			   "                  <span><i class=\"menu-icon yellow fa-2x fa fa-info\"></i>"+
+			   "                        <span class=\"text-success lead \"> <strong>"+titulo+"</strong></span>"+
+			   "                  </span>"+
+			   "                  <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"> "+
+               "                        <span aria-hidden=\"true\">&times;</span> "+
+               "                  </button> "+
+    		   "             </div>"+
+			   "             <div class=\"modal-body\" style=\"height:280px;\">"+
+			   "                   <textarea id=\""+nombretext+"\" style=\"width: 100%; height: 100%; font-size: 10px;\">"+
+			   "                   </textarea>"+
+			   "             </div>"+     
+               "         </div>"+
+               "   </div>"+
+               "</div>";
+	$("#"+contenedor).append(script);
+	$('#'+nombre).modal({show:true, backdrop: 'static'});	
+}
+
 
 
 function ocultarEspera (nombre){
@@ -909,6 +967,20 @@ function quitarEspera(nombre,ico){
 	  $("#"+nombre).addClass("ace-icon "+ico+" blue");
 	   
 }
+
+
+function dameParametrosSeparados(cad,cadIni,cadFin){
+	var lista = new Array();
+	graba=false; cadAux="";
+	i=0;
+	for (x=0; x<cad.length; x++) {            					
+		if (cad[x]==cadIni) {graba=true;}
+		if (cad[x]==cadFin) { graba=false;lista[i]=cadAux.substr(1,cadAux.length); i++; cadAux="";}
+		if (graba) {cadAux+=cad[x];}
+	}
+	return lista;
+}
+
 
 function damesqldep(elsql,elusuario) {
         var lista = new Array();
