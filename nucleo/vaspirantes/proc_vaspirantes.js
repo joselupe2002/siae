@@ -607,7 +607,7 @@ function enviaMail(modulo){
 	
 	$("#confirmFinalizar").modal("hide");
 	if (!($("#vtnRes").is(":visible"))) { 
-		mostrarVentRes('vtnRes','txtResultados','grid_'+modulo,'Resultads','modal-lg');
+		mostrarVentRes('vtnRes','txtResultados','grid_'+modulo,'Resultados','modal-lg');
 	}
 	
 	var table =  $("#G_"+modulo).DataTable();	
