@@ -224,7 +224,7 @@
    	    	    "</td>");
 
      	 
-    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"subirUnidades('"+valor.ID+"','"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"');\" title=\"Subir evidencias de las Unidades\" "+
+    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"subirUnidades('"+valor.CICLO+"','"+valor.ID+"','"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"');\" title=\"Subir evidencias de las Unidades\" "+
                     "class=\"btn btn-white btn-primary btn-bold\">"+
                     "<i class=\"ace-icon fa fa-tasks bigger-160 yellow \"></i>"+
                     "</a></td>");
@@ -593,7 +593,7 @@ function impEncuadre(id, materia, descrip){
 
 
 
-      function subirUnidades(id, materia, descrip, grupo){
+      function subirUnidades(miciclo,id, materia, descrip, grupo){
 			script="<div class=\"modal fade\" id=\"modalDocumentUni\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
 		       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
 			   "      <div class=\"modal-content\">"+
@@ -649,7 +649,7 @@ function impEncuadre(id, materia, descrip){
 								if (! ( $("#modalDocumentUni").length )) {$("#grid_<?php echo $_GET['modulo']; ?>").append(script);}
 								$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});								
 								$('#modalDocumentUni').modal({show:true, backdrop: 'static'});
-								generaTablaSubir(JSON.parse(data),"CAPTURA",materia,descrip,grupo);
+								generaTablaSubir(JSON.parse(data),"CAPTURA",materia,descrip,grupo,miciclo);
 							}
 		        	        		        	    
 		                 },
@@ -661,7 +661,7 @@ function impEncuadre(id, materia, descrip){
 
 	}
 
-    function generaTablaSubir(grid_data, op,materia,materiad,grupo){		
+    function generaTablaSubir(grid_data, op,materia,materiad,grupo,miciclo){		
 		          
 			       $("#cuerpoUnidades").empty();
 				   $("#tabUnidades").append("<tbody id=\"cuerpoUnidades\">");
@@ -747,8 +747,8 @@ function impEncuadre(id, materia, descrip){
 									                      "<span class=\"ace-icon fa fa-caret-down icon-on-right\"></span>"+
 								                      "</button>"+
 								                      "<ul class=\"dropdown-menu dropdown-default\">"+
-									                       "<li><a onclick=\"impCotejo('"+materia+"','"+materiad+"','"+grupo+"','"+valor.UNID_NUMERO+"','"+valor.UNID_DESCRIP+"');\" href=\"#\">Lis. Cot. 1</a></li>"+
-									                       "<li><a onclick=\"impCotejo_indus('"+materia+"','"+materiad+"','"+grupo+"','"+valor.UNID_NUMERO+"','"+valor.UNID_DESCRIP+"');\" href=\"#\">Lis. Cot. 2</a></li>"+
+									                       "<li><a onclick=\"impCotejo('"+miciclo+"','"+materia+"','"+materiad+"','"+grupo+"','"+valor.UNID_NUMERO+"','"+valor.UNID_DESCRIP+"');\" href=\"#\">Lis. Cot. 1</a></li>"+
+									                       "<li><a onclick=\"impCotejo_indus('"+miciclo+"','"+materia+"','"+materiad+"','"+grupo+"','"+valor.UNID_NUMERO+"','"+valor.UNID_DESCRIP+"');\" href=\"#\">Lis. Cot. 2</a></li>"+
 									                  "</ul>"+
 											     "</div>"+
 					                            "</td>");
@@ -823,16 +823,16 @@ function impEncuadre(id, materia, descrip){
 /*============================================================================================*/
 
 
-	   function impCotejo(materia, materiad, grupo, unidad,unidadd) {
+	   function impCotejo(ciclo,materia, materiad, grupo, unidad,unidadd) {
 		   
-		    window.open("listacot.php?materia="+materia+"&materiad="+materiad+"&ciclo="+$("#elciclo").html()+
+		    window.open("listacot.php?materia="+materia+"&materiad="+materiad+"&ciclo="+ciclo+
 				    "&grupo="+grupo+"&unidad="+unidad+"&unidadd="+unidadd, '_blank');
 		   }
 
 
 	   function impCotejo_indus(materia, materiad, grupo, unidad,unidadd) {
 		   
-		    window.open("listacotindus.php?materia="+materia+"&materiad="+materiad+"&ciclo="+$("#elciclo").html()+
+		    window.open("listacotindus.php?materia="+materia+"&materiad="+materiad+"&ciclo="+ciclo+
 				    "&grupo="+grupo+"&unidad="+unidad+"&unidadd="+unidadd, '_blank');
 		   }	
     
