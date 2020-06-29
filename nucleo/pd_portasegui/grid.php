@@ -830,7 +830,7 @@ function impEncuadre(id, materia, descrip){
 		   }
 
 
-	   function impCotejo_indus(materia, materiad, grupo, unidad,unidadd) {
+	   function impCotejo_indus(ciclo,materia, materiad, grupo, unidad,unidadd) {
 		   
 		    window.open("listacotindus.php?materia="+materia+"&materiad="+materiad+"&ciclo="+ciclo+
 				    "&grupo="+grupo+"&unidad="+unidad+"&unidadd="+unidadd, '_blank');
