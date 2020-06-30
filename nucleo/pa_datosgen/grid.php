@@ -71,6 +71,11 @@
                                         <div class="grid2"><span onclick="verMaterias('R');" style="cursor: pointer;" title="N&uacute;mero de veces que ha reprobado alguna asignatura" id="reprobadas" class="bigger-175 blue"></span><br />Reprobadas</div>
 								   </div>
 							       <div class="hr hr16 dotted"></div>
+								   <div class="clearfix">
+								        <button  onclick="mikardex();" class="btn btn-white btn-info btn-bold">
+				                            <i class="ace-icon green fa fa-book bigger-160"></i><span class=" fontRobot btn-lg">Mi Kardex</span>            
+				                        </button>
+								   </div>
 							   </div>
 
 							   <div class="col-xs-12 col-sm-9">
@@ -415,6 +420,20 @@ function verMaterias(tipo){
 		 
 	  
 	   }
+
+
+	function mikardex(){
+		enlace="nucleo/pa_datosgen/kardex.php?matricula=<?php echo $_SESSION["usuario"];?>";
+		var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:100%;"></iframe></div>';	
+		$('#parentPrice', window.parent.document).html();
+		window.parent.$("#myTab").tabs('add',{
+				    	    title:'Notificacion',				    	    
+				    	    content:content,
+				    	    closable:true		    
+				    	});
+	   //window.open(enlace, '_blank'); 
+      }
+
    
 </script>
 

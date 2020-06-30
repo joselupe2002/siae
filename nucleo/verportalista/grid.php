@@ -138,9 +138,9 @@
 
 function cargarMaterias() {
 
-	elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO "+                               
+	elsql="SELECT ID, MATERIA, CONCAT(CICLO,' ',MATERIA, ' ',MATERIAD) AS MATERIAD, SIE, SEM, CICLO "+                               
         		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and "+
-				 " PROFESOR='<?php echo $_SESSION['usuario']?>' and CICLO=getciclo() order by MATERIAD";
+				 " PROFESOR='<?php echo $_SESSION['usuario']?>' and CERRADOCAL='N' order by MATERIAD";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
