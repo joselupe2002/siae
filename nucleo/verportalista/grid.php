@@ -138,9 +138,9 @@
 
 function cargarMaterias() {
 
-	elsql="SELECT ID, MATERIA, CONCAT(CICLO,' ',MATERIA, ' ',MATERIAD) AS MATERIAD, SIE, SEM, CICLO "+                               
+	elsql="SELECT ID, MATERIA, concat(CICLO,' ',MATERIA,' ',MATERIAD) AS MATERIAD, SIE, SEM, CICLO "+                               
         		 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and "+
-				 " PROFESOR='<?php echo $_SESSION['usuario']?>' and CERRADOCAL='N' order by MATERIAD";
+				 " PROFESOR='<?php echo $_SESSION['usuario']?>' and CERRADOCAL='N' order by CICLO DESC, MATERIAD";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
@@ -160,14 +160,14 @@ function llenaAsignaturas(grid_data, op){
 	       $("#asignaturas").empty();
 	       $("#asignaturas").append("<option value=\"0\">Elija Asignatura</option>");
 		   jQuery.each(grid_data, function(clave, valor) { 	
-			   $("#asignaturas").append("<option value=\""+valor.SIE+"|"+valor.ID+"|"+valor.MATERIA+"\">"+utf8Decode(valor.MATERIAD)+"("+valor.SIE+")"+"</option>");
+			   $("#asignaturas").append("<option value=\""+valor.CICLO+"|"+valor.SIE+"|"+valor.ID+"|"+valor.MATERIA+"\">"+utf8Decode(valor.MATERIAD)+"("+valor.SIE+")"+"</option>");
 			   elciclo=valor.CICLO;
-			   	});
-             
+		   });             
 }
 
 function cargarUnidades(){		
-	 var lamateria=$("#asignaturas").val().split("|")[2];
+	 var lamateria=$("#asignaturas").val().split("|")[3];
+	 
 	 $("#laTabla").empty();
 	 $("#unidades").empty();
 	 $("#unidades").append("<option value=\"0\">Elija Unidad</option>");
@@ -191,12 +191,13 @@ function cargarUnidades(){
 
 
 function cargarPortafolios(){		
-	 var elgrupo=$("#asignaturas").val().split("|")[0];
+	     elciclo=$("#asignaturas").val().split("|")[0];
+	 var elgrupo=$("#asignaturas").val().split("|")[1];
 	 var lamateria=$("#asignaturas").val().split("|")[2];
 	 var launidad=$("#unidades").val();
 	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
-
+	 
 	 elsql="select  "+
         		   " ALUCTR AS MATRICULA,"+
         		   " concat(ALUM_APEPAT, ' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS `NOMBRE`,"+
