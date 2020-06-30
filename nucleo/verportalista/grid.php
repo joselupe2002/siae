@@ -193,7 +193,7 @@ function cargarUnidades(){
 function cargarPortafolios(){		
 	     elciclo=$("#asignaturas").val().split("|")[0];
 	 var elgrupo=$("#asignaturas").val().split("|")[1];
-	 var lamateria=$("#asignaturas").val().split("|")[2];
+	 var lamateria=$("#asignaturas").val().split("|")[3];
 	 var launidad=$("#unidades").val();
 	 var ladefault="..\\..\\imagenes\\menu\\pdf.png";
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
@@ -209,7 +209,7 @@ function cargarPortafolios(){
         		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='DIAGNOSTICA' order by IDDET DESC LIMIT 1),'') AS RUTADIAG "+
         		   " from dlista u, falumnos z where u.ALUCTR=z.ALUM_MATRICULA and u.MATCVE='"+lamateria+"'"+
 				   " AND u.LISTC15='<?php echo $_SESSION['usuario']?>' and u.GPOCVE='"+elgrupo+"' and u.PDOCVE='"+elciclo+"' ORDER BY ALUM_APEPAT, ALUM_APEMAT";				   
-alert (elsql);
+
 				   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 	 $.ajax({
