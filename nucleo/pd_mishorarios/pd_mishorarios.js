@@ -134,12 +134,12 @@ function generaTablaInformacion(grid_data){
 
 
 
-function imprimirReporte(){
+function ImprimirReporte(){
 	enlace="nucleo/vcargasprof/horario.php?ID="+usuario+"&ciclod=&ciclo="+$('#selCiclo').val();
 		var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:100%;"></iframe></div>';	
 		$('#parentPrice', window.parent.document).html();
 		window.parent.$("#myTab").tabs('add',{
-				    	    title:'Notificacion',				    	    
+				    	    title:'Reporte_Horario',				    	    
 				    	    content:content,
 				    	    closable:true		    
 				    	});

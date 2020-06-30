@@ -137,7 +137,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="pd_mishorarios.js"></script>
+<script src="pd_mishorarios.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 	var usuario="<?php echo $_SESSION["usuario"];?>";
 	var maxuni=0;
