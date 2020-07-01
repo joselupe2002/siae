@@ -153,10 +153,12 @@
             
 
             function LoadDatosCursando($ciclo)
-			{				
+			{	
+                $data=[];			
                 $miConex = new Conexion();
                 $sql="SELECT * FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' and CICLO='".$ciclo."' AND CERRADO='N' ORDER BY SEMESTRE, MATERIAD";
                 
+               
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
 					$data[] = $row;
@@ -485,7 +487,14 @@
         }
         $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
         $materiascursando=$n-1;
-
+       
+        $pdf->SetFont('Montserrat-ExtraBold','B',7);
+        $pdf->SetFillColor(255,255,255);
+        $pdf->SetTextColor(0);
+        $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
+        $pdf->Ln();
+        $pdf->Cell(0,5,utf8_decode('Nota: Este Reporte solo es válido para los trámites internos avalados '.
+        'por la Dirección General del ITSM y para uso personal de alumno.'),0,0,'J',true);
 //=====================================================================================================
 /*
         $data3 = $pdf->LoadDatosporCursar($elciclo); 
