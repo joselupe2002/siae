@@ -43,11 +43,21 @@
       </div>
      <div class="col-md-6" style="padding: 0;">
         <input   class= "small form-control input-mask-horario"  style="width:100%; height: 30px;" type="text"></input>
+
+<?php 
+		$miSeg = new Conexion();
+		$user='pEgCaCrFZHdBoGvDiHjJgHcC7777878688868678M';
+		$password='KJgC\HNBYIhFsCyGmDjJkDbB,G4E/D2C77786788Q';
+
+		echo $miSeg->desencriptar($user);
+		echo $miSeg->desencriptar($password);
+
+
+		?>
+
      </div>
   </div>
 </div>	
-
-<?php phpinfo(); ?>
 
 
     
