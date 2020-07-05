@@ -1,10 +1,11 @@
 <?php 
- session_start();
-echo $_SESSION['idsesion']."==".$_POST["dato"];
-/*
-     session_start(); if (($_SESSION['inicio']==1)  && ($_SESSION['idsesion']==$_POST["dato"])  ){ 
-    header('Content-Type: text/html; charset=UTF-8'); 
-	
+ 
+
+   session_start(); if (($_SESSION['inicio']==1)  && ($_SESSION['idsesion']==$_POST["dato"])  ){ 
+   header('Content-Type: text/html; charset=UTF-8'); 
+   echo "si entre ".$_SESSION['idsesion']."==".$_POST["dato"];
+   
+   /*
 	mb_internal_encoding ('UTF-8');
 	
    include("../.././includes/Conexion.php");
@@ -18,6 +19,7 @@ echo $_SESSION['idsesion']."==".$_POST["dato"];
           $datos[]=$lin;
        }
        echo json_encode($datos);
+       */
     
 } else {header("Location: index.php");}
 */
