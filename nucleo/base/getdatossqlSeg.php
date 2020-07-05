@@ -13,7 +13,9 @@
        	 echo ("dato: ".$lin);  
           $datos[]=$lin;
        }
-       
+      
+       echo json_encode($datos);
+
       echo "si entre ".$_SESSION['inicio']."|".$_SESSION['idsesion']."==".$_POST["dato"];
 
    }
