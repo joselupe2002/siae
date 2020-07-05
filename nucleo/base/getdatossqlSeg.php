@@ -1,4 +1,7 @@
 <?php 
+ session_start();
+echo $_SESSION['idsesion']."==".$_POST["dato"];
+/*
      session_start(); if (($_SESSION['inicio']==1)  && ($_SESSION['idsesion']==$_POST["dato"])  ){ 
     header('Content-Type: text/html; charset=UTF-8'); 
 	
@@ -14,7 +17,8 @@
        	 echo ("dato: ".$lin);  
           $datos[]=$lin;
        }
-      // echo json_encode($datos);
+       echo json_encode($datos);
     
 } else {header("Location: index.php");}
+*/
 ?>

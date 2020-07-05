@@ -217,7 +217,7 @@
 			parametros={cose:co}; $.ajax({type: "POST",url:  "nucleo/base/iniciaPincipal.php", data:parametros, 
 				                          success: function(data){
 
-											alert ("::"+co+"="+sessionStorage.co+"=<?php echo $_SESSION["idsesion"]?>");
+											alert ("dta;"+data+"::"+co+"="+sessionStorage.co+"=<?php echo $_SESSION["idsesion"]?>");
 											
 											elsql="SELECT CARR_DESCRIP,MISION,VISION from dashboard, ccarreras where  CARR_CLAVE=CARRERA AND CARRERA in ('"+carreras+"')";
 										
