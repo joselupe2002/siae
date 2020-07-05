@@ -217,7 +217,7 @@
 			parametros={cose:co}; $.ajax({type: "POST",url:  "nucleo/base/iniciaPincipal.php", data:parametros, 
 				                          success: function(data){
 
-											alert ("dta;"+data+"::"+co+"="+sessionStorage.co+"=<?php echo $_SESSION["idsesion"]?>");
+											//alert ("dta;"+data+"::"+co+"="+sessionStorage.co+"=<?php echo $_SESSION["idsesion"]?>");
 											
 											elsql="SELECT CARR_DESCRIP,MISION,VISION from dashboard, ccarreras where  CARR_CLAVE=CARRERA AND CARRERA in ('"+carreras+"')";
 										
@@ -227,7 +227,7 @@
 													data:parametros,
 													url:  "nucleo/base/getdatossqlSeg.php",
 												success: function(data){  	
-														alert (" ha ocurrido un error" +data);							   	             
+														//alert (" ha ocurrido un error" +data);							   	             
 														jQuery.each(JSON.parse(data), function(clave, valor) { 
 															
 															$("#lacarrera").html("<strong>"+utf8Decode(valor.CARR_DESCRIP)+"</strong>");
