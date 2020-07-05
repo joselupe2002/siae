@@ -226,7 +226,7 @@
 					  data:parametros,
 	   	              url:  "nucleo/base/getdatossqlSeg.php",
 	   	           success: function(data){  	
-						  alert (data);							   	             
+						  alert (" ha ocurrido un error" +data);							   	             
 	   	        	      jQuery.each(JSON.parse(data), function(clave, valor) { 
 	   	        	    	
                               $("#lacarrera").html("<strong>"+utf8Decode(valor.CARR_DESCRIP)+"</strong>");

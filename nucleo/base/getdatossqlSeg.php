@@ -14,7 +14,7 @@
        	 echo ("dato: ".$lin);  
           $datos[]=$lin;
        }
-       echo json_encode($datos);
+      // echo json_encode($datos);
     
 } else {header("Location: index.php");}
 ?>
