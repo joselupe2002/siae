@@ -218,37 +218,41 @@
 				                          success: function(data){
 
 											alert ("::"+co+"="+sessionStorage.co+"=<?php echo $_SESSION["idsesion"]?>");
-										  }});sessionStorage.setItem("co",co);
+											
+											elsql="SELECT CARR_DESCRIP,MISION,VISION from dashboard, ccarreras where  CARR_CLAVE=CARRERA AND CARRERA in ('"+carreras+"')";
+										
+											parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+											$.ajax({
+													type: "POST",
+													data:parametros,
+													url:  "nucleo/base/getdatossqlSeg.php",
+												success: function(data){  	
+														alert (" ha ocurrido un error" +data);							   	             
+														jQuery.each(JSON.parse(data), function(clave, valor) { 
+															
+															$("#lacarrera").html("<strong>"+utf8Decode(valor.CARR_DESCRIP)+"</strong>");
+															
+															$("#etlamision").html("<strong>Misi&oacute;n</strong>");
+															$("#lamision").html(utf8Decode(valor.MISION));
+
+															$("#etlavision").html("<strong>Visi&oacute;n</strong>");
+															$("#lavision").html(utf8Decode(valor.VISION));
+
+														});
+														
+														},
+												error: function(data) {	                  
+															alert('ERROR: '+data);
+														}
+													});	
+					 
+										  }});
+			sessionStorage.setItem("co",co);
 
 			carreras="<?php echo $_SESSION["carrera"]?>";
 
-			elsql="SELECT CARR_DESCRIP,MISION,VISION from dashboard, ccarreras where  CARR_CLAVE=CARRERA AND CARRERA in ('"+carreras+"')";
-							
 			
-			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-			$.ajax({
-					  type: "POST",
-					  data:parametros,
-	   	              url:  "nucleo/base/getdatossqlSeg.php",
-	   	           success: function(data){  	
-						  alert (" ha ocurrido un error" +data);							   	             
-	   	        	      jQuery.each(JSON.parse(data), function(clave, valor) { 
-	   	        	    	
-                              $("#lacarrera").html("<strong>"+utf8Decode(valor.CARR_DESCRIP)+"</strong>");
-                              
-                              $("#etlamision").html("<strong>Misi&oacute;n</strong>");
-                              $("#lamision").html(utf8Decode(valor.MISION));
-
-                              $("#etlavision").html("<strong>Visi&oacute;n</strong>");
-                              $("#lavision").html(utf8Decode(valor.VISION));
-
-		   	        	  });
-		   	        	  
-	   	                 },
-	   	           error: function(data) {	                  
-	   	                      alert('ERROR: '+data);
-	   	                  }
-	   	          });	
+			
 
 					 $("#sidebar").append("<div class=\"space-8\"></div><div class=\"md-form active-purple active-purple-2 mb-3\">"+				    
                     "<input id=\"filtrar\"  onkeyup=\"filtrarMenu();\"class=\"form-control\" type=\"text\" placeholder=\"Filtrar...\" aria-label=\"Search\">"+
