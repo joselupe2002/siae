@@ -16,10 +16,8 @@
       
        echo json_encode($datos);
 
-      echo "si entre ".$_SESSION['inicio']."|".$_SESSION['idsesion']."==".$_POST["dato"];
-
    }
-   else {echo "no enre";}
+   else {echo "no entre";}
    /*
       header('Content-Type: text/html; charset=UTF-8'); 
    echo "si entre ".$_SESSION['idsesion']."==".$_POST["dato"];
