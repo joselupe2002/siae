@@ -225,7 +225,8 @@
 					  type: "POST",
 					  data:parametros,
 	   	              url:  "nucleo/base/getdatossqlSeg.php",
-	   	           success: function(data){  								   	             
+	   	           success: function(data){  	
+						  alert (data);							   	             
 	   	        	      jQuery.each(JSON.parse(data), function(clave, valor) { 
 	   	        	    	
                               $("#lacarrera").html("<strong>"+utf8Decode(valor.CARR_DESCRIP)+"</strong>");

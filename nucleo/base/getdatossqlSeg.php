@@ -11,7 +11,7 @@
        $res=$miConex->getConsulta($_POST['bd'],$_POST['sql']);
        
        foreach ($res as $lin) {
-       	  
+       	 echo ("dato: ".$lin);  
           $datos[]=$lin;
        }
        echo json_encode($datos);
