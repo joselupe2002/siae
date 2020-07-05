@@ -215,13 +215,16 @@
 		$(document).ready(function(){					
 			co=Math.round(Math.random() * (999999 - 111111) + 111111); 
 			parametros={cose:co}; $.ajax({type: "POST",url:  "nucleo/base/iniciaPincipal.php", data:parametros, 
-				                          success: function(data){}});sessionStorage.setItem("co",co);
+				                          success: function(data){
+
+											alert ("::"+co+"="+sessionStorage.co+"=<?php echo $_SESSION["idsesion"]?>");
+										  }});sessionStorage.setItem("co",co);
 
 			carreras="<?php echo $_SESSION["carrera"]?>";
 
 			elsql="SELECT CARR_DESCRIP,MISION,VISION from dashboard, ccarreras where  CARR_CLAVE=CARRERA AND CARRERA in ('"+carreras+"')";
 							
-			alert (co+"="+sessionStorage.co+"=<?php echo $_SESSION["idsesion"]?>");
+			
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 					  type: "POST",
