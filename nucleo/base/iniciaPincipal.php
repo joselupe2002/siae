@@ -4,6 +4,5 @@
    include("../.././includes/Conexion.php");
    if ($_SESSION['inicio']==1) {
        $_SESSION["idsesion"]=$_POST["cose"];
-   echo "le puse : ".$_POST["cose"];
    } else {header("Location: index.php");}
 ?>
