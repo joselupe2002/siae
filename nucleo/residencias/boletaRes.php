@@ -183,7 +183,7 @@
 		$data = $pdf->LoadData();
 		$miutil = new UtilUser();
 		
-		$elciclo=$data[0]["CICLO"];
+		$elciclo=$valor["CICLO"];
 		$dataCiclo = $pdf->LoadCiclo($elciclo);
 
 		$pdf->SetFont('Montserrat-Black','',9);
@@ -194,7 +194,7 @@
 		$pdf->setX(160);
 		$pdf->Cell(15,0,"FOLIO: ",0,0,'L');	
 		$pdf->SetFont('Montserrat-Medium','',9);
-		$pdf->Cell(15,0,$data[0]["IDPROY"],0,0,'L');	
+		$pdf->Cell(15,0,$valor["IDPROY"],0,0,'L');	
 		$pdf->Ln(5);
 
 		$pdf->SetFillColor(172,31,6);
@@ -206,7 +206,7 @@
 		$pdf->SetTextColor(0);
 		$pdf->SetFont('Montserrat-Medium','B',9);
 		$pdf->SetWidths(array(130, 30));	
-		$pdf->Row(array(utf8_decode($data[0]["EMPRESAD"]),utf8_decode($dataCiclo[0]["CICL_DESCRIP"])));
+		$pdf->Row(array(utf8_decode($valor["EMPRESAD"]),utf8_decode($dataCiclo[0]["CICL_DESCRIP"])));
 
 		$pdf->SetFillColor(172,31,6);
 		$pdf->SetTextColor(255);
@@ -217,7 +217,7 @@
 		$pdf->SetTextColor(0);
 		$pdf->SetFont('Montserrat-Medium','B',9);
 		$pdf->SetWidths(array(130, 30));	
-		$pdf->Row(array(utf8_decode($data[0]["PROYECTO"]),utf8_decode($data[0]["INICIA"]." ". $data[0]["TERMINA"])));
+		$pdf->Row(array(utf8_decode($valor["PROYECTO"]),utf8_decode($valor["INICIA"]." ". $valor["TERMINA"])));
 
 		$pdf->SetFillColor(172,31,6);
 		$pdf->SetTextColor(255);
@@ -228,7 +228,7 @@
 		$pdf->SetTextColor(0);
 		$pdf->SetFont('Montserrat-Medium','B',9);
 		$pdf->SetWidths(array(80, 80));	
-		$pdf->Row(array(utf8_decode($data[0]["ASESOR"]."\n".$data[0]["REVISOR1"]."".$data[0]["RESVISOR2"]),utf8_decode($data[0]["ASESOREXT"])));
+		$pdf->Row(array(utf8_decode($valor["ASESOR"]."\n".$valor["REVISOR1"]."".$valor["RESVISOR2"]),utf8_decode($valor["ASESOREXT"])));
 		
 		$pdf->Ln(5);
 		$pdf->SetFillColor(172,31,6);
@@ -249,14 +249,14 @@
 		$n=1;
 		$pdf->SetWidths(array(10, 20,60,30,10,30));	
 		foreach ($data as $valor) {			
-			$lacal=	utf8_decode($data[0]["CALIF"]);
+			$lacal=	utf8_decode($valor["CALIF"]);
 			if ($_GET["concal"]=='N') {$lacal='';}		
 			$pdf->Row(array($n,
-				            utf8_decode($data[0]["MATRICULA"]),
-							utf8_decode($data[0]["NOMBRE"]),
-							utf8_decode($data[0]["CARRERAD"]),
+				            utf8_decode($valor["MATRICULA"]),
+							utf8_decode($valor["NOMBRE"]),
+							utf8_decode($valor["CARRERAD"]),
 						     $lacal,
-							utf8_decode($data[0]["OBS"])
+							utf8_decode($valor["OBS"])
 							)
 					 );
 			$n++;
