@@ -425,7 +425,7 @@
         $n=1;
         foreach($data as $row) {
             $lacal=$row["CAL"];
-            if ($row["CAL"]<70) {$lacal='NA';}
+            if ($row["CAL"]<70 && ($row["CAL"]!='AC')) {$lacal='NA';}
             $pdf->Row(array( str_pad($n,  3, "0",STR_PAD_LEFT),
                              utf8_decode($row["MATERIA"]),
                              utf8_decode($row["MATERIAD"]),
