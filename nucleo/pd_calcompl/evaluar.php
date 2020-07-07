@@ -304,10 +304,11 @@
     		      
     		        cad+=$("#matricula_"+i).html()+"|"+(parseInt(numCal)-1)+"|"+idact+"|"+$("#PN_"+i).html()+"|"+$("#PL_"+i).html()+"|";    //Matricula NumCAL aCTIVIDAD
 
-					mical=$("#CAL"+h+"_"+i).val();
-					if ($("#CAL"+h+"_"+i).val()==''){ mical=0;}
+					
      		        for (h=1;h<numCal;h++) {
-     		        	cad+=mical+"|";
+						mical=$("#CAL"+h+"_"+i).val();
+					    if ($("#CAL"+h+"_"+i).val()==''){ mical=0;}
+     		             cad+=mical+"|";
     					 }
 					                  
 		            losdatos[c]=cad.substring(0,cad.length-1); 
