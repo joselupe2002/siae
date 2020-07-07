@@ -285,6 +285,7 @@ function guadarPorta(campoid,id,campo,materia,tabla){
 
 
 function insertaPorta(campoid,id,campo,materia,tabla,aux){
+
     var losdatos=[];
 	dato=$("#"+campo).val();
     var f = new Date();
@@ -308,11 +309,12 @@ function insertaPorta(campoid,id,campo,materia,tabla,aux){
                       datos: JSON.stringify(losdatos)
                };
 
+
 			$.ajax({
 			type: "POST",
 			url:"../base/grabadetalle.php",
 			data: parametros,
-			success: function(data){
+			success: function(data){	
 				$('#dlgproceso').modal("hide"); 
 				if (data.length>0) {alert ("Ocurrio un error: "+data);}
 				else {alert ("Se ha guardado el archivo de: "+materia);}		
@@ -371,7 +373,7 @@ function subirPDFDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, exte
 	   	    				    type: 'POST'})
 	   	    				    .done(function(res){ 	
 	   	    				    	
-	   	    				    	
+	   	    				 
 	   	    				    	laimagen=res.split("|")[1];	   	    				    				   	    				    	
 			   	    				 if (!(res.substring(0,2)=="0|")){
 			   	    					      //eliminamos archivo anterior en caso de existir
@@ -396,7 +398,8 @@ function subirPDFDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, exte
 	   	    				    		$("#enlace_"+nombreInput+"_2").attr("href",laimagen);
 	   	    				    		
 	   	    				        	$("#"+nombreInput).attr("value",laimagen);
-	   	    				        	
+										   
+
 	   	    				        	if (operacion=="alta") {insertaPorta(campoid,id,nombreInput,descrip,tabla,aux);
 	   	    				        	}
 	   	    				        	if (operacion=="edita") {guadarPorta(campoid,id,nombreInput,descrip,tabla);}

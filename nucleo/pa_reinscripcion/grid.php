@@ -236,7 +236,7 @@
 <!-- -------------------ultimos ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
 <script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
-<script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
+<script src="<?php echo $nivel; ?>js/subirArchivos.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
@@ -249,6 +249,11 @@
 
 </body>
 <?php } else {header("Location: index.php");}?>
+
+<script type="text/javascript">
+   var usuario='<?php echo $_SESSION['usuario'];?>';
+</script>
+
 </html>
 
 

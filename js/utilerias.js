@@ -2264,17 +2264,59 @@ function NumeroALetras(num) {
 
 /*===================================================AGREGAR ELEMENTO DE SUBIDA DE ARCHIVOS DRIVE =======================*/
 
-function dameSubirArchivoDrive(contenedor,etiqueta,nombre,dato,sql) {
-		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
-		"  <div class=\"row align-items-end\"> "+
-		"      <div class=\"col-sm-2\">"+
-		"           <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+dato+"\" width=\"50px\" height=\"50px\">"+
-		"      </div>"+
-		"      <div class=\"col-sm-10\">"+
-		"          <input type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
-		"                 onchange=\"subirArchivoDrive('file_"+nombre+"','"+nombre+"','img_"+nombre+"','"+nombre+"','"+sql+"');\"/>"+
-		"          <input type=\"hidden\" value=\""+dato+"\"  name=\""+nombre+"\" id=\""+nombre+"\"  placeholder=\"\" />\n"+
-		"      </div> "+
-		"  </div>";
-		$("#"+contenedor).append(cad);
+function dameSubirArchivoDrive(contenedor,etiqueta,nombre,carpetaDrive,extensiones,campoIDTabla,valorid,mensajesubida,tablasubir,altaedita,aux, ruta, activareliminar) {		    
+		cad=
+		"  <div class=\"row align-items-end\"> "+		
+		"      <div class=\"col-sm-9\">"+
+		"          <label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
+		"          <input  class=\"fileSigea\" type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
+		"                 onchange=\"subirPDFDriveSave('file_"+nombre+"','"+carpetaDrive+"','img_"+nombre+"',"+
+		"                 '"+nombre+"','"+extensiones+"','S','"+campoIDTabla+"','"+valorid+"','"+mensajesubida+
+		"                 ','"+tablasubir+"','"+altaedita+"','"+aux+"');\"/>"+
+		"          <input type=\"hidden\" value=\""+ruta+"\"  name=\""+nombre+"\" id=\""+nombre+"\"  placeholder=\"\" />\n"+
+		"      </div> ";
+
+		stElim="display:none; cursor:pointer;";
+		if (ruta.length>0) { stElim="cursor:pointer; display:block; top:-25px; ";}    
+		cadeliminar='';
+		if (activareliminar=='S') {
+				cadeliminar="<i style=\""+stElim+"\"  id=\"btnEli_"+nombre+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
+								"onclick=\"eliminarEnlaceDrive('file_"+nombre+"','"+carpetaDrive+"',"+
+								"'img_"+nombre+"','"+nombre+"','"+extensiones+"','S','"+campoIDTabla+"','"+
+								valorid+"','"+mensajesubida+"','"+tablasubir+"','"+altaedita+"','"+aux+"');\">"+
+							"</i>";
+		}
+		eliminar="<div class=\"col-sm-3\" style=\"padding-top:10px;\">"+
+		"           <a title=\"Ver Archivo\" target=\"_blank\" id=\"enlace_"+nombre+"\" href=\""+ruta+"\">"+
+		"                  <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+ruta+"\" width=\"50px\" height=\"50px\">"+
+		"           </a>"+cadeliminar+		
+		"          </div>"+
+	    "  </div>";
+	
+		
+		$("#"+contenedor).append(cad+eliminar);
+
+		$('.fileSigea').ace_file_input({
+			no_file:'Sin archivo ...',
+			btn_choose:'Buscar',
+			btn_change:'Cambiar',
+			droppable:false,
+			onchange:null,
+			thumbnail:false, //| true | large
+			whitelist: extensiones,
+			blacklist:'exe|php'
+			//onchange:''
+			//
+		});
+
+		$('#pdf_'+nombre).attr('href', '..\\..\\imagenes\\menu\\pdf.png');
+		$('#img_'+nombre).attr('src', "..\\..\\imagenes\\menu\\pdf.png");
+		if ((ruta=='') || (ruta==null)) { 
+			$('#pdf_'+nombre).attr('disabled', 'disabled');				
+			$('#pdf_'+nombre).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+			$('#img_'+nombre).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+		   }
+
+
+
 }

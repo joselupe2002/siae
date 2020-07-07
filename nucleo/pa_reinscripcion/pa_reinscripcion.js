@@ -2,7 +2,7 @@ var id_unico="";
 var estaseriando=false;
 var matser="";
 var contFila=1;
-
+var miciclo="";
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -14,8 +14,35 @@ var contFila=1;
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 		colocarCiclo("elciclo","AMBOS");
+
+		elsql="SELECT GETCICLO() from dual";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  	
+					losdatos=JSON.parse(data);
+					miciclo=losdatos[0][0];
+
+					elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX='"+usuario+"_"+miciclo+"_PAGO'";
+					parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	
-		dameSubirArchivoDrive("elrecibo","Recibo de Pago de Reinscripción","recibo",'','');
+					$.ajax({
+						type: "POST",
+						data:parametros2,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(data2){  	
+							laruta='';
+							if (JSON.parse(data2)[0][2]>0) {laruta=JSON.parse(data2)[0][0]; activaEliminar=JSON.parse(data2)[0][1]=='N'?'S':'N'; }
+							dameSubirArchivoDrive("elrecibo","Recibo de Pago de Reinscripción","reciboreins",'RECIBOREINS','pdf',
+										'ID',usuario,'RECIBO DE PAGO','eadjreins','alta',usuario+"_"+miciclo+"_PAGO",laruta,activaEliminar);						
+						}
+					});
+				
+			   }
+			});
+		
     
 
 	$(document).on( 'change', '.edit', function(){		
