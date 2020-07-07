@@ -244,51 +244,46 @@
                 $nombre=$miutil->getJefe('303');//Nombre del puesto de Recursos Humanos
                 $miutil->getPie($this,'V');
                 
-				$this->SetFont('Montserrat-Medium','',6);
+				$this->SetFont('Montserrat-Medium','',5);
                 $this->SetX(10);$this->SetY(-60);
                 $this->Cell(0,5,"CR: CREDITOS CAL: CALIFICACION",'',0,'L');
-                $this->SetX(110);
+                $this->SetX(90);
                 $this->Cell(0,5,"MAT.TOT: MATERIAS TOTALES",'',0,'L');
-                $this->SetX(160);
+                $this->SetX(125);
                 $this->Cell(0,5,"CRE.ACU: CREDITOS ACUMULADOS",'',1,'L');
 
                 $this->SetX(10);$this->SetY(-57);
                 $this->Cell(0,5,"TC: TIPO DE CALIFICACION. 1 ORDINARIO 2 REGULARIZACION 3 EXTRAORDINARIO",'',0,'L');
-                $this->SetX(110);
+                $this->SetX(90);
                 $this->Cell(0,5,"MAT.CUR: MATERIAS CURSADAS",'',0,'L');
-                $this->SetX(160);
+                $this->SetX(125);
                 $this->Cell(0,5,"CRE.CUR: CREDITOS CURSANDO",'',1,'L');
 
                 
                 $this->SetX(10);$this->SetY(-54);
                 $this->Cell(0,5,"4 ORDINARIO EN REPITE 5 REGULARIZACION EN REPITE 6 EXAMEN ESPECIAL",'',0,'L');
-                $this->SetX(110);
+                $this->SetX(90);
                 $this->Cell(0,5,"MAT.APR: MATERIAS APROBADAS",'',0,'L');
-                $this->SetX(160);
+                $this->SetX(125);
                 $this->Cell(0,5,"PCTJE: PORCENTAJE DE CREDITOS",'',1,'L');
 
                 $this->SetX(10);$this->SetY(-51);
                 $this->Cell(0,5,"7 EX.ESPECIAL POR 2A 91 CONVALIDACION 92 REVALIDACION 93 EQUIVALENCIA",'',0,'L');
-                $this->SetX(110);
+                $this->SetX(90);
                 $this->Cell(0,5,"MAT.APR.AC: MATERIAS APROBADAS AC",'',0,'L');
-                $this->SetX(160);
+                $this->SetX(125);
                 $this->Cell(0,5,"NP.CONV: PERIODOS CONVALIDADOS",'',1,'L');
 
                 $this->SetX(10);$this->SetY(-48);
                 $this->Cell(0,5,"AC: CALIFICACION CON VALOR AC SIN VALOR NUMERICO",'',0,'L');
-                $this->SetX(110);
+                $this->SetX(90);
                 $this->Cell(0,5,"CRE.TOT: CREDITOS TOTALES	",'',0,'L');
-                $this->SetX(160);
+                $this->SetX(125);
                 $this->Cell(0,5,"NPRDO: NUMERO DE PERIODO ACTUAL",'',1,'L');
 
-				$this->SetX(10);$this->SetY(-35);
-                $this->SetFont('Montserrat-ExtraBold','B',8);
-                $this->Cell(80,5,$nombre,'T',0,'L');
-                
                 $this->SetFont('Montserrat-Medium','',6);
                 $this->Cell(120,5,"LAS CALIFICACIONES QUE AMPARA EL PRESENTE DOCUMENTO,",'',0,'C'); 
-                
-                
+                                
                 $this->SetX(10);$this->SetY(-32);
                 $this->SetFont('Montserrat-ExtraBold','B',8);
                 $this->Cell(80,5,'JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES','',0,'L');
