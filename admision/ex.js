@@ -6,6 +6,7 @@ var elexamen;
 var arr_nombresec=[];
 var arr_instsec=[];
 var arr_instpreg=[];
+var arr_preguntas=[];
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -21,6 +22,7 @@ var arr_instpreg=[];
 		
 		
 		cargarFoto();
+
 		if ((aceptado=='N') && (abiertoExa=='S')) {			
 			cargarExamenes();
 		} 
@@ -249,7 +251,7 @@ function escribir(debeterminar){
 			   leresta=parseInt(debeterminar-minAct);
 			   $("#contminrestantes").html(leresta);
 			   if (leresta==5) {mostrarIfo("infoResta", "grid_registro", "Tiempo se agota",
-			   "<span class=\"lead text-danger\"><strong>Le informamos que le quedan "+leresta+" Minuros para terminar su examen</strong></span>","modal-lg");}
+			   "<span class=\"lead text-danger\"><strong>Le informamos que le quedan "+leresta+" Minutos para terminar su examen</strong></span>","modal-lg");}
 			   if (leresta<=0) {
 				   cierraExamen();
 			   }
@@ -288,6 +290,11 @@ function cierraExamen(){
 function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 	$("#contenidoAsp").empty();
 	var cad="";
+	contPreg=1;
+	 arr_nombresec=[];
+	 arr_instsec=[];
+	 arr_instpreg=[];
+	 arr_preguntas=[];
 	sq="SELECT * from vlinpreguntas WHERE IDEXAMEN="+idexa+" order by IDSECCION,ORDEN, IDPREG" ;
 	cad="<div class=\"widget-box widget-color-blue\" style=\"width:100%;\"  >"+
 		   "<div class=\"widget-header widget-header-small\">"+
@@ -333,7 +340,7 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 				arr_nombresec[clave]=valorPre.SECCIOND;
 				arr_instsec[clave]=valorPre.INSTRUCCIONES;
 				arr_instpreg[clave]=valorPre.INSTRUCCIONESPREG;
-		
+				arr_preguntas[clave]=valorPre.IDPREG;
 
 			    hide="hide"; color="badge badge-gray";
 				if (contPreg==1){ hide=""; pregactiva=1; color="badge badge-yellow";}
@@ -413,11 +420,27 @@ function colocarSeccion(item){
 	$("#observaciones").html(cad);
 }
 
+function verificarPreguntas(){
+	resp=true;
+	$.each(arr_preguntas, function (ind, elem) { 
+		//alert ("elemento: "+elem+" "+ $("input[name=opcion_"+elem+"]:radio").is(':checked'));
+		if (!( $("input[name=opcion_"+elem+"]:radio").is(':checked'))) {  
+			
+			 resp=false;
+		   }
+	  }); 
+	  
+	return resp;
+}
+
 function aparecer(idpreg,valsum){
 
 	if ((pregactiva+valsum)>=contPreg)  {
+		todos=verificarPreguntas();
+		mimsj="Al finalizar su examen ya no se podrá realizar cambios ";
+		if (!(todos)) {mimsj="Al parecer no ha contestado todas sus preguntas, aún así desea terminar el examen"; }
 		mostrarConfirm("dlgcierraExamen", "grid_registro", "Finalizar Examen",
-									"<span class=\"lead text-danger\"><strong>Al finalizar su examen ya no se podrá realizar cambios ",
+									"<span class=\"lead text-danger\"><strong>"+mimsj,
 		                             "¿Seguro que desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
 	}
 
@@ -683,18 +706,11 @@ function cargarAdjuntos() {
 		}	
 	});
 
-	if (todos) {
+	if (todos) { msj="Al finalizar su exámen ya no podra hacer cambios."; }
+	else {msj="Al parecer no ha contestado todas las preguntas, aún así desea finalizar su examen"};
 		mostrarConfirm("confirmFinalizar", "grid_registro", "Finalizar Proceso",
-		"<span class=\"lead text-danger\"><strong> Al finalizar el proceso ya no podrá realizar "+
-		"cambios en los documentos adjuntos ",
-		"¿Esta usted Seguro?","Finalizar Proceso", "finalizar();","modal-lg");
-	}
-	else {
-		mostrarIfo("infoFalta", "grid_registro", "Documentos Adjuntos",
-				   "<span class=\"lead text-danger\"><strong>Su registro no puede ser Finalizado </strong></span> "+
-				   "<span class=\"lead text-warning\"><strong> Al parecer no ha adjuntado todos los documentos, "+
-									" si tiene problema con algún documento puede continuar otro día ingresando con su CURP y Contraseña</strong></span>","modal-lg");
-	}
+		"<span class=\"lead text-danger\"><strong>"+msj,
+		"¿Esta usted Seguro?","Finalizar Examen", "finalizar();","modal-lg");
    }
 
    function finalizar(){

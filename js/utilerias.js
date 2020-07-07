@@ -2258,3 +2258,23 @@ function NumeroALetras(num) {
     else
         return Millones(data.enteros) + " " + data.letrasMonedaPlural + " " + data.letrasCentavos;
 }//NumeroALetras()
+
+
+
+
+/*===================================================AGREGAR ELEMENTO DE SUBIDA DE ARCHIVOS DRIVE =======================*/
+
+function dameSubirArchivoDrive(contenedor,etiqueta,nombre,dato,sql) {
+		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
+		"  <div class=\"row align-items-end\"> "+
+		"      <div class=\"col-sm-2\">"+
+		"           <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+dato+"\" width=\"50px\" height=\"50px\">"+
+		"      </div>"+
+		"      <div class=\"col-sm-10\">"+
+		"          <input type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
+		"                 onchange=\"subirArchivoDrive('file_"+nombre+"','"+nombre+"','img_"+nombre+"','"+nombre+"','"+sql+"');\"/>"+
+		"          <input type=\"hidden\" value=\""+dato+"\"  name=\""+nombre+"\" id=\""+nombre+"\"  placeholder=\"\" />\n"+
+		"      </div> "+
+		"  </div>";
+		$("#"+contenedor).append(cad);
+}

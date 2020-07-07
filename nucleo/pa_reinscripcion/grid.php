@@ -1,188 +1,254 @@
-<!--  =================================================================
-                  GRID PERSONALIZADO PARA LAS REINSCRIPCIONES  
-      =================================================================                
-                  -->
-<!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-                  
-<?php session_start(); if (($_SESSION['inicio']==1)  && (strpos($_SESSION['permisos'],$_GET["modulo"])) ){ 
+<?php session_start(); if (($_SESSION['inicio']==1)) {
 	header('Content-Type: text/html; charset='.$_SESSION['encode']);
 	include("../.././includes/Conexion.php");
 	include("../.././includes/UtilUser.php");
 	$miConex = new Conexion();
 	$miUtil= new UtilUser();
-	$logouser="../../imagenes/login/sigea.png";  
+	$logouser="../../imagenes/login/sigea.png";
 	$nivel="../../";
-?>  	
-	
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link rel="stylesheet" type="text/css" href="<?php echo $nivel;?>easyUI/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo $nivel;?>easyUI/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo $nivel;?>estilos/tablasCardex.css" />
-	<script type="text/javascript" src="<?php echo $nivel;?>easyUI/jquery.min.js"></script>
-	<script type="text/javascript" src="<?php echo $nivel;?>easyUI/jquery.easyui.min.js"></script>
+	?>
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+	    <link rel="icon" type="image/gif" href="imagenes/login/sigea.ico">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="<?php echo $_SESSION['encode'];?>" />
+		<title><?php echo $_SESSION["titApli"];?></title>
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/fonts.googleapis.com.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-rtl.min.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <link rel="stylesheet" href="<?php echo $nivel; ?>estilos/preloader.css" type="text/css" media="screen">         
+        <link href="imagenes/login/sigea.png" rel="image_src" />
+        <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
+        <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
+        <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
 
-<?php 	
-    $miConex = new Conexion(); 
-    $resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT count(*) as n FROM ehistacad WHERE HIST_CICLO=getciclo() 
-                                     AND HIST_MATRICULA='".$_SESSION['usuario']."'");
-    foreach ($resultado as $row) {
-      	$esta=$row[0]; }
-      
-    if ($esta>0) {
-      	echo "<body>
-              <center>
-                      <div class=\"msjReinsVis\">
-                      <b>Tu ya has elegido horario para este ciclo escolar</b><br/>
-                      <button id=\"btn\" onclick=\"window.open('horario.php')\">Ver Horario</button>
-                      </div>
-              </center>
-             </body>";      
-      }
-      else 
-      { 
-      	$resultado=$miConex->getConsulta($_SESSION['bd'],'SELECT GETSTATUSALUM('.chr(39).$_SESSION['usuario'].chr(39).')');
-      	foreach ($resultado as $row) {
-      		$status=$row[0];
-      	}
-      	if ($status<>'ACTIVO:') {
-      		echo "<body>
-              <center>
-                      <div class=\"msjReinsVis\">
-                      <b>".$status."</b><br/>
-                      <button id=\"btn\" onclick=\"salir()\">Salir</button>
-                      </div>
-              </center>
-              <script type=\"text/javascript\">
-                   function salir(){
-                       $('#hoja').tabs('close','MiReinscripcion');
-                  }
-               </script> 
-             </body>";   
-      	}
-      	else {
-      		      
-      	
-      
-?>
+		<style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }</style>
+		<style type="text/css">
+		       table.dataTable tbody tr.selected {color: blue; font-weight:bold;}
+			   table.dataTable tbody td {padding:4px;}
+               th, td { white-space: nowrap; }        
+        </style>
+	</head>
 
-<body>
-    
-	<div style="margin:5px 0;"></div>	
-	<table id="dg" class="easyui-datagrid" title="Materias Ofertadas" style="width:100%;height:350px"
-			data-options="rownumbers:true,singleSelect:false">
-		<thead>
-			<tr>
-				<th data-options="field:'ck',width:40,checkbox:true"></th>
-				<th data-options="field:'g',width:45">Grupo</th>
-				<th data-options="field:'mat',width:0"></th>
-				<th data-options="field:'matd',width:250">Materia</th>
-				<th data-options="field:'l',width:65">Lunes</th>
-				<th data-options="field:'m',width:65">Martes</th>
-				<th data-options="field:'mi',width:65">Miercoles</th>
-				<th data-options="field:'j',width:65">Jueves</th>
-				<th data-options="field:'j',width:65">Viernes</th>
-				<th data-options="field:'j',width:65">Sabado</th>
-			</tr>
-		</thead>		
-		<tbody>
-		    <?php 
-		       $resultado=$miConex->afectaSQL($_SESSION['bd'],"CALL getmaterias(getciclo(),".chr(39).$_SESSION['usuario'].chr(39).",'WEB')");      	            	   
-		       $resultado=$miConex->getConsulta($_SESSION['bd'],'SELECT * FROM temp_materias A WHERE A.TEMP_MATRICULA='.chr(39).$_SESSION['usuario'].chr(39).
-      	        		"order by TEMP_CUATRIMESTRE, TEMP_GRUPO");
-                foreach ($resultado as $row) {
-                	echo "<tr>";
-                	echo "<td></td>".
-                  	     "<td>".$row["TEMP_GRUPO"]."</td>".
-                  	     "<td>".$row["TEMP_MATERIA"]."</td>".
-                	     "<td>".$row["TEMP_MATERIAD"]."</td>".
-                	     "<td>".$row["TEMP_LUNES"]."</td>".
-                	     "<td>".$row["TEMP_MARTES"]."</td>".
-                	     "<td>".$row["TEMP_MIERCOLES"]."</td>".
-                	     "<td>".$row["TEMP_JUEVES"]."</td>".
-                	     "<td>".$row["TEMP_VIERNES"]."</td>".
-                	     "<td>".$row["TEMP_SABADO"]."</td>";
-                	echo "</tr>";
-                	
-                }        	
-        	?>
-		</tbody>		
-	</table>	
-	<div style="margin:10px 0;">
-		<a href="#" class="easyui-linkbutton" onclick="getSelected()">Verificar Horario</a>
-		<button id="gh"  style="display:none;" onclick='guardarHorario()'>Grabar Horario</button>
-		
-	</div>	
-	
-   <script type="text/javascript">
 
-      
+	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
        
-		function getSelected(){
-			linea="";
-			var rows = $('#dg').datagrid('getSelections');
-			for(var i=0; i<rows.length; i++){
-				var row = rows[i];
-				linea=linea+"INSERT INTO TEMP_REINS (TEMP_MATRICULA, TEMP_MATERIA, TEMP_GRUPO, TEMP_CICLO) VALUES ("+
-                "'"+$("#laMat").val()+"',"+
-		    	"'"+row.mat+"',"+
-				"'"+row.g+"',getciclo);";				   		
-			}
-			$('#hoja').tabs('add',{title: 'Grab9900:',
-	                closable: false,
-	                href:'guardarHorTem.php?q='+linea                 
-	                }); 
-            
-			var url = "verificaHorario.php"; 
-	        var mat=$("#laMat").val();
-	        $.ajax({
-	               type: "POST",
-	               url: url,
-	               data: {mat:mat,linea:linea},
-	               success: function(data)
-	               {   if (data=="TRUE") {
-	            	      $("#msj").html("<b>TUS MATERIAS SELECCIONADAS SON CORRECTAS</b>");
-	                      $("#msj").show();
-	                      $("#gh").show();
-	                        	                           	                       	      	          
-	                   }else{
-		                  $("#msj").html(data);
-		                  $("#gh").hide();
-	                      $("#msj").show();
-	                   } 	               
-	               }
-	             });
-		}
+	      <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
+                
+		  <div class="widget-box widget-color-blue" id="principal">
+			  <div class="widget-header widget-header-small" style="padding:0px;">
+			      <div class="row" >		                    		
+						<div id="losciclos" class="col-sm-2" >	
 
-		function guardarHorario(){
-		 if(confirm("¿Su horario es correcto desea grabarlo?")){			   
-	    	   $('#hoja').tabs('close','MiReinscripcion');
-	    	   $('#hoja').tabs('add',{title: 'Grab9900:',
-	                closable: false,
-	                href:'guardarHorDef.php'                
-	                }); 
-	    	  
-	    	   $('#hoja').tabs('close','Grab9900:');
-	    	   alert ("Los Datos de tu Reinscripción fueron grabado adecuadamente");
-	    	   window.open('horario.php');
-               }
-		}	   
-	</script>
+						</div>			
+						<div id="elrecibo" class="col-sm-6">
+						</div>       			 
+						   												
+							<button title="Guardar Todos los registros" onclick="guardarTodos();" class="btn btn-white btn-purple  btn-round"> 
+								<i class="ace-icon purple fa fa-save bigger-140"></i>Guardar<span class="btn-small"></span>            
+							</button>
+							
+						</div>
+		            </div> 
+		      </div>
+
+              <div class="widget-body">
+				   <div class="widget-main">
+				       <div class="row">	
+					       <div id="loshorarios" class="col-sm-12" style="overflow-x: scroll; height:320px;" >    
+						   </div>
+                       </div>
+					</div>
+					<div class="widget-footer bg-primary" style="padding-top:5px;">
+					     <div class='row'>
+						      <div class="col-sm-2">
+								  <span class="text-white">CrÃ©ditos:  <span id="selCreditos" class="badge badge-primary">0</span></span> <br/>
+								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span></span>
+							  </div> 
+							  <div class="col-sm-2">
+								  <span class="text-white">Repitiendo:  <span id="selRepitiendo" class="badge badge-warning">0</span></span><br/>
+								  <span class="text-white">Especial:  <span id="selEspecial" class="badge badge-danger">0</span></span>
+							  </div> 
+
+							  <div class="col-sm-2">
+							        <div class="checkbox" style="padding:0px; margin: 0px;">
+										 <label>
+											   <input id="imprimirBoletaCheck" type="checkbox" class="ace ace-switch ace-switch-6" />
+												<span class="lbl"> Imp. Bol.</span>
+										</label>
+									</div>
+							  </div> 	
+							  <div class="col-sm-6">
+							      
+										<button title="Imprimir boleta de reinscripciÃ³n" onclick="imprimeBoleta();" class="btn btn-white btn-purple  btn-round"> 
+											<i class="ace-icon text-warning fa fa-clipboard bigger-140"></i>Boleta<span class="btn-small"></span>            
+										</button>
+
+										<button title="Agregar asignaturas de otros periodos con condiciones" onclick="agregarCondiciones();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+											<i class="ace-icon green fa fa-legal bigger-140"></i> Condiciones<span class="btn-small"></span>            
+										</button>	
+								   		<button title="Ver informaci&oacute;n del Alumno" id="btnfiltrar" onclick="verInfo();" class="btn btn-white btn-success btn-round" value="Agregar"> 
+											<i class="ace-icon red fa fa-info bigger-140"></i> Info<span class="btn-small"></span>            
+										</button>
+										<button title="Ver kardex del alumno" id="btnfiltrar" onclick="verKardex();" class="btn btn-white btn-success btn-round" value="Agregar"> 
+											<i class="ace-icon pink fa fa-file-text bigger-140"></i> Kardex<span class="btn-small"></span>            
+										</button>
+								
+							  </di>					  
+						</div>
+					</div>
+			   </div>
+		</div>
 	
-<center>
-    <div class="msjReins" id="msj" ></div>
-</center> 
-    <input style="visibility:hidden" id="laMat" value="<?php echo $_SESSION['matricula'];?>"></input>
-    <input style="visibility:hidden" id="verificado" value="0"></input>
+<!-- ===============================VENTANA DE INFORMACION=================================================================-->
+<div id="infoReins" class="modal fade" role="dialog" >
+     <div class="modal-dialog modal-sm">
+		   <div class="modal-content">
+		        <div class="modal-header bg-primary">	
+						 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								 <span class="white">&times;</span>
+						 </button>
+						<span class="lead text-white">InformaciÃ³n General</span>
+				 </div>
+				 <div class="modal-body">
+				
+	                     <div class="row">
+						      <div class="col-sm-12">
+						           <i class="ace-icon fa fa-user icon-animated-hand-pointer blue bigger-160"></i>	
+								   <strong><span class="lighter text-success " id="elnombre"></span> </strong> 							       
+							   </div>
+						 </div>
+						 <div class="row">
+	                           <div class="col-sm-12">  
+							       <i class="ace-icon fa fa-book icon-animated-hand-pointer green bigger-160"></i>	
+								   <strong><span class="lighter text-info " id="lacarrerainfo"></span> </strong> 		                               
+                               </div>	
+						 </div>   
+						 <div class="row">
+						      <div class="col-sm-12">
+						           <i class="ace-icon fa fa-file icon-animated-hand-pointer purple bigger-160"></i>	
+								   <strong><span class="lighter text-success " id="elmapa"></span> </strong> 							       
+							   </div>
+						 </div>
+						 <div class="row">
+						      <div class="col-sm-12">
+						           <i class="ace-icon fa fa-chevron-circle-right icon-animated-hand-pointer red bigger-160"></i>	
+								   <strong><span class="lighter text-success " id="laespecialidad"></span> </strong> 
+								   <strong><span class="lighter text-success " id="laespecialidadSIE"></span> </strong> 							       
+							   </div>
+						 </div>
+						 <div class="row">   
+							   <div class="col-sm-12" style="text-align: center;">
+									<span class="btn btn-app btn-sm btn-light no-hover">
+										 <span id="prom_cr" class="line-height-1 bigger-170 blue"></span><br />
+										  <span class="line-height-1 smaller-90"> Prom.Rep. </span>
+									</span>
+									<span class="btn btn-app btn-sm btn-yellow no-hover">
+									      <span id="prom_sr" class="line-height-1 bigger-170">  </span><br />
+										  <span class="line-height-1 smaller-90"> Promedio </span>
+									</span>										
+															
+							   </div>
+						 </div>
+						 <div class="row">   
+							   <div class="col-sm-12" style="text-align: center;">
+							        <span class="btn btn-app btn-sm btn-pink no-hover">
+									      <span id="loscreditost"  class="line-height-1 bigger-170">  </span><br />
+										  <span class="line-height-1 smaller-90"> Cr&eacute;ditos </span>
+									</span>
+									<span class="btn btn-app btn-sm btn-success  no-hover">
+									      <span id="loscreditos" class="line-height-1 bigger-170">  </span><br />
+										  <span class="line-height-1 smaller-90"> Cursados </span>
+									</span>
+							   </div>
+						</div>
+	                           
+	                    <div class="space-10"></div>  
+						<div class="row">   
+						        <div class="col-sm-6">
+										<span class="text-primary"><strong>Cred. Max.:</strong></span>
+										<span class="pull-right badge badge-success" id="CMA">50</span>
+						        </div>		
+								<div class="col-sm-6">
+										<span class="text-primary"><strong>Cred. Min.:</strong></span>
+									    <span class="pull-right badge badge-info" id="CMI">50</span>
+								</div>
+						</div>
+						<div class="space-10"></div>  
+						<div class="row"> 
+								<div class="col-sm-6">
+										<span class="text-primary"><strong>Cred. 1 Rep.:</strong></span>
+										<span class="pull-right badge badge-purple" id="C1R">30</span>
+								</div>		
+								<div class="col-sm-6">
+										<span class=" text-primary"><strong>Cred. +1:</strong></span>
+										<span class="pull-right badge badge-danger" id="CM1">20</span>							    
+						        </div>
+						</div>
+						                 
+                 </div><!-- /.modal-body -->
+		   </div><!-- /.modal-content -->         
+	 </div><!-- /.modal-dialog -->
+</div>
+			
+
+		 							
+<!-- -------------------Primero ----------------------->
+<script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
+<script type="<?php echo $nivel; ?>text/javascript"> if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");</script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap.min.js"></script>
+
+<!-- -------------------Segundo ----------------------->
+<script src="<?php echo $nivel; ?>assets/js/jquery-ui.custom.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/chosen.jquery.min.js"></script>
+
+<!-- -------------------Medios ----------------------->
+<script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/ace.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery-ui.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.dataTables.bootstrap.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/dataTables.buttons.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/buttons.flash.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/buttons.html5.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/buttons.print.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/buttons.colVis.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/dataTables.select.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-datepicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-timepicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/moment.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/daterangepicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-datetimepicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-colorpicker.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.knob.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/autosize.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.inputlimiter.min.js"></script>
+<script src="<?php echo $nivel; ?>js/mask.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-tag.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-select.js"></script>
+
+<!-- -------------------ultimos ----------------------->
+<script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
+<script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
+<script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
+<script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootbox.js"></script>
+
+<script src="<?php echo $nivel; ?>assets/js/jquery.gritter.min.js"></script>
+
+<script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
+<script src="<?php echo $nivel; ?>nucleo/pa_reinscripcion/pa_reinscripcion.js?v=<?php echo date('YmdHis'); ?>"></script>
+
 </body>
-
-
-
-<?php 
-      	} //del status del alumno si tiene derecho a reinscribirse
-       }// el del si se van a mostrar las materias no esta inscrito
-   }// el del si hay sesion 
-else 
-{header("Location: index.php");}?>
+<?php } else {header("Location: index.php");}?>
 </html>
-                  
+
+
