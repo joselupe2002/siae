@@ -45,7 +45,7 @@
     				   <div class="space-4"></div>
                       
  	    		       <input class="fileSigea" type="file" id="file_ALUM_FOTO" name="file_ALUM_FOTO" 
- 	    		             onchange="subirArchivoDriveName('file_ALUM_FOTO','ALUM_FOTO','img_ALUM_FOTO','ALUM_FOTO','jpeg|png','S','<?php echo $_SESSION["usuario"];?>')">
+ 	    		             onchange="subirArchivoDriveName('file_ALUM_FOTO','ALUM_FOTO','img_ALUM_FOTO','ALUM_FOTO','jpeg|png|JPG|jpg','S','<?php echo $_SESSION["usuario"];?>')">
  	    		       
                         <input type="hidden" value=""  name="ALUM_FOTO" id="ALUM_FOTO" placeholder="" />   	
 						<button  onclick="guardarCampo('ALUM_FOTO',true,'La Foto fue asignada correctamente');" class="btn btn-white btn-info btn-bold">
@@ -222,13 +222,7 @@
 
 
 
-   function cambios(){
-	   alert ("se cambioooo");
-   }
-
-
    function guardarCampo(campo,conmsj,mensaje) {
-	   alert ("entre: "+campo);
 	if (campo=='ALUM_FOTO') {parametros={ALUM_FOTO:$("#ALUM_FOTO").val(),tabla:"falumnos",campollave:"ALUM_MATRICULA",valorllave:"<?php echo $_SESSION['usuario'];?>",bd:"Mysql"};}
 	if (campo=='ALUM_CORREO') {parametros={ALUM_CORREO:$("#correo").val(),tabla:"falumnos",campollave:"ALUM_MATRICULA",valorllave:"<?php echo $_SESSION['usuario'];?>",bd:"Mysql"};}
 	if (campo=='ALUM_TELEFONO') {parametros={ALUM_TELEFONO:$("#telefono").val(),tabla:"falumnos",campollave:"ALUM_MATRICULA",valorllave:"<?php echo $_SESSION['usuario'];?>",bd:"Mysql"};}
@@ -257,7 +251,7 @@
 			droppable:false,
 			onchange:null,
 			thumbnail:false, //| true | large
-			whitelist:'png|jpeg',
+			whitelist:'png|jpg|JPG|jpeg',
 			blacklist:'exe|php'
 			//onchange:''
 			//

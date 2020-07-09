@@ -194,7 +194,7 @@
 			$pdf->imprimeDescarga($headerdes,$datades);
 			$pdf->Ln(5);
 			$pdf->SetFont('Montserrat-SemiBold','',10);
-			$pdf->MultiCell(0,8,utf8_decode("Mismas que para su liberaciÓn quedarán sujetas a la entrega de las evidencias correspondientes, ").
+			$pdf->MultiCell(0,8,utf8_decode("Mismas que para su liberación quedarán sujetas a la entrega de las evidencias correspondientes, ").
 			utf8_decode("las cuáles deberán apegarse a los procedimientos e instructivo de trabajo alojados en el SGC del ").
 			utf8_decode("cual forma parte y que le fueron difundidos con anterioridad."),0,'J', false);
 			$pdf->Ln(5);
