@@ -3,7 +3,8 @@ var estaseriando=false;
 var matser="";
 var contFila=1;
 var residencias=[];
-
+var matsineval=0;
+var cadmatsineval="";
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});

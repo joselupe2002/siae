@@ -4,6 +4,8 @@ var matser="";
 var contFila=1;
 var miciclo="";
 var residencias=[];
+var matsineval=0;
+var cadmatsineval="";
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -93,6 +95,34 @@ var residencias=[];
 					});																										
 				}
 			});
+
+
+			matsineval=0;
+			cadmatsineval="";
+			//Verificamos si le quedán asignaturas por hacer evaldoc
+			elsql3="select MATE_DESCRIP AS MATERIAD, MATCVE AS MATERIA, "+
+			       "(IF ((IFNULL((SELECT COUNT(*) from ed_respuestas n "+
+				   "			where n.IDDETALLE=a.ID AND n.TERMINADA='S'),0))>0,'S','N')) AS EVAL "+
+			       " from dlista a, cmaterias b where a.ALUCTR='"+usuario+"' and PDOCVE='"+micilo+"'"+
+			       " and MATCVE=MATE_CLAVE";
+			parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros3,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data3){ 	
+					jQuery.each(JSON.parse(data3), function(clave, valor) { 
+						if (valor.EVAL=='N') {
+							matsineval++;
+							cadmatsineval="<span>"+valor.MATERIAD+"</span>";
+						}
+					});																										
+				}
+			});
+
+			
+
+
 
 	$(document).on( 'change', '.edit', function(){		
 		lin=$(this).attr("id").split("_")[1];

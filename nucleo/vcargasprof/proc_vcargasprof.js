@@ -590,9 +590,9 @@ function guardarHorario(institucion,campus){
 
     	    parametros={
     	    		tabla:"edescarga",
-    	    		campollave:"DESC_PROFESOR",
+    	    		campollave:"concat(DESC_PROFESOR,DESC_CICLO)",
     	    		bd:"Mysql",
-    	    		valorllave:table.rows('.selected').data()[0][0],
+    	    		valorllave:table.rows('.selected').data()[0][0]+table.rows('.selected').data()[0][2],
     	    		eliminar: "S",
     	    		separador:"|",
     	    		campos: JSON.stringify(loscampos),

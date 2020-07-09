@@ -714,7 +714,7 @@ function cargaMsj(){
 
 	if  ($("#opcorreo").val()=='3') {
 		$("#elasunto").val("ITSM: INFORMACIÓN SOBRE EXÁMEN DE ADMISIÓN");
-		$("#msjCorreo").html("<b>AVISO IMPORTANTE ASIPIRANTES AL ITSM</b> <br/><br/>"+
+		$("#msjCorreo").html("<b>AVISO IMPORTANTE ASPIRANTES AL ITSM</b> <br/><br/>"+
 							 "El Instituto Tecnológico Superior de Macuspana atendiendo las "+
 							 " disposiciones del Consejo de Salubridad General de nuestro país y con la finalidad "+
 							 " de prevenir la propagación del SARS-CoV-2 (COVID-19), comunica a TODOS SUS ASPIRANTES "+
