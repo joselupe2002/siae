@@ -3,6 +3,7 @@ var estaseriando=false;
 var matser="";
 var contFila=1;
 var miciclo="";
+var residencias=[];
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -13,9 +14,9 @@ var miciclo="";
 		$("#info").css("display","none");
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
-		colocarCiclo("elciclo","AMBOS");
+	
 
-		elsql="SELECT GETCICLO() from dual";
+		elsql="SELECT CICL_CLAVE, CICL_DESCRIP, count(*) from ciclosesc where CICL_ABIERTOREINS='S' ORDER BY CICL_CLAVE DESC";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 				type: "POST",
@@ -23,27 +24,75 @@ var miciclo="";
 				url:  "../base/getdatossqlSeg.php",
 				success: function(data){  	
 					losdatos=JSON.parse(data);
-					miciclo=losdatos[0][0];
+					if (losdatos[0][2]>0) {
+							miciclo=losdatos[0][0];
+							$("#elciclo").html(losdatos[0][0]+"|"+losdatos[0][1]);					
 
-					elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX='"+usuario+"_"+miciclo+"_PAGO'";
-					parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	
-					$.ajax({
-						type: "POST",
-						data:parametros2,
-						url:  "../base/getdatossqlSeg.php",
-						success: function(data2){  	
-							laruta='';
-							if (JSON.parse(data2)[0][2]>0) {laruta=JSON.parse(data2)[0][0]; activaEliminar=JSON.parse(data2)[0][1]=='N'?'S':'N'; }
-							dameSubirArchivoDrive("elrecibo","Recibo de Pago de Reinscripción","reciboreins",'RECIBOREINS','pdf',
-										'ID',usuario,'RECIBO DE PAGO','eadjreins','alta',usuario+"_"+miciclo+"_PAGO",laruta,activaEliminar);						
-						}
-					});
+							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX='"+usuario+"_"+miciclo+"_PAGO'";
+							parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			
+							$.ajax({
+								type: "POST",
+								data:parametros2,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data2){  	
+									laruta='';
+									activaEliminar='S';
+									if (JSON.parse(data2)[0][2]>0) {laruta=JSON.parse(data2)[0][0]; 
+																	activaEliminar=JSON.parse(data2)[0][1]=='N'?'S':'N'; }
+									dameSubirArchivoDrive("elrecibo","Recibo de Pago de Reinscripción","reciboreins",'RECIBOREINS','pdf',
+												'ID',usuario,'RECIBO DE PAGO','eadjreins','alta',usuario+"_"+miciclo+"_PAGO",laruta,activaEliminar);						
+									
+									//en caso de que el pago ya haya sido validado
+									if (JSON.parse(data2)[0][1]=='S') {
+										$("#inputFileRow").html("<span class=\"badge badge-success bigger-120\"><i class=\"fa fa-check bigger-200\"></i>"+
+																"Tu pago ha sido validado Correctamente</span>");										
+									}	
+									
+									//agregamos el boton de subir horarios
+									$("#losbotones").html("<button title=\"Hacer mi propuesta de Horario\" onclick=\"miHorario();\" "+
+									                     "     class=\"btn btn-white btn-purple  btn-round\">"+ 
+														 "     <i class=\"ace-icon text-warning fa fa-calendar bigger-140\"></i>"+
+														 "     Mi Propuesta de Horario<span class=\"btn-small\"></span> "+           
+														 "</button>");														
+								}
+
+							});
+						} 
+					else { //En caso de que no haya ciclos abiertos 
+						$("#elrecibo").html("<span class=\"badge badge-danger  bigger-120\"><i class=\"fa fa-times-circle bigger-200\"></i>"+
+																"El proceso de Reinscripción no se encuentra abierto actualmente</span>");	
+					}
 				
 			   }
 			});
 		
-    
+			elsql3="SELECT getavanceCred('"+usuario+"') from dual";
+			parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros3,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data3){ 			
+					losavance=losdatos=JSON.parse(data3)[0][0];
+					$("#selAvance").html(losavance);					
+											
+				}
+			});
+
+			//cargamos listas de residencias 
+			elsql3="select MATE_CLAVE from cmaterias  where MATE_TIPO  IN ('RP')";
+			parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros3,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data3){ 	
+					jQuery.each(JSON.parse(data3), function(clave, valor) { 
+						residencias[clave]=valor.MATE_CLAVE;
+					});																										
+				}
+			});
 
 	$(document).on( 'change', '.edit', function(){		
 		lin=$(this).attr("id").split("_")[1];
@@ -53,33 +102,36 @@ var miciclo="";
 	 });
 	 
 	});
-	
-	
-		 
-	function change_SELECT(elemento) {
-        if (elemento=='selCarreras') {
-			if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) { //Lengua ext.
-			      actualizaSelect("selAlumnos","SELECT ALUM_MATRICULA,CONCAT(ALUM_MATRICULA,' ',ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) "+
-							" from falumnos where ALUM_ACTIVO IN (1,2) order by ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE","BUSQUEDA");}
-			else 
-			{
-				actualizaSelect("selAlumnos","SELECT ALUM_MATRICULA,CONCAT(ALUM_MATRICULA,' ',ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) "+
-						  " from falumnos where ALUM_ACTIVO IN (1,2) and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' order by ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE","BUSQUEDA");}
-			}
-		if (elemento=='selCarreras') {	
-			$("#selAlumnos").empty();
-			$("#tabHorariosReins").empty();
-		}
 
-		if (elemento=='selCiclos') {
-			$("#elciclo").html($("#selCiclos option:selected").text());
-		}
-        
-    }
 
-    function cargarDatosAlumno(){
-		if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
+	function miHorario(){
+		if (!($("#reciboreins").val()=='')) {			
+			//verificamos si ya se envio la propuesta 		
+			elsql="SELECT count(*) as N FROM dlistaprop y where y.PDOCVE='"+miciclo+
+			"' AND y.ALUCTR='"+usuario+"' and ENVIADA='S'";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data){  
+						yaenvio=JSON.parse(data);
+						if (yaenvio[0][0]>0) {
+							mostrarIfo("infoYa","grid_pa_reinscripcion","Propuesta Enviada","Su propuesta ya fue enviada con "+
+							"anterioriedad, ya la esta verificando su Jefe de División, por favor este atento a su correo electrónico y/o celular",
+							"modal-lg");
+						}
+						else {
+							$("#principal").removeClass("hide");
+							cargarHorarios();
+						}
+					}
+				});			
+		}
+		else { alert ("Debe cargar primero su recibo de pago para tener acceso a cargar su propuesta");}
+		
 	}
+	
 
     function cargarHorarios(){		
 		script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
@@ -111,30 +163,34 @@ var miciclo="";
 		   $("#loshorarios").empty();
 		   $("#loshorarios").append(script);
 				
-		elsql="SELECT * FROM vinscripciones y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' order by SEMESTRE, MATERIAD";
-		mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
+		elsql="SELECT * FROM vreinstem y where y.CICLO='"+miciclo+
+		       "' AND y.MATRICULA='"+usuario+"' order by SEMESTRE, MATERIAD";
+		mostrarEspera("esperahor","grid_pa_reinscripcion","Cargando Horarios...");
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
 			   data:parametros,
 			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
+						losdatos=JSON.parse(data);
+									
 						elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, PLACM1 FROM falumnos, mapas where "+
-						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'"	
+						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+usuario+"'"	
 						parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
 							type: "POST",
 							data:parametros,
 							url:  "../base/getdatossqlSeg.php",
 							success: function(dataMapa){  	
-								losdatos=JSON.parse(data);
+								
 								losdatosMapa=JSON.parse(dataMapa);
 								jQuery.each(losdatosMapa, function(clave, valor) { 
 													
 									generaTablaHorarios(losdatos,"INSCRITAS");   
+								
 									
 									cargaMateriasDer(losdatosMapa[0]["ALUM_MAPA"],losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
+									
 									$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
 									$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
 									$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);	
@@ -159,85 +215,6 @@ var miciclo="";
 		
 }
 
-
-function cargarHorariosExt(){		
-	script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
-			">"+
-		  "        <thead>  "+
-	   "             <tr>"+
-	   "                <th><input type=\"checkbox\" id=\"chkTodos\" onclick=\"selTodos();\"/>Sel</th> "+	
-	   "                <th>R</th> "+
-	   "                <th class=\"hidden\">ID</th> "+		
-	   "                <th>CVE_Asig</th> "+	   
-	   "                <th>Asignatura</th> "+	
-	   "                <th>SEM</th> "+	   
-	   "                <th>Grupo</th> "+
-	   "                <th>Carrera</th> "+
-	   "                <th>Cupo</th> "+	   
-	   "                <th>Ins</th> "+
-	   "                <th style=\"text-align:center\">Lunes</th> "+
-	   "                <th style=\"text-align:center\">Martes</th> "+
-	   "                <th style=\"text-align:center\">Miercoles</th> "+
-	   "                <th style=\"text-align:center\">Jueves</th> "+
-	   "                <th style=\"text-align:center\">Viernes</th> "+
-	   "                <th style=\"text-align:center\">Sabado</th> "+
-	   "                <th style=\"text-align:center\">Domingo</th> "+	  	
-	   "                <th style=\"text-align:center\">Cred.</th> "+	 
-	   "                <th>Profesor</th> "+	   
-	   "             </tr> "+
-	   "            </thead>" +
-	   "         </table>";
-	   $("#loshorarios").empty();
-	   $("#loshorarios").append(script);
-			
-	var eltip=($("#selCarreras").val()=='10')?"I":"OC";
-	elsql="SELECT * FROM vinscripciones_oc y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		   "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' AND y.TIPOMAT='"+eltip+"' order by SEMESTRE, MATERIAD";
-	mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
-	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	$.ajax({
-		   type: "POST",
-		   data:parametros,
-		   url:  "../base/getdatossqlSeg.php",
-		   success: function(data){  
-					elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, PLACM1 FROM falumnos, mapas where "+
-					" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'"	
-					parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
-					$.ajax({
-						type: "POST",
-						data:parametros,
-						url:  "../base/getdatossqlSeg.php",
-						success: function(dataMapa){  	
-							losdatos=JSON.parse(data);
-							losdatosMapa=JSON.parse(dataMapa);
-							jQuery.each(losdatosMapa, function(clave, valor) { 
-												
-								generaTablaHorarios(losdatos,"INSCRITAS");   
-								
-								cargaMateriasDerExt();
-								$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
-								$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
-								$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);	
-								$("#CMA").html(losdatosMapa[0]["PLACMA"]);
-								$("#CMI").html(losdatosMapa[0]["PLACMI"]);	
-								$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
-								$("#CM1").html(losdatosMapa[0]["PLACM1"]);									
-								validarCondiciones(false);	
-							});
-
-							ocultarEspera("esperahor");     	      					  					  
-						},
-						error: function(data) {	                  
-									alert('ERROR: '+data);
-												}
-					});	          	      					  					  
-			},
-			error: function(data) {	                  
-					   alert('ERROR: '+data);
-									 }
-	});	        	   	   	        	    	 
-	
-}
 
 
 function generaTablaHorarios(grid_data, tipo){
@@ -324,51 +301,20 @@ function selTodos() {
 
 
 function cargaMateriasDer(vmapa,vesp){
-	parametros={matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
+
+	parametros={matricula:usuario,ciclo:miciclo,dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
 	$.ajax({
 		type: "POST",
 		data:parametros,
-		url:  "getMaterias.php",
+		url:  "../reinscripciones/getMaterias.php",
 		success: function(data){ 
 
-			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
-				  "' and SEMESTRE<=getPeriodos('"+$("#selAlumnos").val()+"','"+$("#elciclo").html().split("|")[0]+"') "+
-				  " and INS<CUPO"+
-				  " and MAPA='"+vmapa+"' ORDER BY SEMESTRE, MATERIAD";
-			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
-			$.ajax({
-				type: "POST",
-				data:parametros,
-				url:  "../base/getdatossqlSeg.php",
-				success: function(dataNI){ 
-					losdatosNI=JSON.parse(dataNI);				
-					generaTablaHorarios(losdatosNI,"NOINSCRITAS");				  					  
-				 },
-				 error: function(data) {	                  
-							alert('ERROR: '+data);
-										  }
-		     });	       			  					  
-		 },
-		 error: function(data) {	                  
-					alert('ERROR: '+data);
-								  }
- });	       
-}
-
-
-function cargaMateriasDerExt(){
-
-	parametros={lacarrera:$("#selCarreras").val(),matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],
-	dato:sessionStorage.co,bd:"Mysql"}
-	$.ajax({
-		type: "POST",
-		data:parametros,
-		url:  "getMateriasExt.php",
-		success: function(data){ 
-			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
-				  "' and ADICIONAL='"+$("#selCarreras").val()+"'"+
-				  " ORDER BY SEMESTRE, MATERIAD";
-
+			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+usuario+
+				  "' and SEMESTRE<=getPeriodos('"+usuario+"','"+miciclo+"') "+
+				  " and INS<CUPO and IDDETALLE NOT IN (SELECT IDDETALLE FROM vreinstem y where y.CICLO='"+miciclo+
+				  "' AND y.MATRICULA='"+usuario+"')"+ 
+				  " and MAPA='"+vmapa+"' ORDER BY SEMESTRE, GRUPO, MATERIAD";
+		
 			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
@@ -393,11 +339,12 @@ function cargaMateriasDerExt(){
 
 /*=====================================AGREGAR VENTANA ASIGNATURA CON CONDICIONES================================*/
 function agregarCondiciones(){
+
     if (!($('#selAlumnos').val()=="0")) {
 		
 		$("#venasigcond").modal("hide");
 		$("#venasigcond").empty();
-	    dameVentana("venasigcond","grid_reinscripciones","Agregar Asignatura otros Periodos","lg","bg-danger","fa blue bigger-160 fa-legal","300");
+	    dameVentana("venasigcond","grid_pa_reinscripcion","Agregar Asignatura otros Periodos","lg","bg-danger","fa blue bigger-160 fa-legal","300");
 	  
 		$("#body_venasigcond").append("<div class=\"row\">"+
 							"           <div class=\"col-sm-12\">"+
@@ -405,7 +352,7 @@ function agregarCondiciones(){
 							"           </div>"+
 							"       </div>");
 
-		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+"'"+
+		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+usuario+"'"+
 		" ORDER BY SEMESTRE, MATERIAD";
 
         var titulos = [{titulo: "SEL",estilo: "text-align: center;"},
@@ -448,10 +395,8 @@ function agregarCondiciones(){
 }
 
 
-
-
 function addAsigCond(id){
-			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
+			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+usuario+
 				  "' and IDDETALLE="+id+" ORDER BY SEMESTRE, MATERIAD";
 			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -481,7 +426,7 @@ function addAsigCond(id){
 function verInfo(){
 	laespera="<img src=\"../../imagenes/menu/esperar.gif\" style=\"background: transparent; width: 30%; height:30%;\"/>"
 	$('#infoReins').modal({show:true, backdrop: 'static'});
-	         elalumno=$("#selAlumnos").val();
+	         elalumno=usuario;
 	         $("#elpromedio").html(laespera);
 			 $("#loscreditost").html(laespera);
 			 $("#loscreditos").html(laespera);
@@ -597,7 +542,7 @@ function validarcrucesReins(){
 		if (!(eldia.length==0)) {
 			 res=verCruceReins(eldia,x+"B",true);
 			 if (res.length>0) {
-			      cadFin+=losdias[x-3]+" "+res+"\n";
+			      cadFin+="<span class=\"badge badge-danger\">CRUCE: "+losdias[x-3]+" "+res+"</span><br/>";
 			 }			 
 		 }		
 	}
@@ -607,8 +552,50 @@ function validarcrucesReins(){
 
 
 /*===================================VALIDANDO CONDICIONES GENERALES ======================================*/
+
+function hayRepetidas(){
+	var listaMat=[];
+	var matRep="";
+	j=0;
+	for (i=1; i<contFila; i++){
+		cad="";
+		if ($("#c_"+i+"_99").prop("checked")) {
+			listaMat[j]=$("#c_"+i+"_13").html();				
+			j++;
+		}
+	}
+	listaMat=BurbujaCadena(listaMat);
+	materiaant=listaMat[0];
+	for (i=1; i<listaMat.length; i++){
+		if (materiaant==listaMat[i]) {matRep+="<span class=\"badge badge-success\"> La materia "+listaMat[i]+" Se encuentra repetida</span><br/>";}
+		materiaant=listaMat[i];
+	}
+	return matRep;
+}
+
+
+function checarResidencia(){
+	//Checamos que no haya elegido residencia sin cumplir los creditos 
+	resCursa='';
+	var listaMat=[];
+	for (i=1; i<contFila; i++){
+		cad="";
+		if ($("#c_"+i+"_99").prop("checked")) {		
+			if (residencias.indexOf($("#c_"+i+"_13").html())>=0){
+                resCursa=$("#c_"+i+"_13").html();
+			}  							
+		}
+	}
+	return resCursa;
+}
+
 function validarCondiciones(mensaje) {
 	res="";
+
+	//Checamos materias repetidas
+	cadMat=hayRepetidas();
+	if (cadMat.length>0) {res+=cadMat; }
+
 	//calculamos el total de créditos 
 	sumacred=0;
 	for (i=1; i<contFila; i++){
@@ -624,17 +611,21 @@ function validarCondiciones(mensaje) {
 	$("#selEspecial").html($(".etRepit_E").toArray().length); 
    
 	//Checamos que los creditos de especiales no se rebasen 
-	 if ($("#selEspecial").html()>2) {res+="No se puede solicitar mas de dos especiales \n";}
+	 if (parseInt($("#selEspecial").html())>2) {res+="<span class=\"badge badge-warning\"> No se puede solicitar mas de dos asignaturas en especiales</span><br/>";}
 	 
-	 if (($("#selEspecial").html()>0) && ($("#selCreditos").html()>$("#CMI").html())) {
-		  res+="Si esta cursando una asignatura en especial debe llevar solo carga mínima "+$("#CMI").html()+" cr&eacute;ditos \n";}
+	 if ((parseInt($("#selEspecial").html())>0) && (parseInt($("#selCreditos").html())>parseInt($("#CMI").html()))) {		
+		  res+="<span class=\"badge badge-info\"> Si esta cursando una asignatura en especial debe llevar solo carga mínima "+$("#CMI").html()+" cr&eacute;ditos</span><br/>";}
 	
-	if (($("#selRepitiendo").html()==1) && ($("#selCreditos").html()>$("#C1R").html())) {
-		res+="Si esta cursando una asignatura en repitición solo debe llevar "+$("#C1R").html()+" créditos \n";}
+	if ((parseInt($("#selRepitiendo").html())==1) && (parseInt($("#selCreditos").html())>parseInt($("#C1R").html()))) {
+		res+="<span class=\"badge badge-primary\"> Si esta cursando una asignatura en repitición solo debe llevar "+$("#C1R").html()+" créditos</span><br/>";}
 
-	if (($("#selRepitiendo").html()>1) && ($("#selCreditos").html()>$("#CM1").html())) {
-		res+="Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créitos \n";}
+	if ((parseInt($("#selRepitiendo").html()>1)) && (parseInt($("#selCreditos").html()>$("#CM1").html()))) {
+		res+="<span class=\"badge badge-warning\"> Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créditos</span><br/>";}
 	
+	matRes=checarResidencia();
+	if (!(matRes=='') && (parseFloat($("#selAvance").html())<80)) {
+		res+="<span class=\"badge badge-pink\"> Para poder cursar la Residencia Prof. "+matRes+" debe cumplir el 80% de avances en créditos </span><br/>";
+    }
 	
 	res+=validarcrucesReins();
 	return (res);
@@ -649,14 +640,14 @@ function guardarRegistros(){
 	for (i=1; i<contFila; i++){
 		cad="";
 		if ($("#c_"+i+"_99").prop("checked")) {
-					cad=$("#elciclo").html().split("|")[0]+"|"+ //PDOCVE
+					cad=miciclo+"|"+ //PDOCVE
 					$("#c_"+i+"_13").html()+"|"+    //MATCVE
-					$("#selAlumnos").val()+"|"+    //ALUCTR                  
+					usuario+"|"+    //ALUCTR                  
 					$("#c_"+i+"_2SIE").html()+"|"+ //GRUPO                    
 					$("#c_"+i+"_0").html()+"|"+ //iddetalle
 					$("#c_"+i+"_2").val()+"|"+ //profesor
 					fechacap+"|"+ //fecha
-					$("#elusuario").html()+"|"+ //usuario
+					usuario+"|"+ //usuario
 					$("#c_"+i+"_1C").html(); //Tipo de cursamiento 
 					losdatos[j]=cad;				
 					j++;			
@@ -666,10 +657,10 @@ function guardarRegistros(){
 	var loscampos = ["PDOCVE","MATCVE","ALUCTR","GPOCVE","IDGRUPO","LISTC15","FECHAINS","USUARIO","LISTC14"];
 
 	parametros={
-		tabla:"dlista",
+		tabla:"dlistaprop",
 		campollave:"concat(PDOCVE,ALUCTR)",
 		bd:"Mysql",
-		valorllave:$("#elciclo").html().split("|")[0]+$("#selAlumnos").val(),
+		valorllave:miciclo+usuario,
 		eliminar: "S",
 		separador:"|",
 		campos: JSON.stringify(loscampos),
@@ -682,64 +673,123 @@ function guardarRegistros(){
 		success: function(data){
 			if (data.length>0) {alert ("Ocurrio un error: "+data);}
 			ocultarEspera("guardandoReins");
-			
-			if ($("#imprimirBoletaCheck").prop("checked")) {
-				window.open("boletaMat.php?carrera="+$("#selCarreras").val()+"&matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank');                                 	                                        					          
-			}
-			$("#tabHorariosReins").empty();
+			mostrarIfo("infoYa","grid_pa_reinscripcion","Validación Correcta","Su propuesta ha sido validada correctamente, ahora ya puede enviarla"+
+			" a su Jefe de División haciendo click en el botón Enviar propuesta",
+							"modal-lg");	
 		}					     
 	});    	         
 }
 
-function hayRepetidas(){
 
-	var listaMat=[];
-	var matRep="";
-	j=0;
-	for (i=1; i<contFila; i++){
-		cad="";
-		if ($("#c_"+i+"_99").prop("checked")) {
-			listaMat[j]=$("#c_"+i+"_13").html();	 
-			j++;
-		}
-	}
-
-	listaMat=Burbuja(listaMat);
-	materiaant=listaMat[0];
-	for (i=1; i<listaMat.length; i++){
-		if (materiaant==listaMat[i]) {matRep+="La materia "+listaMat[i]+" Se encuentra repetida\n";}
-		materiaant=listaMat[i];
-	}
-	
-	return matRep;
-
-}
 
 function guardarTodos(){
-	mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
+	mostrarEspera("guardandoReins","grid_pa_reinscripcion","Guardando...");
 	res=validarCondiciones(false);
-	cadMat=hayRepetidas();
-	if (cadMat.length>0) {alert ("ERROR CRITICO:\n"+cadMat); ocultarEspera("guardandoReins"); return 0;}
+	
 	if (res.length>0) {
-		if(confirm("Existen los siguientes Errores:\n "+res+"¿Desea Grabar de todas formas?")) {
-			      guardarRegistros();       	 
-				}
-		else {ocultarEspera("guardandoReins");}
+		mostrarConfirm2("confirmFinalizar", "grid_pa_reinscripcion", "ERRORES EN LA PROPUESTA",			  
+			  "         <div  id=\"miserrores\"  style=\"width:100%; text-align:justify; height:150px; overflow-y: scroll;\">"+res+"</div>",
+			  "Cerrar", "cerrarVentana();","modal-lg");
+			  ocultarEspera("guardandoReins");			  
 		}		
 	else {
 		guardarRegistros();   //en caso de que no haya errores
+		ocultarEspera("guardandoReins");	
 	}
 }
 
-
-function verKardex(){
-	window.open("../avancecurri/kardex.php?matricula="+$("#selAlumnos").val(), '_blank'); 
-}
-
-function imprimeBoleta(){
-	window.open("boletaMat.php?carrera="+$("#selCarreras").val()+"&matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank'); 
+function cerrarVentana(){
+	ocultarEspera("guardandoReins");
+	$("#confirmFinalizar").modal("hide");	
 }
 
 
 
+function addObserva(){
+	//cargamos listas de residencias 
+	elsql3="select OBS, count(*) from dlistapropobs  where ALUCTR='"+usuario+"' and PDOCVE='"+miciclo+"'";
+	parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){ 
+			cadOBS='';
+			if ((JSON.parse(data3)[0][1])>0) {cadOBS=JSON.parse(data3)[0][0];}
+			mostrarConfirm2("confirmObs", "grid_pa_reinscripcion", "OBSERVACIONES",			  
+			"         <textarea  id=\"misobs\"  style=\"width:100%; text-align:justify; height:100%; overflow-y: scroll;\">"+cadOBS+"</textarea>",
+			"Guardar", "grabarObs();","modal-lg");																											
+		}
+	});		  
+}
 
+
+function grabarObs(){
+
+	var losdatos = [miciclo+"|"+usuario+"|"+$("#misobs").val()];
+	var loscampos = ["PDOCVE","ALUCTR","OBS"];
+
+	parametros={
+		tabla:"dlistapropobs",
+		campollave:"concat(PDOCVE,ALUCTR)",
+		bd:"Mysql",
+		valorllave:miciclo+usuario,
+		eliminar: "S",
+		separador:"|",
+		campos: JSON.stringify(loscampos),
+		datos: JSON.stringify(losdatos)
+	};
+	$.ajax({
+		type: "POST",
+		url:"../base/grabadetalle.php",
+		data: parametros,
+		success: function(data){
+			if (data.length>0) {alert ("Ocurrio un error: "+data);}
+			ocultarEspera("guardandoReins");
+			$("#confirmObs").modal("hide");			
+		}					     
+	});    	         
+}
+
+
+function
+ enviarJefe(){
+	elsql3="select  count(*) from dlistaprop  where ALUCTR='"+usuario+"' and PDOCVE='"+miciclo+"'";
+	parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){ 
+			if ((JSON.parse(data3)[0][0])>0) {
+				if (confirm("¿Seguro que deseas enviar tu propuesta, ya no podrá realziar cambios?")) {
+					mostrarEspera("guardandoReins","grid_pa_reinscripcion","Guardando...");
+					res=validarCondiciones(false);	
+					if (res.length==0) {
+							parametros={tabla:"dlistaprop",bd:"Mysql",campollave:"concat(PDOCVE,ALUCTR)",valorllave:miciclo+usuario,ENVIADA:"S"};
+							$.ajax({
+								type: "POST",
+								url:"../base/actualiza.php",
+								data: parametros,
+								success: function(data){       
+								if (!(data.substring(0,1)=="0"))	{ 
+									ocultarEspera("guardandoReins");
+									$("#principal").addClass("hide");
+									$("#tabHorariosReins").empty();
+								}
+								else {alert (" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}																												
+								}					     
+						}); 
+					}
+				  else {alert ("Tu propuesta tiene errores de Validación, haga clic primero en el botón Verificar y Guardar y ya no agregues o quites asignatura");
+				       ocultarEspera("guardandoReins");
+				       }
+				} 
+			}
+			else { alert ("Al parecer no has guardado tu propuesta, recuerda hacer click primero en el botón Verificar y Guardar");
+			       ocultarEspera("guardandoReins");
+		       }
+		}
+	});		  
+
+}

@@ -77,8 +77,9 @@
 								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span></span>
 							  </div> 
 							  <div class="col-sm-2">
-								  <span class="text-white">Repitiendo:  <span id="selRepitiendo" class="badge badge-warning">0</span></span><br/>
-								  <span class="text-white">Especial:  <span id="selEspecial" class="badge badge-danger">0</span></span>
+							  		<span title="Repitiendo segunda vez"  class="text-white">Rep|Esp:  <span id="selRepitiendo" class="badge badge-warning">0</span>
+								  	<span title="Repitiendo en especial" id="selEspecial" class="badge badge-danger">0</span></span><br/>
+								    <span class="text-white">Avance:  <span id="selAvance" class="badge badge-success">0</span></span><br/>
 							  </div> 
 
 							  <div class="col-sm-2">

@@ -233,8 +233,25 @@ function Burbuja(lista) {
     n = lista.length;
     // Algoritmo de burbuja
     for (k = 1; k < n; k++) {
-        for (i = 0; i < (n - k); i++) {
+        for (i = 0; i < (n - k); i++) {			
             if (parseInt(lista[i].split("|")[0]) > parseInt(lista[i + 1].split("|")[0])) {
+                aux = lista[i];
+                lista[i] = lista[i + 1];
+                lista[i + 1] = aux;
+            }
+        }
+    }
+    return lista;
+}
+
+
+function BurbujaCadena(lista) {
+    var n, i, k, aux;
+    n = lista.length;
+    // Algoritmo de burbuja
+    for (k = 1; k < n; k++) {
+        for (i = 0; i < (n - k); i++) {
+            if (lista[i].split("|")[0] > lista[i + 1].split("|")[0]) {
                 aux = lista[i];
                 lista[i] = lista[i + 1];
                 lista[i + 1] = aux;
@@ -2266,8 +2283,8 @@ function NumeroALetras(num) {
 
 function dameSubirArchivoDrive(contenedor,etiqueta,nombre,carpetaDrive,extensiones,campoIDTabla,valorid,mensajesubida,tablasubir,altaedita,aux, ruta, activareliminar) {		    
 		cad=
-		"  <div class=\"row align-items-end\"> "+		
-		"      <div class=\"col-sm-9\">"+
+		"  <div class=\"row \"> "+		
+		"      <div class=\"col-sm-9\" id=\"inputFileRow\">"+
 		"          <label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
 		"          <input  class=\"fileSigea\" type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
 		"                 onchange=\"subirPDFDriveSave('file_"+nombre+"','"+carpetaDrive+"','img_"+nombre+"',"+
@@ -2288,7 +2305,7 @@ function dameSubirArchivoDrive(contenedor,etiqueta,nombre,carpetaDrive,extension
 		}
 		eliminar="<div class=\"col-sm-3\" style=\"padding-top:10px;\">"+
 		"           <a title=\"Ver Archivo\" target=\"_blank\" id=\"enlace_"+nombre+"\" href=\""+ruta+"\">"+
-		"                  <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+ruta+"\" width=\"50px\" height=\"50px\">"+
+		"                  <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
 		"           </a>"+cadeliminar+		
 		"          </div>"+
 	    "  </div>";
@@ -2308,12 +2325,8 @@ function dameSubirArchivoDrive(contenedor,etiqueta,nombre,carpetaDrive,extension
 			//onchange:''
 			//
 		});
-
-		$('#pdf_'+nombre).attr('href', '..\\..\\imagenes\\menu\\pdf.png');
-		$('#img_'+nombre).attr('src', "..\\..\\imagenes\\menu\\pdf.png");
 		if ((ruta=='') || (ruta==null)) { 
-			$('#pdf_'+nombre).attr('disabled', 'disabled');				
-			$('#pdf_'+nombre).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+			$('#enlace_'+nombre).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
 			$('#img_'+nombre).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
 		   }
 

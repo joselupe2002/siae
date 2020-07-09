@@ -17,9 +17,10 @@ if ($_SESSION['inicio']==1) {
 			    $name = "F_".pathinfo($_FILES[$_GET['inputFile']]['name'],PATHINFO_FILENAME);
 				$name.= "_".date("YmdHis");
 				$name.= substr(md5(rand(0, PHP_INT_MAX)), 10);
-				$name.=".".end(explode(".",$_FILES[$_GET['inputFile']]['name']));
+				$laext=explode(".",$_FILES[$_GET['inputFile']]['name']);
+				$name.=".".end($laext);
 
-				if (isset($_GET['nombre'])) { $name= $_GET['nombre'].".".end(explode(".",$_FILES[$_GET['inputFile']]['name']));}
+				if (isset($_GET['nombre'])) { $name= $_GET['nombre'].".".end($laext);}
 				
 				try {
 					$service = new Google_Service_Drive($client);

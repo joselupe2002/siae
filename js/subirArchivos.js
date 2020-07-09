@@ -103,6 +103,8 @@ function subirArchivoDrive(nombreComponente,carpeta,nombreImg, nombreInput, exte
 
 function subirArchivoDriveName(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera,nombre){		
 	var haymayor=false;	
+	laruta=$("#"+nombreInput).val(); 
+	elid=laruta.substring(laruta.indexOf('id=')+3,laruta.length);
 			elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 
@@ -140,12 +142,22 @@ function subirArchivoDriveName(nombreComponente,carpeta,nombreImg, nombreInput, 
 			   	    				    processData: false,
 			   	    				    type: 'POST'})
 			   	    				    .done(function(res){ 	
-			   	    				    	
-			   	    				    	laimagen=res.split("|")[1];
-			   	    				    	
+
+			   	    				    	laimagen=res.split("|")[1];			   	    				    	
 			   	    				    	if (res.substring(0,2)=="1|"){
+												if (elid.length>0) {																		  
+													jQuery.ajax({
+														   url: preruta+'eliminarArchivoDrive.php?idfile='+elid,
+														   cache: false,
+														   timeout: 600000, 
+														   contentType: false,
+														   processData: false,
+														   type: 'POST'})
+														   .done(function(res){ 			  	   		    		   	    			  
+														   });	    					  
+												}	  
 			   	    				    		$("#"+nombreImg).attr("src",laimagen);
-			   	    				        	$("#"+nombreInput).attr("value",laimagen);
+			   	    				        	$("#"+nombreInput).val(laimagen);
 			   	    				    	}
 			   	    				    	else {
 			   	    				    		$("#"+nombreImg).attr("src","../../imagenes/menu/default.png");
@@ -394,9 +406,10 @@ function subirPDFDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, exte
 	   	    				    		
 	   	    				    		$("#btnEli_"+nombreInput).show();
 	   	    				    		
-	   	    				    		$("#enlace_"+nombreInput).attr("href",laimagen);	
+										$("#enlace_"+nombreInput).attr("href",laimagen);										   
 	   	    				    		$("#enlace_"+nombreInput+"_2").attr("href",laimagen);
-	   	    				    		
+										
+										   
 	   	    				        	$("#"+nombreInput).attr("value",laimagen);
 										   
 
@@ -587,9 +600,10 @@ function eliminarEnlaceDrive(nombreComponente,carpeta,nombreImg, nombreInput, ex
 	   	    				        $("#"+nombreImg).attr("src","../../imagenes/menu/pdfno.png");
 	   	    				        $("#btnEli_"+nombreInput).css("display","none");
 	    				    		$("#"+nombreImg+"_2").attr("src","../../imagenes/menu/pdfno.png");
-	    				    		
-	    				    		$("#enlace_"+nombreInput).attr("href","");	
-	    				    		$("#enlace_"+nombreInput+"_2").attr("href","");
+									
+									
+	    				    		$("#enlace_"+nombreInput).attr("href",'..\\..\\imagenes\\menu\\pdfno.png');	
+	    				    		$("#enlace_"+nombreInput+"_2").attr("href",'..\\..\\imagenes\\menu\\pdfno.png');
 	    				    		
 	    				        	$("#"+nombreInput).attr("value","");
 	    				        	

@@ -2,6 +2,7 @@ var id_unico="";
 var estaseriando=false;
 var matser="";
 var contFila=1;
+var residencias=[];
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -50,6 +51,22 @@ var contFila=1;
 		$("#guardar_"+lin).addClass("btn-warning");
 		$(this).css("border-color",""); 
 	 });
+
+	//cargamos listas de residencias 
+	elsql3="select MATE_CLAVE from cmaterias  where MATE_TIPO  IN ('RP')";
+	parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){ 	
+			jQuery.each(JSON.parse(data3), function(clave, valor) { 
+				residencias[clave]=valor.MATE_CLAVE;
+			});																										
+		}
+	});
+
+
 	 
 	});
 	
@@ -111,16 +128,19 @@ var contFila=1;
 		   $("#loshorarios").append(script);
 				
 		elsql="SELECT * FROM vinscripciones y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' order by SEMESTRE, MATERIAD";
+		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' order by SEMESTRE, GRUPO, MATERIAD";
 		mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
+
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
 			   data:parametros,
 			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
-						elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, PLACM1 FROM falumnos, mapas where "+
+						elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, "+
+						" PLACM1, getavanceCred(ALUM_MATRICULA) AS AVANCE  FROM falumnos, mapas where "+
 						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'"	
+			
 						parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
 							type: "POST",
@@ -136,7 +156,8 @@ var contFila=1;
 									cargaMateriasDer(losdatosMapa[0]["ALUM_MAPA"],losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
 									$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
 									$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
-									$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);	
+									$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);
+									$("#selAvance").html(losdatosMapa[0]["AVANCE"]);		
 									$("#CMA").html(losdatosMapa[0]["PLACMA"]);
 									$("#CMI").html(losdatosMapa[0]["PLACMI"]);	
 									$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
@@ -333,6 +354,8 @@ function cargaMateriasDer(vmapa,vesp){
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and SEMESTRE<=getPeriodos('"+$("#selAlumnos").val()+"','"+$("#elciclo").html().split("|")[0]+"') "+
 				  " and INS<CUPO"+
+				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM vinscripciones y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+				  "' AND y.MATRICULA='"+$("#selAlumnos").val()+"')"+ 
 				  " and MAPA='"+vmapa+"' ORDER BY SEMESTRE, MATERIAD";
 			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -366,6 +389,8 @@ function cargaMateriasDerExt(){
 		success: function(data){ 
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and ADICIONAL='"+$("#selCarreras").val()+"'"+
+				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM vinscripciones_oc y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+				  "' AND y.MATRICULA='"+$("#selAlumnos").val()+"')"+ 
 				  " ORDER BY SEMESTRE, MATERIAD";
 
 			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
@@ -703,7 +728,7 @@ function hayRepetidas(){
 		}
 	}
 
-	listaMat=Burbuja(listaMat);
+	listaMat=BurbujaCadena(listaMat);
 	materiaant=listaMat[0];
 	for (i=1; i<listaMat.length; i++){
 		if (materiaant==listaMat[i]) {matRep+="La materia "+listaMat[i]+" Se encuentra repetida\n";}

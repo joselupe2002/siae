@@ -39,36 +39,27 @@
 		 <div id="user-profile-1" class="user-profile row">
 		      <div class="col-xs-12 col-sm-3 center">
 				   <div>
-					   <span class="profile-picture"><img id="img_ALUM_FOTO"  style="width: 150px; height: 170px;" class="editable img-responsive" src=""/></span>
+					   <span class="profile-picture">
+					        <img id="img_ALUM_FOTO"  style="width: 150px; height: 170px;" class="editable img-responsive" src=""/>
+					   </span>
     				   <div class="space-4"></div>
                       
  	    		       <input class="fileSigea" type="file" id="file_ALUM_FOTO" name="file_ALUM_FOTO" 
- 	    		             onchange="subirArchivoDriveName('file_ALUM_FOTO','ALUM_FOTO','img_ALUM_FOTO','ALUM_FOTO','jpeg|bmp|png|gif','S','<?php echo $_SESSION["usuario"];?>')">
+ 	    		             onchange="subirArchivoDriveName('file_ALUM_FOTO','ALUM_FOTO','img_ALUM_FOTO','ALUM_FOTO','jpeg|png','S','<?php echo $_SESSION["usuario"];?>')">
  	    		       
-                        <input  type="hidden" value=""  name="ALUM_FOTO" id="ALUM_FOTO"  placeholder="" />   	    	      
+                        <input type="hidden" value=""  name="ALUM_FOTO" id="ALUM_FOTO" placeholder="" />   	
+						<button  onclick="guardarCampo('ALUM_FOTO',true,'La Foto fue asignada correctamente');" class="btn btn-white btn-info btn-bold">
+				                 <i class="ace-icon green fa fa-camera bigger-160"></i><span class=" fontRobot bigger-100">Asignar Foto</span>            
+				        </button>
+
 					</div>
 
 					<div class="space-6"></div>
-                         <div class="profile-contact-info">
-							  <div class="profile-contact-links align-left">
-								  <i class="ace-icon fa fa-plus-circle bigger-120 green"></i><span class="text-success" id ="nota1">Una Nota</span><br/>
-								  <i class="ace-icon fa fa-envelope bigger-120 pink"></i><span class="text-success" id ="nota2">Una nota</span><br/>
-								  <i class="ace-icon fa fa-globe bigger-125 blue"></i><span class="text-success" id ="nota3">Una Nota</span><br/>
-							  </div>
-							  <div class="space-6"></div>
-							        <!-- 
-                                    <div class="profile-social-links align-center">
-									     <a href="#" class="tooltip-info" title="" data-original-title="Visit my Facebook"><i class="middle ace-icon fa fa-facebook-square fa-2x blue"></i></a>
-										 <a href="#" class="tooltip-info" title="" data-original-title="Visit my Twitter"><i class="middle ace-icon fa fa-twitter-square fa-2x light-blue"></i></a>
-                                         <a href="#" class="tooltip-error" title="" data-original-title="Visit my Pinterest"><i class="middle ace-icon fa fa-pinterest-square fa-2x red"></i></a>
-									</div>-->									
-							  </div>
-							   
-							  
+                       
+														  
 							  <div class="hr hr12 dotted"></div>
                                    <div class="clearfix">
-                                        <div class="grid2"><span onclick="verMaterias('A');" style="cursor: pointer;" title="Promedio General de asignaturas aprobadas"  id="promedio" class="bigger-175 blue"></span><br />Promedio</div>
-                                        <div class="grid2"><span onclick="verMaterias('R');" style="cursor: pointer;" title="N&uacute;mero de veces que ha reprobado alguna asignatura" id="reprobadas" class="bigger-175 blue"></span><br />Reprobadas</div>
+                                        
 								   </div>
 							       <div class="hr hr16 dotted"></div>
 								   <div class="clearfix">
@@ -90,6 +81,18 @@
 											   <span class="line-height-1 bigger-170" id="ALUM_CICLOINS"> </span><br />
 											   <span class="line-height-1 smaller-90"> Ingreso </span>
 										 </span>
+
+										 <span onclick="verMaterias('A');" class="btn btn-app btn-sm btn-yellow no-hover">
+											   <span class="line-height-1 bigger-170" id="promedio"> </span><br />
+											   <span class="line-height-1 smaller-90"> Promedio </span>
+										 </span>
+
+										 <span onclick="verMaterias('R');" class="btn btn-app btn-sm btn-yellow no-hover">
+											   <span class="line-height-1 bigger-170" id="reprobadas"> </span><br />
+											   <span class="line-height-1 smaller-90"> # Rep </span>
+										 </span>
+
+
 									  </div>
 
 									<div class="space-12"></div>
@@ -110,13 +113,13 @@
 
 											<div class="profile-info-row"><div class="profile-info-name">Direcci&oacute;n </div>
                                                 <div class="profile-info-value"><i class="fa fa-map-marker light-orange bigger-110"></i>
-													<span class="editable" id="direccion">Direcci&oacute;n</span>
+													<span class="editable" id="direccion" name="direccion">Direcci&oacute;n</span>
 												</div>
 											</div>
 											
 											<div class="profile-info-row"><div class="profile-info-name">Tel&eacute;fono </div>
                                                 <div class="profile-info-value"><i class="fa fa-phone light-orange bigger-110"></i>
-													<span class="editable" id="telefono">999999999</span>
+													<span class="editable" name="telefono" id="telefono">999999999</span>
 												</div>
 											</div>
 											
@@ -137,8 +140,8 @@
 										 <div class="space-20"></div>
 										 
 										 <div style="text-align: center;">
-				                               <button  onclick="guardar();" class="btn  btn-white btn-primary" value="Agregar" style="width: 150px; height: 40px;">
-				                               <i class="ace-icon blue fa fa-save bigger-160"></i><span class="btn-lg">Guardar</span>            
+				                               <button  onclick="guardar();" class="btn  btn-bold btn-danger" value="Agregar" >
+				                               <i class="ace-icon white fa fa-save bigger-200"></i><span class="btn-lg">Guardar Cambios Realizados</span>            
 				                               </button>
 				                         </div>
 											
@@ -175,7 +178,7 @@
  
 
  
-<script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>       
+<script src="<?php echo $nivel; ?>js/subirArchivos.js?v=<?php echo date('YmdHis'); ?>"></script>       
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
 <script type="<?php echo $nivel; ?>text/javascript"> if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");</script>
 <script src="<?php echo $nivel; ?>assets/js/bootstrap.min.js"></script>
@@ -217,6 +220,33 @@
    $(document).ready(function($) { var Body = $('body'); Body.addClass('preloader-site');});
    $(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
 
+
+
+   function cambios(){
+	   alert ("se cambioooo");
+   }
+
+
+   function guardarCampo(campo,conmsj,mensaje) {
+	   alert ("entre: "+campo);
+	if (campo=='ALUM_FOTO') {parametros={ALUM_FOTO:$("#ALUM_FOTO").val(),tabla:"falumnos",campollave:"ALUM_MATRICULA",valorllave:"<?php echo $_SESSION['usuario'];?>",bd:"Mysql"};}
+	if (campo=='ALUM_CORREO') {parametros={ALUM_CORREO:$("#correo").val(),tabla:"falumnos",campollave:"ALUM_MATRICULA",valorllave:"<?php echo $_SESSION['usuario'];?>",bd:"Mysql"};}
+	if (campo=='ALUM_TELEFONO') {parametros={ALUM_TELEFONO:$("#telefono").val(),tabla:"falumnos",campollave:"ALUM_MATRICULA",valorllave:"<?php echo $_SESSION['usuario'];?>",bd:"Mysql"};}
+	if (campo=='ALUM_DIRECCION') {parametros={ALUM_DIRECCION:$("#direccion").val(),tabla:"falumnos",campollave:"ALUM_MATRICULA",valorllave:"<?php echo $_SESSION['usuario'];?>",bd:"Mysql"};}
+	
+
+	$('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
+	   $.ajax({
+		        type: "POST",
+		        url:"../base/actualiza.php",
+		    	data: parametros,
+		    	success: function(data){		    				
+		    		$('#dlgproceso').modal("hide");  			                                	                      
+		    		if (!(data.substring(0,1)=="0")){ if (conmsj){alert (mensaje);}}	
+		    		else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
+		           }					     
+		      });          
+}
    
    $(document).ready(function($) {
 
@@ -227,7 +257,7 @@
 			droppable:false,
 			onchange:null,
 			thumbnail:false, //| true | large
-			whitelist:'png|jpeg|gif|bmp',
+			whitelist:'png|jpeg',
 			blacklist:'exe|php'
 			//onchange:''
 			//
@@ -237,8 +267,8 @@
 	 //editables on first profile page
 		$.fn.editable.defaults.mode = 'inline';
 		$.fn.editableform.loading = "<div class='editableform-loading'><i class='ace-icon fa fa-spinner fa-spin fa-2x light-blue'></i></div>";
-	    $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="ace-icon fa fa-check"></i></button>'+
-	                                '<button type="button" class="btn editable-cancel"><i class="ace-icon fa fa-times"></i></button>';    
+	    $.fn.editableform.buttons = '<button class="btn btn-info editable-submit"><i class="ace-icon fa fa-check"></i></button>'+
+	                                '<button class="btn editable-cancel"><i class="ace-icon fa fa-times"></i></button>';    
 		
 		//editables 
 	
@@ -282,8 +312,9 @@
 
 
 		    	  	    $('#matricula').html(valor.alum_matricula);
-		    	  	    $('#carrera').html(valor.alum_carreraregd);
-		    	  	    $('#img_ALUM_FOTO').attr("src",valor.alum_foto);
+						  $('#carrera').html(valor.alum_carreraregd);					
+						  $('#img_ALUM_FOTO').attr("src",valor.alum_foto);
+						  $('#ALUM_FOTO').val(valor.alum_foto);
 		    	    	 
 		    	      });		    
 		
@@ -320,15 +351,8 @@
 		                  alert('ERROR: '+data);
 		              }
 		});//fin del promedio
-
-
-			
-			
    });// Fin del ready 
 
-
-
-   
 
 function guardar(){
 
@@ -368,8 +392,6 @@ function guardar(){
 
 function verMaterias(tipo){
 	   $('#lositems').empty();
-	   
-	   
 	   if (tipo=='A') {
 		               eltipo=" and a.LISCAL>=70";
 		               $('#leyendap').addClass("label-success"); 
@@ -384,7 +406,8 @@ function verMaterias(tipo){
 	   elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE, CONCAT(c.EMPL_NOMBRE,' ',c.EMPL_APEPAT,' ',c.EMPL_APEMAT) as PROFESORD "+
                 " FROM dlista a, cmaterias b, pempleados c "+
      		   " where IFNULL(MATE_TIPO,'0') NOT IN ('T','I','AC') AND a.MATCVE=b.MATE_CLAVE and  a.LISTC15=c.EMPL_NUMERO and a.ALUCTR='<?php echo $_SESSION["usuario"];?>'"+eltipo+
-     		   " order by a.PDOCVE";
+				" order by a.PDOCVE";
+	   
        parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	   $.ajax({
 		type: "POST",
