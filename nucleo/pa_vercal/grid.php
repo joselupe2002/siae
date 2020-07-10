@@ -221,7 +221,7 @@ var maxuni=0;
         	                      " (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,"+
         	                      " getcuatrimatxalum(e.MATCVE,ALUCTR) AS SEM "+
         	                      " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+        	                      
-								  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N') order by PDOCVE DESC"			  		  
+								  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.BAJA='N' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N') order by PDOCVE DESC"			  		  
 				parametros={sql:sqlMat,dato:sessionStorage.co,bd:"Mysql"}
         	      $.ajax({
 						 type: "POST",

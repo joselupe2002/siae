@@ -93,7 +93,9 @@ var micicloant="";
 			$("#elciclo").html($("#selCiclos option:selected").text());
 		}
         
-    }
+	}
+	
+
 
     function cargarDatosAlumno(){
 
@@ -123,19 +125,30 @@ var micicloant="";
 							data:parametros3,
 							url:  "../base/getdatossqlSeg.php",
 							success: function(data3){ 					
-								jQuery.each(JSON.parse(data3), function(clave, valor) { 
-							
+								jQuery.each(JSON.parse(data3), function(clave, valor) { 							
 									if (valor.EVAL=='N') {
 										matsineval++;
-										cadmatsineval+="<span>"+valor.MATERIAD+"</span><br/>";
+										cadmatsineval+="<span class=\"badge bigger-40\">"+valor.MATERIAD+"</span><br/>";
 									}
 								});	
-								$("#laevaldoc").html(matsineval);																									
+								$("#laevaldoc").html(matsineval);	
+								/*=================================================================================*/
+								if (matsineval==0) {
+									if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
+								}
+								else {
+									mostrarIfo("infoEval","grid_reinscripciones","Bloqueado para Resincripción",
+									"<div style=\"text-align:justify;\">"+
+									"     <span class=\"badge badge-danger\"><i class=\"fa fa-times-circle-o\"/> NO HA REALIZADO EVALUACIÓN DOCENTE DE:</span><br/>"
+									+cadmatsineval+"</div>","modal-lg");
+								}
+								/*=================================================================================*/
+								
 							}
 						});
 					}
 				});
-		if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
+		
 	}
 
     function cargarHorarios(){		
