@@ -334,7 +334,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["PLACRED"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'PCTJE: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,$dataAlum[0]["AVANCE"]),0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,$dataAlum[0]["AVANCE"],0,1,'L');
         //======================================================================
         $pdf->Ln(3);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);$pdf->Cell(0,0,'PLAN: ',0,1,'L');
