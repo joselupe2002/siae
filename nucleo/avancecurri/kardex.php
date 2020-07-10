@@ -330,6 +330,7 @@
         $data2 = $pdf->LoadDatosCursando($elciclo);
         $miutil = new UtilUser();
         
+        echo $dataAlum[0]["AVANCE"];
         $pdf->Ln(3);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);
         $pdf->Cell(0,0,'KARDEX DEL ALUMNO',0,1,'C');

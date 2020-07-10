@@ -6,6 +6,7 @@ var miciclo="";
 var residencias=[];
 var matsineval=0;
 var cadmatsineval="";
+var micicloant="";
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -18,7 +19,7 @@ var cadmatsineval="";
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 	
 
-		elsql="SELECT CICL_CLAVE, CICL_DESCRIP, count(*) from ciclosesc where CICL_ABIERTOREINS='S' ORDER BY CICL_CLAVE DESC";
+		elsql="SELECT CICL_CLAVE, CICL_DESCRIP, CICL_CICLOANT,count(*) from ciclosesc where CICL_ABIERTOREINS='S' ORDER BY CICL_CLAVE DESC";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 				type: "POST",
@@ -26,8 +27,9 @@ var cadmatsineval="";
 				url:  "../base/getdatossqlSeg.php",
 				success: function(data){  	
 					losdatos=JSON.parse(data);
-					if (losdatos[0][2]>0) {
+					if (losdatos[0][3]>0) {
 							miciclo=losdatos[0][0];
+							micicloant=losdatos[0][2];
 							$("#elciclo").html(losdatos[0][0]+"|"+losdatos[0][1]);					
 
 							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX='"+usuario+"_"+miciclo+"_PAGO'";
@@ -58,8 +60,35 @@ var cadmatsineval="";
 														 "     Mi Propuesta de Horario<span class=\"btn-small\"></span> "+           
 														 "</button>");														
 								}
-
 							});
+
+							
+							//Verificamos si le quedán asignaturas por hacer evaldoc
+							matsineval=0;
+							cadmatsineval="";
+							elsql3="select MATE_DESCRIP AS MATERIAD, MATCVE AS MATERIA, "+
+								"(IF ((IFNULL((SELECT COUNT(*) from ed_respuestas n "+
+								"			where n.IDDETALLE=a.ID AND n.TERMINADA='S'),0))>0,'S','N')) AS EVAL "+
+								" from dlista a, cmaterias b where a.ALUCTR='"+usuario+"' and PDOCVE='"+micicloant+"'"+
+								" and MATCVE=MATE_CLAVE";
+							
+							parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								type: "POST",
+								data:parametros3,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data3){ 					
+									jQuery.each(JSON.parse(data3), function(clave, valor) { 
+								
+										if (valor.EVAL=='N') {
+											matsineval++;
+											cadmatsineval+="<span>"+valor.MATERIAD+"</span><br/>";
+										}
+									});	
+									$("#laevaldoc").html(matsineval);																									
+								}
+							});
+
 						} 
 					else { //En caso de que no haya ciclos abiertos 
 						$("#elrecibo").html("<span class=\"badge badge-danger  bigger-120\"><i class=\"fa fa-times-circle bigger-200\"></i>"+
@@ -97,28 +126,7 @@ var cadmatsineval="";
 			});
 
 
-			matsineval=0;
-			cadmatsineval="";
-			//Verificamos si le quedán asignaturas por hacer evaldoc
-			elsql3="select MATE_DESCRIP AS MATERIAD, MATCVE AS MATERIA, "+
-			       "(IF ((IFNULL((SELECT COUNT(*) from ed_respuestas n "+
-				   "			where n.IDDETALLE=a.ID AND n.TERMINADA='S'),0))>0,'S','N')) AS EVAL "+
-			       " from dlista a, cmaterias b where a.ALUCTR='"+usuario+"' and PDOCVE='"+micilo+"'"+
-			       " and MATCVE=MATE_CLAVE";
-			parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
-			$.ajax({
-				type: "POST",
-				data:parametros3,
-				url:  "../base/getdatossqlSeg.php",
-				success: function(data3){ 	
-					jQuery.each(JSON.parse(data3), function(clave, valor) { 
-						if (valor.EVAL=='N') {
-							matsineval++;
-							cadmatsineval="<span>"+valor.MATERIAD+"</span>";
-						}
-					});																										
-				}
-			});
+			
 
 			
 
@@ -133,6 +141,11 @@ var cadmatsineval="";
 	 
 	});
 
+
+	function verMateriasEvalDoc(){
+		mostrarIfo("infoEval","grid_pa_reinscripcion","Asignaturas que faltan Eval. Doc.",
+		"<div style=\"text-align:justify;\">"+cadmatsineval+"</div>","modal-lg");
+	}
 
 	function miHorario(){
 		if (!($("#reciboreins").val()=='')) {			
@@ -655,7 +668,10 @@ function validarCondiciones(mensaje) {
 	matRes=checarResidencia();
 	if (!(matRes=='') && (parseFloat($("#selAvance").html())<80)) {
 		res+="<span class=\"badge badge-pink\"> Para poder cursar la Residencia Prof. "+matRes+" debe cumplir el 80% de avances en créditos </span><br/>";
-    }
+	}
+	
+	//Checamos si ya evaluo todos sus docentes
+	if (parseInt($("#laevaldoc").html())>0) {res+="<span class=\"badge badge-info\">  Su propuesta no puede ser enviada no ha evaluado a todos sus docentes del ciclo pasado</span><br/>";}
 	
 	res+=validarcrucesReins();
 	return (res);

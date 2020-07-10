@@ -5,6 +5,8 @@ var contFila=1;
 var residencias=[];
 var matsineval=0;
 var cadmatsineval="";
+var miciclo="";
+var micicloant="";
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -67,7 +69,6 @@ var cadmatsineval="";
 		}
 	});
 
-
 	 
 	});
 	
@@ -95,6 +96,45 @@ var cadmatsineval="";
     }
 
     function cargarDatosAlumno(){
+
+		//Verificamos la carga de las asignaturas que faltan de evaluacion docente 
+		elsql="SELECT CICL_CLAVE, CICL_CICLOANT from ciclosesc where  CICL_CLAVE='"+$("#selCiclos").val()+"' ORDER BY CICL_CLAVE DESC";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  	
+					losdatos=JSON.parse(data);
+						miciclo=losdatos[0][0];
+						micicloant=losdatos[0][1];	
+						//Verificamos si le quedán asignaturas por hacer evaldoc
+						matsineval=0;
+						cadmatsineval="";
+						elsql3="select MATE_DESCRIP AS MATERIAD, MATCVE AS MATERIA, "+
+							"(IF ((IFNULL((SELECT COUNT(*) from ed_respuestas n "+
+							"			where n.IDDETALLE=a.ID AND n.TERMINADA='S'),0))>0,'S','N')) AS EVAL "+
+							" from dlista a, cmaterias b where a.ALUCTR='"+$("#selAlumnos").val()+"' and PDOCVE='"+micicloant+"'"+
+							" and MATCVE=MATE_CLAVE";
+						
+						parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
+						$.ajax({
+							type: "POST",
+							data:parametros3,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data3){ 					
+								jQuery.each(JSON.parse(data3), function(clave, valor) { 
+							
+									if (valor.EVAL=='N') {
+										matsineval++;
+										cadmatsineval+="<span>"+valor.MATERIAD+"</span><br/>";
+									}
+								});	
+								$("#laevaldoc").html(matsineval);																									
+							}
+						});
+					}
+				});
 		if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
 	}
 
@@ -660,6 +700,8 @@ function validarCondiciones(mensaje) {
 	if (($("#selRepitiendo").html()>1) && ($("#selCreditos").html()>$("#CM1").html())) {
 		res+="Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créitos \n";}
 	
+	//Checamos si ya evaluo todos sus docentes
+	if ($("#selEspecial").html()>2) {res+="No se puede solicitar mas de dos especiales \n";}
 	
 	res+=validarcrucesReins();
 	return (res);
@@ -765,6 +807,10 @@ function imprimeBoleta(){
 	window.open("boletaMat.php?carrera="+$("#selCarreras").val()+"&matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank'); 
 }
 
+function verMateriasEvalDoc(){
+	mostrarIfo("infoEval","grid_reinscripciones","Asignaturas que faltan Eval. Doc.",
+	"<div style=\"text-align:justify;\">"+cadmatsineval+"</div>","modal-lg");
+}
 
 
 

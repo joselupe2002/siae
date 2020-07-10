@@ -60,7 +60,10 @@
 					     <div class='row'>
 						      <div class="col-sm-2">
 								  <span class="text-white">Créditos:  <span id="selCreditos" class="badge badge-primary">0</span></span> <br/>
-								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span></span>
+								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span>
+								  <span style="cursor:pointer;" title="Número de asignaturas que faltan de hacer evaluación docente" 
+								        onclick="verMateriasEvalDoc();" 
+								        id="laevaldoc" class="badge badge-warning">0</span></span>
 							  </div> 
 							  <div class="col-sm-2">
 								  <span title="Repitiendo segunda vez"  class="text-white">Rep|Esp:  <span id="selRepitiendo" class="badge badge-warning">0</span>
