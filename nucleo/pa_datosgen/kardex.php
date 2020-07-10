@@ -334,7 +334,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["PLACRED"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'PCTJE: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,$dataAlum[0]["AVANCE"],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,round(($dataAlum[0]["CREDACUM"]/$dataAlum[0]["PLACRED"]),2)*100,0,1,'L');
         //======================================================================
         $pdf->Ln(3);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);$pdf->Cell(0,0,'PLAN: ',0,1,'L');
@@ -534,7 +534,7 @@
         $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
                 str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).
                  "|MATAPR:".$materiasaprobadas.
-                 "|CURSANDO:".$materiascursando."|AVANCE:".$dataAlum[0]["AVANCE"];
+                 "|CURSANDO:".$materiascursando."|AVANCE:".round(($dataAlum[0]["CREDACUM"]/$dataAlum[0]["PLACRED"]),2)*100;
         
                         
         $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,210,40,40);

@@ -349,7 +349,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["PLACRED"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'PCTJE: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,$dataAlum[0]["AVANCE"],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,round(($dataAlum[0]["CREDACUM"]/$dataAlum[0]["PLACRED"]),2)*100,0,1,'L');
         //======================================================================
         $pdf->Ln(3);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);$pdf->Cell(0,0,'PLAN: ',0,1,'L');
@@ -541,71 +541,11 @@
         $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
                 str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).
                  "|MATAPR:".$materiasaprobadas.
-                 "|CURSANDO:".$materiascursando."|AVANCE:".$dataAlum[0]["AVANCE"];
+                 "|CURSANDO:".$materiascursando."|AVANCE:".round(($dataAlum[0]["CREDACUM"]/$dataAlum[0]["PLACRED"]),2)*100;
                  
                  
         $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,205,35,35);         
-       // $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,170,40,40);
-        
-        
-
-
-        /*
-        str_pad($input,  3, "*");
-
-        $pdf->Ln(10);
-
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(255);  
-        $pdf->SetFont('Montserrat-ExtraBold','B',9);
-        $pdf->Cell(7,5,'No ',1,0,'C',true);
-        $pdf->Cell(17,5,'Control',1,0,'C',true);
-        $pdf->Cell(60,5,'Nombre',1,0,'C',true);
-        
-        for ($i=1;$i<=10; $i++) {     
-            $pdf->SetFillColor(172,31,6);
-            $pdf->SetTextColor(255);       
-            if ($i<=$numUni) {
-                $pdf->SetFillColor(23,5,124);
-                $pdf->SetTextColor(255);
-            }
-            $pdf->Cell(8,5,'U'.$i,1,0,'C',true); 
-        }
-
-        $pdf->SetFillColor(23,5,124);
-        $pdf->SetTextColor(255);
-        $pdf->Cell(8,5,'CF',1,0,'C',true);
-
-        $pdf->Ln();
-        $pdf->SetFont('Montserrat-Medium','',7);
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(0);
-        $pdf->SetWidths(array(7,17, 60, 8,8,8,8,8,8,8,8,8,8,8));
-        $n=1;
-
-
-        foreach($data as $row) {
-            //$pdf->Cell(70,5,$row["NOMBRE"],1,0,'L');            
-            $pdf->Row(array($n,
-                             utf8_decode($row["ALUM_MATRICULA"]),
-                             utf8_decode($row["NOMBRE"]),
-                             utf8_decode($row[1]),
-                             utf8_decode($row[2]),
-                             utf8_decode($row[3]),
-                             utf8_decode($row[4]),
-                             utf8_decode($row[5]),
-                             utf8_decode($row[6]),
-                             utf8_decode($row[7]),
-                             utf8_decode($row[8]),
-                             utf8_decode($row[9]),
-                             utf8_decode($row[10]),
-                             utf8_decode($row["LISCAL"])
-                             )
-                      );
-            $n++;
-        }
-        
-    */
+     
 
             $pdf->Output(); 
 
