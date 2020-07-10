@@ -232,7 +232,7 @@
 			 elsql="select a.ID, ALUM_MATRICULA,  CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE, IFNULL(LISPA"+launidad+",'0') as CAL, IFNULL(LISFA"+launidad+",'0') as FALTA"+
 				          " from dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.GPOCVE='<?php echo $_GET["grupo"];?>'"+
 				          " and PDOCVE='<?php echo $_GET["ciclo"];?>' and LISTC15='<?php echo $_GET["profesor"];?>'"+
-						  " and MATCVE='<?php echo $_GET["materia"];?>' order by ALUM_APEPAT,ALUM_APEMAT,ALUM_NOMBRE";
+						  " and MATCVE='<?php echo $_GET["materia"];?>' and a.BAJA='N' order by ALUM_APEPAT,ALUM_APEMAT,ALUM_NOMBRE";
 				
 			
 	          parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
