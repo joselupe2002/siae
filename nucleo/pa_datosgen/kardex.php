@@ -199,7 +199,7 @@
                 " ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, ".
                 " ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, ".
                 " PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,".
-                " getavance('".$_GET["matricula"]."') as AVANCE, ".
+                " getAvanceCred('".$_GET["matricula"]."') as AVANCE, ".
                 " getPromedio('".$_GET["matricula"]."','N') as PROMEDIO_SR,".
                 " getPromedio('".$_GET["matricula"]."','S') as PROMEDIO_CR, ".
                 " getPeriodos('".$_GET["matricula"]."',getciclo()) AS PERIODOS,".
@@ -334,7 +334,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["PLACRED"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'PCTJE: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,explode("|",$dataAlum[0]["AVANCE"])[2],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(180);$pdf->Cell(0,0,$dataAlum[0]["AVANCE"]),0,1,'L');
         //======================================================================
         $pdf->Ln(3);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);$pdf->Cell(0,0,'PLAN: ',0,1,'L');
@@ -534,7 +534,7 @@
         $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
                 str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).
                  "|MATAPR:".$materiasaprobadas.
-                 "|CURSANDO:".$materiascursando."|AVANCE:".explode("|",$dataAlum[0]["AVANCE"])[2];
+                 "|CURSANDO:".$materiascursando."|AVANCE:".$dataAlum[0]["AVANCE"];
         
                         
         $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,210,40,40);
