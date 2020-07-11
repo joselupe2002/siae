@@ -199,7 +199,7 @@ function cargarPortafolios(){
 	 $('#dlgproceso').modal({show:true, backdrop: 'static'});
 	 
 	 elsql="select  "+
-        		   " ALUCTR AS MATRICULA,"+
+        		   " ALUCTR AS MATRICULA, BAJA, "+
         		   " concat(ALUM_APEPAT, ' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS `NOMBRE`,"+
         		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='EP' order by IDDET DESC LIMIT 1),'') AS RUTAEP,"+
         		   " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT('"+launidad+"','"+elciclo+"',ALUM_MATRICULA,MATCVE) and b.AUX='ED' order by IDDET DESC LIMIT 1),'') AS RUTAED,"+ 
@@ -228,8 +228,9 @@ function cargarPortafolios(){
       	     $("#tabHorarios").append("<tbody id=\"cuerpo\">"); 
        	     jQuery.each(JSON.parse(data), function(clave, valor) { 	
 		          $("#cuerpo").append("<tr id=\"row"+valor.MATRICULA+"\">");
-		          $("#row"+valor.MATRICULA).append("<td><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.MATRICULA+"</span></td>");
-		          $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold;\">"+valor.NOMBRE+"</span></td>");	
+				  $("#row"+valor.MATRICULA).append("<td><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.MATRICULA+"</span></td>");
+				  elcolorbaja=""; if (valor.BAJA=='S') {elcolorbaja="font-color:red;";}
+		          $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold; "+elcolorbaja+"\">"+valor.NOMBRE+"</span></td>");	
 		          	          
 		          $("#row"+valor.MATRICULA).append("<td style=\"text-align:center\"><a title=\"Ver Archivo de Evidencia Encuadre\" target=\"_blank\" href=\""+valor.RUTAENCU+"\">"+
 	                                                    " <img width=\"30px\" height=\"30px\" id=\""+valor.MATRICULA+"ENCUADRE\" "+
