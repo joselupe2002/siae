@@ -229,7 +229,7 @@ function cargarPortafolios(){
        	     jQuery.each(JSON.parse(data), function(clave, valor) { 	
 		          $("#cuerpo").append("<tr id=\"row"+valor.MATRICULA+"\">");
 				  $("#row"+valor.MATRICULA).append("<td><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.MATRICULA+"</span></td>");
-				  elcolorbaja=""; if (valor.BAJA=='S') {elcolorbaja="font-color:red;";}
+				  elcolorbaja=""; if (valor.BAJA=='S') {elcolorbaja="color:red;";}
 		          $("#row"+valor.MATRICULA).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold; "+elcolorbaja+"\">"+valor.NOMBRE+"</span></td>");	
 		          	          
 		          $("#row"+valor.MATRICULA).append("<td style=\"text-align:center\"><a title=\"Ver Archivo de Evidencia Encuadre\" target=\"_blank\" href=\""+valor.RUTAENCU+"\">"+
