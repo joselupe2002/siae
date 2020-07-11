@@ -25,7 +25,7 @@
        }
        $ins=substr($ins,0,strlen($ins)-1);  
    
-   //    echo "UPDATE ".$nombreTabla." SET ".$ins." WHERE ".$campoLLave."='".$valorLLave."'";
+       echo "UPDATE ".$nombreTabla." SET ".$ins." WHERE ".$campoLLave."='".$valorLLave."'";
        $res=$miConex->afectaSQL($bd,"UPDATE ".$nombreTabla." SET ".$ins." WHERE ".$campoLLave."='".$valorLLave."'");   
       
        $msj="";

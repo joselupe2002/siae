@@ -132,6 +132,7 @@
 		var global,globalUni;
 		var cargandoSubtemas=true;
 		var cargandoTemas=true;
+		var operacion="";
 
 		$(document).ready(function($) { var Body = $('body'); Body.addClass('preloader-site');});
 		$(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
@@ -422,7 +423,7 @@ function impEncuadre(id, materia, descrip){
 		    $('#modalDocumentEnc').modal({show:true, backdrop: 'static'});
 
 			elsql="SELECT  UNID_NUMERO, UNID_DESCRIP, UNID_ID,IFNULL(ENCU_FECHAEVAL,'') AS ENCU_FECHAEVAL,"+
-		                  " IFNULL(ENCU_ID,'') AS ENCU_ID, IFNULL(ENCU_EC,'') AS EC, IFNULL(ENCU_EP,'') AS EP,"+
+		                  " IFNULL(ENCU_ID,'0') AS ENCU_ID, IFNULL(ENCU_EC,'') AS EC, IFNULL(ENCU_EP,'') AS EP,"+
 		                  " IFNULL(ENCU_ED,'') AS ED, IFNULL(ENCU_EA,'') AS EA  FROM eunidades j "+
 		                  " left outer join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+id+")"+
 						  " where j.`UNID_MATERIA`='"+materia+"' and UNID_PRED='' order by UNID_NUMERO";
@@ -479,20 +480,14 @@ function impEncuadre(id, materia, descrip){
 				 $("#rowe"+c).append("<td>"+valor.UNID_ID+"</td>");
 				 $("#rowe"+c).append("<td>"+valor.UNID_NUMERO+"</td>");
 				 $("#rowe"+c).append("<td>"+valor.UNID_DESCRIP+"</td>");	
-
-				// alert ($("#rowe"+c).html());
-				 /*
-				 $("#row"+c).append("<td><div style=\"width:150px;\" class=\"input-group\"><input id=\"a_"+c+"_1\" value=\""+valor.ENCU_FECHAEVAL+"\" class=\"form-control date-picker\" id=\"fechaeval\" "+
-					       "                  type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" /> "+
-					       "                  <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
-						   "             </div></td>");	
-						   */
 				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_2\" value=\""+valor.EP+"\" class=\"form-control\" id=\"ep\"></input></td>");	
 				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_3\" value=\""+valor.ED+"\" class=\"form-control\" id=\"ep\"></input></td>");
 				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_4\" value=\""+valor.EC+"\" class=\"form-control\" id=\"ep\"></input></td>");	
-				 $("#rowe"+c).append("<td><input  readonly style=\"width:150px;\" id=\"a_"+c+"_5\" value=\""+"PORTFOLIO DE EVIDENCIA"+"\" class=\"form-control\" id=\"ep\"></input></td>");	       		   
-				 	c++;
-			   		global=c;
+				 $("#rowe"+c).append("<td><input  readonly style=\"width:150px;\" id=\"a_"+c+"_5\" value=\""+"PORT. EVIDENCIA"+"\" class=\"form-control\" id=\"ep\"></input></td>");	       		   
+				 $("#rowe"+c).append("<td><input class=\"hidden\" id=\"a_"+c+"_6\" value=\""+valor.ENCU_ID+"\"></input></td>");	       		   
+				 c++;
+					global=c;
+					operacion='INSERTAR';  if (valor.ENCU_ID>0) {operacion='EDITAR';} 
 			   	});
               $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});  
 			   }
@@ -505,8 +500,13 @@ function impEncuadre(id, materia, descrip){
 	    }
 
 
+	function guardarActividades() {
+       if (operacion=='EDITAR') {editarEncuadre();} 
+	   else {insertarEncuadre();}
 
-      function guardarActividades(){
+	}
+
+      function insertarEncuadre(){
 
 	 	    var losdatos=[];
 	 	    var losdatosadd=[];
@@ -588,7 +588,82 @@ function impEncuadre(id, materia, descrip){
 	    		    	      }
 	    		    	  }// del succcess del primero					     
 	    		    }); 
-	        }
+			}
+			
+
+			function editarEncuadre(){
+				var losdatos=[];
+				var losdatosadd=[];
+				var i=1; 
+				var j=0; var cad="";
+				var c=-1;
+
+				var f = new Date();
+				fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
+
+				$('#tabActividad tr').each(function () {
+				if (c>=0) {
+							var i = $(this).find("td").eq(0).html();
+							parametros={
+									tabla:"encuadres",
+									campollave:"ENCU_ID",
+									bd:"Mysql",
+									valorllave:	$("#a_"+i+"_6").val(),
+									ENCU_IDTEMA:$(this).find("td").eq(1).html(),
+									ENCU_IDDETGRUPO:$("#elid").val(),
+									ENCU_FECHAEVAL:$("#a_"+i+"_1").val(),
+									ENCU_EP:$("#a_"+i+"_2").val(),
+									ENCU_ED:$("#a_"+i+"_3").val(),
+									ENCU_EC:$("#a_"+i+"_4").val(),
+									ENCU_EA:$("#a_"+i+"_5").val(),
+									ENCU_FECHACAP:fechacap,
+									ENCU_USER:"<?php echo $_SESSION["usuario"];?>",
+									_INSTITUCION:"<?php echo $_SESSION["INSTITUCION"];?>",
+									_CAMPUS:"<?php echo $_SESSION["CAMPUS"];?>"                                    
+								};	
+								//alert ("ID. "+$("#a_"+i+"_6").val()+" "+parametros.valorllave+" "+parametros.ENCU_EP);							            
+								$.ajax({
+									type: "POST",
+									url:"../base/actualiza.php",
+									data: parametros,
+									success: function(data){									
+													                                	                                        					          
+										} 				     
+									});
+
+							}
+							c++;
+					});
+
+					
+				  losdatosadd[0]=$("#elid").val()+"|"+$("#bibliografia").val()+"|"+$("#politicas").val()+"|"+ $("#aportacion").val()+"|"+ $("#apoyos").val(); 
+	    		  var loscamposadd = ["ENCU_IDDETGRUPO","ENCU_BIBLIOGRAFIA","ENCU_POLITICAS","ENCU_APORTACION","ENCU_APOYOS"];
+	    		  parametrosadd={
+    		    	      tabla:"encuadresadd",
+    		    	      campollave:"ENCU_IDDETGRUPO",
+    		    	      bd:"Mysql",
+    		    	      valorllave:$("#elid").val(),
+    		    	      eliminar: "S",
+    		    	      separador:"|",
+    		    	      campos: JSON.stringify(loscamposadd),
+    		    	      datos: JSON.stringify(losdatosadd)
+						};		
+									
+					$.ajax({
+						type: "POST",
+						url:"../base/grabadetalle.php",
+						data: parametrosadd,
+						success: function(data){
+							if (data.length>0) {alert ("Ocurrio un error: "+data); console.log(data);}
+							else {  
+									alert ("Registros guardados"); 
+									$('#modalDocumentEnc').modal("hide");  
+									$('#dlgproceso').modal("hide"); 
+								}		                                	                                        					          
+							} 				     
+						}); //del ajax que guarda adicional 	
+			}
+
 
 
 
