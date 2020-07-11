@@ -142,12 +142,32 @@ var micicloant="";
 	});
 
 
-	function verMateriasEvalDoc(){
-		mostrarIfo("infoEval","grid_pa_reinscripcion","Asignaturas que faltan Eval. Doc.",
-		"<div style=\"text-align:justify;\">"+cadmatsineval+"</div>","modal-lg");
-	}
-
 	function miHorario(){
+		//Verificamos la carga de las asignaturas que faltan de evaluacion docente 
+		elsql="SELECT getStatusAlum('"+usuario+"','"+miciclo+"') from dual ";	
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  							
+					losdatos=JSON.parse(data);
+					errores=losdatos[0][0];				
+					/*=================================================================================*/
+					if (errores=='') {
+						realizarPropuesta();
+					}
+					else {
+								mostrarIfo("infoEval","grid_pa_reinscripcion","Bloqueado para Resincripción",
+								"<div class=\"alert alert-danger\" style=\"text-align:justify; height:200px; overflow-y: scroll; \">"+errores+"</div>","modal-lg");
+							}
+							/*=================================================================================*/
+							
+						}
+					});		
+	}
+	
+	function realizarPropuesta() {
 		if (!($("#reciboreins").val()=='')) {			
 			//verificamos si ya se envio la propuesta 		
 			elsql="SELECT count(*) as N FROM dlistaprop y where y.PDOCVE='"+miciclo+
@@ -172,9 +192,7 @@ var micicloant="";
 				});			
 		}
 		else { alert ("Debe cargar primero su recibo de pago para tener acceso a cargar su propuesta");}
-		
 	}
-	
 
     function cargarHorarios(){		
 		script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
@@ -669,9 +687,6 @@ function validarCondiciones(mensaje) {
 	if (!(matRes=='') && (parseFloat($("#selAvance").html())<80)) {
 		res+="<span class=\"badge badge-pink\"> Para poder cursar la Residencia Prof. "+matRes+" debe cumplir el 80% de avances en créditos </span><br/>";
 	}
-	
-	//Checamos si ya evaluo todos sus docentes
-	if (parseInt($("#laevaldoc").html())>0) {res+="<span class=\"badge badge-info\">  Su propuesta no puede ser enviada no ha evaluado a todos sus docentes del ciclo pasado</span><br/>";}
 	
 	res+=validarcrucesReins();
 	return (res);

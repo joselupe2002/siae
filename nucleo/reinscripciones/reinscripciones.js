@@ -100,55 +100,29 @@ var micicloant="";
     function cargarDatosAlumno(){
 
 		//Verificamos la carga de las asignaturas que faltan de evaluacion docente 
-		elsql="SELECT CICL_CLAVE, CICL_CICLOANT from ciclosesc where  CICL_CLAVE='"+$("#selCiclos").val()+"' ORDER BY CICL_CLAVE DESC";
+		elsql="SELECT getStatusAlum('"+$("#selAlumnos").val()+"','"+$("#selCiclos").val()+"') from dual ";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 				type: "POST",
 				data:parametros,
 				url:  "../base/getdatossqlSeg.php",
-				success: function(data){  	
+				success: function(data){  		
+			
 					losdatos=JSON.parse(data);
-						miciclo=losdatos[0][0];
-						micicloant=losdatos[0][1];	
-						//Verificamos si le quedán asignaturas por hacer evaldoc
-						matsineval=0;
-						cadmatsineval="";
-						elsql3="select MATE_DESCRIP AS MATERIAD, MATCVE AS MATERIA, "+
-							"(IF ((IFNULL((SELECT COUNT(*) from ed_respuestas n "+
-							"			where n.IDDETALLE=a.ID AND n.TERMINADA='S'),0))>0,'S','N')) AS EVAL "+
-							" from dlista a, cmaterias b where a.ALUCTR='"+$("#selAlumnos").val()+"' and PDOCVE='"+micicloant+"'"+
-							" and MATCVE=MATE_CLAVE";
-						
-						parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
-						$.ajax({
-							type: "POST",
-							data:parametros3,
-							url:  "../base/getdatossqlSeg.php",
-							success: function(data3){ 					
-								jQuery.each(JSON.parse(data3), function(clave, valor) { 							
-									if (valor.EVAL=='N') {
-										matsineval++;
-										cadmatsineval+="<span class=\"badge bigger-40\">"+valor.MATERIAD+"</span><br/>";
-									}
-								});	
-								$("#laevaldoc").html(matsineval);	
-								/*=================================================================================*/
-								if (matsineval==0) {
-									if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
-								}
-								else {
-									mostrarIfo("infoEval","grid_reinscripciones","Bloqueado para Resincripción",
-									"<div style=\"text-align:justify;\">"+
-									"     <span class=\"badge badge-danger\"><i class=\"fa fa-times-circle-o\"/> NO HA REALIZADO EVALUACIÓN DOCENTE DE:</span><br/>"
-									+cadmatsineval+"</div>","modal-lg");
-								}
-								/*=================================================================================*/
-								
-							}
-						});
+					errores=losdatos[0][0];
+				
+					/*=================================================================================*/
+					if (errores=='') {
+								if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
 					}
-				});
-		
+					else {
+								mostrarIfo("infoEval","grid_reinscripciones","Bloqueado para Resincripción",
+								"<div class=\"alert alert-danger\" style=\"text-align:justify; height:200px; overflow-y: scroll; \">"+errores+"</div>","modal-lg");
+							}
+							/*=================================================================================*/
+							
+						}
+					});
 	}
 
     function cargarHorarios(){		
