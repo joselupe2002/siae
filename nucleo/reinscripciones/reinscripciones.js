@@ -199,7 +199,7 @@ var eltipomat="";
 		   $("#loshorarios").append(script);
 				
 		elsql="SELECT * FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' and TIPOMAT='"+eltipomat+"' order by SEMESTRE, GRUPO, MATERIAD";
+		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"'  order by SEMESTRE, GRUPO, MATERIAD";
 		mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
 		alert (elsql);
 
