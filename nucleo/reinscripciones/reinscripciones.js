@@ -222,6 +222,7 @@ var eltipomat="";
 							success: function(dataMapa){ 
 								alert (dataMapa); 	
 								losdatos=JSON.parse(data);
+								alert ("pase");
 								losdatosMapa=JSON.parse(dataMapa);
 								alert ("pase");
 								jQuery.each(losdatosMapa, function(clave, valor) { 
