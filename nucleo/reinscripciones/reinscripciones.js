@@ -199,9 +199,9 @@ var eltipomat="";
 		   $("#loshorarios").append(script);
 				
 		elsql="SELECT * FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"'  order by SEMESTRE, GRUPO, MATERIAD";
+		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' and TIPOMAT='"+eltipomat+"' order by SEMESTRE, GRUPO, MATERIAD";
 		mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
-		alert (elsql);
+
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
@@ -209,7 +209,7 @@ var eltipomat="";
 			   data:parametros,
 			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
-				        alert ("el data"+data);
+				  
 						elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, "+
 						" PLACM1, getavanceCred(ALUM_MATRICULA) AS AVANCE  FROM falumnos, mapas where "+
 						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'";
@@ -221,12 +221,9 @@ var eltipomat="";
 							type: "POST",
 							data:parametros,
 							url:  "../base/getdatossqlSeg.php",
-							success: function(dataMapa){ 
-								alert (dataMapa); 	
+							success: function(dataMapa){ 						
 								losdatos=JSON.parse(data);
-								alert ("pase");
 								losdatosMapa=JSON.parse(dataMapa);
-								alert ("pase");
 								jQuery.each(losdatosMapa, function(clave, valor) { 
 													
 									generaTablaHorarios(losdatos,"INSCRITAS");   
