@@ -44,17 +44,16 @@
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >		                    		
 						<div id="losciclos" class="col-sm-2" >	
-
 						</div>			
 						<div id="lascarreras" class="col-sm-3">
 						</div>       			 
-						<div id="losalumnos" class="col-sm-4" >
+						<div id="losalumnos" class="col-sm-3" >
 						</div>
-						<div class="col-sm-3" style="padding-top:14px;">		
-						    <button title="Cargar Datos Alumnos" onclick="cargarDatosAlumno();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
-							</button>				  
-						   												
+						<div class="col-sm-2" style="padding-top:14px;">	
+
+							<button title="Cargar Datos Alumnos" onclick="cargarDatosAlumno();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+											<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
+							</button>			  
 							<button title="Guardar Todos los registros" onclick="guardarTodos();" class="btn btn-white btn-purple  btn-round"> 
 								<i class="ace-icon purple fa fa-save bigger-140"></i>Guardar<span class="btn-small"></span>            
 							</button>
@@ -66,14 +65,17 @@
               <div class="widget-body">
 				   <div class="widget-main">
 				       <div class="row">	
-					       <div id="loshorarios" class="col-sm-12" style="overflow-x: scroll; height:320px;" >    
+					       <div id="loshorarios" class="col-sm-12" style="overflow-x: scroll; height:300px;" >    
 						   </div>
                        </div>
 					</div>
 					<div class="widget-footer bg-primary" style="padding-top:5px;">
 					     <div class='row'>
 						      <div class="col-sm-2">
-								  <span class="text-white">Créditos:  <span id="selCreditos" class="badge badge-primary">0</span></span> <br/>
+								  <span class="text-white">Créditos:  <span title="Número de créditos que esta cursando" id="selCreditos" class="badge badge-primary">0</span>
+								  			<span title="Mensaje de Propuesta de Alumnos" onclick="verNotaAlum();" id="selMensaje" class="badge badge-pink"><i class="fa fa-comment"></i></span>
+											<a id="elpago" href="" target="_blank"><span title="" id="elpagospan" class="badge badge-success">Pago</span></a>
+								  </span> <br/>
 								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span>
 								  <span style="cursor:pointer;" title="Número de asignaturas que faltan de hacer evaluación docente" onclick="verMateriasEvalDoc();" 
 								        id="laevaldoc" class="badge badge-warning">0</span>
@@ -89,12 +91,17 @@
 							        <div class="checkbox" style="padding:0px; margin: 0px;">
 										 <label>
 											   <input id="imprimirBoletaCheck" type="checkbox" class="ace ace-switch ace-switch-6" />
-												<span class="lbl"> Imp. Bol.</span>
+											   <span class="lbl"> Vis. Bol.</span>
 										</label>
 									</div>
 							  </div> 	
 							  <div class="col-sm-6">
-							      
+
+							  			
+										<button title="Cargar Propuesta Alumno" onclick="cargarPropuestaAlum();" class="btn btn-white btn-purple  btn-round"> 
+											<i class="glyphicon glyphicon-sunglasses blue bigger-140"></i> <span class="btn-small"></span>            
+										</button>
+
 										<button title="Imprimir boleta de reinscripción" onclick="imprimeBoleta();" class="btn btn-white btn-purple  btn-round"> 
 											<i class="ace-icon text-warning fa fa-clipboard bigger-140"></i>Boleta<span class="btn-small"></span>            
 										</button>
@@ -103,10 +110,10 @@
 											<i class="ace-icon green fa fa-legal bigger-140"></i> Condiciones<span class="btn-small"></span>            
 										</button>	
 								   		<button title="Ver informaci&oacute;n del Alumno" id="btnfiltrar" onclick="verInfo();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-											<i class="ace-icon red fa fa-info bigger-140"></i> Info<span class="btn-small"></span>            
+											<i class="ace-icon red fa fa-info bigger-140"></i> <span class="btn-small"></span>            
 										</button>
 										<button title="Ver kardex del alumno" id="btnfiltrar" onclick="verKardex();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-											<i class="ace-icon pink fa fa-file-text bigger-140"></i> Kardex<span class="btn-small"></span>            
+											<i class="ace-icon pink fa fa-file-text bigger-140"></i> <span class="btn-small"></span>            
 										</button>
 								
 							  </di>					  

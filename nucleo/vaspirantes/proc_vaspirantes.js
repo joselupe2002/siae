@@ -116,7 +116,7 @@ function verDocumentos(modulo,usuario,essuper){
 		    
 	}
 	else {
-		alert ("Debe seleccionar un Mapa Curricular");
+		alert ("Debe seleccionar un Registro");
 		return 0;
 
 		}

@@ -7,6 +7,8 @@ var matsineval=0;
 var cadmatsineval="";
 var miciclo="";
 var micicloant="";
+var mensajeAlumno="";
+var eltipomat="";
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -85,6 +87,9 @@ var micicloant="";
 						  " from falumnos where ALUM_ACTIVO IN (1,2) and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' order by ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE","BUSQUEDA");}
 			}
 		if (elemento=='selCarreras') {	
+			eltipomat='N';
+			if ($("#selCarreras").val()=='10') {eltipomat='I'};
+			if ($("#selCarreras").val()=='12') {eltipomat='OC'};
 			$("#selAlumnos").empty();
 			$("#tabHorariosReins").empty();
 		}
@@ -98,6 +103,36 @@ var micicloant="";
 
 
     function cargarDatosAlumno(){
+
+		//Verificamos si su pago ya fue cotejado 
+		elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX='"+
+		$("#selAlumnos").val()+"_"+$("#elciclo").html().split("|")[0]+"_"+eltipomat+"'";	
+		
+		parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros2,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data2){  
+				
+				laruta='';
+				secotejo='S';
+				if (JSON.parse(data2)[0][2]>0) {laruta=JSON.parse(data2)[0][0]; 
+												secotejo=JSON.parse(data2)[0][1]=='S'?'S':'N'; }				
+				if (secotejo=='S') {
+					alert (laruta);
+					$("#elpago").attr("href",laruta);
+					$("#elpagospan").prop("title","El pago ya fue cotejado por el área de Contabilidad");
+					$("#elpagospan").html("<i class=\"fa white fa-check-square-o\"></i>");
+				}
+				else{
+					$("#elpago").attr("href",laruta);
+					$("#elpagospan").prop("title","El pago NO se ha cotejado Contabilidad");
+					$("#elpagospan").html("<i class=\"fa white fa-times\"></i>");
+				}
+
+			}
+		});
 
 		//Verificamos la carga de las asignaturas que faltan de evaluacion docente 
 		elsql="SELECT getStatusAlum('"+$("#selAlumnos").val()+"','"+$("#selCiclos").val()+"') from dual ";
@@ -113,7 +148,7 @@ var micicloant="";
 				
 					/*=================================================================================*/
 					if (errores=='') {
-								if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt();} else {cargarHorarios();}
+								if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt('vinscripciones_oc');} else {cargarHorarios('vinscripciones');}
 					}
 					else {
 								mostrarIfo("infoEval","grid_reinscripciones","Bloqueado para Resincripción",
@@ -125,7 +160,16 @@ var micicloant="";
 					});
 	}
 
-    function cargarHorarios(){		
+
+
+	function cargarPropuestaAlum (){
+		
+		if (eltipomat=='N') {cargarHorarios('vreinstem');}
+		else {cargarHorariosExt('vreinstem');}
+	}
+
+
+    function cargarHorarios(lavista){		
 		script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
 	   	   "        <thead>  "+
@@ -155,8 +199,8 @@ var micicloant="";
 		   $("#loshorarios").empty();
 		   $("#loshorarios").append(script);
 				
-		elsql="SELECT * FROM vinscripciones y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' order by SEMESTRE, GRUPO, MATERIAD";
+		elsql="SELECT * FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' and TIPOMAT='"+eltipomat+"' order by SEMESTRE, GRUPO, MATERIAD";
 		mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -181,7 +225,7 @@ var micicloant="";
 													
 									generaTablaHorarios(losdatos,"INSCRITAS");   
 									
-									cargaMateriasDer(losdatosMapa[0]["ALUM_MAPA"],losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
+									cargaMateriasDer(losdatosMapa[0]["ALUM_MAPA"],losdatosMapa[0]["ALUM_ESPECIALIDAD"],lavista);
 									$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
 									$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
 									$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);
@@ -191,6 +235,23 @@ var micicloant="";
 									$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
 									$("#CM1").html(losdatosMapa[0]["PLACM1"]);									
 									validarCondiciones(false);	
+
+									if (lavista="vreinstem") {
+										mensajeAlumno="";
+										elsql="select OBS, count(*) from dlistapropobs  where ALUCTR='"+$("#selAlumnos").val()+
+										"' and PDOCVE='"+$("#elciclo").html().split("|")[0]+"' and TIPOMAT='"+eltipomat+"'";
+																																
+										parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+										$.ajax({
+												type: "POST",
+												data:parametros,
+												url:  "../base/getdatossqlSeg.php",
+												success: function(data){  
+													
+													if ((JSON.parse(data)[0][1])>0) {mensajeAlumno=JSON.parse(data)[0][0];}
+												}
+											});
+										}
 								});
 
 								ocultarEspera("esperahor");     	      					  					  
@@ -208,7 +269,7 @@ var micicloant="";
 }
 
 
-function cargarHorariosExt(){		
+function cargarHorariosExt(lavista){		
 	script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
 			">"+
 		  "        <thead>  "+
@@ -238,9 +299,9 @@ function cargarHorariosExt(){
 	   $("#loshorarios").empty();
 	   $("#loshorarios").append(script);
 			
-	var eltip=($("#selCarreras").val()=='10')?"I":"OC";
-	elsql="SELECT * FROM vinscripciones_oc y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		   "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' AND y.TIPOMAT='"+eltip+"' order by SEMESTRE, MATERIAD";
+
+	elsql="SELECT * FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+		   "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' AND y.TIPOMAT='"+eltipomat+"' order by SEMESTRE, MATERIAD";	
 	mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
@@ -262,7 +323,7 @@ function cargarHorariosExt(){
 												
 								generaTablaHorarios(losdatos,"INSCRITAS");   
 								
-								cargaMateriasDerExt();
+								cargaMateriasDerExt('vinscripciones_oc');
 								$("#elmapa").html(losdatosMapa[0]["ALUM_MAPA"]);
 								$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
 								$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);	
@@ -271,6 +332,22 @@ function cargarHorariosExt(){
 								$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
 								$("#CM1").html(losdatosMapa[0]["PLACM1"]);									
 								validarCondiciones(false);	
+
+								if (lavista="vreinstem") {
+									mensajeAlumno="";
+									elsql="select OBS, count(*) from dlistapropobs  where ALUCTR='"+$("#selAlumnos").val()+
+									"' and PDOCVE='"+$("#elciclo").html().split("|")[0]+"' and TIPOMAT='"+eltipomat+"'";																													
+									parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+									$.ajax({
+											type: "POST",
+											data:parametros,
+											url:  "../base/getdatossqlSeg.php",
+											success: function(data){  
+												
+												if ((JSON.parse(data)[0][1])>0) {mensajeAlumno=JSON.parse(data)[0][0];}
+											}
+										});
+									}
 							});
 
 							ocultarEspera("esperahor");     	      					  					  
@@ -303,16 +380,16 @@ function generaTablaHorarios(grid_data, tipo){
 	}
 
 	jQuery.each(grid_data, function(clave, valor) { 	 		
-		cadRep="N";colorrepit="white";claserepit="etRepit_N"; 
-		if (valor.REP==1) {claserepit="etRepit_R"; cadRep="R"; colorrepit="warning";}
-		if (valor.REP>1) {claserepit="etRepit_E"; cadRep="E"; colorrepit="danger";}
+		cadRep="N";colorrepit="white";claserepit="etRepit_N"; propRep=" repitiendo='0'"; propEsp=" especial='0''";
+		if (valor.REP==1) {propRep=" repitiendo='1'";  claserepit="etRepit_R"; cadRep="R"; colorrepit="warning";}
+		if (valor.REP>1) { propEsp=" especial='1'";  claserepit="etRepit_E"; cadRep="E"; colorrepit="danger";}
     
 	    $("#cuerpoReins").append("<tr id=\"rowR"+contFila+"\">");
 	   		
 		$("#rowR"+contFila).append("<td>"+
 		                           "<div class=\"checkbox\" style=\"padding:0px; margin: 0px;\">"+
 		                           "<label> "+
-									  "<input id=\"c_"+contFila+"_99\" onclick=\"checkOp('"+contFila+"')\" type=\"checkbox\" "+
+									  "<input id=\"c_"+contFila+"_99\" "+propRep+propEsp+" onclick=\"checkOp('"+contFila+"')\" type=\"checkbox\" "+
 									  "class=\"selMateria ace ace-switch ace-switch-6\""+valorcheck+" />"+
 			                          "<span class=\"lbl\"></span>"+
 	                                "</label> "+
@@ -371,7 +448,7 @@ function selTodos() {
 }
 
 
-function cargaMateriasDer(vmapa,vesp){
+function cargaMateriasDer(vmapa,vesp,lavista){
 	parametros={matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
 	$.ajax({
 		type: "POST",
@@ -382,7 +459,7 @@ function cargaMateriasDer(vmapa,vesp){
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and SEMESTRE<=getPeriodos('"+$("#selAlumnos").val()+"','"+$("#elciclo").html().split("|")[0]+"') "+
 				  " and INS<CUPO"+
-				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM vinscripciones y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
 				  "' AND y.MATRICULA='"+$("#selAlumnos").val()+"')"+ 
 				  " and MAPA='"+vmapa+"' ORDER BY SEMESTRE, MATERIAD";
 			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
@@ -406,7 +483,7 @@ function cargaMateriasDer(vmapa,vesp){
 }
 
 
-function cargaMateriasDerExt(){
+function cargaMateriasDerExt(lavista){
 
 	parametros={lacarrera:$("#selCarreras").val(),matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],
 	dato:sessionStorage.co,bd:"Mysql"}
@@ -417,7 +494,7 @@ function cargaMateriasDerExt(){
 		success: function(data){ 
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and ADICIONAL='"+$("#selCarreras").val()+"'"+
-				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM vinscripciones_oc y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
 				  "' AND y.MATRICULA='"+$("#selAlumnos").val()+"')"+ 
 				  " ORDER BY SEMESTRE, MATERIAD";
 
@@ -586,7 +663,6 @@ function verInfo(){
 function checkOp(id) {
      validarCondiciones(false);
 }
-
 function verCruceReins (arreglo,numdia,marcar){
 	arreglo=Burbuja(arreglo);
 	renglon=[];	
@@ -649,7 +725,7 @@ function validarcrucesReins(){
 		if (!(eldia.length==0)) {
 			 res=verCruceReins(eldia,x+"B",true);
 			 if (res.length>0) {
-			      cadFin+=losdias[x-3]+" "+res+"\n";
+			      cadFin+="<span class=\"badge badge-danger\">CRUCE: "+losdias[x-3]+" "+res+"</span><br/>";
 			 }			 
 		 }		
 	}
@@ -657,42 +733,84 @@ function validarcrucesReins(){
 }
 
 
-
-/*===================================VALIDANDO CONDICIONES GENERALES ======================================*/
-function validarCondiciones(mensaje) {
-	res="";
-	//calculamos el total de créditos 
-	sumacred=0;
+function hayRepetidas(){
+	var listaMat=[];
+	var matRep="";
+	j=0;
 	for (i=1; i<contFila; i++){
+		cad="";
 		if ($("#c_"+i+"_99").prop("checked")) {
-            sumacred+=parseInt($("#c_"+i+"_14").html());
+			listaMat[j]=$("#c_"+i+"_13").html();				
+			j++;
 		}
 	}
+	listaMat=BurbujaCadena(listaMat);
+	materiaant=listaMat[0];
+	for (i=1; i<listaMat.length; i++){
+		if (materiaant==listaMat[i]) {matRep+="<span class=\"badge badge-success\"> La materia "+listaMat[i]+" Se encuentra repetida</span><br/>";}
+		materiaant=listaMat[i];
+	}
+	return matRep;
+}
+
+
+
+function checarResidencia(){
+	//Checamos que no haya elegido residencia sin cumplir los creditos 
+	resCursa='';
+	var listaMat=[];
+	for (i=1; i<contFila; i++){
+		cad="";
+		if ($("#c_"+i+"_99").prop("checked")) {		
+			if (residencias.indexOf($("#c_"+i+"_13").html())>=0){
+                resCursa=$("#c_"+i+"_13").html();
+			}  							
+		}
+	}
+	return resCursa;
+}
+
+
+
+function validarCondiciones(mensaje) {
+	res="";
+
+	//Checamos materias repetidas
+	cadMat=hayRepetidas();
+	if (cadMat.length>0) {res+=cadMat; }
+
+	//calculamos el total de créditos 
+	sumacred=0; for (i=1; i<contFila; i++){if ($("#c_"+i+"_99").prop("checked")) {sumacred+=parseInt($("#c_"+i+"_14").html());}}
+	sumaRep=0; for (i=1; i<contFila; i++){ if ($("#c_"+i+"_99").prop("checked")) {sumaRep+=parseInt($("#c_"+i+"_99").attr("repitiendo"));}}
+	sumaEsp=0; for (i=1; i<contFila; i++){if ($("#c_"+i+"_99").prop("checked")) {sumaRep+=parseInt($("#c_"+i+"_99").attr("especial"));}}
+
 	$("#selCreditos").html(sumacred);
+	$("#selRepitiendo").html(sumaRep);
+	$("#selEspecial").html(sumaEsp);
 	
-	//CALCULAMOS NUMERO DE REPORBADAS 
-	$("#selRepitiendo").html($(".etRepit_R").toArray().length); 
-    //CALCULAMOS NUMERO DE ESPECIALES
-	$("#selEspecial").html($(".etRepit_E").toArray().length); 
    
 	//Checamos que los creditos de especiales no se rebasen 
-	 if ($("#selEspecial").html()>2) {res+="No se puede solicitar mas de dos especiales \n";}
+	 if (parseInt($("#selEspecial").html())>2) {res+="<span class=\"badge badge-warning\"> No se puede solicitar mas de dos asignaturas en especiales</span><br/>";}
 	 
-	 if (($("#selEspecial").html()>0) && ($("#selCreditos").html()>$("#CMI").html())) {
-		  res+="Si esta cursando una asignatura en especial debe llevar solo carga mínima "+$("#CMI").html()+" cr&eacute;ditos \n";}
+	 if ((parseInt($("#selEspecial").html())>0) && (parseInt($("#selCreditos").html())>parseInt($("#CMI").html()))) {		
+		  res+="<span class=\"badge badge-info\"> Si esta cursando una asignatura en especial debe llevar solo carga mínima "+$("#CMI").html()+" cr&eacute;ditos</span><br/>";}
 	
-	if (($("#selRepitiendo").html()==1) && ($("#selCreditos").html()>$("#C1R").html())) {
-		res+="Si esta cursando una asignatura en repitición solo debe llevar "+$("#C1R").html()+" créditos \n";}
+	if ((parseInt($("#selRepitiendo").html())==1) && (parseInt($("#selCreditos").html())>parseInt($("#C1R").html()))) {
+		res+="<span class=\"badge badge-primary\"> Si esta cursando una asignatura en repitición solo debe llevar "+$("#C1R").html()+" créditos</span><br/>";}
 
-	if (($("#selRepitiendo").html()>1) && ($("#selCreditos").html()>$("#CM1").html())) {
-		res+="Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créitos \n";}
+	if ((parseInt($("#selRepitiendo").html()>1)) && (parseInt($("#selCreditos").html()>$("#CM1").html()))) {
+		res+="<span class=\"badge badge-warning\"> Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créditos</span><br/>";}
 	
-	//Checamos si ya evaluo todos sus docentes
-	if ($("#selEspecial").html()>2) {res+="No se puede solicitar mas de dos especiales \n";}
+	matRes=checarResidencia();
+	if (!(matRes=='') && (parseFloat($("#selAvance").html())<80)) {
+		res+="<span class=\"badge badge-pink\"> Para poder cursar la Residencia Prof. "+matRes+" debe cumplir el 80% de avances en créditos </span><br/>";
+	}
 	
 	res+=validarcrucesReins();
 	return (res);
 }
+
+
 
 
 function guardarRegistros(){
@@ -740,46 +858,28 @@ function guardarRegistros(){
 			if ($("#imprimirBoletaCheck").prop("checked")) {
 				window.open("boletaMat.php?carrera="+$("#selCarreras").val()+"&matricula="+$("#selAlumnos").val()+"&ciclo="+$("#elciclo").html().split("|")[0], '_blank');                                 	                                        					          
 			}
-			$("#tabHorariosReins").empty();
+			limpiarVentana();
 		}					     
 	});    	         
 }
 
-function hayRepetidas(){
 
-	var listaMat=[];
-	var matRep="";
-	j=0;
-	for (i=1; i<contFila; i++){
-		cad="";
-		if ($("#c_"+i+"_99").prop("checked")) {
-			listaMat[j]=$("#c_"+i+"_13").html();	 
-			j++;
-		}
-	}
-
-	listaMat=BurbujaCadena(listaMat);
-	materiaant=listaMat[0];
-	for (i=1; i<listaMat.length; i++){
-		if (materiaant==listaMat[i]) {matRep+="La materia "+listaMat[i]+" Se encuentra repetida\n";}
-		materiaant=listaMat[i];
-	}
-	
-	return matRep;
-
+function limpiarVentana(){
+	$("#tabHorariosReins").empty();
+	$("#confirmFinalizar").modal("hide");
+    mensajeAlumno="";
 }
 
 function guardarTodos(){
 	mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
 	res=validarCondiciones(false);
-	cadMat=hayRepetidas();
-	if (cadMat.length>0) {alert ("ERROR CRITICO:\n"+cadMat); ocultarEspera("guardandoReins"); return 0;}
+
 	if (res.length>0) {
-		if(confirm("Existen los siguientes Errores:\n "+res+"¿Desea Grabar de todas formas?")) {
-			      guardarRegistros();       	 
-				}
-		else {ocultarEspera("guardandoReins");}
-		}		
+		mostrarConfirm2("confirmFinalizar", "grid_reinscripciones", "ERRORES EN LA REINSCRIPCIÓN",			  
+			  "         <div  id=\"miserrores\"  style=\"width:100%; text-align:justify; height:150px; overflow-y: scroll;\">"+res+"</div>",
+			  "Grabar de todos modos", "guardarRegistros();","modal-lg");
+			  ocultarEspera("guardandoReins");	
+			}	
 	else {
 		guardarRegistros();   //en caso de que no haya errores
 	}
@@ -800,4 +900,7 @@ function verMateriasEvalDoc(){
 }
 
 
-
+function verNotaAlum(){
+	mostrarIfo("infoEval","grid_reinscripciones","Observación de la propuesta Alumno",
+	"<div style=\"text-align:justify;\">"+mensajeAlumno+"</div>","modal-lg");
+}

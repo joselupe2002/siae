@@ -41,9 +41,22 @@
 	      <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
                 
 		  <div class="row alert alert-success" style="padding:0px; margin:0px;">
-		      <div id="losciclos" class="col-sm-2" ></div>			
-		      <div id="elrecibo" class="col-sm-6" ></div>  
-			  <div id="losbotones" class="col-sm-4" style="padding:15px;">
+		      <div id="losciclos" class="col-sm-2" ></div>	
+			  <div class="col-sm-7" >
+			       <div class="row">
+				   		<div class="col-sm-3" >
+						   <label >Reinscribirme a:</label><br/> 
+							<select onchange="elegirTipoOperacion();" id="tipoOperacion">
+								<option value="0">Elija una opción</option>
+								<option value="N">Carrera</option>
+								<option value="I">Inglés</option>
+								<option value="OC">ExtraEscolares</option>
+							</select>
+						</div>
+						<div id="elrecibo" class="col-sm-8" ></div>
+					</div>
+			  </div>  		 
+			  <div id="losbotones" class="col-sm-3" style="padding:15px;">
 			   
 			  </div>	
 		  </div>

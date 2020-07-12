@@ -1599,7 +1599,8 @@ if (tipo=="SELECT_MULTIPLE") {
          		 cad+="</SELECT></div>";
          		 
          		$("#"+padre).append(cad);  		
-         		elsql=damesqldep(sql,elusuario);
+				 elsql=damesqldep(sql,elusuario);
+				 				
                  
          		agregarEspera("imggif_"+nombre,ico);
  			   
@@ -2284,7 +2285,7 @@ function NumeroALetras(num) {
 function dameSubirArchivoDrive(contenedor,etiqueta,nombre,carpetaDrive,extensiones,campoIDTabla,valorid,mensajesubida,tablasubir,altaedita,aux, ruta, activareliminar) {		    
 		cad=
 		"  <div class=\"row \"> "+		
-		"      <div class=\"col-sm-9\" id=\"inputFileRow\">"+
+		"      <div class=\"col-sm-8\" id=\"inputFileRow\">"+
 		"          <label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
 		"          <input  class=\"fileSigea\" type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
 		"                 onchange=\"subirPDFDriveSave('file_"+nombre+"','"+carpetaDrive+"','img_"+nombre+"',"+
@@ -2294,7 +2295,7 @@ function dameSubirArchivoDrive(contenedor,etiqueta,nombre,carpetaDrive,extension
 		"      </div> ";
 
 		stElim="display:none; cursor:pointer;";
-		if (ruta.length>0) { stElim="cursor:pointer; display:block; top:-25px; ";}    
+		if (ruta.length>0) { stElim="cursor:pointer; ";}    
 		cadeliminar='';
 		if (activareliminar=='S') {
 				cadeliminar="<i style=\""+stElim+"\"  id=\"btnEli_"+nombre+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
