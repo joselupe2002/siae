@@ -30,7 +30,18 @@ var micicloant="";
 					if (losdatos[0][3]>0) {
 							miciclo=losdatos[0][0];
 							micicloant=losdatos[0][2];
-							$("#elciclo").html(losdatos[0][0]+"|"+losdatos[0][1]);					
+							$("#elciclo").html(losdatos[0][0]+"|"+losdatos[0][1]);	
+							
+							
+							//AGREGAMOS SELECT 
+						    $("#elselecttipo").append("<label >Reinscribirme a:</label><br/> "+
+							"<select onchange=\"elegirTipoOperacion();\" id=\"tipoOperacion\">"+
+							"	<option value=\"0\">Elija una opción</option>"+
+							"	<option value=\"N\">Carrera</option>"+
+							"	<option value=\"I\">Inglés</option>"+
+							"	<option value=\"OC\">ExtraEscolares</option>"+
+							"</select>");
+						    
 
 							//Verificamos si le quedán asignaturas por hacer evaldoc
 							matsineval=0;

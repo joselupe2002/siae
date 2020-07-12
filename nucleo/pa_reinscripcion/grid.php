@@ -44,14 +44,8 @@
 		      <div id="losciclos" class="col-sm-2" ></div>	
 			  <div class="col-sm-7" >
 			       <div class="row">
-				   		<div class="col-sm-3" >
-						   <label >Reinscribirme a:</label><br/> 
-							<select onchange="elegirTipoOperacion();" id="tipoOperacion">
-								<option value="0">Elija una opción</option>
-								<option value="N">Carrera</option>
-								<option value="I">Inglés</option>
-								<option value="OC">ExtraEscolares</option>
-							</select>
+				   		<div id="elselecttipo" class="col-sm-3" >
+						 
 						</div>
 						<div id="elrecibo" class="col-sm-8" ></div>
 					</div>
