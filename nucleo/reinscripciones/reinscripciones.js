@@ -220,7 +220,7 @@ var eltipomat="";
 							data:parametros,
 							url:  "../base/getdatossqlSeg.php",
 							success: function(dataMapa){ 
-								alert (elsqlmapa); 	
+								alert (dataMapa); 	
 								losdatos=JSON.parse(data);
 								losdatosMapa=JSON.parse(dataMapa);
 								jQuery.each(losdatosMapa, function(clave, valor) { 
