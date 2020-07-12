@@ -210,7 +210,9 @@ var eltipomat="";
 	           success: function(data){  
 						elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, "+
 						" PLACM1, getavanceCred(ALUM_MATRICULA) AS AVANCE  FROM falumnos, mapas where "+
-						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'"	
+						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'";
+						alert (elsqlmapa);
+
 			
 						parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
