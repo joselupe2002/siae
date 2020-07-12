@@ -120,7 +120,6 @@ var eltipomat="";
 				if (JSON.parse(data2)[0][2]>0) {laruta=JSON.parse(data2)[0][0]; 
 												secotejo=JSON.parse(data2)[0][1]=='S'?'S':'N'; }				
 				if (secotejo=='S') {
-					alert (laruta);
 					$("#elpago").attr("href",laruta);
 					$("#elpagospan").prop("title","El pago ya fue cotejado por el área de Contabilidad");
 					$("#elpagospan").html("<i class=\"fa white fa-check-square-o\"></i>");
