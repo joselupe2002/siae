@@ -223,6 +223,7 @@ var eltipomat="";
 								alert (dataMapa); 	
 								losdatos=JSON.parse(data);
 								losdatosMapa=JSON.parse(dataMapa);
+								alert ("pase");
 								jQuery.each(losdatosMapa, function(clave, valor) { 
 													
 									generaTablaHorarios(losdatos,"INSCRITAS");   
