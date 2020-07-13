@@ -199,7 +199,8 @@ var eltipomat="";
 		   $("#loshorarios").append(script);
 				
 		elsql="SELECT * FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-		       "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' and TIPOMAT='"+eltipomat+"' order by SEMESTRE, GRUPO, MATERIAD";
+			   "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' and TIPOMAT='"+eltipomat+"' order by SEMESTRE, GRUPO, MATERIAD";
+		
 		mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
 
 
@@ -214,8 +215,6 @@ var eltipomat="";
 						" PLACM1, getavanceCred(ALUM_MATRICULA) AS AVANCE  FROM falumnos, mapas where "+
 						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+$("#selAlumnos").val()+"'";
 					
-
-			
 						parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
 							type: "POST",

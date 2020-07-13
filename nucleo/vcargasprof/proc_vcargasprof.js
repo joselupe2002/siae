@@ -537,8 +537,6 @@ function validarHorarios(){
 
 function guardarHorario(institucion,campus){
 	
-
-
 	var form = $( "#frmdocumentos" );
 	calculaHoras();
 	
@@ -592,7 +590,7 @@ function guardarHorario(institucion,campus){
     	    		tabla:"edescarga",
     	    		campollave:"concat(DESC_PROFESOR,DESC_CICLO)",
     	    		bd:"Mysql",
-    	    		valorllave:table.rows('.selected').data()[0][0]+table.rows('.selected').data()[0][2],
+    	    		valorllave:table.rows('.selected').data()[0]["CVE_PROFESOR"]+table.rows('.selected').data()[0]["CICLO"],
     	    		eliminar: "S",
     	    		separador:"|",
     	    		campos: JSON.stringify(loscampos),
