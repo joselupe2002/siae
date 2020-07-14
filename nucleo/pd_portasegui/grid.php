@@ -398,7 +398,7 @@ function impEncuadre(id, materia, descrip){
 			   "                        </div> "+ //div del row
 			   "                        <div class=\"row\"> "+		
 			   "                            <div class=\"col-md-12\">"+
-			   "                                 <span class=\"label label-danger\">Apoyos Did&aacute;ctivos</span>"+
+			   "                                 <span class=\"label label-danger\">Apoyos Did&aacute;cticos</span>"+
 			   "                                 <textarea id=\"apoyos\" style=\"width:100%;\"></textarea>"+
 			   "                            </div>"+ 
 			   "                        </div> "+ //div del row
