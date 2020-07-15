@@ -16,25 +16,40 @@
 		<link rel="stylesheet" href="../assets/css/fonts.googleapis.com.css" />
 	    <link rel="stylesheet" href="../assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
 		<link rel="stylesheet" href="../assets/css/ace-rtl.min.css" />		
+		<link rel="stylesheet" href="../css/sigea.css" />	
 		<script src="../assets/js/ace-extra.min.js"></script>		
 		<link rel="stylesheet" href="../assets/css/jquery-ui.min.css" />
 
 	</head>
 	<?php  //include("./includes/Seguridad.php"); $miSeg = new Seguridad();  echo $miSeg->encriptar(""); ?>
 	<body class="login-layout light-login">
+
+	<div style="height:10px; background-color: #C18900;"> </div>
+	<div class="container-fluid informacion" style="background-color: #9B0B0B;">   
+         <div class="row">
+             <div class="col-md-4" >
+                   <img src="../imagenes/empresa/logo2.png" alt="" width="50%" class="img-fluid" alt="Responsive image" />  
+			  </div>
+			  <div class="col-md-4" >
+				   <div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">
+						  PROCESO DE ADMISIÓN
+				    </div>
+				   <div class="text-primary"  style="padding:0px; font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">2020</div>
+			  </div>
+              <div class="col-md-4" style="padding-top: 20px; text-align: right;">
+			  </div>
+        </div>
+    </div>
+	<div style="height:10px; background-color: #C18900;"> 
+	 </div>
+
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
 					<div class="col-sm-10 col-sm-offset-1">
 						<div class="login-container">
 							<div class="center">
-							    <br/>
-								<h1>
-									<img src="../imagenes/login/sigea.png" width="40px" height="40px"></img> 
-									<span class="red">ITSM</span>
-									<span class="grey" id="id-text2"></span>
-								</h1>
-								<h4 class="blue" id="id-company-text">Examen de Admisión</h4>
+						
 							</div>
 							<div class="space-6"></div>
 
@@ -235,6 +250,8 @@
 				</div><!-- /.row -->
 			</div><!-- /.main-content -->
 		</div><!-- /.main-container -->
+
+	<?php include './pie.php'?>
 
 
 <div id="dialogError" class="hide"></div>
