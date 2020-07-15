@@ -295,20 +295,29 @@
 		$pdf->Row(array(utf8_decode("CARACTERIZACIÓN:"),utf8_decode($arrMateria[0]["CARACTERIZACION"])));
 		*/
 
+		// Colores, ancho de l�nea y fuente en negrita
+		$pdf->SetFillColor(172,31,6);
+		$pdf->SetTextColor(255);
+		$pdf->Ln();
 		$pdf->Ln();
 		$pdf->SetFont('Montserrat-ExtraBold','B',10);
-		$pdf->Cell(180,5,utf8_decode("HORARIO"),'1',0,'C',false);
+		$pdf->Cell(180,5,utf8_decode("HORARIO"),'1',0,'C',true);
 
 		$pdf->Ln();
+		$pdf->SetFillColor(245, 226, 102 );
+		$pdf->SetTextColor(0);
 		$pdf->SetFont('Montserrat-ExtraBold','B',7);
-		$pdf->Cell(26,5,utf8_decode("LUNES"),'1',0,'C',false);
-		$pdf->Cell(26,5,utf8_decode("MARTES"),'1',0,'C',false);
-		$pdf->Cell(26,5,utf8_decode("MIERCOLES"),'1',0,'C',false);
-		$pdf->Cell(26,5,utf8_decode("JUEVES"),'1',0,'C',false);
-		$pdf->Cell(26,5,utf8_decode("VIERNES"),'1',0,'C',false);
-		$pdf->Cell(25,5,utf8_decode("SABADO"),'1',0,'C',false);
-		$pdf->Cell(25,5,utf8_decode("DOMINGO"),'1',0,'C',false);
+		$pdf->Cell(26,5,utf8_decode("LUNES"),'1',0,'C',true);
+		$pdf->Cell(26,5,utf8_decode("MARTES"),'1',0,'C',true);
+		$pdf->Cell(26,5,utf8_decode("MIERCOLES"),'1',0,'C',true);
+		$pdf->Cell(26,5,utf8_decode("JUEVES"),'1',0,'C',true);
+		$pdf->Cell(26,5,utf8_decode("VIERNES"),'1',0,'C',true);
+		$pdf->Cell(25,5,utf8_decode("SABADO"),'1',0,'C',true);
+		$pdf->Cell(25,5,utf8_decode("DOMINGO"),'1',0,'C',true);
 		$pdf->Ln();
+		$pdf->SetFillColor(255,255,255);
+		$pdf->SetTextColor(0);
+
 		$pdf->SetFont('Montserrat-Medium','',7);
 		$pdf->Cell(26,5,utf8_decode($arrHor[0]["LUNES"]),'1',0,'C',false);
 		$pdf->Cell(26,5,utf8_decode($arrHor[0]["MARTES"]),'1',0,'C',false);
@@ -319,23 +328,69 @@
 		$pdf->Cell(25,5,utf8_decode($arrHor[0]["DOMINGO"]),'1',0,'C',false);
 		$pdf->Ln();
 	
-		$pdf->SetFont('Montserrat-ExtraBold','B',10);
-		$pdf->Cell(180,5,utf8_decode("TEMAS"),'1',0,'C',false);
+	
 		$pdf->Ln();
 
-		$pdf->SetFont('Montserrat-ExtraBold','B',10);
-		$pdf->Cell(180,5,utf8_decode("TEMA: ".$arrPlan[0]["TEMA"]),'1',0,'L',false);
-		$pdf->Ln();
-		$pdf->SetFont('Montserrat-ExtraBold','B',10);
-		$pdf->Cell(130,5,utf8_decode("SUBTEMA"),'1',0,'C',false);
-		$pdf->Cell(25,5,utf8_decode("INICIA"),'1',0,'C',false);
-		$pdf->Cell(25,5,utf8_decode("TERMINA"),'1',0,'C',false);
-		$pdf->Ln();
-
-
+		$eltema="";
+        $renglon=0;
 		foreach($arrPlan as $row) {
-		
+		     if (($eltema!=$row["TEMA"]) || ($renglon==0)) {
+				$pdf->SetFont('Montserrat-ExtraBold','B',10);
+				$pdf->SetFillColor(172,31,6);
+				$pdf->SetTextColor(255);
+				$pdf->Cell(180,5,utf8_decode("TEMA: ".$row["TEMA"]),'1',0,'L',true);
+				$pdf->Ln();
+				$pdf->SetFont('Montserrat-ExtraBold','B',10);
+				$pdf->SetFillColor(245, 226, 102 );
+				$pdf->SetTextColor(0);
+				$pdf->Cell(130,5,utf8_decode("SUBTEMA"),'1',0,'C',true);
+				$pdf->Cell(25,5,utf8_decode("INICIA"),'1',0,'C',true);
+				$pdf->Cell(25,5,utf8_decode("TERMINA"),'1',0,'C',true);
+				$eltema=$row["TEMA"];
+				$pdf->Ln();
+				$pdf->SetFillColor(255,255,255);
+				$pdf->SetTextColor(0);
+				$eltema=$row["TEMA"];
+			 }
+
+			 $pdf->SetWidths(array(130,25,25));
+			 $pdf->SetAligns(array("J","C","C"));
+			 $pdf->SetFuente(array('Montserrat-Medium','Montserrat-Medium','Montserrat-Medium'));
+			 $pdf->SetTamano(array('10','10','10'));
+			 $pdf->SetEstilo(array('B','','B','','B','','B',''));
+			 $pdf->Row(array(utf8_decode($row["SUBTEMA"]),utf8_decode($row["FECHAINIPROG"]),utf8_decode($row["FECHAFINPROG"])));
+	
+			 $renglon++;
 		}
+
+		$pdf->Ln();
+		$pdf->Ln();
+		$pdf->SetFont('Montserrat-ExtraBold','B',10);
+		$pdf->SetFillColor(172,31,6);
+		$pdf->SetTextColor(255);
+		$pdf->SetFont('Montserrat-ExtraBold','B',10);
+		$pdf->Cell(180,5,utf8_decode("FECHAS DE EVALUACIÓN"),'1',0,'C',true);
+		$pdf->Ln();
+		$pdf->SetFillColor(245, 226, 102 );
+		$pdf->SetTextColor(0);
+		$pdf->Cell(10,5,utf8_decode("NO."),'1',0,'C',true);
+		$pdf->Cell(130,5,utf8_decode("UNIDAD"),'1',0,'C',true);
+		$pdf->Cell(40,5,utf8_decode("FECHA"),'1',0,'C',true);
+
+		$pdf->SetFillColor(255,255,255);
+		$pdf->SetTextColor(0);
+		$pdf->Ln();
+		foreach($arrPlanEval as $row) {
+		    
+			 $pdf->SetWidths(array(10,130,40));
+			 $pdf->SetAligns(array("J","J","C"));
+			 $pdf->SetFuente(array('Montserrat-Medium','Montserrat-Medium','Montserrat-Medium'));
+			 $pdf->SetTamano(array('10','10','10'));
+			 $pdf->SetEstilo(array('B','','B','','B','','B',''));
+			 $pdf->Row(array(utf8_decode($row["UNID_NUMERO"]),utf8_decode($row["UNID_DESCRIP"]),utf8_decode($row["FECHA"])));
+
+		}
+
 
 
 
