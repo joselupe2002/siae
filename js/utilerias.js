@@ -2335,3 +2335,13 @@ function dameSubirArchivoDrive(contenedor,etiqueta,nombre,carpetaDrive,extension
 
 
 }
+
+function abrirPesta(enlace,titulo) {
+var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:100%;"></iframe></div>';	
+		$('#parentPrice', window.parent.document).html();
+		window.parent.$("#myTab").tabs('add',{
+				    	    title:titulo,				    	    
+				    	    content:content,
+				    	    closable:true		    
+						});
+}
