@@ -337,6 +337,7 @@ function guadarPortafolio(id,campo,materia){
 
 function impEncuadre(id, materia, descrip){
 	window.open("encuadres.php?ID="+id+"&materiad="+materia, '_blank');
+	window.open("planeacion.php?ID="+id+"&materia="+materia, '_blank');
 }
 
  function captEncuadre(id, materia, descrip){
