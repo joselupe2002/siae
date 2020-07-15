@@ -1796,6 +1796,7 @@ elsql="SELECT l.UNID_PRED AS TMACVE, "+
 	  "        AND j.TMACVE=l.UNID_PRED and j.SMACVE=l.UNID_NUMERO),'') AS FECHAFINPROG "+
       " FROM eunidades l where l.UNID_MATERIA='"+materia+"'  and l.UNID_PRED<>''"+
 	  " order by UNID_PRED,UNID_NUMERO ";
+alert (elsql);
 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 $.ajax({
    type: "POST",
