@@ -163,17 +163,29 @@ function cargarFoto(){
 		$("#contenidoAsp").append("<div class='space-7'></div>"+
 			                      "   <div class=\"row\">"+
 				                  "        <div class=\"col-sm-12 text-center\">"+
-								  "              <span class=\"fontAmaranthB text-danger bigger-130\">"+
+								  "              <span class=\"fontAmaranthB text-danger bigger-230\">"+
 								  "                    <strong>INFORMACIÓN IMPORTANTE</strong>"+
 								  "              </span>"+ 
 				                  "        </div>"+
 			                      "   </div>"+
 			                      "   <div class=\"row\"> "+
 				                  "        <div class=\"col-sm-12\">"+
-								  "             <span class=\"fontAmaranthB text-light bigger-120\">"+
-								  "                   Antes de iniciar tu proceso de pre-inscripción es necesario que "+
-								  "                   tomes en cuente la documentación que debes tener a la mano para que sea más ágil tu registro. "+
-								  "             </span> "+
+								  "             <span class=\"fontAmaranthB text-light bigger-140\">"+
+								  "                   Antes de iniciar tu Exámen de Admisipon es necesario que "+
+								  "                   atiendas las siguientes instrucciones "+
+								  "             </span><br> <br>"+
+								  "             <span class=\"fontAmaranthB text-light bigger-140\">"+
+								  "                   A. Debe contestar las evaluaciones en este orden 1. EXAMEN DE ADMISIÓN 2. EXAMEN PSICOMÉTRICO Y 3. EXAMEN DE CARRERA."+								  								  
+								  "             </span>  <br>"+
+								  "             <span class=\"fontAmaranthB text-light bigger-140\">"+
+								  "                   B. Tome en cuenta la hora de inicio de cada examen y el tiempo que tiene para contestar."+								  								  
+								  "             </span> <br> "+
+								  "             <span class=\"fontAmaranthB text-light bigger-140\">"+
+								  "                   C. En caso de que tenga problemas de conexión a internet las respuestas quedán grabadas y continuará donde se quedó."+								  								  
+								  "             </span>  <br>"+
+								  "             <span class=\"fontAmaranthB text-light bigger-140\">"+
+								  "                   D. Asegurese de dar FINALIZAR al examen."+								  								  
+								  "             </span>  <br>"+
 								  "        </div>"+
 								  "   </div>"
 								  );
