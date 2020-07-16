@@ -1188,6 +1188,10 @@ function paginapreview(ht,padre){
 
 	}
 
+	function limpiarEdit(ht,padre){
+			$("#"+ht).html($("#"+ht).text());	
+	}
+
 
 function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,funcion,bd, elusuario)
 {   elauto="";
@@ -1277,7 +1281,11 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 					"         <div class=\"wysiwyg-editor\" id=\""+nombre+"\" style=\"height:100px;\">"+dato+"</div>"+
 					"     </div>"+
                     "     <div class=\"widget-toolbox padding-4 clearfix\">"+
-				    "         <div class=\"btn-group pull-right\">"+
+					"         <div class=\"btn-group pull-right\">"+
+					"              <label onclick=\"limpiarEdit('"+nombre+"','"+padre+"');\" "+
+					"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
+					"              <i class=\"ace-icon fa fa-external-link-square bigger-125\"></i>Limpiar</label>"+
+
 					"              <label onclick=\"paginapreview($('#"+nombre+"').html(),'"+padre+"');\" "+
 					"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
 					"              <i class=\"ace-icon fa fa-external-link-square bigger-125\"></i>Preview</label>"+

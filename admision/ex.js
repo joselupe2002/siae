@@ -171,7 +171,7 @@ function cargarFoto(){
 			                      "   <div class=\"row\"> "+
 				                  "        <div class=\"col-sm-12\">"+
 								  "             <span class=\"fontAmaranthB text-light bigger-140\">"+
-								  "                   Antes de iniciar tu Exámen de Admisipon es necesario que "+
+								  "                   Antes de iniciar tu Exámen de Admisión es necesario que "+
 								  "                   atiendas las siguientes instrucciones "+
 								  "             </span><br> <br>"+
 								  "             <span class=\"fontAmaranthB text-light bigger-140\">"+
