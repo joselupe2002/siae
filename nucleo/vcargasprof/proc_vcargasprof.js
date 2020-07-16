@@ -238,11 +238,11 @@ function generaTablaDescarga(grid_data){
 		   
 		    $("#cuerpo").append("<tr id=\"row"+c+"\">");
 		    
-		    $("#row"+c).append("<td><button onclick=\"eliminarFila('row"+c+"');\" class=\"btn btn-xs btn-danger\"> " +
+		    $("#row"+c).append("<td><button onclick=\"eliminarFila('row"+c+"','"+c+"');\" class=\"btn btn-xs btn-danger\"> " +
 	                 "    <i class=\"ace-icon fa fa-trash-o bigger-120\"></i>" +
 	                 "</button></td>");
 				$("#row"+c).append("<td>"+c+"</td>");
-				$("#row"+c).append("<td>"+ "<label id=\"c_"+c+"_0\" class=\"small text-info font-weight-bold\">SC</label</td>");
+				$("#row"+c).append("<td>"+ "<label id=\"c_"+c+"_0\" class=\"small text-info font-weight-bold\">"+valor.id+"</label</td>");
 				$("#row"+c).append("<td><select id=\"c_"+c+"_1\" style=\"width:200px;\"></select></td>");
 				$("#row"+c).append("<td>"+parte0+" id=\"c_"+c+"_2\" value=\""+valor.descrip+"\">"+parte2);
 				$("#row"+c).append("<td>"+parte1+" id=\"c_"+c+"_3\" value=\""+valor.lunes+"\">"+parte2);
@@ -283,7 +283,7 @@ function agregarActividad(){
 	 if (!(esta)) {
 		    lactividad=$("#add option:selected").html();
 		    $("#cuerpo").append("<tr id=\"row"+global+"\">");
-			$("#row"+global).append("<td><button onclick=\"eliminarFila('row"+global+"');\" class=\"btn btn-xs btn-danger\"> " +
+			$("#row"+global).append("<td><button onclick=\"eliminarFila('row"+global+"','"+global+"');\" class=\"btn btn-xs btn-danger\"> " +
                  "    <i class=\"ace-icon fa fa-trash-o bigger-120\"></i>" +
                  "</button></td>");
 			$("#row"+global).append("<td>"+global+"</td>");
@@ -307,10 +307,26 @@ function agregarActividad(){
 }
 
 
-function eliminarFila(nombre) {
+function eliminarFila(nombre,lin) {
 	var r = confirm("Seguro que desea eliminar del horario esta asignatura");
-	if (r == true) {
-        $("#"+nombre).remove();
+	if (r == true) {		
+		parametros={
+				   tabla:"edescarga",
+				   campollave:"DESC_ID",
+				   bd:"Mysql",
+				   valorllave:$("#c_"+lin+"_0").html()                   
+			};
+	  
+		 $.ajax({
+		 type: "POST",
+		 url:"../base/eliminar.php",
+		 data: parametros,
+		 success: function(data){
+			 alert (data);
+		 }					     
+		 });    
+		 $("#"+nombre).remove();	  
+
         }
 }
 
@@ -323,13 +339,8 @@ function pad (str, max) {
 
 
 
-
-
-
-function verCruce (arreglo,numdia,marcar){
-	
-	arreglo=Burbuja(arreglo);
-	
+function verCruce (arreglo,numdia,marcar){	
+	arreglo=Burbuja(arreglo);	
 	renglon=[];	
 	renglon=arreglo[0].split("|");
 	terant=renglon[1];
@@ -539,84 +550,94 @@ function guardarHorario(institucion,campus){
 	
 	var form = $( "#frmdocumentos" );
 	calculaHoras();
-	
-	
     var losdatos=[];
     var i=0; 
     var j=0; var cad="";
- 
-    if (!(validarHorarios())) {
-    	
+
+    if (!(validarHorarios())) {    	
     	 res=validarcruces();
-    	 
-    	 
-    	 if (res.length>0) {alert ("Existen los siguientes Cruces:\n "+res); return 0;}
+         if (res.length>0) {alert ("Existen los siguientes Cruces:\n "+res); return 0;}
     	
     	 $('#dlgproceso').modal({backdrop: 'static', keyboard: false});
-    	 
-   
     	 var c=-1;
-    	 
-    	 
+    	
+		 var loscampos = ["DESC_ACTIVIDAD","DESC_PROFESOR","DESC_DESCRIP","LUNES","MARTES","MIERCOLES","JUEVES","VIERNES","SABADO","DOMINGO",
+							"DESC_HORAS","_INSTITUCION","_CAMPUS","DESC_CICLO",];
+							
     	 $('#tabHorarios tr').each(function () {
+			     var i = $(this).find("td").eq(1).html();
     		     if (c>=0) {
-    		        var i = $(this).find("td").eq(1).html();
-    		        cad+=$("#c_"+i+"_1").val()+"|"+    //Actividad  
-    		        table.rows('.selected').data()[0][0]+"|"+    //Profesor  
-    		        $("#c_"+i+"_2").val()+"|"+ //Descrip
-                    $("#c_"+i+"_3").val()+"|"+ //Lunes
-                    $("#c_"+i+"_4").val()+"|"+ //Martes
-                    $("#c_"+i+"_5").val()+"|"+
-                    $("#c_"+i+"_6").val()+"|"+
-                    $("#c_"+i+"_7").val()+"|"+
-                    $("#c_"+i+"_8").val()+"|"+
-                    $("#c_"+i+"_9").val()+"|"+//domingo                  
-                    $("#c_"+i+"_10").val()+"|"+
-                    institucion+"|"+//Institucion
-                    campus+"|"+//Campus
-                    table.rows('.selected').data()[0][2];
-		            losdatos[c]=cad; 
-		            cad="";
-		           
+					   if ($("#c_"+i+"_0").html()=='SC') {
+					
+							parametros={tabla:"edescarga",
+								bd:"Mysql",
+								_INSTITUCION:"ITSM",
+								_CAMPUS:"0",
+								DESC_ACTIVIDAD:$("#c_"+i+"_1").val(),
+								DESC_PROFESOR: table.rows('.selected').data()[0][0],
+								DESC_DESCRIP:$("#c_"+i+"_2").val(),							
+								LUNES:$("#c_"+i+"_3").val(),
+								MARTES:$("#c_"+i+"_4").val(),
+								MIERCOLES:$("#c_"+i+"_5").val(),
+								JUEVES:$("#c_"+i+"_6").val(),
+								VIERNES:$("#c_"+i+"_7").val(),
+								SABADO:$("#c_"+i+"_8").val(),
+								DOMINGO:$("#c_"+i+"_9").val(),
+								DESC_HORAS:$("#c_"+i+"_10").val(),
+								DESC_CICLO:table.rows('.selected').data()[0][2],
+								};     
+							$.ajax({
+									type: "POST",
+									url:"../base/inserta.php",
+									data: parametros,
+									success: function(data){ 
+									   	            	
+									}
+								});
+
+					   }
+					   else {
+			
+						   parametros={tabla:"edescarga",
+								bd:"Mysql",
+								campollave:"DESC_ID",
+								valorllave:$("#c_"+i+"_0").html(),
+								_INSTITUCION:"ITSM",
+								_CAMPUS:"0",
+								DESC_ACTIVIDAD:$("#c_"+i+"_1").val(),
+								DESC_PROFESOR: table.rows('.selected').data()[0][0],
+								DESC_DESCRIP:$("#c_"+i+"_2").val(),							
+								LUNES:$("#c_"+i+"_3").val(),
+								MARTES:$("#c_"+i+"_4").val(),
+								MIERCOLES:$("#c_"+i+"_5").val(),
+								JUEVES:$("#c_"+i+"_6").val(),
+								VIERNES:$("#c_"+i+"_7").val(),
+								SABADO:$("#c_"+i+"_8").val(),
+								DOMINGO:$("#c_"+i+"_9").val(),
+								DESC_HORAS:$("#c_"+i+"_10").val(),
+								DESC_CICLO:table.rows('.selected').data()[0][2],
+								};     
+							$.ajax({
+									type: "POST",
+									url:"../base/actualiza.php",
+									data: parametros,
+									success: function(data){ 
+									     			            	
+									}
+								});
+
+					   }
+    		     
     		     }
 		         c++;
-    		 });
+    		 });    	
+
     	 
-
-    	    var loscampos = ["DESC_ACTIVIDAD","DESC_PROFESOR","DESC_DESCRIP","LUNES","MARTES","MIERCOLES","JUEVES","VIERNES","SABADO","DOMINGO",
-    	    	            "DESC_HORAS","_INSTITUCION","_CAMPUS","DESC_CICLO",];
-
-    	    parametros={
-    	    		tabla:"edescarga",
-    	    		campollave:"concat(DESC_PROFESOR,DESC_CICLO)",
-    	    		bd:"Mysql",
-    	    		valorllave:table.rows('.selected').data()[0]["CVE_PROFESOR"]+table.rows('.selected').data()[0]["CICLO"],
-    	    		eliminar: "S",
-    	    		separador:"|",
-    	    		campos: JSON.stringify(loscampos),
-    	    	    datos: JSON.stringify(losdatos)
-    	    };
-    	    
-
-        	
-        	
-    	    $.ajax({
-    	        type: "POST",
-    	        url:"grabadetalle.php",
-    	        data: parametros,
-    	        success: function(data){
-    	        	$('#modalDocument').modal("hide");  
-    	        	$('#dlgproceso').modal("hide"); 
-    	        	if (data.length>0) {alert ("Ocurrio un error: "+data);}
-    	        	else {alert ("Registros guardados")}		                                	                                        					          
-    	        }					     
-    	    });    
-    	    
-    	 
-    }  
-       
-
-    
+			$('#modalDocument').modal("hide");  
+			$('#dlgproceso').modal("hide"); 
+			alert ("Registros guardados");                               	                                        					         
+    	   
+    } //if de la validacione
 }
 
 

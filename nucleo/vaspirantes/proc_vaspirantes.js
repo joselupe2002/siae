@@ -694,12 +694,13 @@ function cargaMsj(){
 		" EL PRESENTE CORREO ES PARA INDICARLE EL USUARIO Y CLAVE PARA EL EXÁMEN DE ADMISIÓN:<BR/><BR/>\n"+
 		" <b>USUARIO:</b>{CURP}<BR/>\n"+
 		" <b>CLAVE:</b> {CLAVE}<BR/>\n"+
-		" <b>PAGINA</b> :<a href=\"https://escolar.webcoretic.com/admision/\">https://escolar.webcoretic.com/admision/</a><BR/>\n"+
+		" <b>PAGINA</b> :<a href=\"https://escolar.macuspana.tecnm.mx/admision/\">https://escolar.macuspana.tecnm.mx/admision/</a><BR/>\n"+
 		" <b>FECHA:</b> 03/08/2020<BR/>\n"+
-		" <b>HORA:</b> 10:00<BR/><BR/>\n"+
+		" <b>HORA DE INICIO:</b> 09:00<BR/><BR/>\n"+
+		" <b>HORA DE FIN   :</b> 13:00<BR/><BR/>\n"+
 		" <b>POR FAVOR CONSULTE EL MANUAL Y VÍDEO PARA LA APLICACIÓN DEL EXÁMEN DE ADMISIÓN</b></BR/>\n"+
-		" <a href=\"https://escolar.webcoretic.com/admision/\">Manual</a><BR/>\n"+
-		" <a href=\"https://escolar.webcoretic.com/admision/\">Video</a><BR/>\n"
+		" <a href=\"https://escolar.macuspana.tecnm.mx/admision/\">Manual</a><BR/>\n"+
+		" <a href=\"https://escolar.macuspana.tecnm.mx/admision/\">Video</a><BR/>\n"
 		);
 	}
 
@@ -708,7 +709,7 @@ function cargaMsj(){
 		$("#msjCorreo").html("PARA UN SALTO DE LINEA USE <br/>\n"+
 		" PARA COLOCAR NEGRITAS ENCIERRE ENTRE <b>ESTO VA NEGRITA</b>\n"+
 		" PARA COLOCAR INFORMACIÓN DEL ASPIRANTE UN CAMPO {TITULO_COLUMNA} EJEMPLO {NOMBRE}\n"+
-		" PARA COLOCAR UN ENLACE <a href=\"https://escolar.webcoretic.com/admision/\">Texto del Enlace</a><BR/>\n"
+		" PARA COLOCAR UN ENLACE <a href=\"https://escolar.macuspana.tecnm.mx/admision/\">Texto del Enlace</a><BR/>\n"
 		);
 	}
 
