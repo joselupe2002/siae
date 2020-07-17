@@ -147,7 +147,7 @@ function cargarFoto(){
 					if (valor.N==0) {						
 						cadLinea+="<td id=\"casbtn_"+valor.IDEXAMEN+"\" style= \"text-align: center;\" > "+
 						           "<a  onclick=\"verExamen('"+valor.IDEXAMEN+"','"+curp+"','"+valor.CONTIEMPO+"','"+valor.MINUTOS+"','"+cadHora+"');\" title=\"Aplicar Examen\""+
-						                "id=\"btnVerExamen\" class=\"btn btn-white btn-waarning btn-bold\">"+
+						                "id=\"btnVerExamen"+valor.IDEXAMEN+"\" class=\"btn btn-white btn-waarning btn-bold\">"+
 										"<i class=\"ace-icon fa fa-pencil-square bigger-160 green \"></i>"+	
 									"</a></td>";
 					}
@@ -486,8 +486,8 @@ function aparecer(idpreg,valsum){
 
 
 function verExamen(id,curp,contiempo,minutos,horaInicia) {
-	$('#btnVerExamen').addClass("hide");
-	$('#btnVerExamen').append("<img id=\"img_"+id+"\" src=\"../imagenes/menu/esperar.gif\" width=\"25px;\" height=\"25px\">");
+	$('#btnVerExamen'+id).addClass("hide");
+	$('#btnVerExamen'+id).append("<img id=\"img_"+id+"\" src=\"../imagenes/menu/esperar.gif\" width=\"25px;\" height=\"25px\">");
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
@@ -523,7 +523,7 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 						minIni=parseInt(horaInicia.split(":")[0])*60+parseInt(horaInicia.split(":")[1]);
 						if (minAct<minIni) { 
 							alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" espere por favor"); 
-							$('#btnVerExamen').removeClass("hide");
+							$('#btnVerExamen'+id).removeClass("hide");
 	                		$('#img_'+id).remove();
 							return 0;}						
 						}
@@ -541,12 +541,12 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 					//alert (fechainicio+"!="+fechaAct);
 					if ((yaabrio) && (fechainicio!=fechaAct) && (contiempo=='S')) {
 						alert ("El tiempo para iniciar el examen se ha concluido días diferentes: Inicio el examen el dia "+fechainicio); 
-						$('#btnVerExamen').removeClass("hide");
+						$('#btnVerExamen'+id).removeClass("hide");
 	                    $('#img_'+id).remove();
 						return 0;
 					}
 					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); 
-						$('#btnVerExamen').removeClass("hide");
+						$('#btnVerExamen'+id).removeClass("hide");
 	                    $('#img_'+id).remove();
 					return 0;}  
 					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
