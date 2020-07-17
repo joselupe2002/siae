@@ -487,7 +487,7 @@ function aparecer(idpreg,valsum){
 
 function verExamen(id,curp,contiempo,minutos,horaInicia) {
 	$('#btnVerExamen'+id).addClass("hide");
-	$('#btnVerExamen'+id).append("<img id=\"img_"+id+"\" src=\"../imagenes/menu/esperar.gif\" width=\"25px;\" height=\"25px\">");
+	$('#casbtn_'+id).append("<img id=\"img_"+id+"\" src=\"../imagenes/menu/esperar.gif\" width=\"25px;\" height=\"25px\">");
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
