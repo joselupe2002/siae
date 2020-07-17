@@ -305,6 +305,7 @@ function cierraExamen(){
 
 function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 	$("#contenidoAsp").empty();
+
 	var cad="";
 	contPreg=1;
 	 arr_nombresec=[];
@@ -485,9 +486,7 @@ function aparecer(idpreg,valsum){
 
 
 function verExamen(id,curp,contiempo,minutos,horaInicia) {
-
-	$("btnVerExamen").attr('disabled','disabled');
-	
+	$('#btnVerExamen').addClass("hide");
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
