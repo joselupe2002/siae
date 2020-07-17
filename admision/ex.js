@@ -1,4 +1,4 @@
-
+var myTimer=0;
 var elciclo="";
 var pregactiva=0;
 var contPreg=1;	
@@ -236,11 +236,11 @@ function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni
 
 			if (contiempo=='S') {
 				
-				mininireal=parseInt(horareal.split(":")[0])*60+parseInt(horareal.split(":")[1]);
+				mininireal=parseInt(horaInicia.split(":")[0])*60+parseInt(horaInicia.split(":")[1]);
 				debeterminar=parseInt(minutos)+parseInt(mininireal);
 				leresta=parseInt(debeterminar)-parseInt(minAct);
 				$("#contminrestantes").html(leresta);
-				alert (horareal+" "+mininireal+" "+debeterminar+" "+leresta);
+		
 
 				cronometrar(debeterminar);
 			}
@@ -253,10 +253,11 @@ function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni
 
 function cronometrar(debeterminar){
 	debeterminar--;
-    id = setInterval(function() { escribir(debeterminar) },60000);
+    myTimer = setInterval(function() { escribir(debeterminar) },60000);
 }
 
 function escribir(debeterminar){
+	console.log("Val:"+debeterminar);
 	$.ajax({
 		type: "POST",
 		url:  "../nucleo/base/getFechaHora.php",
@@ -268,7 +269,8 @@ function escribir(debeterminar){
 			   if (leresta==5) {mostrarIfo("infoResta", "grid_registro", "Tiempo se agota",
 			   "<span class=\"lead text-danger\"><strong>Le informamos que le quedan "+leresta+" Minutos para terminar su examen</strong></span>","modal-lg");}
 			   if (leresta<=0) {
-				   cierraExamen();
+				   clearTimeout(myTimer);
+				   cargarExamenes();
 			   }
 			}
 	});
@@ -298,7 +300,6 @@ function cierraExamen(){
 						 
 		}					     
 	}); 
-
 }
 
 
@@ -493,6 +494,7 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 	        idcon=0;  encontre=false;
 			jQuery.each(JSON.parse(dataCon), function(clave, valorCon) { 
 				if (valorCon.N>0)  {
+				
 					yaabrio=true;
 				   minutosInicio=parseInt(valorCon.INICIO.split(":")[0])*60 + parseInt(valorCon.INICIO.split(":")[1]);
 				   fechainicio=valorCon.FECHAINICIA;
@@ -508,13 +510,20 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 					
 					fechaAct=dataFecha.split("|")[1];
 					minIni=0;
+					
 					if (!(horaInicia=='LIBRE')) {
 						minIni=parseInt(horaInicia.split(":")[0])*60+parseInt(horaInicia.split(":")[1]);
 						if (minAct<minIni) { alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" espere por favor"); return 0;}						
 						}
 					
+				
+					//esto servia cuando el examen da el tiempo en minutos no importa la hora que inicie el examen
 					if (minutosInicio==0) {tiempoqueda=minutos-(parseInt(minutosInicio));}
 					else {tiempoqueda=minutos-(parseInt(minAct)-parseInt(minutosInicio)); }
+
+					//Aqui se reemplaza para restar el tiempo de inicio menos el tiempo actual
+					tiempoqueda=(parseInt(minIni)+parseInt(minutos))-parseInt(minAct);
+			
 					    
 					//alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
 					//alert (fechainicio+"!="+fechaAct);
@@ -539,7 +548,7 @@ $(document).ready(function(){
 
 function cambioRespuesta(idpreg,num,opcion,puntaje,idexa){
 	var hoy= new Date();
-	lahora=hoy.getHours()+":"+hoy.getMinutes();
+	lahora=hoy.getHours()+":"+hoy.getMinutes()+":"+hoy.getSeconds();
     var losdatos=[];
 	losdatos[0]=idexa+"|"+curp+"|"+idpreg+"|"+opcion+"|"+puntaje+"|"+lahora;
     var loscampos = ["IDEXAMEN","IDPRESENTA","IDPREGUNTA","RESPUESTA","PUNTAJE","HORAGRABO",];
