@@ -485,7 +485,9 @@ function aparecer(idpreg,valsum){
 
 
 function verExamen(id,curp,contiempo,minutos,horaInicia) {
-	$("btnVerExamen").prop('disabled', false);
+
+	$("btnVerExamen").attr('disabled','disabled');
+	
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
