@@ -487,7 +487,7 @@ function aparecer(idpreg,valsum){
 
 function verExamen(id,curp,contiempo,minutos,horaInicia) {
 	$('#btnVerExamen').addClass("hide");
-	$('#casbtn_'+id).html("<img src=\"../imagenes/menu/esperar.gif\" width=\"25px;\" height=\"25px\">");
+	$('#casbtn_'+id).append("<img src=\"../imagenes/menu/esperar.gif\" width=\"25px;\" height=\"25px\">");
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
@@ -521,7 +521,11 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 					
 					if (!(horaInicia=='LIBRE')) {
 						minIni=parseInt(horaInicia.split(":")[0])*60+parseInt(horaInicia.split(":")[1]);
-						if (minAct<minIni) { alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" espere por favor"); return 0;}						
+						if (minAct<minIni) { 
+							alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" espere por favor"); 
+							$('#btnVerExamen').removeClass("hide");
+	                		$('#casbtn_'+id).revove();
+							return 0;}						
 						}
 					
 				
@@ -536,9 +540,15 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 					//alert (minutosInicio+" "+minAct+" "+minIni+" "+minutos+" queda:"+tiempoqueda);	
 					//alert (fechainicio+"!="+fechaAct);
 					if ((yaabrio) && (fechainicio!=fechaAct) && (contiempo=='S')) {
-						alert ("El tiempo para iniciar el examen se ha concluido días diferentes: Inicio el examen el dia "+fechainicio); return 0;
+						alert ("El tiempo para iniciar el examen se ha concluido días diferentes: Inicio el examen el dia "+fechainicio); 
+						$('#btnVerExamen').removeClass("hide");
+	                    $('#casbtn_'+id).revove();
+						return 0;
 					}
-					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); return 0;}  
+					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); 
+						$('#btnVerExamen').removeClass("hide");
+	                    $('#casbtn_'+id).revove();
+					return 0;}  
 					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
 					}
 			});
