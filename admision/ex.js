@@ -346,12 +346,17 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 		"</div>";
 	$("#contenidoAsp").append(cad);
 
+	$("#contpreg").empty();
+	$("#contpreg").html("<img src='../imagenes/menu/esperar.gif'>");
+	
+
 	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "../nucleo/base/getdatossqlSeg.php",
-		success: function (dataPre) {		
+		success: function (dataPre) {	
+			$("#contpreg").empty();	
 		    jQuery.each(JSON.parse(dataPre), function(clave, valorPre) { 		
 				arr_nombresec[clave]=valorPre.SECCIOND;
 				arr_instsec[clave]=valorPre.INSTRUCCIONES;
