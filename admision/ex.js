@@ -147,7 +147,7 @@ function cargarFoto(){
 					if (valor.N==0) {						
 						cadLinea+="<td style= \"text-align: center;\" > "+
 						           "<a  onclick=\"verExamen('"+valor.IDEXAMEN+"','"+curp+"','"+valor.CONTIEMPO+"','"+valor.MINUTOS+"','"+cadHora+"');\" title=\"Aplicar Examen\""+
-						                "class=\"btn btn-white btn-waarning btn-bold\">"+
+						                "id=\"btnVerExamen\" class=\"btn btn-white btn-waarning btn-bold\">"+
 										"<i class=\"ace-icon fa fa-pencil-square bigger-160 green \"></i>"+	
 									"</a></td>";
 					}
@@ -485,6 +485,7 @@ function aparecer(idpreg,valsum){
 
 
 function verExamen(id,curp,contiempo,minutos,horaInicia) {
+	$("btnVerExamen").prop('disabled', false);
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
