@@ -240,7 +240,7 @@ function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni
 				debeterminar=parseInt(minutos)+parseInt(mininireal);
 				leresta=parseInt(debeterminar)-parseInt(minAct);
 				$("#contminrestantes").html(leresta);
-				alert (horareal+" "+mininireal+" "+debeterminar+leresta);
+				alert (horareal+" "+mininireal+" "+debeterminar+" "+leresta);
 
 				cronometrar(debeterminar);
 			}
