@@ -524,7 +524,7 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 						if (minAct<minIni) { 
 							alert ("El examen comienza a las "+horaInicia+" La hora en el servidor es: "+horaAct+" espere por favor"); 
 							$('#btnVerExamen').removeClass("hide");
-	                		$('#casbtn_'+id).revove();
+	                		$('#casbtn_'+id).remove();
 							return 0;}						
 						}
 					
@@ -542,12 +542,12 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 					if ((yaabrio) && (fechainicio!=fechaAct) && (contiempo=='S')) {
 						alert ("El tiempo para iniciar el examen se ha concluido días diferentes: Inicio el examen el dia "+fechainicio); 
 						$('#btnVerExamen').removeClass("hide");
-	                    $('#casbtn_'+id).revove();
+	                    $('#casbtn_'+id).remove();
 						return 0;
 					}
 					if ((tiempoqueda<=0) && (contiempo=='S')) {alert ("El tiempo para iniciar el examen se ha concluido"); 
 						$('#btnVerExamen').removeClass("hide");
-	                    $('#casbtn_'+id).revove();
+	                    $('#casbtn_'+id).remove();
 					return 0;}  
 					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
 					}
