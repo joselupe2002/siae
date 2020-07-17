@@ -235,10 +235,13 @@ function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni
 			cargandoExamen(idexa, fechaini,horaini,fechareal,horareal);
 
 			if (contiempo=='S') {
+				
 				mininireal=parseInt(horareal.split(":")[0])*60+parseInt(horareal.split(":")[1]);
 				debeterminar=parseInt(minutos)+parseInt(mininireal);
 				leresta=parseInt(debeterminar)-parseInt(minAct);
 				$("#contminrestantes").html(leresta);
+				alert (mininireal+" "+debeterminar+leresta);
+
 				cronometrar(debeterminar);
 			}
 			else {$("#contminrestantes").html("libre");}
