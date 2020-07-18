@@ -118,7 +118,7 @@
 
  
         
-<script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>        
+<script src="<?php echo $nivel; ?>js/subirArchivos.js?v=<?php echo date('YmdHis'); ?>"></script>        
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
 <script type="<?php echo $nivel; ?>text/javascript"> if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");</script>
 <script src="<?php echo $nivel; ?>assets/js/bootstrap.min.js"></script>

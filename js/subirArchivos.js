@@ -178,7 +178,7 @@ function subirArchivoDriveName(nombreComponente,carpeta,nombreImg, nombreInput, 
 
 function subirPDFDrive(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera){		
 	var haymayor=false;
-	elid=laruta.substring(laruta.indexOf('id=')+3,laruta.length);
+	elid=$("#"+nombreInput).val().substring($("#"+nombreInput).val().indexOf('id=')+3,$("#"+nombreInput).val().length);
 
 	elsql="SELECT DRIVE FROM DRIVE WHERE CAMPO='"+carpeta+"'";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}

@@ -1689,14 +1689,15 @@ if (tipo=="SELECT_MULTIPLE") {
 	
 	if (tipo=="PDF_DRIVE") {
 		dominio=document.domain;
+        rutaimg="../../imagenes/menu/pdf.png";
+		if ((dato==null)||(dato=="")) {dato="../../imagenes/menu/default.png"; rutaimg="../../imagenes/menu/pdfno.png";}
 
-		if ((dato==null)||(dato=="")) {dato="../../imagenes/menu/default.png";}
-	
+
 		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
 		     "  <div class=\"row align-items-end\"> "+
 		     "      <div class=\"col-sm-2\">"+
 		     "           <a target=\"_blank\" id=\"enlace_"+nombre+"\" href=\""+dato+"\">"+
-		     "                <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
+		     "                <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+rutaimg+"\" width=\"50px\" height=\"50px\">"+
 		     "           </a>"+
 		     "      </div>"+
 		     "      <div class=\"col-sm-10\">"+

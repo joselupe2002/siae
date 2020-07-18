@@ -1,22 +1,19 @@
-<?php session_start(); if ($_SESSION['inicio']==1) { 
+<?php session_start(); if (($_SESSION['inicio']==1)) {
 	header('Content-Type: text/html; charset='.$_SESSION['encode']);
-  
-	include("../includes/Conexion.php");
-	include("../includes/UtilUser.php");
+	include("../.././includes/Conexion.php");
+	include("../.././includes/UtilUser.php");
 	$miConex = new Conexion();
 	$miUtil= new UtilUser();
-    $logouser="../imagenes/login/sigea.png";  
-    $nivel="../";
-?> 
+	$logouser="../../imagenes/login/sigea.png";
+	$nivel="../../";
+	?>
 <!DOCTYPE html>
 <html lang="es">
 	<head>
-	    <link rel="icon" type="image/gif" href="../imagenes/login/sigea.ico">
+	    <link rel="icon" type="image/gif" href="imagenes/login/sigea.ico">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta charset="ISO-8859-1"/>
-        <title>SIGEA Sistema de Gestión Escolar - Administrativa </title>
-        <meta http-equiv="Expires" content="0" />
-        <meta http-equiv="Pragma" content="no-cache" />
+		<meta charset="<?php echo $_SESSION['encode'];?>" />
+		<title><?php echo $_SESSION["titApli"];?></title>
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/font-awesome/4.5.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/fonts.googleapis.com.css" />
@@ -28,50 +25,62 @@
         <link href="imagenes/login/sigea.png" rel="image_src" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
-		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />	
+        <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
 
-        <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }</style>
+        
+
+		<style type="text/css">
+		       table.dataTable tbody tr.selected {color: blue; font-weight:bold;}
+			   table.dataTable tbody td {padding:4px;}
+               th, td { white-space: nowrap; }        
+        </style>
 	</head>
 
 
-	<body id="grid_registro" style="background-color: white;">
-       
-    <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
-    </div>
-
-
-	<div style="height:10px; background-color: #C18900;"> </div>
-	<div class="container-fluid informacion" style="background-color: #9B0B0B;">   
-         <div class="row">
-             <div class="col-md-4" >
-                   <img src="../imagenes/empresa/logo2.png" alt="" width="50%" class="img-fluid" alt="Responsive image" />  
-			  </div>
-			  <div class="col-md-4" >
-				   <div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">
-						  PROCESO DE ADMISIÓN
-				    </div>
-				   <div class="text-primary"  style="padding:0px; font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">2020</div>
-			  </div>
-              <div class="col-md-4" style="padding-top: 20px; text-align: right;">
-                  <img class="imgRedonda" id="fotoAsp" src="" width="35px" height="40px"></img> 
-			      <span class="fontAmaranthB" style="color:lavenderblush; font-size:10px;"><?php echo $_SESSION["nombre"]; ?></span>
-				 <br/> 
-				  <span id="cierra" onclick="window.open('cierraSesion.php','_self');" class="badge badge-warning fontAmaranthB" 
-				        style="cursor:pointer;"><i class="fa fa-reply-all bigger-110"></i> Cerrar Sesión</span>
-			  </div>
-        </div>
-    </div>
-	<div style="height:10px; background-color: #C18900;"> 
-	 </div>
-	 
-<div  id="contenidoAsp" style="padding-left: 30px; padding-right:30px; ">  
-
-       
-</div>	
-
-<?php include './pie.php'?>
+	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
+	   
+	    
+	<div class="widget-box widget-color-green" id="principal">
+			  <div class="widget-header widget-header-small" style="padding:0px;">
+			      <div class="row" >	
+				         <div id="losciclos" class="col-sm-1">
+						</div> 	
+						<div id="losciclos2" class="col-sm-5" >
+						</div>                    				
+	
+						<div class="col-sm-6" style="padding-top:14px;">
+						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"> Ver Horario</span>            
+							</button>
 						
+							<button title="Buscar Registros" onclick="ImprimirReporte();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon red glyphicon glyphicon-calendar bigger-140"></i><span class="btn-small"> Reporte</span>            
+							</button>																						 									
+						</div>
+		            </div> 
+		      </div>
+
+              <div class="widget-body">
+				   <div class="widget-main">
+				       <div id="opcionestabInformacion" class="row hide" >
+					        <div class="col-sm-1"></div>
+						    <div class="col-sm-3">
+								<div class="pull-left tableTools-container" id="botonestabInformacion"></div>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" id="buscartabInformacion" placeholder="Filtrar...">	
+							</div>
+				       </div>
+				       <div class="row">							   
+					       <div id="informacion" class="col-sm-12" style="overflow-x: auto; height:350px;" >    
+						   </div>
+                       </div>
+                    </div>
+			   </div>
+		</div>
+
+<!-- ============================================================================================================-->			
+		 							
 <!-- -------------------Primero ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
 <script type="<?php echo $nivel; ?>text/javascript"> if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");</script>
@@ -109,42 +118,32 @@
 
 <!-- -------------------ultimos ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
-<script src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
 <script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
 <script src="<?php echo $nivel; ?>js/utilerias.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/bootbox.js"></script>
+
 <script src="<?php echo $nivel; ?>assets/js/jquery.gritter.min.js"></script>
+
 <script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
 
-<script src="<?php echo $nivel; ?>assets/js/wizard.min.js"></script>
-<script src="<?php echo $nivel; ?>assets/js/jquery-additional-methods.min.js"></script>
-<script src="<?php echo $nivel; ?>assets/js/jquery.maskedinput.min.js"></script>
-<script src="<?php echo $nivel; ?>assets/js/select2.min.js"></script>
+<!-- -------------------Exportación de tabla a excel----------------------->
+<script src="<?php echo $nivel; ?>js/FileSaver.min.js"></script>
+<script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
-<script src="ex.js?v=<?php echo date('YmdHis'); ?>"></script>
+
+<script src="pa_mihorario.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
-       var curp="<?php echo $_SESSION["usuario"] ;?>";
-	   var nombre="<?php echo $_SESSION["nombre"] ;?>";
-	   
-	   co=Math.round(Math.random() * (999999 - 111111) + 111111); 
-	   parametros={cose:co}; $.ajax({type: "POST",url:  "../nucleo/base/iniciaPincipal.php", data:parametros, success: function(data){}});sessionStorage.setItem("co",co);
-	   carrera="<?php echo $_SESSION["carrera"]?>";
-	   abiertoExa="<?php echo $_SESSION["abiertoExa"]?>";
-	   abiertoRes="<?php echo $_SESSION["abiertoRes"]?>";
-	   aceptado="<?php echo $_SESSION["aceptado"]?>";
-	   carrerad="<?php echo $_SESSION["carrerad"]?>";
-	   usuario="<?php echo $_SESSION["usuario"]?>";
-	   idasp="<?php echo $_SESSION["idasp"]?>";
-	   enviodocins="<?php echo $_SESSION["enviodocins"]?>";
-	   
-
-	   
-
+	var usuario="<?php echo $_SESSION["usuario"];?>";
+	var maxuni=0;
 </script>
 
+
+
 </body>
-<?php } else {header("Location: login.php");}?>
+<?php } else {header("Location: index.php");}?>
 </html>
+
 

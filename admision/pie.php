@@ -17,18 +17,19 @@
 						 <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
 						 <span style="color:white; font-weight: bold;"> Facebook</span></a>
                     </div>
-
 				 </div>
              </div>
 			  <div class="col-md-3" >
 					<div class='space-8'></div>
 					<div class="row"> 
 							<div class="col-md-12"> 
-								<span style="color:#9E9494; font-weight: bold;"> CONTACTO</span>
+								<span style="color:#9E9494; font-weight: bold;"> CONTACTO / SOPORTE</span>
 							</div>
 					</div>
 					<div class="row"> 
 							<div class="col-md-12"> 
+							    <i class="ace-icon fa fa-mobile white bigger-150"></i>
+								<span style="color:white;">9933000870</span> <br/>
 								<i class="ace-icon fa fa-envelope-o white bigger-150"></i>
 								<span style="color:white;">escolares@macuspana.tecnm.mx</span>
 							</div>
