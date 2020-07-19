@@ -7,6 +7,7 @@ var laCarrera="";
 var porcProyectado=0;
 var porcPosible=0;
 var porcReal=0;
+var miciclo="";
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -29,6 +30,20 @@ var porcReal=0;
 				size: size
 			}).css('color', barColor);
 			});
+
+		elsql="select CICL_CLAVE, CICL_DESCRIP from ciclosesc where CICL_CLAVE=getciclo()";	
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){ 
+					losdatos=JSON.parse(data); 
+					miciclo=losdatos[0][0];
+					$("#elciclo").html(losdatos[0][0]+" "+losdatos[0][1]);
+				}
+			});
+
 			
 		cargarAvance();
 	});
@@ -128,9 +143,9 @@ var porcReal=0;
 										losdatos=JSON.parse(data); 						
 										if ((porcProyectado>=70) && (losdatos[0][0]<=0)) {
 											$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
-															   "    Ya podrías cursar el Servicio Social, si llegas a cursar todas las asignaturas de el semestre no cerrado"+
+															   "  Podrías cursar el Servicio Social, si llegas a cursar todas las asignaturas de el semestre no cerrado"+
 															   "</div>");
-											OpcionesServicio();
+											// OpcionesServicio();			   
 										}
 										if ((porcProyectado<70) && (losdatos[0][0]<=0)) {
 											$("#servicio").html("<div class=\"alert alert-danger\" style=\"width:100%;\">"+ 									        
@@ -163,8 +178,107 @@ var porcReal=0;
 
 
    function OpcionesServicio(){
-	   alert ("aparecer opciones");
-   }
+		elsql="select CLAVE, DOCGEN_RUTA FROM edocgen where CLAVE IN ('SOLSS','CARCOMSS') ORDER BY CLAVE";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){ 
+				losdatos=JSON.parse(data); 	
+				$("#servicio").append("<div class=\"row\">"+
+									  "    <div class=\"col-sm-2\"> "+
+									  "       <a href=\""+losdatos[1][0]+"\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
+									  "       <span  class=\"badge badge-success\">1. Bajar Solicitud</span>"+
+									  "    </div>"+
+									  "    <div class=\"col-sm-2\"> "+
+									  "       <a href=\""+losdatos[0][0]+"\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
+									  "       <span  class=\"badge badge-success\">2. Bajar Carta Compromiso</span>"+
+									  "    </div>"+
+									  "</div>"+
+									  "<div class=\"row\" style=\"text-align:left;\">"+
+									  "    <div class=\"col-sm-12\"> "+
+									  "     <div id=\"documentos\" class=\"col-sm-12\" ></div>"+
+									  "    </div>"+
+									  "</div>"
+				);
+
+				
+				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_SOLSS'";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data2){ 
+						laruta=""; 
+						activaEliminar="S";
+						losdatos2=JSON.parse(data2); 	
+		
+						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+						
+									
+						dameSubirArchivoDrive("documentos","Subir Solicitud debidamente requisitada y firmadas ","solss",'RECIBOREINS','pdf',
+						'ID',usuario,'SOLICITUD DE SERVICIO ','eadjreins','alta',usuario+"_"+miciclo+"_SS_SOLSS",laruta,activaEliminar);
+					}
+				});
+
+				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOCONS'";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data2){ 
+						laruta=""; 
+						activaEliminar="S";
+						losdatos2=JSON.parse(data2); 	
+						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+						dameSubirArchivoDrive("documentos","Subir Pago por concepto de Constancia de Estudios ","pagocons",'RECIBOREINS','pdf',
+						'ID',usuario,'RECIBO DE PAGO CONSTANCIA','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOCONS",laruta,activaEliminar);
+					}
+				});
+
+				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_CARTACOM'";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data2){ 
+						laruta=""; 
+						activaEliminar="S";
+						losdatos2=JSON.parse(data2); 	
+						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+						dameSubirArchivoDrive("documentos","Subir Carta Compromiso debidamente requisitada y firmadas ","cartacom",'RECIBOREINS','pdf',
+						'ID',usuario,'CARTA COMPROMISO SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_CARTACOM",laruta,activaEliminar);
+					}
+				});
+
+				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOAPERSS'";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data2){ 
+						laruta=""; 
+						activaEliminar="S";
+						losdatos2=JSON.parse(data2); 	
+						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+						dameSubirArchivoDrive("documentos","Subir Pago por concepto de apertura Servicio Social","pagoaperss",'RECIBOREINS','pdf',
+						'ID',usuario,'RECIBO DE APERTURA SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOAPERSS",laruta,activaEliminar);
+					}
+				});
+
+			}
+		});
+
+	}
 
 
     

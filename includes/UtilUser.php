@@ -108,6 +108,7 @@ class UtilUser {
 		$fecha_actual=date("d/m/Y");
 		$anio=date("Y");
 		$miConex = new Conexion();
+		$ofisolo="0";
 		
 		$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT count(*) as N from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'");
 		foreach ($resultado as $row) {$hay=$row["N"];}
@@ -177,6 +178,15 @@ class UtilUser {
 		return $resul;
 	}
 	
+	public function getJefeNum($depto){
+		
+		$resul="";
+		$miConexU = new Conexion();
+		$res=$miConexU->getConsulta($_SESSION["bd"],"SELECT EMPL_NUMERO ".
+				" FROM fures a, pempleados b where URES_URES='".$depto."' and URES_JEFE=EMPL_NUMERO");
+		foreach ($res as $lin) {$resul=$lin[0];}
+		return $resul;
+	}
 	
 	
 	public function getDatoEmpl($empl,$campo){		

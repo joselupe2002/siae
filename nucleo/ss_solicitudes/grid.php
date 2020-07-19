@@ -23,10 +23,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>estilos/preloader.css" type="text/css" media="screen">         
         <link href="imagenes/login/sigea.png" rel="image_src" />
-        <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-datepicker3.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-timepicker.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/daterangepicker.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-datetimepicker.min.css" />
+       
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         
 
 		<style type="text/css">
@@ -39,90 +43,48 @@
 
 	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
 	   
-	<div class="row">  
-		<div class="col-sm-4"  style="text-align:center;">   				
-			<span class="profile-picture" style="text-align:center;">
-				<img id="foto"  style="width: 80px; height: 90px;" class="img-responsive" src="../../imagenes/menu/esperar.gif"/>				
-			</span>			
-		</div>
-		<div class="col-sm-8">   
-			<div class="row"> 
-				<div class="col-sm-4" style="text-align:center;">  
-					<div class="infobox-progress" title="Total de Créditos que tiene aprobados">
-						<div id="elavance" id="porcavance" class="easy-pie-chart percentage" data-color="green" data-percent="0" data-size="100">
-							<span id="etelavance"  class="percent"></span>%
+	    
+	<div class="widget-box widget-color-green" id="principal">
+			  <div class="widget-header widget-header-small" style="padding:0px;">
+			      <div class="row" >	
+				         <div id="losciclos" class="col-sm-1">
+						</div> 	
+						<div id="losciclos2" class="col-sm-3" >
+						</div>      
+
+						<div id="lascarreras" class="col-sm-4">
+						</div>	              				
+	
+						<div class="col-sm-3" style="padding-top:14px;">
+						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"> Ver Solicitudes</span>            
+							</button>
+						
+							<button title="Buscar Registros" onclick="ImprimirReporte();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon red glyphicon glyphicon-calendar bigger-140"></i><span class="btn-small"> Reporte</span>            
+							</button>																						 									
 						</div>
-					</div>
-					<div class="infobox-data">
-						<span id="etelavance2" class="fontRobotoB infobox-text bigger-120 text-success">Real</span>
-					</div>
-					
-				</div>
-				<div class="col-sm-4" style="text-align:center;">
-					<div class="infobox-progress" title="Total de Créditos de las asignaturas que esta cursando" >
-						<div id="posible"  class="easy-pie-chart percentage" data-color="blue" data-percent="0" data-size="100">
-							<span id="etposible"  class="percent"></span>%
-						</div>
-					</div>
-					<div class="infobox-data">
-						<span  id="etposible2" class="fontRobotoB infobox-text bigger-120 text-primary">Posibles</span>
-					</div>
-				</div>
-				<div class="col-sm-4" style="text-align:center;">
-					<div class="infobox-progress" title="Total de Créditos que pudierá acumular en caso de que apruebe las asignaturas que esta cursando">
-						<div id="proyectados"  class="easy-pie-chart percentage" data-color="red" data-percent="0" data-size="100">
-							<span id="etproyectados"  class="percent"></span>%
-						</div>
-					</div>
-					<div class="infobox-data" >
-						<span id="etproyectados2"  class="fontRobotoB infobox-text bigger-120 text-danger">Proyectados</span>
-					</div>
-				</div>
-			</div>
+		            </div> 
+		      </div>
+
+              <div class="widget-body">
+				   <div class="widget-main">
+				       <div id="opcionestabInformacion" class="row hide" >
+					        <div class="col-sm-1"></div>
+						    <div class="col-sm-3">
+								<div class="pull-left tableTools-container" id="botonestabInformacion"></div>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" id="buscartabInformacion" placeholder="Filtrar...">	
+							</div>
+				       </div>
+				       <div class="row">							   
+					       <div id="informacion" class="col-sm-12" style="overflow-x: auto; height:350px;" >    
+						   </div>
+                       </div>
+                    </div>
+			   </div>
 		</div>
-	</div>
-
-	<div class="row">  
-		<div class="col-sm-4">   
-		    <div class="profile-user-info"> 
-				<div><div class="fontRobotoB" id="nombre" style=" text-align:center; background-color:#77BBD2;"></div></div> 
-		    </div>
-
-			<div class="profile-user-info profile-user-info-striped">    				
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Matricula</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="matricula"></span>
-					</div>
-				</div>	
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Plan:</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="mapa"></span>
-					</div>
-				</div>		
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Especialidad:</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="especialiad"></span>
-					</div>
-				</div>	
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Carrera:</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="carrera"></span>
-					</div>
-				</div>			
-			</div>
-			<br>
-			<div class="profile-user-info profile-user-info-striped" style="text-align:center">  
-				<div class="fontRobotoB text-danger bigger-150">CICLO ESCOLAR:</div>
-				<div id="elciclo" class="fontRobotoB text-success bigger-150"></div>
-			</div>
-		</div>
-
-		<div id="servicio" class="col-sm-8" style="text-align:center;">   
-			
-
-		</div>
-
-	</div>
 
 <!-- ============================================================================================================-->			
 		 							
@@ -179,10 +141,11 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-
-<script src="pa_servsoc.js?v=<?php echo date('YmdHis'); ?>"></script>
+<script src="ss_solicitudes.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 	var usuario="<?php echo $_SESSION["usuario"];?>";
+	var lainstitucion="<?php echo $_SESSION["INSTITUCION"];?>";
+	var elcampus="<?php echo $_SESSION["CAMPUS"];?>";
 	var maxuni=0;
 </script>
 
