@@ -47,14 +47,24 @@
 						</div> 	
 						<div id="lasmaterias" class="col-sm-3" >
 						</div>                    				
-						<div id="losalumnos" class="col-sm-5">
-						</div>       			 
+						<div id="losalumnos" class="col-sm-4">
+						</div>    
+						<div  class="col-sm-2">
+							<div class="checkbox" style="padding:10px; margin: 0px; text-align:center;">
+										 <label>
+											   <input id="vertodos" type="checkbox" class="ace ace-switch ace-switch-6" />
+											    <span class="lbl"> </span> <br/>Todos los Ciclos
+										</label>
+							</div>
+						</div>    			 
 					
-						<div class="col-sm-3" style="padding-top:14px;">
+						
+						<div class="col-sm-2" style="padding-top:14px;">
+							
 						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
 							</button>
-							<button title="Buscar Registros" onclick="convertirDataTable('tabInformacion');" 
+							<button title="Herramientas de Exportación" onclick="convertirDataTable('tabInformacion');" 
 							    class="btn btn-white btn-success btn-round" value="Agregar"> 
 								<i class="ace-icon blue fa fa-wrench bigger-140"></i><span class="btn-small"></span>            
 							</button>																							 									
@@ -140,6 +150,16 @@
 <script type="text/javascript">
 	var usuario="<?php echo $_SESSION["usuario"];?>";
 	var maxuni=0;
+	var ext=false;
+	var elnombre="";
+
+	<?php if ( isset($_GET["matricula"])) { 
+			echo "lamat='".$_GET["matricula"]."';";
+			echo "elnombre='".$_GET["nombre"]."';";
+			echo "ext=true;"; } ?>
+
+
+
 </script>
 
 

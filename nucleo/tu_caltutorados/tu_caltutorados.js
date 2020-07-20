@@ -3,6 +3,7 @@ var estaseriando=false;
 var matser="";
 contR=1;
 contMat=1;
+var elalumno="";
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -16,6 +17,7 @@ contMat=1;
 		$(".input-mask-horario").mask("99:99-99:99");
 		$(".input-mask-numero").mask("99");
 
+		if (!ext) {
 
 		$("#lasmaterias").append("<span class=\"label label-danger\">Materia Tutoría</span>");
 		addSELECT("selMateria","lasmaterias","PROPIO", "SELECT a.ID, CONCAT(a.MATERIA,'|',a.MATERIAD,'|',a.SIE) FROM vcargasprof a where a.CICLO="+
@@ -28,6 +30,15 @@ contMat=1;
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 		colocarCiclo("elciclo","CLAVE");
+
+		}
+
+		else {
+			elalumno=lamat; 
+			cargarInformacion(); 
+			$("#lasmaterias").html("<div class=\"alert alert-primary bigger-160\">"+lamat+"</div>");
+			$("#losalumnos").html("<div class=\"alert alert-primary bigger-140\">"+elnombre+"</div>");
+		 }
 		
 	});
 	
@@ -40,8 +51,8 @@ contMat=1;
 									  "FROM dlista, falumnos where ALUCTR=ALUM_MATRICULA and IDGRUPO="+
 									  $("#selMateria").val()+" ORDER BY 2","BUSQUEDA","");
 			}
-		if (elemento=='selAlumnos') {$("#informacion").empty(); cargarInformacion();}
-
+		if (elemento=='selAlumnos') {$("#informacion").empty(); elalumno=$("#selAlumnos").val(); }
+           
 		}  
 
 
@@ -51,7 +62,7 @@ contMat=1;
 		mostrarEspera("esperaInf","grid_tu_caltutorados","Cargando Datos...");
 		elsql="SELECT MAX((select count(*) from eunidades l where "+
 		"l.UNID_MATERIA=e.MATCVE and UNID_PRED='')) AS N from dlista e  where  "+
-		"e.ALUCTR='"+$("#selAlumnos").val()+"' and PDOCVE=getciclo()";
+		"e.ALUCTR='"+elalumno+"' and PDOCVE=getciclo()";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 		type: "POST",
@@ -62,7 +73,8 @@ contMat=1;
 					maxuni=valor.N;
 					});
 
-	  
+				cadCiclo=' and PDOCVE=getciclo()';
+				if ( $('#vertodos').prop('checked')) {cadCiclo="";}
 				sqlMat="select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
 							"ifnull(LISCAL,0) as LISCAL,ifnull(LISPA1,0)  as LISPA1,ifnull(LISPA2,0) AS LISPA2,ifnull(LISPA3,0) as LISPA3,"+
 							"ifnull(LISPA4,0) as LISPA4,ifnull(LISPA5,0) as LISPA5,ifnull(LISPA6,0) as LISPA6,ifnull(LISPA7,0) as LISPA7,"+
@@ -72,7 +84,8 @@ contMat=1;
 								" (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,"+
 								" getcuatrimatxalum(e.MATCVE,ALUCTR) AS SEM "+
 								" from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+        	                      
-								" AND e.ALUCTR='"+$("#selAlumnos").val()+"' and PDOCVE=getciclo()";			  		  
+								" AND e.ALUCTR='"+elalumno+"'"+cadCiclo;
+
 				parametros={sql:sqlMat,dato:sessionStorage.co,bd:"Mysql"}
 				$.ajax({
 					type: "POST",
@@ -112,6 +125,7 @@ function generaTablaInformacion(grid_data){
 
 	for (i=1; i<=maxuni;i++) {caduni+="<th>CP"+i+"</th>";}
 	$("#tabInformacion").append("<thead><tr id=\"headMaterias\">"+
+	"<th style=\"text-align: center;\">Ciclo</th>"+ 
 	"<th style=\"text-align: center;\">Clave</th>"+ 
 	"<th style=\"text-align: center;\">Materia</th>"+
 	"<th style=\"text-align: center;\">Profesor</th>"+
@@ -123,7 +137,8 @@ function generaTablaInformacion(grid_data){
 	
 	 jQuery.each(grid_data, function(clave, valor) { 	
 			 
-		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.MATERIA+"\">");    	   
+		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.MATERIA+"\">");    
+		 $("#row"+valor.MATERIA).append("<td>"+valor.CICLO+"</td>"); 	   
 		 $("#row"+valor.MATERIA).append("<td>"+valor.MATERIA+"</td>");         	    
 		 $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
 		 $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");

@@ -110,12 +110,15 @@ jQuery.each(grid_data, function(clave, valor) {
 		"						<a title=\"Ver Kardex\" onclick=\"verKardex('"+valor.ALUM_MATRICULA+"');\" style=\"cursor:pointer;\">"+
 		"                            <i class=\"ace-icon fa fa-file-text-o green bigger-150\"></i>"+
 		"                       </a>"+
+		"						<a title=\"Ver Calificaciones del ciclo actual\" onclick=\"verCalifCiclo('"+valor.ALUM_MATRICULA+"','"+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+" "+valor.ALUM_NOMBRE+"');\" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-list-alt pink bigger-150\"></i>"+
+		"                       </a>"+
 		"					</div>"+
 		"				</div>"+
 		"			</div>"+
 		"		</div>"+
 		"	</div>");
-
+		
 	contAlum++;     
 	
 	$('.memberdiv').on('mouseenter touchstart', function(){
@@ -148,9 +151,15 @@ function verKardex(matricula){
 }
 
 function verAvanceAlum(matricula){
-   enlace="nucleo/avancecurri/grid.php?carrera=5&matricula="+matricula;
+   enlace="nucleo/avancecurri/grid.php?matricula="+matricula;
    abrirPesta(enlace,"06) Avance Curricular");
 }
+
+
+function verCalifCiclo(matricula,nombre){
+	enlace="nucleo/tu_caltutorados/grid.php?matricula="+matricula+"&nombre="+nombre;
+	abrirPesta(enlace,"Calif. Ciclo");
+ }
 
 
 function filtrarMenu() {
