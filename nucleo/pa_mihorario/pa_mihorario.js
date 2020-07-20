@@ -49,7 +49,7 @@ var elalumno="";
     function cargarInformacion(){
 		$("#informacion").empty();
 		mostrarEspera("esperaInf","grid_pa_mihorario","Cargando Datos...");
-		elsql="SELECT ID, MATCVE AS MATERIA, MATERIAD,SEMESTRE, CREDITOS, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, "+
+		elsql="SELECT PDOCVE, ID, MATCVE AS MATERIA, MATERIAD,SEMESTRE, CREDITOS, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, "+
 		"SABADO, DOMINGO, CARRERA"+
 		" FROM vhorario_alum a where a.PDOCVE='"+$('#elciclo').html()+"' and a.ALUCTR='"+usuario+"' ORDER BY SEMESTRE, MATERIAD";
 	
@@ -86,6 +86,7 @@ function generaTablaInformacion(grid_data){
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 
 	$("#tabInformacion").append("<thead><tr id=\"headMaterias\">"+
+	"<th style=\"text-align: center;\">Ciclo</th>"+ 
 	"<th style=\"text-align: center;\">Clave</th>"+ 
 	"<th style=\"text-align: center;\">Materia</th>"+
 	"<th style=\"text-align: center;\">SEM</th>"+
@@ -103,7 +104,8 @@ function generaTablaInformacion(grid_data){
 	
 	 jQuery.each(grid_data, function(clave, valor) { 	
 			 
-		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">");    	
+		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">");   
+		 $("#row"+valor.ID).append("<td>"+valor.PDOCVE+"</td>");   	
 		 $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");    
 		 $("#row"+valor.ID).append("<td>"+valor.MATERIAD+"</td>");         	    
 		 $("#row"+valor.ID).append("<td>"+utf8Decode(valor.SEMESTRE)+"</td>");

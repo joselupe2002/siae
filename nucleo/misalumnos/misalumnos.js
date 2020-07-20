@@ -117,7 +117,7 @@ jQuery.each(grid_data, function(clave, valor) {
 		"                            <i class=\"ace-icon fa fa-calendar red bigger-150\"></i>"+
 		"                       </a>"+
 		"						<a title=\"Actividades Complementarias\" onclick=\"verActCom('"+valor.ALUM_MATRICULA+"','"+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+" "+valor.ALUM_NOMBRE+"');\" style=\"cursor:pointer;\">"+
-		"                            <i class=\"ace-icon fa fa-thumb-tack red bigger-150\"></i>"+
+		"                            <i class=\"ace-icon fa fa-thumb-tack yellow bigger-150\"></i>"+
 		"                       </a>"+
 		"					</div>"+
 		"				</div>"+
