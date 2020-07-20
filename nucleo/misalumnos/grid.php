@@ -51,13 +51,24 @@
 						</div>   
 
 						<div id="lascarreras" class="col-sm-4">
-						</div>                  								 
+						</div>  
+						
+						
 						
 						<div class="col-sm-2" style="padding-top:14px;">
 						    <button title="Ver listado de alumnos" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-search bigger-100"></i><span class="btn-small"> Alumnos</span>            
+								<i class="ace-icon green fa fa-search bigger-100"></i><span class="btn-small"> Ver Alumnos</span>            
 							</button>																														 									
 						</div>
+
+						<div id="lascarreras" class="col-sm-2">
+						   <span class="label label-success">Filtrar</span>
+							<span class="input-icon">
+								<input id="filtrar"  onkeyup="filtrarMenu();" type="text" id="form-field-icon-1" />
+								<i class="ace-icon fa fa-search blue"></i>
+							</span>
+						</div>   
+
 		            </div> 
 		      </div>
 
@@ -65,62 +76,7 @@
 			  		<div class="tab-pane" style="margin-top:10px;" >
 						<div class="profile-users clearfix" id="contenido">
 
-							<div class="itemdiv memberdiv">
-								<div class="inline pos-rel">
-									<div class="user">
-										<a href="#"><img src="../../imagenes/menu/default.png" alt="Bob Doe's avatar" /></a>
-									</div>
-									<div class="body">
-										<div class="name">
-											<a href="#"><span class="user-status status-online"></span>Bob Doe</a>
-										</div>
-									</div>
-
-									<div class="popover">
-										<div class="arrow"></div>
-										<div class="popover-content">
-											<div class="bolder">Content Editor</div>
-												<div class="time"><i class="ace-icon fa fa-clock-o middle bigger-120 orange"></i><span class="green"> 20 mins ago </span></div>
-												<div class="hr dotted hr-8"></div>
-												<div class="tools action-buttons">
-													<a href="#"><i class="ace-icon fa fa-facebook-square blue bigger-150"></i></a>
-													<a href="#"><i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i></a>
-													<a href="#"><i class="ace-icon fa fa-google-plus-square red bigger-150"></i></a>
-												</div>
-											</div>
-									</div>
-								</div>
-							</div><!-- del item div member div  -->	
-
-
-							<div class="itemdiv memberdiv">
-								<div class="inline pos-rel">
-									<div class="user">
-										<a href="#"><img src="../../imagenes/menu/default.png" alt="Bob Doe's avatar" /></a>
-									</div>
-									<div class="body">
-										<div class="name">
-											<a href="#"><span class="user-status status-online"></span>Bob Doe</a>
-										</div>
-									</div>
-
-									<div class="popover">
-										<div class="arrow"></div>
-										<div class="popover-content">
-											<div class="bolder">Content Editor</div>
-												<div class="time"><i class="ace-icon fa fa-clock-o middle bigger-120 orange"></i><span class="green"> 20 mins ago </span></div>
-												<div class="hr dotted hr-8"></div>
-												<div class="tools action-buttons">
-													<a href="#"><i class="ace-icon fa fa-facebook-square blue bigger-150"></i></a>
-													<a href="#"><i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i></a>
-													<a href="#"><i class="ace-icon fa fa-google-plus-square red bigger-150"></i></a>
-												</div>
-											</div>
-									</div>
-								</div>
-							</div><!-- del item div member div  -->	
-
-
+							
 
 						</div><!-- del user profile  -->	
 			  		</div><!-- del taboane  -->	
@@ -182,12 +138,31 @@
 
 
 <script src="misalumnos.js?v=<?php echo date('YmdHis'); ?>"></script>
+
+
 <script type="text/javascript">
 	var institucion="<?php echo $_SESSION["INSTITUCION"]; ?>";
 	var campus="<?php echo $_SESSION["CAMPUS"]; ?>";
 	var usuario="<?php echo $_SESSION["usuario"]; ?>";
 	jQuery(function($) {
-		
+		$('.memberdiv').on('mouseenter touchstart', function(){
+			
+			var $this = $(this);
+			var $parent = $this.closest('.tab-pane');
+	
+			var off1 = $parent.offset();
+			var w1 = $parent.width();
+	
+			var off2 = $this.offset();
+			var w2 = $this.width();
+	
+			var place = 'left';
+			if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) place = 'right';
+			
+			$this.find('.popover').removeClass('right left').addClass(place);
+		}).on('click', function(e) {
+			e.preventDefault();
+		});
 		
 
 			});

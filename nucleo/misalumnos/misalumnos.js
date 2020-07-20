@@ -53,9 +53,12 @@ function cargarInformacion(){
 	   $("#informacion").empty();
 	   $("#informacion").append(script);
 			
-	elsql="select DISTINCT(ALUM_MATRICULA), ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT, ALUM_MAPA, ALUM_ACTIVO, ALUM_FOTO "+
-	" from falumnos a, dlista b where a.ALUM_MATRICULA=ALUCTR AND PDOCVE='"+$("#selCiclos").val()+"'"+
+	elsql="select DISTINCT(ALUM_MATRICULA), ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT, ALUM_MAPA, ALUM_ACTIVO, "+
+	"ALUM_FOTO, CARR_DESCRIP"+
+	" from falumnos a, ccarreras c where ALUM_CARRERAREG=CARR_CLAVE "+
+	" AND ALUM_MATRICULA IN (SELECT ALUCTR FROm dlista where PDOCVE='"+$("#selCiclos").val()+"')"+
 	" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"' ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE";
+
 
 	mostrarEspera("esperahor","grid_resEvalDoc","Cargando Datos...");
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -85,26 +88,28 @@ jQuery.each(grid_data, function(clave, valor) {
 	activo="red";
 	if (valor.ALUM_ACTIVO==1) {activo="green"}
     $("#contenido").append(		
-		"	<div class=\"itemdiv memberdiv\">"+
-		"		<div class=\"inline pos-rel\">"+
-		"			<div class=\"user\">"+
-		"				<a href=\"#\"><img src=\""+lafoto+"\" /></a>"+
-		"			</div>"+
+		"	<div class=\"itemdiv memberdiv\" id=\""+valor.ALUM_MATRICULA+"\">"+
+		"		<div class=\"ma_principal\">"+		
+		"				<a href=\"#\"><img src=\""+lafoto+"\" class=\"ma_foto\"  /></a><br/>"+		
 		"			<div class=\"body\">"+
-		"				<div class=\"name\">"+
-		"					<a href=\"#\"><i class=\"fa "+activo+" fa-circle \"></i> "+valor.ALUM_APEPAT+" "+valor.ALUM_NOMBRE+"</a>"+
+		"				<div class=\"name fontRoboto\">"+
+		"					<a href=\"#\"><i class=\"fa "+activo+" fa-circle \"></i> "+
+		"                   <span class=\"elname\" mipadre=\""+valor.ALUM_MATRICULA+"\">"+valor.ALUM_MATRICULA+" "+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+" "+valor.ALUM_NOMBRE+"</span></a>"+
 		"			</div>"+
 		"		</div>"+
-		"		<div class=\"popover\">"+
+		"		<div class=\"popover ma_popover\">"+
 		"			<div class=\"arrow\"></div>"+
 		"			<div class=\"popover-content\">"+
 		"				<div class=\"bolder\">"+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+" "+valor.ALUM_NOMBRE+"</div>"+
-		"					<div class=\"time\"><i class=\"ace-icon fa fa-clock-o middle bigger-120 orange\"></i><span class=\"green\"> 20 mins ago </span></div>"+
+		"					<div class=\"time\"><i class=\"ace-icon fa fa-road middle bigger-120 orange\"></i><span class=\"green\">"+valor.CARR_DESCRIP+"</span></div>"+
 		"					<div class=\"hr dotted hr-8\"></div>"+
 		"					<div class=\"tools action-buttons\">"+
-		"						<a href=\"#\"><i class=\"ace-icon fa fa-facebook-square blue bigger-150\"></i></a>"+
-		"						<a href=\"#\"><i class=\"ace-icon fa fa-twitter-square light-blue bigger-150\"></i></a>"+
-		"						<a href=\"#\"><i class=\"ace-icon fa fa-google-plus-square red bigger-150\"></i></a>"+
+		"						<a title=\"Ver Avance Curricular\" onclick=\"verAvanceAlum('"+valor.ALUM_MATRICULA+"');\" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-bar-chart-o blue bigger-150\"></i>"+
+		"                       </a>"+
+		"						<a title=\"Ver Kardex\" onclick=\"verKardex('"+valor.ALUM_MATRICULA+"');\" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-file-text-o green bigger-150\"></i>"+
+		"                       </a>"+
 		"					</div>"+
 		"				</div>"+
 		"			</div>"+
@@ -136,3 +141,33 @@ jQuery.each(grid_data, function(clave, valor) {
 });	
 } 
 
+
+function verKardex(matricula){
+	enlace="nucleo/avancecurri/kardex.php?matricula="+matricula;
+	abrirPesta(enlace,"Kardex");
+}
+
+function verAvanceAlum(matricula){
+   enlace="nucleo/avancecurri/grid.php?carrera=5&matricula="+matricula;
+   abrirPesta(enlace,"06) Avance Curricular");
+}
+
+
+function filtrarMenu() {
+
+	var input = $('#filtrar').val();
+	var filter = input.toUpperCase();
+	var contenidoMenu="";
+	
+	if (filter.length == 0) { // show all if filter is empty	
+			$(".itemdiv").removeClass("hide");
+		return;
+	} else {														
+
+		$(".itemdiv").addClass("hide");
+		$(' .elname:contains("' + filter + '")').each(function() {				
+		   $("#"+$(this).attr("mipadre")).removeClass("hide");
+		});
+		
+	}
+}

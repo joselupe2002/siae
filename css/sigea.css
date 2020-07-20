@@ -125,3 +125,23 @@ input.error{
   height: 100%;
   word-wrap: break-word;
 }
+
+.ma_foto{
+    width: 70px;
+    height: 70px;
+    border: 2px solid darkgray;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 50%;
+    background-size: 100% auto;
+}
+
+.ma_foto:hover{
+
+  border: 3px solid darkorange;
+ 
+}
+
+.ma_popover{
+   width: 350px;
+}
