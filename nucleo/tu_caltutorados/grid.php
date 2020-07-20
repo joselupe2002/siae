@@ -146,7 +146,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="tu_caltutorados.js"></script>
+<script src="tu_caltutorados.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 	var usuario="<?php echo $_SESSION["usuario"];?>";
 	var maxuni=0;
