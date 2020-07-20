@@ -4,6 +4,7 @@ var matser="";
 contR=1;
 contMat=1;
 var laCarrera="";
+var elalumno="";
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -11,6 +12,7 @@ var laCarrera="";
 
 
     jQuery(function($) { 
+
 
 		
 		$(".input-mask-hora").mask("99:99");
@@ -26,34 +28,43 @@ var laCarrera="";
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 		colocarCiclo("elciclo","CLAVE");
 		
+		if (ext) {
+			usuario=lamat; 	
+			$("#elciclo").html(miciclo);
+			cargarInformacion(); 	
+		}
+		
 	});
 	
 	
 		 
 	function change_SELECT(elemento) {
 
-		//if (elemento=='selAlumnos') {$("#informacion").empty(); cargarInformacion();}
+		if (elemento=='selCiclo') {$("#elciclo").html($("#selCiclo").val());}
 
 		}  
 
 
 
     function cargarInformacion(){
-
+		$("#informacion").empty();
 		mostrarEspera("esperaInf","grid_pa_mihorario","Cargando Datos...");
 		elsql="SELECT ID, MATCVE AS MATERIA, MATERIAD,SEMESTRE, CREDITOS, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, "+
 		"SABADO, DOMINGO, CARRERA"+
-		" FROM vhorario_alum a where a.PDOCVE='"+$("#selCiclo").val()+"' and a.ALUCTR='"+usuario+"' ORDER BY SEMESTRE, MATERIAD";
+		" FROM vhorario_alum a where a.PDOCVE='"+$('#elciclo').html()+"' and a.ALUCTR='"+usuario+"' ORDER BY SEMESTRE, MATERIAD";
+	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
-		success: function(data){      	  
-			    laCarrera=JSON.parse(data)[0]["CARRERA"]; 
-				generaTablaInformacion(JSON.parse(data));   
-
-				ocultarEspera("esperaInf");     	     		   
+		success: function(data){      
+			  	if (JSON.parse(data).length>0) {
+					laCarrera=JSON.parse(data)[0]["CARRERA"]; 
+					generaTablaInformacion(JSON.parse(data));   
+					ocultarEspera("esperaInf");     
+				  }
+				else {ocultarEspera("esperaInf");  }	     		   
 		},
 		error: function(data) {	                  
 				alert('ERROR: '+data);
@@ -115,6 +126,6 @@ function generaTablaInformacion(grid_data){
 
 
 function ImprimirReporte(){
-	enlace="nucleo/reinscripciones/boletaMat.php?carrera="+laCarrera+"&matricula="+usuario+"&ciclod=&ciclo="+$('#selCiclo').val();
+	enlace="nucleo/reinscripciones/boletaMat.php?carrera="+laCarrera+"&matricula="+usuario+"&ciclod=&ciclo="+$('#elciclo').html();
 	abrirPesta(enlace,"Reporte_Horario");
 }

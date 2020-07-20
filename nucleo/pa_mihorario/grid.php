@@ -138,6 +138,18 @@
 <script type="text/javascript">
 	var usuario="<?php echo $_SESSION["usuario"];?>";
 	var maxuni=0;
+
+	var ext=false;
+	var elnombre="";
+	var miciclo="";
+
+	<?php if ( isset($_GET["matricula"])) { 
+			echo "lamat='".$_GET["matricula"]."';";
+			echo "elnombre='".$_GET["nombre"]."';";
+			echo "miciclo='".$_GET["ciclo"]."';";
+			echo "ext=true;"; } ?>
+
+
 </script>
 
 

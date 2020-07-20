@@ -113,6 +113,12 @@ jQuery.each(grid_data, function(clave, valor) {
 		"						<a title=\"Ver Calificaciones del ciclo actual\" onclick=\"verCalifCiclo('"+valor.ALUM_MATRICULA+"','"+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+" "+valor.ALUM_NOMBRE+"');\" style=\"cursor:pointer;\">"+
 		"                            <i class=\"ace-icon fa fa-list-alt pink bigger-150\"></i>"+
 		"                       </a>"+
+		"						<a title=\"Horario de clases\" onclick=\"verHorario('"+valor.ALUM_MATRICULA+"','"+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+" "+valor.ALUM_NOMBRE+"');\" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-calendar red bigger-150\"></i>"+
+		"                       </a>"+
+		"						<a title=\"Actividades Complementarias\" onclick=\"verActCom('"+valor.ALUM_MATRICULA+"','"+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+" "+valor.ALUM_NOMBRE+"');\" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-thumb-tack red bigger-150\"></i>"+
+		"                       </a>"+
 		"					</div>"+
 		"				</div>"+
 		"			</div>"+
@@ -159,6 +165,17 @@ function verAvanceAlum(matricula){
 function verCalifCiclo(matricula,nombre){
 	enlace="nucleo/tu_caltutorados/grid.php?matricula="+matricula+"&nombre="+nombre;
 	abrirPesta(enlace,"Calif. Ciclo");
+ }
+
+ function verHorario(matricula,nombre){
+	enlace="nucleo/pa_mihorario/grid.php?matricula="+matricula+"&nombre="+nombre+"&ciclo="+$("#selCiclos").val();
+	abrirPesta(enlace,"Horario");
+ }
+
+
+ function verActCom(matricula,nombre){
+	enlace="nucleo/pa_inscompl/grid.php?matricula="+matricula+"&nombre="+nombre+"&ciclo="+$("#selCiclos").val();
+	abrirPesta(enlace,"Complementarias");
  }
 
 

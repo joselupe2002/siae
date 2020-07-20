@@ -1,5 +1,5 @@
 
-<?php session_start(); if (($_SESSION['inicio']==1)  && (strpos($_SESSION['permisos'],$_GET["modulo"])) ){ 
+<?php session_start(); if (($_SESSION['inicio']==1)) { 
 	header('Content-Type: text/html; charset='.$_SESSION['encode']);
 	include("../.././includes/Conexion.php");
 	include("../.././includes/UtilUser.php");
@@ -156,11 +156,23 @@
 
 
 <script type="text/javascript">
-        var todasColumnas;
+		var todasColumnas;
+		var ext=false;
+		var elnombre="";
+		var miciclo="";
+
+		<?php if ( isset($_GET["matricula"])) { 
+			echo "lamat='".$_GET["matricula"]."';";
+			echo "elnombre='".$_GET["nombre"]."';";
+			echo "miciclo='".$_GET["ciclo"]."';";
+			echo "ext=true;"; } ?>
+
+
 		$(document).ready(function($) { var Body = $('body'); Body.addClass('preloader-site');});
 		$(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
 
 		$(document).ready(function($) { 
+			if (!ext) {lamat="<?php echo $_SESSION['usuario']?>";}
 			cargarAct();
 			cargarActIns();
 			
@@ -324,7 +336,7 @@ function cargarActIns() {
         		 "c.PROM, b.LUNES, b.MARTES,b.MIERCOLES,b.JUEVES,b.VIERNES,b.SABADO,b.DOMINGO, c.COMP_LIBERACION as RUTA  FROM einscompl a "+
         		 "left outer join ecalificagen c on (a.ACTIVIDAD=c.ACTIVIDAD and a.MATRICULA=c.MATRICULA)"+
         		 ", vecomplementaria b "+
-				 "WHERE a.ACTIVIDAD=b.ID and a.MATRICULA='<?php echo $_SESSION['usuario']?>';"				 
+				 "WHERE a.ACTIVIDAD=b.ID and a.MATRICULA='"+lamat+"';"				 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
@@ -343,7 +355,7 @@ function cargarActIns() {
 function cargarAct(){
 	    elsql="select a.CICLO, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
 	        		                                                   " a.AULA from vecomplementaria a where a.`CUPO`>a.INS AND a.`CICLO`=getciclo() and AUTORIZADO='VOLVERSLUEGO' "+
-																	   " and a.ID NOT IN (SELECT ACTIVIDAD FROM einscompl WHERE MATRICULA='<?php echo $_SESSION['usuario']?>');"
+																	   " and a.ID NOT IN (SELECT ACTIVIDAD FROM einscompl WHERE MATRICULA='"+lamat+"');"
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
