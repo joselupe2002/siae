@@ -181,7 +181,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="misAlumnos.js?v=<?php echo date('YmdHis'); ?>"></script>
+<script src="misalumnos.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 	var institucion="<?php echo $_SESSION["INSTITUCION"]; ?>";
 	var campus="<?php echo $_SESSION["CAMPUS"]; ?>";
