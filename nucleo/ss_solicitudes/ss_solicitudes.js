@@ -80,11 +80,12 @@ var laCarrera="";
 		type: "POST",
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
-		success: function(data){      	  
-			    laCarrera=JSON.parse(data)[0]["CARRERA"]; 
-				generaTablaInformacion(JSON.parse(data));   
-
-				ocultarEspera("esperaInf");     	     		   
+		success: function(data){    
+			    if (JSON.parse(data).length>0) {
+						laCarrera=JSON.parse(data)[0]["CARRERA"]; 
+						generaTablaInformacion(JSON.parse(data));   
+						ocultarEspera("esperaInf");  }
+				else { ocultarEspera("esperaInf");  }   	     		   
 		},
 		error: function(data) {	                  
 				alert('ERROR: '+data);
