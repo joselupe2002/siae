@@ -214,11 +214,7 @@
 				    	    if (contcol>numCol) {abrilinea=false; controw++;}
 				    	    		    	 
 		                    if (!(abrilinea)) { 
-		                        $("#tabs_"+valor.SECCION).append("<div style=\"border:border-radius: 5px 5px 5px 5px;"+
-		                        		                                       "-moz-border-radius: 5px 5px 5px 5px;"+
-		                                                                       "-webkit-border-radius: 5px 5px 5px 5px;"+
-		                                                                       "padding: 8px;"+
-		                                                                       "border: 2px solid #969bb0;\" "+
+		                        $("#tabs_"+valor.SECCION).append("<div  "+
 		                                                         "id=\"row_"+valor.SECCION+"_"+controw+"\" class=\"row\">\n");
 		                        $("#tabs_"+valor.SECCION).append("<div class=\"space-10\">\n");
 		                        contcol=1;
@@ -229,7 +225,7 @@
 		                   
 		                    if (abrilinea){     
 		                    	 $("#row_"+valor.SECCION+"_"+controw).append("   <div id=\"cell_"+valor.SECCION+"_"+controw+"_"+contcol+"\" class=\"col-sm-"+tam+"\">\n");                     	 
-		                         getElementoEd("cell_"+valor.SECCION+"_"+controw+"_"+contcol,valor.CLAVE,valor.TIPO,valor.PREGUNTA,valor.ELSQL,"","N", valor.gif,autoi,'I',bd,'<?php echo $_SESSION['usuario'];?>');		                         
+		                         getElementoEd("cell_"+valor.SECCION+"_"+controw+"_"+contcol,valor.CLAVE,valor.TIPO,"<span class=\"badge badge-success\">"+valor.CLAVE+'</span> '+valor.PREGUNTA,valor.ELSQL,"","N", valor.gif,autoi,'I',bd,'<?php echo $_SESSION['usuario'];?>');		                         
 		                         contcol++;
 		                    	}  
 		                	callback(valor.CLAVE);                                    					         

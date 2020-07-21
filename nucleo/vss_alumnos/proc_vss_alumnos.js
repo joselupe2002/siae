@@ -73,7 +73,7 @@ function impLib(modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
 
-		if (table.rows('.selected').data()[0]["FINALIZADO"]=='N') {
+		if (table.rows('.selected').data()[0]["FINALIZADO"]=='S') {
 			enlace="nucleo/vss_alumnos/oficioLib.php?id="+table.rows('.selected').data()[0]["ID"];
 			abrirPesta(enlace,'Oficio Lib.');}
 		else {
