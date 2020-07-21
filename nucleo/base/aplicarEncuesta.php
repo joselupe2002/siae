@@ -225,7 +225,7 @@
 		                   
 		                    if (abrilinea){     
 		                    	 $("#row_"+valor.SECCION+"_"+controw).append("   <div id=\"cell_"+valor.SECCION+"_"+controw+"_"+contcol+"\" class=\"col-sm-"+tam+"\">\n");                     	 
-		                         getElementoEd("cell_"+valor.SECCION+"_"+controw+"_"+contcol,valor.CLAVE,valor.TIPO,"<span class=\"badge badge-success\">"+valor.CLAVE+'</span> '+valor.PREGUNTA,valor.ELSQL,"","N", valor.gif,autoi,'I',bd,'<?php echo $_SESSION['usuario'];?>');		                         
+		                         getElementoEd("cell_"+valor.SECCION+"_"+controw+"_"+contcol,valor.CLAVE,valor.TIPO,valor.PREGUNTA,valor.ELSQL,"","N", valor.gif,autoi,'I',bd,'<?php echo $_SESSION['usuario'];?>');		                         
 		                         contcol++;
 		                    	}  
 		                	callback(valor.CLAVE);                                    					         
