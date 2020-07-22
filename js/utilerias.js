@@ -370,7 +370,6 @@ function mostrarConfirm2 (nombre,contenedor, titulo, mensajeInfo,mensajebtn, eve
 
 function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
 	tamMsj="110";
-	
 	$("#"+nombre).remove();
 	if (tam="modal-lg") {tamMsj="160";} 
 	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
@@ -395,8 +394,7 @@ function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
                "   </div>"+
                "</div>";
 	$("#"+contenedor).append(script);
-	$('#'+nombre).modal({show:true, backdrop: 'static'});
-	
+	$('#'+nombre).modal({show:true, backdrop: 'static'});	
 }
 
 
