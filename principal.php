@@ -61,7 +61,7 @@
 
 
 	<body id="sigea" class="no-skin">
-		<div id="navbar" class="navbar navbar-default ace-save-state">
+		<div id="navbar" class="navbar navbar-default ace-save-state" >
 			<div class="navbar-container ace-save-state" id="navbar-container">	
 			<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" name="menu-toggler" data-target="#sidebar">
 					<span class="sr-only"></span>
@@ -71,8 +71,8 @@
 					<span class="icon-bar"></span>
 		    </button>			
 				<div>
-					<a href="#" class="navbar-brand">
-					   <small><img class="iconoMenu" src="imagenes/login/sigea.png"/>SIGEA</small>
+					<a href="#" class="navbar-brand" style="padding:0px; margin:5px;">
+					   <small class="fontRobotoB"><img class="iconoMenu" src="imagenes/login/sigea.png" style="width:30px; height:30px;"> SiGEA</small>
 					</a>
 				</div>
 				
