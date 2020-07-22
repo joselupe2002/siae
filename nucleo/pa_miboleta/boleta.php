@@ -124,7 +124,7 @@
 			function LoadDatosCursando()
 			{				
                 $miConex = new Conexion();
-            
+                $data=[];
                 $sql="select e.ID, FECHAINS, TCACVE AS TCAL, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, ".
                 "f.MATE_DESCRIP AS MATERIAD, i.CICL_CUATRIMESTRE as SEM, IFNULL(i.CICL_CREDITO,0) as CREDITOS, ".            
                 " e.GPOCVE AS GRUPO,e.LISCAL, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,".
@@ -234,120 +234,131 @@
                 $this->setX(50);
                 $this->Cell(0,4,utf8_decode('BOLETA DE CALIFICACIONES'),0,0,'L');
 
-                $this->setX(140);
-                $this->Cell(0,4,utf8_decode('PERIODO:'),0,0,'L');
-                $this->setX(170);
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(0,4,utf8_decode($dataCiclo[0][1]),0,1,'L');
+                if ($data) {
+                        $this->setX(140);
+                        $this->Cell(0,4,utf8_decode('PERIODO:'),0,0,'L');
+                        $this->setX(170);
+                        $this->SetFont('Montserrat-SemiBold','',10);
+                        $this->Cell(0,4,utf8_decode($dataCiclo[0][1]),0,1,'L');
 
-                $fecha=date("d/m/Y"); 
-                $this->SetFont('Montserrat-SemiBold','B',10);
-                $this->setX(50);
-                $this->Cell(0,4,utf8_decode('FECHA DE IMPRESIÓN:'),0,0,'L');
-                $this->setX(100);
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(0,4,utf8_decode($fecha),0,0,'L');
-                
-                $this->setX(140);
-                $this->Cell(0,5,utf8_decode('FECHA INS:'),0,0,'L');
-                $this->setX(170);
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(0,4,utf8_decode($data[0]["FECHAINS"]),0,1,'L');
+                        $fecha=date("d/m/Y"); 
+                        $this->SetFont('Montserrat-SemiBold','B',10);
+                        $this->setX(50);
+                        $this->Cell(0,4,utf8_decode('FECHA DE IMPRESIÓN:'),0,0,'L');
+                        $this->setX(100);
+                        $this->SetFont('Montserrat-SemiBold','',10);
+                        $this->Cell(0,4,utf8_decode($fecha),0,0,'L');
+                        
+                        $this->setX(140);
+                        $this->Cell(0,5,utf8_decode('FECHA INS:'),0,0,'L');
+                        $this->setX(170);
+                        $this->SetFont('Montserrat-SemiBold','',10);
+                        $this->Cell(0,4,utf8_decode($data[0]["FECHAINS"]),0,1,'L');
 
-                $this->SetFont('Montserrat-Black','B',10);
-                $this->setX(20);
-                $this->Cell(30,4,utf8_decode($dataAlum[0]["ALUM_MATRICULA"]),0,0,'L');
-                $this->Cell(90,4,utf8_decode($dataAlum[0]["NOMBRE"]),0,0,'L');
-                $this->SetFont('Montserrat-SemiBold','',10);
-                $this->Cell(30,4,utf8_decode("NPRDO:"),0,0,'L');
-                $this->Cell(30,4,utf8_decode($dataAlum[0]["PERIODOS"]),0,1,'L');
+                        $this->SetFont('Montserrat-Black','B',10);
+                        $this->setX(20);
+                        $this->Cell(30,4,utf8_decode($dataAlum[0]["ALUM_MATRICULA"]),0,0,'L');
+                        $this->Cell(90,4,utf8_decode($dataAlum[0]["NOMBRE"]),0,0,'L');
+                        $this->SetFont('Montserrat-SemiBold','',10);
+                        $this->Cell(30,4,utf8_decode("NPRDO:"),0,0,'L');
+                        $this->Cell(30,4,utf8_decode($dataAlum[0]["PERIODOS"]),0,1,'L');
 
-                $this->SetFont('Montserrat-Black','B',10);
-                $this->setX(20);
-                $this->Cell(30,4,utf8_decode("CARRERA:"),0,0,'L');
-                $this->SetFont('Montserrat-SemiBold','',8);
-                $this->Cell(90,4,utf8_decode($dataAlum[0]["CARRERAD"]),0,0,'L');
-                $this->SetFont('Montserrat-SemiBold','',10);
+                        $this->SetFont('Montserrat-Black','B',10);
+                        $this->setX(20);
+                        $this->Cell(30,4,utf8_decode("CARRERA:"),0,0,'L');
+                        $this->SetFont('Montserrat-SemiBold','',8);
+                        $this->Cell(90,4,utf8_decode($dataAlum[0]["CARRERAD"]),0,0,'L');
+                        $this->SetFont('Montserrat-SemiBold','',10);
 
 
-                
-                $this->Ln();
-                $this->Ln();
-                $this->setX(20);
-                $this->SetFillColor(172,31,8);
-                $this->SetTextColor(255);  
-                $this->SetFont('Montserrat-ExtraBold','B',8);
-                //$this->Cell(10,5,'NO.',1,0,'C',true);
-                $this->Cell(25,5,'CLAVE',1,0,'C',true);
-                //$this->Cell(15,5,'GRUPO',1,0,'C',true);
-                $this->Cell(100,5,'MATERIA / DOCENTE',1,0,'C',true);
-                $this->Cell(10,5,utf8_decode('CRÉD.'),1,0,'C',true);
-                $this->Cell(10,5,utf8_decode('CALIF.'),1,0,'C',true);
-                $this->Cell(35,5,utf8_decode('OPCIÓN'),1,0,'C',true);
-            
-                $this->Ln();
+                        
+                        $this->Ln();
+                        $this->Ln();
+                        $this->setX(20);
+                        $this->SetFillColor(172,31,8);
+                        $this->SetTextColor(255);  
+                        $this->SetFont('Montserrat-ExtraBold','B',8);
+                        //$this->Cell(10,5,'NO.',1,0,'C',true);
+                        $this->Cell(25,5,'CLAVE',1,0,'C',true);
+                        //$this->Cell(15,5,'GRUPO',1,0,'C',true);
+                        $this->Cell(100,5,'MATERIA / DOCENTE',1,0,'C',true);
+                        $this->Cell(10,5,utf8_decode('CRÉD.'),1,0,'C',true);
+                        $this->Cell(10,5,utf8_decode('CALIF.'),1,0,'C',true);
+                        $this->Cell(35,5,utf8_decode('OPCIÓN'),1,0,'C',true);
+                    
+                        $this->Ln();
 
-                $this->SetFont('Montserrat-Medium','',8);       
-                $this->SetFillColor(172,31,6);
-                $this->SetTextColor(0);
-                $this->SetWidths(array(25,100,10,10,35));
-                $n=1;
-                $napr=0;
-                $nrep=0;
-                $nmat=0;
-                $suma=0;   
-                $sumaapr=0;  
-                $crapr=0;
-                $totcred=0;             
-                foreach($data as $row) {
-                    $this->setX(20);
-                    $opcion='1RA OPORTUNIDAD';
-                    if ($row["VECES"]==2) {$opcion='2DA OPORTUNIDAD';}
-                    if ($row["VECES"]>2) {$opcion='ESPECIAL';}
+                        $this->SetFont('Montserrat-Medium','',8);       
+                        $this->SetFillColor(172,31,6);
+                        $this->SetTextColor(0);
+                        $this->SetWidths(array(25,100,10,10,35));
+                        $n=1;
+                        $napr=0;
+                        $nrep=0;
+                        $nmat=0;
+                        $suma=0;   
+                        $sumaapr=0;  
+                        $crapr=0;
+                        $totcred=0;             
+                        foreach($data as $row) {
+                            $this->setX(20);
+                            $opcion='1RA OPORTUNIDAD';
+                            if ($row["VECES"]==2) {$opcion='2DA OPORTUNIDAD';}
+                            if ($row["VECES"]>2) {$opcion='ESPECIAL';}
 
-                    $lacal="NA";
-                    if ($row["LISCAL"]>=70) {$lacal=$row["LISCAL"]; $napr++; $sumaapr+=$row["LISCAL"]; $crapr+=$row["CREDITOS"]; }
-                    else {$nrep++;}
-                    $this->Row(array( 
-                                    utf8_decode($row["MATERIA"]),
-                                    utf8_decode($row["MATERIAD"]."\n".$row["PROFESORD"]),
-                                    utf8_decode($row["CREDITOS"]),
-                                    utf8_decode($lacal) ,
-                                    utf8_decode($opcion)                                 
-                                    )
-                            );
-                    $n++;
-                    $nmat++;
-                    $totcred+=$row["CREDITOS"];
-                    $suma+=$row["LISCAL"];
+                            $lacal="NA";
+                            if ($row["LISCAL"]>=70) {$lacal=$row["LISCAL"]; $napr++; $sumaapr+=$row["LISCAL"]; $crapr+=$row["CREDITOS"]; }
+                            else {$nrep++;}
+                            $this->Row(array( 
+                                            utf8_decode($row["MATERIA"]),
+                                            utf8_decode($row["MATERIAD"]."\n".$row["PROFESORD"]),
+                                            utf8_decode($row["CREDITOS"]),
+                                            utf8_decode($lacal) ,
+                                            utf8_decode($opcion)                                 
+                                            )
+                                    );
+                            $n++;
+                            $nmat++;
+                            $totcred+=$row["CREDITOS"];
+                            $suma+=$row["LISCAL"];
+                        }
+
+                        $this->Ln();
+                        $this->setX(120);
+                        $this->Cell(25,5,"PROMEDIO:",1,0,'R');
+                        $this->Cell(10,5,round(($sumaapr/$napr),0),1,1,'R');
+                        $this->setX(120);
+                        $this->Cell(25,5,"MAT. REPR:",1,0,'R');
+                        $this->Cell(10,5,$nrep,1,1,'R');
+                        $this->setX(120);
+                        $this->Cell(25,5,utf8_decode("CRÉDITOS:"),1,0,'R');
+                        $this->Cell(10,5,$totcred,1,1,'R');
+                        $this->setX(120);
+                        $this->Cell(25,5,"CRED. APR:",1,0,'R');
+                        $this->Cell(10,5,$crapr,1,1,'R');
+
+                        
+                        $miutil = new UtilUser();
+                        $nombre=$miutil->getJefe('303');//Nombre del puesto de control escolar7
+
+                    
+                        $this->SetFont('Montserrat-ExtraBold','',8);
+                        
+                        $this->setX(10);$this->setY(($linea+122));        
+                        $this->Cell(80,5,utf8_decode($nombre),'T',0,'L');
+                        $this->setX(10);$this->setY(($linea+125));
+                        $this->SetFont('Montserrat-SemiBold','',8);
+                        $this->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",'',0,'L');
+                    }
+                else {
+                    $this->SetFont('Montserrat-SemiBold','',15);
+                    $this->SetTextColor(196, 37, 5);
+                    $this->ln(20);
+                    $this->Cell(0,5,"NO EXISTE MATERIAS EN ESTE CICLO ",'',0,'C');
+                    $this->ln(5);
+                    $this->Cell(0,5,"QUE ESTEN EN STATUS CERRADA",'',0,'C');
+
                 }
-
-                $this->Ln();
-                $this->setX(120);
-                $this->Cell(25,5,"PROMEDIO:",1,0,'R');
-                $this->Cell(10,5,round(($sumaapr/$napr),0),1,1,'R');
-                $this->setX(120);
-                $this->Cell(25,5,"MAT. REPR:",1,0,'R');
-                $this->Cell(10,5,$nrep,1,1,'R');
-                $this->setX(120);
-                $this->Cell(25,5,"CRÉDITOS:",1,0,'R');
-                $this->Cell(10,5,$totcred,1,1,'R');
-                $this->setX(120);
-                $this->Cell(25,5,"CRED. APR:",1,0,'R');
-                $this->Cell(10,5,$crapr,1,1,'R');
-
-                
-                $miutil = new UtilUser();
-                $nombre=$miutil->getJefe('303');//Nombre del puesto de control escolar7
-
-             
-                $this->SetFont('Montserrat-ExtraBold','',8);
-                
-                $this->setX(10);$this->setY(($linea+122));        
-                $this->Cell(80,5,utf8_decode($nombre),'T',0,'L');
-                $this->setX(10);$this->setY(($linea+125));
-                $this->SetFont('Montserrat-SemiBold','',8);
-                $this->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",'',0,'L');
 
                /*
                 $this->setX(0);$this->setY(140);

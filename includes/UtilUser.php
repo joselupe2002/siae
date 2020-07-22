@@ -1085,18 +1085,23 @@ class UtilUser {
 		$losdatosf= explode(",",$losdatos);
 		
 		if (strlen($loscampos)>0) {
-			$operaciones = array("=", ">", "<", "<=",">=","!","<>");
+			$operaciones = array("=", ">", "<", "<=",">=","!","<>","|");
 			for ($x=0; $x<=count($loscamposf)-1; $x++) {
 				$op1=substr($losdatosf[$x],0,1);
 				$op2=substr($losdatosf[$x],0,2);
 		
-				if (in_array($op2,$operaciones)) {
+				if ($op1=="|") {
+					$valor=str_replace("|","','",$losdatosf[$x]);
+					$valor=substr($valor,3,strlen($valor));
+					$cad.=" AND ".$loscamposf[$x]." in ('".$valor."')"; 
+				}
+				else if (in_array($op2,$operaciones)) {
 					$valor=substr($losdatosf[$x],2,strlen($losdatosf[$x]));
 					$cad.=" AND ".$loscamposf[$x].$op2."'".$valor."'"; 
 				} else if (in_array($op1,$operaciones)){
 					$valor=substr($losdatosf[$x],1,strlen($losdatosf[$x]));
 					$cad.=" AND ".$loscamposf[$x].$op1."'".$valor."'"; 
-				}
+				} 
 				else {
 				    $cad.=" AND ".$loscamposf[$x]." like '%".$losdatosf[$x]."%'"; 
 				}

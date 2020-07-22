@@ -96,9 +96,6 @@ var laCarrera="";
 				$('#dlgproceso').modal("hide");  
 			}
 		}); 	
-		 
-	
-
 			  		
 }
 

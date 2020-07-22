@@ -251,7 +251,8 @@
 							type: "POST",
 							data:parametros,
 	                        url:  laurl,
-	                        success: function(data){ 					        	
+	                        success: function(data){ 	
+											        	
 	                        	 $('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');
 	                        
 	                        	 losdatos=JSON.parse(data);

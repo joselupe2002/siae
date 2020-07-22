@@ -48,8 +48,8 @@
 						</div>
 
 						<div class="widget-body" >	
-								<div class="row" style="padding: 10px;  text-align:right;">	
-									<div class="col-sm-12"><span class="badge badge-dark" id="losciclos"></span> </div>	
+								<div class="row" style="padding: 10px;">	
+									<div id="losciclos" class="col-sm-12"></div> 	
 								</div>
 								
 								<div class="row"  style="padding: 10px;">	

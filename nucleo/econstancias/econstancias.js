@@ -20,13 +20,9 @@ contMat=1;
 		
 		$("#lostipos").append("<span class=\"label label-info\">Tipo</span>");
 		$("#lostipoexp").append("<span class=\"label label-warning\">Ver como</span>");
-		$("#losciclossel").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
-		addSELECT("selCiclos","losciclossel","PROPIO", "SELECT CICL_CLAVE, CICL_DESCRIP FROM ciclosesc order by cicl_clave desc", "","");  			      
-	
-		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
-		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
-		colocarCiclo("elciclo","CLAVE");
-		$("#selCiclos").val($("#elciclo").html());
+		$("#losciclos").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
+		addSELECT("selciclo","losciclos","PROPIO", "SELECT CICL_CLAVE, concat(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc order by cicl_clave desc", "","");  			      
+
 
 		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) from falumnos ", "","BUSQUEDA");  			      
 		
@@ -97,16 +93,18 @@ function imprimeReporte(tipocons,consecutivo) {
 					});
 
 	if ($("#selTipoExp").val()==1) {
-		if (tipocons=="1") {creaConsCal($("#elciclo").html(),$("#selAlumnos").val(),consecutivo,elanio); }  
-		if (tipocons=="2") {creaConsHor($("#elciclo").html(),$("#selAlumnos").val(),consecutivo,elanio); } 
-		if (tipocons=="3") {creaConsPer($("#elciclo").html(),$("#selAlumnos").val(),consecutivo,elanio); } 
-		if (tipocons=="4") {creaConsIns($("#elciclo").html(),$("#selAlumnos").val(),consecutivo,elanio); } 
+		if (tipocons=="1") {creaConsCal($("#selciclo").val(),$("#selAlumnos").val(),consecutivo,elanio); }  
+		if (tipocons=="2") {creaConsHor($("#selciclo").val(),$("#selAlumnos").val(),consecutivo,elanio); } 
+		if (tipocons=="3") {creaConsPer($("#selciclo").val(),$("#selAlumnos").val(),consecutivo,elanio); } 
+		if (tipocons=="4") {creaConsIns($("#selciclo").val(),$("#selAlumnos").val(),consecutivo,elanio); } 
+		if (tipocons=="5") {window.open("../avancecurri/kardex.php?matricula="+$("#selAlumnos").val(), '_blank');  }
+		if (tipocons=="6") {window.open("../pa_miboleta/boleta.php?matricula="+$("#selAlumnos").val()+"&ciclo="+$("#selciclo").val(), '_blank');  }
 	}
 	if ($("#selTipoExp").val()==2) {
-		if (tipocons=="1") {window.open("conscal.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
-		if (tipocons=="2") {window.open("conshorario.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
-		if (tipocons=="3") {window.open("consperiodo.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
-		if (tipocons=="4") {window.open("conssincal.php?elciclo="+$("#elciclo").html()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+		if (tipocons=="1") {window.open("conscal.php?elciclo="+$("#selciclo").val()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+		if (tipocons=="2") {window.open("conshorario.php?elciclo="+$("#selciclo").val()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+		if (tipocons=="3") {window.open("consperiodo.php?elciclo="+$("#selciclo").val()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
+		if (tipocons=="4") {window.open("conssincal.php?elciclo="+$("#selciclo").val()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
 		if (tipocons=="5") {window.open("../avancecurri/kardex.php?matricula="+$("#selAlumnos").val(), '_blank');  }
 	}
 }
@@ -192,7 +190,7 @@ function creaConsCal (elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
 			
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -207,9 +205,9 @@ function creaConsCal (elciclo,matricula,consec,anio){
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
 						" getavance('"+matricula+"') as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"',getciclo()) AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"',getciclo()) as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='"+matricula+"') AS CRECUR "+
+						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
+						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
+						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
@@ -299,7 +297,7 @@ function creaConsHor(elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
@@ -313,9 +311,9 @@ function creaConsHor(elciclo,matricula,consec,anio){
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
 						" getavance('"+matricula+"') as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"',getciclo()) AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"',getciclo()) as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='"+matricula+"') AS CRECUR "+
+						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
+						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
+						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
@@ -428,7 +426,7 @@ function creaConsPer(elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}			
 			$.ajax({
 				type: "POST",
@@ -442,9 +440,9 @@ function creaConsPer(elciclo,matricula,consec,anio){
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
 						" getavance('"+matricula+"') as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"',getciclo()) AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"',getciclo()) as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='"+matricula+"') AS CRECUR "+
+						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
+						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
+						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
@@ -502,7 +500,7 @@ function creaConsIns(elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo();";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
@@ -516,9 +514,9 @@ function creaConsIns(elciclo,matricula,consec,anio){
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
 						" getavance('"+matricula+"') as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"',getciclo()) AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"',getciclo()) as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='"+matricula+"') AS CRECUR "+
+						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
+						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
+						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
 						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
 						" CARR_CLAVE=ALUM_CARRERAREG"+
 						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
