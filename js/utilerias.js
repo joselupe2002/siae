@@ -1,4 +1,6 @@
-	function dameMesLetra(nummes) {
+var ec_nreg=0;
+
+function dameMesLetra(nummes) {
 		var meses=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
         return meses[nummes-1];
 	}
@@ -2351,4 +2353,205 @@ var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overf
 				    	    content:content,
 				    	    closable:true		    
 						});
+}
+
+/*==============================================VENTANA DE CORREO ================================================*/
+
+function getVentanaCorreo(modulo,colcorreo) {
+	ec_elReg=0;
+	ec_nreg=0;
+	var table =  $("#G_"+modulo).DataTable();	
+	table.rows().iterator('row', function(context, index){ec_nreg++;});
+
+    eleditor="<div class=\"widget-box widget-color-green\">"+
+	"<div class=\"widget-body\"> "+
+	"     <div class=\"widget-main no-padding\">"+
+	"         <div class=\"wysiwyg-editor\" id=\"ec_elcorreo\" style=\"height:120px;\"></div>"+
+	"     </div>"+
+	"     <div class=\"widget-toolbox padding-4 clearfix\">"+
+	"         <div class=\"btn-group pull-right\">"+
+	"              <label onclick=\"limpiarEdit('ec_elcorreo','"+modulo+"');\" "+
+	"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
+	"              <i class=\"ace-icon fa fa-external-link-square bigger-125\"></i>Limpiar</label>"+
+	"         </div>"+
+	"     </div>"+
+	"</div>"+
+	"</div>"
+
+
+	script="<div class=\"modal fade\" id=\"vc_"+modulo+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	"   <div class=\"modal-dialog modal-lg\"  role=\"document\">"+
+	"      <div class=\"modal-content\">"+
+	"          <div class=\"modal-header\" >"+
+	"             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\">"+
+	"                  <span aria-hidden=\"true\">&times;</span>"+
+	"             </button>"+
+	"             <span><i class=\"menu-icon bigger-160 blue fa  fa-envelope-o\"></i><span class=\"text-success lead \"> <strong>Envió de correo</strong></span></span>"+	   
+	"          </div>"+
+	"          <div id=\"bodyvc_"+modulo+"\" class=\"modal-body\"  style=\"height:300px; overflow-y: auto;\">"+	
+	"               <div class=\"row \"> "+		
+	"                   <div class=\"col-sm-4\" id=\"lasplantillas\" >"+      
+	"                         <label class=\"label label-success\">Plantilla</label>"+
+	"                         <select onchange=\"cargaPlantilla();\" id=\"selPlantillas\" class=\"form-control\"></select>"+
+	"                   </div>"+    
+	"                   <div class=\"col-sm-4\">"+      
+	"                         <label class=\"label label-success\">Correo Prueba</label>"+
+	"                         <input class=\"form-control\" id=\"elcorreoprueba\"></input>"+
+	"                   </div>"+
+	"                   <div class=\"col-sm-4\">"+      
+	"                         <label class=\"label label-primary\">Asunto</label>"+
+	"                         <input class=\"form-control\" id=\"elasunto\"></input>"+
+	"                   </div>"+        
+	"               </div>"+    
+	"               <div class=\"row \"> "+	
+	"                   <div class=\"col-sm-12\">"+   
+	                        eleditor+
+	"                   </div>"+	
+	"               </div>"+   
+	"          </div>"+
+	"          <div id=\"headvc_"+modulo+"\" class=\"modal-head\" style=\"padding:10px; background-color:#F0EEEE; text-align:center;\">"+	
+	"              <button onclick=\"procEnvioCorreo('"+modulo+"','"+colcorreo+"','0');\" "+
+	"              class=\"btn btn-sm btn-primary btn-white btn-round\">"+
+	"              <i class=\"ace-icon blue fa fa-mail-forward bigger-150\"></i>Enviar Correo</button>"+
+	"          </div>"
+	"      </div>"+
+	"   </div>"+
+	"</div>";
+	$("#vc_"+modulo).remove();
+    if (! ( $("#vc_"+modulo).length )) {
+	        $("#grid_"+modulo).append(script);	     
+	    }	    
+	$('#vc_'+modulo).modal({show:true, backdrop: 'static'});
+	
+	actualizaSelect("selPlantillas", "SELECT NOMBRE, NOMBRE FROM ec_plantillas order by NOMBRE", "","");  			      
+
+	$('#ec_elcorreo').ace_wysiwyg({
+		toolbar:
+		[   'font','fontSize',
+			{name:'bold', className:'btn-info'},			
+			null,
+			'foreColor',
+			null,
+			{name:'undo', className:'btn-grey'},
+			{name:'redo', className:'btn-grey'},
+			{name:'createLink', className:'btn-pink'},
+			{name:'unlink', className:'btn-pink'},
+			null,
+			{name:'insertImage', className:'btn-primary'},
+			{name:'nuevo', className:'btn-success'}
+		],
+		'wysiwyg': {
+			fileUploadError: showErrorAlert
+		}
+	}).prev().addClass('wysiwyg-style2');
+
+
+	if ( typeof jQuery.ui !== 'undefined' && ace.vars['webkit'] ) {	
+		var lastResizableImg = null;
+		function destroyResizable() {
+			if(lastResizableImg == null) return;
+			lastResizableImg.resizable( "destroy" );
+			lastResizableImg.removeData('resizable');
+			lastResizableImg = null;
+		}
+		var enableImageResize = function() {
+			$('.wysiwyg-editor')
+			.on('mousedown', function(e) {
+				var target = $(e.target);
+				if( e.target instanceof HTMLImageElement ) {
+					if( !target.data('resizable') ) {
+						target.resizable({
+							aspectRatio: e.target.width / e.target.height,
+						});
+						target.data('resizable', true);						
+						if( lastResizableImg != null ) {
+							//disable previous resizable image
+							lastResizableImg.resizable( "destroy" );
+							lastResizableImg.removeData('resizable');
+						}
+						lastResizableImg = target;
+					}
+				}
+			})
+			.on('click', function(e) {
+				if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
+					destroyResizable();
+				}
+			})
+			.on('keydown', function() {
+				destroyResizable();
+			});
+		}
+
+		enableImageResize();
+	}
+}
+
+function cargaPlantilla() {
+		elsql="select * from ec_plantillas where NOMBRE='"+$("#selPlantillas").val()+"'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
+	           success: function(data){  
+				    losdatos=JSON.parse(data);				      			      
+					$("#ec_elcorreo").html(losdatos[0]["MENSAJE"]);
+					$("#elasunto").val(losdatos[0]["ASUNTO"]);																										
+			},
+			error: function(dataMat) {	                  
+					alert('ERROR: '+dataMat);
+								}
+	});	      	      	
+}
+
+
+/*=======================PRCEDIMIENTOS DE ENVIO DE CORREO =================*/
+
+function procEnvioCorreo(modulo,colcorreo,ec_elReg){
+	
+	$("#confirmFinalizar").modal("hide");
+	if (!($("#vtnRes").is(":visible"))) { 
+		mostrarVentRes('vtnRes','txtResultados','grid_'+modulo,'Resultados','modal-lg');
+	}
+	
+	var table =  $("#G_"+modulo).DataTable();	
+	var lafila = table.rows(ec_elReg).data();
+
+	mensaje=$("#ec_elcorreo").html();
+
+	lista=dameParametrosSeparados(mensaje,"{","}");
+	for (var i = 0; i < lista.length; i++) {
+		var regex = new RegExp("{" + lista[i]  + "}", "gi");
+		mensaje=mensaje.replace(regex,lafila[0][lista[i]]);
+	}
+
+	elcorreo=lafila[0][colcorreo]; if ($("#elcorreoprueba").val().length>0) {elcorreo=$("#elcorreoprueba").val();}
+	
+
+    var parametros = {
+		"MENSAJE": mensaje,
+		"ADJSERVER": 'S',
+		"ASUNTO": $("#elasunto").val(),
+		"CORREO" :  elcorreo,
+		"NOMBRE":"",
+		"ADJUNTO":''
+    };
+
+    $.ajax({
+        data:  parametros,
+        type: "POST",
+        url: "../base/enviaCorreo.php",
+        success: function(response)
+        {
+            $('#txtResultados').val($('#txtResultados').val()+(ec_elReg+1)+" de "+(ec_nreg)+" "+response+"\n");
+            ec_elReg++;
+            if (ec_nreg>=ec_elReg) {procEnvioCorreo(modulo,colcorreo,ec_elReg);}
+        },
+        error : function(error) {
+            console.log(error);
+            $('#txtResultados').val($('#txtResultados').val()+"Error en ajax "+error.toString()+"\n");
+        }
+	});
+
 }

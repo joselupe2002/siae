@@ -651,6 +651,11 @@ function enviaMail(modulo){
 }
 
 function envioCorreo(modulo,usuario,essuper) {
+	getVentanaCorreo("vaspirantes","CORREO");
+	
+}
+/*
+function envioCorreo(modulo,usuario,essuper) {
 	res="";
 	var table = $("#G_"+modulo).DataTable();	
 	nreg=0;
@@ -683,6 +688,8 @@ function envioCorreo(modulo,usuario,essuper) {
 			  "     </div>"+	  
 		      "</div>","Enviar Correo", "enviaMail('"+modulo+"');","modal-lg");
 }
+*/
+
 
 function cargaMsj(){
 	$("#elasunto").val();

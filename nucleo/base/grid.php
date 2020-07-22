@@ -31,6 +31,11 @@
         <link href="imagenes/login/sigea.png" rel="image_src" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
+
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery-ui.custom.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+	
+		
 			
 
         <style type="text/css">
@@ -164,6 +169,13 @@
 <script src="<?php echo $nivel; ?>js/sha/sha512.js"></script>
 
 <script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
+
+<!-- -------------------Editor ----------------------->
+<script src="<?php echo $nivel; ?>assets/js/markdown.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-markdown.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.hotkeys.index.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/bootstrap-wysiwyg.min.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/ace-extra.min.js"></script>
 
 
 <?php if ($tieneProc=='S') {?>
