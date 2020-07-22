@@ -164,7 +164,7 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 <?php  if (file_exists($nivel."nucleo/".$_GET["modulo"]."/ed_".$_GET["modulo"].".js")) { ?>
-<script src="<?php echo $nivel."nucleo/".$_GET["modulo"]."/ed_".$_GET["modulo"].".js"?>"></script>
+<script src="<?php echo $nivel."nucleo/".$_GET["modulo"]."/ed_".$_GET["modulo"].".js?v=".date('YmdHis');?>"></script>
 <?php }?>	
 
 <script src="<?php echo $nivel; ?>assets/js/markdown.min.js"></script>
