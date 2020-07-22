@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
         
 
 		<style type="text/css">

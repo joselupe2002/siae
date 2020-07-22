@@ -55,17 +55,19 @@ var laCarrera="";
 				hay=JSON.parse(data)[0][0];   
 			    if (hay>0) {
 					mostrarEspera("esperaInf","grid_pa_mihorario","Cargando Datos...");
-					elsql="select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
-					"ifnull(LISCAL,0) as LISCAL,ifnull(LISPA1,0)  as LISPA1,ifnull(LISPA2,0) AS LISPA2,ifnull(LISPA3,0) as LISPA3,"+
-					"ifnull(LISPA4,0) as LISPA4,ifnull(LISPA5,0) as LISPA5,ifnull(LISPA6,0) as LISPA6,ifnull(LISPA7,0) as LISPA7,"+
-					"ifnull(LISPA8,0) as LISPA8,ifnull(LISPA9,0) as LISPA9,ifnull(LISPA10,0) as LISPA10, ifnull(LISPA11,0) as LISPA11,"+
-					"ifnull(LISPA12,0) AS LISPA12,ifnull(LISPA13,0) AS LISPA13,ifnull(LISPA14,0) AS LISPA14,ifnull(LISPA15,0) AS LISPA15,"+
-					" e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,"+
-					" (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,"+
-					" getcuatrimatxalum(e.MATCVE,ALUCTR) AS SEM "+
-					" from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+ 
-					" and PDOCVE='"+$("#selCiclo").val()+"'"+       	                      
-					" AND e.ALUCTR='"+usuario+"' and e.BAJA='N' and CERRADO='S' order by PDOCVE DESC";	
+					elsql="select e.ID, FECHAINS, TCACVE AS TCAL, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, "+
+					"f.MATE_DESCRIP AS MATERIAD, IFNULL(i.CICL_CUATRIMESTRE,0) as SEM, IFNULL(i.CICL_CREDITO,0) as CREDITOS, "+            
+					" e.GPOCVE AS GRUPO,e.LISCAL, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,"+
+					"(select count(*) from dlista u where u.PDOCVE<e.PDOCVE and u.MATCVE=e.MATCVE and u.ALUCTR=e.ALUCTR) AS VECES"+
+					" from dlista e "+
+					" join falumnos h on (ALUCTR=ALUM_MATRICULA)"+
+					" left outer join eciclmate i on (h.ALUM_MAPA=i.CICL_MAPA and e.MATCVE=i.CICL_MATERIA ),"+
+					" cmaterias f , pempleados g  where  "+
+					"e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+
+					" and PDOCVE='"+$("#selCiclo").val()+"'"+  	                    
+					" AND e.ALUCTR='"+usuario+"' and e.BAJA='N' and CERRADO='S' "+
+					" order by PDOCVE DESC";
+				
 				
 
 					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -104,7 +106,7 @@ var laCarrera="";
 function generaTablaInformacion(grid_data){
 	c=0;
 
-	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover\" "+
+	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover fontRoboto\" "+
 				">";
 	$("#informacion").empty();
 	$("#informacion").append(script);
@@ -116,8 +118,8 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">No.</th>"+ 
 	"<th style=\"text-align: center;\">SEM</th>"+
 	"<th style=\"text-align: center;\">GRUPO</th>"+
-	"<th style=\"text-align: center;\">PROFESOR</th>"+
-	"<th style=\"text-align: center;\">MATERIA</th>"+
+	"<th style=\"text-align: center;\">CREDITOS</th>"+
+	"<th style=\"text-align: center;\">MATERIA / PROFESOR</th>"+	
 	"<th style=\"text-align: center;\">LISCAL</th>"
 	); 
 
@@ -126,11 +128,12 @@ function generaTablaInformacion(grid_data){
 	 jQuery.each(grid_data, function(clave, valor) { 	
 			 
 		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">");  
-		 $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");     	
+		 $("#row"+valor.ID).append("<td>"+(clave+1)+"</td>");     	
 		 $("#row"+valor.ID).append("<td>"+valor.SEM+"</td>");    
 		 $("#row"+valor.ID).append("<td>"+valor.GRUPO+"</td>");  
-		 $("#row"+valor.ID).append("<td>"+valor.PROFESOR+"</td>");     
-		 $("#row"+valor.ID).append("<td>"+valor.MATERIA+" "+valor.MATERIAD+"</td>");    
+		 $("#row"+valor.ID).append("<td>"+valor.CREDITOS+"</td>");     
+		 $("#row"+valor.ID).append("<td><span class=\"fontRobotoB text-success\">"+valor.MATERIA+" "+valor.MATERIAD+"</span><br>"+
+		                                "<span class=\"fontRobotoB text-primary\">"+valor.PROFESORD+"</span></td>");    
 		 if (valor.LISCAL>=70) {cadsp="<span class=\"badge badge-primary\">"+valor.LISCAL+"</span>";}  
 		 else {cadsp="<span class=\"badge badge-danger\">"+valor.LISCAL+"</span>";}  	    
 		 $("#row"+valor.ID).append("<td>"+cadsp+"</td>");

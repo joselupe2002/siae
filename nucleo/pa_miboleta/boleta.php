@@ -50,7 +50,7 @@
                     //Draw the border
                     $this->Rect($x,$y,$w,$h);
                     //Print the text
-                    $this->MultiCell($w,3,$data[$i],0,$a);
+                    $this->MultiCell($w,4,$data[$i],0,$a);
                     //Put the position to the right of the cell
                     $this->SetXY($x+$w,$y);
                 }
@@ -125,17 +125,19 @@
 			{				
                 $miConex = new Conexion();
             
-                $sql="select e.ID, FECHAINS, TCACVE AS TCAL, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, ".
-                "ifnull(LISCAL,0) as LISCAL,ifnull(LISPA1,0)  as LISPA1,ifnull(LISPA2,0) AS LISPA2,ifnull(LISPA3,0) as LISPA3,".
-                "ifnull(LISPA4,0) as LISPA4,ifnull(LISPA5,0) as LISPA5,ifnull(LISPA6,0) as LISPA6,ifnull(LISPA7,0) as LISPA7,".
-                "ifnull(LISPA8,0) as LISPA8,ifnull(LISPA9,0) as LISPA9,ifnull(LISPA10,0) as LISPA10, ifnull(LISPA11,0) as LISPA11,".
-                "ifnull(LISPA12,0) AS LISPA12,ifnull(LISPA13,0) AS LISPA13,ifnull(LISPA14,0) AS LISPA14,ifnull(LISPA15,0) AS LISPA15,".
-                " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,".
-                " (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,".
-                " getcuatrimatxalum(e.MATCVE,ALUCTR) AS SEM ".
-                " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE".
-                " and PDOCVE='".$_GET["ciclo"]."'".    	                     
-                " AND e.ALUCTR='".$_GET["matricula"]."' and e.BAJA='N' and CERRADO='S' order by PDOCVE DESC";
+                $sql="select e.ID, FECHAINS, TCACVE AS TCAL, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, ".
+                "f.MATE_DESCRIP AS MATERIAD, i.CICL_CUATRIMESTRE as SEM, IFNULL(i.CICL_CREDITO,0) as CREDITOS, ".            
+                " e.GPOCVE AS GRUPO,e.LISCAL, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,".
+                "(select count(*) from dlista u where u.PDOCVE<e.PDOCVE and u.MATCVE=e.MATCVE and u.ALUCTR=e.ALUCTR) AS VECES".
+                " from dlista e ".
+                " join falumnos h on (ALUCTR=ALUM_MATRICULA)".
+                " left outer join eciclmate i on (h.ALUM_MAPA=i.CICL_MAPA and e.MATCVE=i.CICL_MATERIA ),".
+                " cmaterias f , pempleados g  where  ".
+                "e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE".
+                " and PDOCVE='".$_GET["ciclo"]."'".  	                    
+                " AND e.ALUCTR='".$_GET["matricula"]."' and e.BAJA='N' and CERRADO='S' ".
+                " order by PDOCVE DESC";
+                
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -271,46 +273,74 @@
                 
                 $this->Ln();
                 $this->Ln();
+                $this->setX(20);
                 $this->SetFillColor(172,31,8);
                 $this->SetTextColor(255);  
-                $this->SetFont('Montserrat-ExtraBold','B',10);
-                $this->Cell(10,5,'NO.',1,0,'C',true);
-                $this->Cell(15,5,'SEM.',1,0,'C',true);
-                $this->Cell(15,5,'GRUPO',1,0,'C',true);
-                $this->Cell(100,5,'MATERIA / PROFESOR',1,0,'C',true);
-                $this->Cell(20,5,'TCAL',1,0,'C',true);
-                $this->Cell(30,5,utf8_decode('CALIFICACIÓN'),1,0,'C',true);
+                $this->SetFont('Montserrat-ExtraBold','B',8);
+                //$this->Cell(10,5,'NO.',1,0,'C',true);
+                $this->Cell(25,5,'CLAVE',1,0,'C',true);
+                //$this->Cell(15,5,'GRUPO',1,0,'C',true);
+                $this->Cell(100,5,'MATERIA / DOCENTE',1,0,'C',true);
+                $this->Cell(10,5,utf8_decode('CRÉD.'),1,0,'C',true);
+                $this->Cell(10,5,utf8_decode('CALIF.'),1,0,'C',true);
+                $this->Cell(35,5,utf8_decode('OPCIÓN'),1,0,'C',true);
             
                 $this->Ln();
 
                 $this->SetFont('Montserrat-Medium','',8);       
                 $this->SetFillColor(172,31,6);
                 $this->SetTextColor(0);
-                $this->SetWidths(array(10,15,15,100,20,30));
+                $this->SetWidths(array(25,100,10,10,35));
                 $n=1;
+                $napr=0;
+                $nrep=0;
+                $nmat=0;
+                $suma=0;   
+                $sumaapr=0;  
+                $crapr=0;
+                $totcred=0;             
                 foreach($data as $row) {
+                    $this->setX(20);
+                    $opcion='1RA OPORTUNIDAD';
+                    if ($row["VECES"]==2) {$opcion='2DA OPORTUNIDAD';}
+                    if ($row["VECES"]>2) {$opcion='ESPECIAL';}
+
+                    $lacal="NA";
+                    if ($row["LISCAL"]>=70) {$lacal=$row["LISCAL"]; $napr++; $sumaapr+=$row["LISCAL"]; $crapr+=$row["CREDITOS"]; }
+                    else {$nrep++;}
                     $this->Row(array( 
-                                    $n,
-                                    utf8_decode($row["SEM"]),
-                                    utf8_decode($row["GRUPO"]),
+                                    utf8_decode($row["MATERIA"]),
                                     utf8_decode($row["MATERIAD"]."\n".$row["PROFESORD"]),
-                                    utf8_decode($row["TCAL"]),
-                                    utf8_decode($row["LISCAL"])                               
+                                    utf8_decode($row["CREDITOS"]),
+                                    utf8_decode($lacal) ,
+                                    utf8_decode($opcion)                                 
                                     )
                             );
                     $n++;
+                    $nmat++;
+                    $totcred+=$row["CREDITOS"];
+                    $suma+=$row["LISCAL"];
                 }
+
+                $this->Ln();
+                $this->setX(120);
+                $this->Cell(25,5,"PROMEDIO:",1,0,'R');
+                $this->Cell(10,5,round(($sumaapr/$napr),0),1,1,'R');
+                $this->setX(120);
+                $this->Cell(25,5,"MAT. REPR:",1,0,'R');
+                $this->Cell(10,5,$nrep,1,1,'R');
+                $this->setX(120);
+                $this->Cell(25,5,"CRÉDITOS:",1,0,'R');
+                $this->Cell(10,5,$totcred,1,1,'R');
+                $this->setX(120);
+                $this->Cell(25,5,"CRED. APR:",1,0,'R');
+                $this->Cell(10,5,$crapr,1,1,'R');
 
                 
                 $miutil = new UtilUser();
                 $nombre=$miutil->getJefe('303');//Nombre del puesto de control escolar7
 
-                $this->SetFont('Montserrat-Medium','',6);
-                $this->Cell(0,5,utf8_decode("NOTA:ACEPTO TODAS LAS CONDICIONES DEL REGLAMENTO PARA ALUMNOS DEL INSTITUTO ". 
-                "TECNOLÓGICO SUPERIOR DE MACUSPANA"),'',0,'C');
-                $this->Ln(2);
-                $this->Cell(0,5,utf8_decode("LAS MATERIAS INDICADAS CON * NO CUMPLEN CON EL PERIODO REQUERIDO"),'',0,'C');
-
+             
                 $this->SetFont('Montserrat-ExtraBold','',8);
                 
                 $this->setX(10);$this->setY(($linea+122));        
