@@ -352,3 +352,9 @@ function guardarDocumentos(){
     });    	                	
 
 }
+
+
+function envioCorreoAlum(modulo,usuario,essuper) {
+	getVentanaCorreo("pinscripcion","CORREO");
+	
+}
