@@ -13,9 +13,11 @@ function calculaCalif(){
     var cal2=parseInt($("#REP2EVAL").val())+parseInt($("#REP2AUTO").val());
     var cal3=parseInt($("#REP3EVAL").val())+parseInt($("#REP3AUTO").val());
 
-   
+    
         prom=((cal1+cal2+cal3)/3).toFixed(0);
  
+        if (isNaN(prom)) {prom=60;}
+        
     $("#CALIFICACION").val(prom);
     $('#CALIFICACION').prop('disabled', 'disabled');
 
