@@ -1097,6 +1097,15 @@ function copiarFormula(elmodal,elemento,elprev){
 function actualizarTexto(visual,editfor){
 	$('#'+visual).html($('#'+editfor).val());
 }
+
+function verHTML(ht,padre,btn){
+   if ($("#edbtnhtml_"+ht).attr("op")=="1") { $("#"+ht).text($("#"+ht).html()); $("#edbtnhtml_"+ht).attr("op","2");	}
+   else { $("#"+ht).html($("#"+ht).text());	$("#edbtnhtml_"+ht).attr("op","1");}
+	
+}
+
+
+
 function addFormula(visual,contenido,editfor) {
 	elcontenido=contenido;
 	if (contenido.indexOf("funcion|")>=0) {
@@ -1282,6 +1291,10 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 					"     </div>"+
                     "     <div class=\"widget-toolbox padding-4 clearfix\">"+
 					"         <div class=\"btn-group pull-right\">"+
+					"              <label op=\"1\" id=\"edbtnhtml_"+nombre+"\" onclick=\"verHTML('"+nombre+"','"+padre+"');\" "+
+					"              class=\"btn btn-sm btn-danger btn-white btn-round\">"+
+					"              <i class=\"ace-icon fa fa-code bigger-125\"></i>Html</label>"+
+
 					"              <label onclick=\"limpiarEdit('"+nombre+"','"+padre+"');\" "+
 					"              class=\"btn btn-sm btn-success btn-white btn-round\">"+
 					"              <i class=\"ace-icon fa fa-external-link-square bigger-125\"></i>Limpiar</label>"+
