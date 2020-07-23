@@ -3,6 +3,7 @@ var estaseriando=false;
 var matser="";
 contAlum=1;
 contMat=1;
+var elexamen=0;
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -19,12 +20,11 @@ contMat=1;
 		$("#losexamenes").append("<span class=\"label label-warning\">Exámenes</span>");
 		$("#losalumnos").append("<span class=\"label label-warning\">Aspirante/Alumno</span>");
 		 
-		elsql="SELECT IDEXA, DESCRIP from linexamenes";
-		if (essup!='S') { elsql="SELECT IDEXA, DESCRIP from linexamenes WHERE USUARIO='"+usuario+"'"; }
+		elsql="SELECT IDAP, CONCAT(IDAP,'|',IDEXAMEN,'|',EXAMEND,'|',CICLO) from vlinaplex ORDER BY IDAP DESC";
+		if (essup!='S') { elsql="SELECT IDAP, CONCAT(IDAP,'|',EXAMEND,'|',CICLO) from vlinaplex WHERE USUARIO='"+usuario+"' ORDER BY IDAP DESC"; }
 		addSELECT("selExamenes","losexamenes","PROPIO",elsql, "",""); 
 
 		
-
 		$("#lascarreras").append("<span class=\"label label-warning\">Carrera</span>");
 		 
 		$.ajax({
@@ -33,18 +33,23 @@ contMat=1;
 			success: function(data){  
 				addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
 				" and CARR_CLAVE IN ("+data+") union select '%', 'TODOS' from dual", "",""); 			
-				},
-			error: function(data) {	                  
-					   alert('ERROR: '+data);
-					   $('#dlgproceso').modal("hide");  
-				   }
+				}
 		   });
+
+		   elsql="SELECT CICL_CLAVE FROM ciclosesc WHERE CICL_ADMISION='S' ORDER BY CICL_CLAVE DESC";
+		   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		   $.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){  		
+			     $("#miciclo").html(JSON.parse(data)[0][0]);
+				}
+		   });
+
 		   
-		
-		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
-		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong><br/>"+
-		                       "<span title=\"Total de puntos en el examen\" class=\"badge badge-warning\" id=\"totalp\"></span>");
-		colocarCiclo("elciclo","CLAVE");
+		$("#losciclos").append("<br/><span title=\"Total de puntos en el examen\" class=\"badge badge-warning\" id=\"totalp\"></span><br/>"+
+							   "<span title=\"Total de preguntas en el examen\" class=\"badge badge-success\" id=\"totalpr\"></span>");
 
 		
 	});
@@ -53,14 +58,17 @@ contMat=1;
 		 
 	function change_SELECT(elemento) {
 		if (elemento=='selExamenes') {
-			elsql="select SUM(PUNTAJE) from linpreguntas a where a.IDEXAMEN="+$("#selExamenes").val();
+			elexamen=$("#selExamenes option:selected").text().split('|')[1];
+			elsql="select SUM(PUNTAJE), COUNT(*) AS N from linpreguntas a where a.IDEXAMEN="+elexamen;
 		    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
 				data:parametros,
 				url:  "../base/getdatossqlSeg.php",
 				success: function(data){  
+			
 						$("#totalp").html(JSON.parse(data)[0][0]);	
+						$("#totalpr").html(JSON.parse(data)[0][1]);	
 					},
 				error: function(data) {	                  
 						   alert('ERROR: '+data);
@@ -75,7 +83,7 @@ contMat=1;
 		campos=[];
 		cadSeccion="";
 		cadSecSql="";
-		elsql="select IDSECC, REPLACE(DESCRIP,' ','') as DESCRIP  from linsecciones a where a.IDEXA="+$("#selExamenes").val()+" ORDER BY IDSECC";
+		elsql="select IDSECC, REPLACE(DESCRIP,' ','') as DESCRIP  from linsecciones a where a.IDEXA="+elexamen+" ORDER BY IDSECC";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
@@ -85,7 +93,7 @@ contMat=1;
 				j=0;
 				jQuery.each(JSON.parse(data), function(clave, valor) {  
 					cadSeccion+="<th>"+valor.DESCRIP+"</th>";
-					cadSecSql+="(SELECT SUM(if (z.RESPUESTA=y.CORRECTA,y.PUNTAJE*1,y.PUNTAJE*0)) from linrespuestas z, "+
+					cadSecSql+="(SELECT ifnull(SUM(if (z.RESPUESTA=y.CORRECTA,y.PUNTAJE*1,y.PUNTAJE*0)),0) from linrespuestas z, "+
 							   " linpreguntas y where z.IDPREGUNTA=y.IDPREG AND z.IDPRESENTA=x.MATRICULA "+
 							   " and z.IDEXAMEN=x.IDEXAMEN AND y.IDSECCION="+valor.IDSECC+") AS "+valor.DESCRIP+",";
 								
@@ -110,10 +118,10 @@ contMat=1;
 						$("#informacion").empty();
 						$("#informacion").append(script);
 								
-						elsql="select MATRICULA,IDEXAMEN,MATRICULAD,CARRERA, CARRERAD,"+cadSecSql+" SUM(PUNTOS) as TOTAL from vlinrespuestas x where "+
-						"IDEXAMEN="+$("#selExamenes").val()+" AND CARRERA LIKE '"+$("#selCarreras").val()+"' GROUP BY MATRICULA,IDEXAMEN, MATRICULAD ORDER BY MATRICULA, MATRICULAD,CARRERA,CARRERAD";
+						elsql="select MATRICULA,IDEXAMEN,MATRICULAD,CARRERA, CARRERAD,"+cadSecSql+" ifnull(SUM(PUNTOS),0) as TOTAL from vlinrespuestas x where "+
+						"IDAPLICA="+$("#selExamenes").val()+" AND CARRERA LIKE '"+$("#selCarreras").val()+"' GROUP BY MATRICULA,IDEXAMEN, MATRICULAD ORDER BY MATRICULA, MATRICULAD,CARRERA,CARRERAD";
 	
-						
+			
 						mostrarEspera("esperahor","grid_linresexa","Cargando Datos...");
 						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
@@ -163,3 +171,132 @@ function generaTablaMaterias(grid_data,campos){
 	});	
 } 
 
+/*=================================================ALUMNOS QUE NO PRESENTARON ==============================================*/
+
+function cargarNoPresentaron() {
+	campos=[];
+	cadSeccion="";
+	cadSecSql="";
+	elsql="select * FROM vaspirantes  where CICLO='"+$("#miciclo").html()+"' and CARRERA LIKE '"+$("#selCarreras").val()+"'"+
+	" and CURP NOT IN (select IDPRESENTA from linrespuestas where IDAPLICA='"+$("#selExamenes").val()+"') and FINALIZADO='S'";
+
+	
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){  
+	
+			grid_data=JSON.parse(data);	      			      
+			script="<table id=\"tabMaterias\" name=\"tabMaterias\"  class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
+							">"+
+					"        <thead >  "+
+					"             <tr id=\"headMaterias\">"+
+					"                <th>No.</th> "+
+					"                <th>Control</th> "+
+					"                <th>Nombre</th> "+	
+					"                <th>CARRERA</th> "+	
+					"                <th>CORREO</th> "+	
+					"                <th>CELULAR</th> "+	
+					"                <th>TEL. CASA</th> "+	
+					"             </tr> "+
+					"            </thead>" +
+					"         </table>";
+			$("#informacion").empty();
+			$("#informacion").append(script);
+
+			$("#cuerpoMaterias").empty();
+			$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
+			contAlum=1;
+			jQuery.each(grid_data, function(clave, valor) { 	
+				$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
+				$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.CURP+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.NOMBRE+" "+valor.APEPAT+" "+valor.APEMAT+"</td>");									
+				$("#rowM"+contAlum).append("<td>"+valor.CARRERAD+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.CORREO+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.TELCEL+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.TELCASA+"</td>");
+				contAlum++;      			
+			});	
+		}																																										
+	 });     	    
+}
+
+/*=================================================ESTADÍSTICAS DE PRESENTACIÓN==============================================*/
+
+function cargarEstadisticas() {
+
+	elsql="select a.*, (select count(*) from linrespuestas b where b.IDAPLICA='"+$("#selExamenes").val()+"' and IDPRESENTA=a.CURP) as LLEVA"+
+	" FROM vaspirantes a where CICLO='"+$("#miciclo").html()+"' and CARRERA LIKE '"+$("#selCarreras").val()+"'"+
+	" and CURP IN (select IDPRESENTA from linrespuestas where IDAPLICA='"+$("#selExamenes").val()+"')";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){  
+	
+			grid_data=JSON.parse(data);	      			      
+			script="<table id=\"tabMaterias\" name=\"tabMaterias\"  class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
+							">"+
+					"        <thead >  "+
+					"             <tr id=\"headMaterias\">"+
+					"                <th>No.</th> "+
+					"                <th>Control</th> "+
+					"                <th>NOMBRE</th> "+	
+					"                <th>CARRERA</th> "+	
+					"                <th>LLEVA</th> "+	
+					"                <th>AVANCE</th> "+	
+					"                <th>AVANCE</th> "+	
+					"             </tr> "+
+					"            </thead>" +
+					"         </table>";
+			$("#informacion").empty();
+			$("#informacion").append(script);
+
+			$("#cuerpoMaterias").empty();
+			$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
+			contAlum=1;
+			jQuery.each(grid_data, function(clave, valor) { 	
+				$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
+				$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.CURP+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.NOMBRE+" "+valor.APEPAT+" "+valor.APEMAT+"</td>");									
+				$("#rowM"+contAlum).append("<td>"+valor.CARRERAD+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.LLEVA+"</td>");
+				elavance=(valor.LLEVA/parseInt($("#totalpr").html())*100).toFixed(0);
+				$("#rowM"+contAlum).append("<td>"+elavance+"% </td>");
+				if ((elavance>=0) && (elavance<=30)) {elcolor="red";}
+				if ((elavance>30) && (elavance<=60)) {elcolor="#C27B27"};
+				if ((elavance>60) && (elavance<=80)) {elcolor="blue"};
+				if ((elavance>80) && (elavance<=100)) {elcolor="#6CB612"};
+				
+				$("#rowM"+contAlum).append("<td><div  class=\"easy-pie-chart percentage\" data-color=\""+elcolor+"\" data-percent=\""+elavance+"\" data-size=\"50\">"+
+				                           "     <span id=\"etelavance\" class=\"percent bigger-60\">"+elavance+"</span>%"+
+										   "</div></td>");
+
+				contAlum++;      			
+			});	
+
+			$('.easy-pie-chart.percentage').each(function(){
+				var barColor = $(this).data('color') || '#2979FF';
+				var trackColor = '#E2E2E2';
+				var size = parseInt($(this).data('size')) || 72;
+				$(this).easyPieChart({
+					barColor: barColor,
+					trackColor: trackColor,
+					scaleColor: false,
+					lineCap: 'butt',
+					lineWidth: parseInt(size/5),
+					animate:false,
+					size: size
+				}).css('color', barColor);
+				});
+		}																																										
+	 }); 
+	 
+	 
+}

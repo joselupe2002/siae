@@ -26,6 +26,8 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
+		
 
         
 
@@ -44,19 +46,27 @@
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
 				        <div id="losciclos" class="col-sm-1">
+						     <span id="miciclo"></span> 
 						</div> 	
          				
-						<div id="losexamenes" class="col-sm-4">
+						<div id="losexamenes" class="col-sm-3">
 						</div>     
 
-						<div id="lascarreras" class="col-sm-4">
+						<div id="lascarreras" class="col-sm-3">
 						</div>			 
 					
-						<div class="col-sm-3" style="padding-top:14px;">
+						<div class="col-sm-5" style="padding-top:14px;">
 						    <button title="Ver Resultados por sección" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-crosshairs bigger-100"></i><span class="btn-small"> Resultados</span>            
 							</button>
 				
+							<button title="Ver estadísticas de presentacion" onclick="cargarEstadisticas();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon red fa fa-bar-chart-o bigger-100"></i><span class="btn-small"></span>            
+							</button>
+
+							<button title="Ver alumnos que no presentaron" onclick="cargarNoPresentaron();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon red fa fa-thumbs-down bigger-100"></i><span class="btn-small"></span>            
+							</button>
 
 							<button title="Convertir a tabla para exportar" onclick="convertirDataTable('tabMaterias');" 
 							    class="btn btn-white btn-success btn-round"> 

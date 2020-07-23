@@ -15,12 +15,13 @@ var arr_preguntas=[];
 
     jQuery(function($) { 
 		
+		/*
 		$(document).bind("contextmenu",function(e){return false;});
 		window.location.hash="red";
 	    window.location.hash="Red" //chrome
 		window.onhashchange=function(){window.location.hash="red";}
 		
-		
+		*/
 		cargarFoto();
 
 		if ((aceptado=='N') && (abiertoExa=='S')) {			
@@ -111,7 +112,7 @@ function cargarFoto(){
 								  "                    </tr> "+
 								  "                <tbody id=\"tabExamBody\"> </tbody>"+
 								  "      </div>");
-		sq="select h.*, (SELECT count(*) FROM lincontestar where IDEXAMEN=h.IDEXAMEN and IDPRESENTA='"+curp+"' and TERMINADO='S') as N "+
+		sq="select h.*, (SELECT count(*) FROM lincontestar where IDAPLICA=h.IDAP and IDPRESENTA='"+curp+"' and TERMINADO='S') as N "+
 		    " from vlinaplex h where  STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
 			" Between STR_TO_DATE(h.`INICIA`,'%d/%m/%Y') and STR_TO_DATE(h.`TERMINA`,'%d/%m/%Y') and tipo='ASPIRANTES'"+
 			" and if(CARRERA='','"+carrera+"',CARRERA)='"+carrera+"' order by HORAINICIO ASC";
@@ -146,7 +147,7 @@ function cargarFoto(){
 
 					if (valor.N==0) {						
 						cadLinea+="<td id=\"casbtn_"+valor.IDEXAMEN+"\" style= \"text-align: center;\" > "+
-						           "<a  onclick=\"verExamen('"+valor.IDEXAMEN+"','"+curp+"','"+valor.CONTIEMPO+"','"+valor.MINUTOS+"','"+cadHora+"');\" title=\"Aplicar Examen\""+
+						           "<a  onclick=\"verExamen('"+valor.IDEXAMEN+"','"+curp+"','"+valor.CONTIEMPO+"','"+valor.MINUTOS+"','"+cadHora+"','"+valor.IDAP+"');\" title=\"Aplicar Examen\""+
 						                "id=\"btnVerExamen"+valor.IDEXAMEN+"\" class=\"btn btn-white btn-waarning btn-bold\">"+
 										"<i class=\"ace-icon fa fa-pencil-square bigger-160 green \"></i>"+	
 									"</a></td>";
@@ -195,15 +196,16 @@ function cargarFoto(){
 	}
 
 		
-function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni,minAct){
+function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni,minAct,idaplica){
     fechareal=""; horareal="";
-	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDEXAMEN="+idexa+" and IDPRESENTA='"+curp+"'";
+	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDAPLICA="+idaplica+" and IDPRESENTA='"+curp+"'";
 	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",		
         data:parametros,
 		url:  "../nucleo/base/getdatossqlSeg.php",
 		success: function (dataCon) {	
+
 	        idcon=0;  encontre=false;
 			jQuery.each(JSON.parse(dataCon), function(clave, valorCon) { 
 				if (valorCon.N>0) {encontre=true;}
@@ -219,6 +221,7 @@ function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni
 			                 _INSTITUCION:"ITSM",
 							 _CAMPUS:"0",
 							 IDEXAMEN:idexa,
+							 IDAPLICA:idaplica,
 							 IDPRESENTA:curp,
 							 FECHAINICIA:fechaini,
 							 INICIO:horaini};         
@@ -232,7 +235,7 @@ function mandaExamen(idexa, fechaini,horaini,contiempo,minutos,horaInicia,minIni
 
 				
 			}
-			cargandoExamen(idexa, fechaini,horaini,fechareal,horareal);
+			cargandoExamen(idexa, fechaini,horaini,fechareal,horareal,idaplica);
 
 			if (contiempo=='S') {
 				
@@ -276,15 +279,15 @@ function escribir(debeterminar){
 	});
 }
 
-function cierraExamen(){
+function cierraExamen(idaplica){
 	lahora=dameFecha("HORA");
 	lafecha=dameFecha("FECHA");
 	
 	parametros={
 		tabla:"lincontestar",
 		bd:"Mysql",
-		campollave:"concat(IDEXAMEN,IDPRESENTA)",
-		valorllave:elexamen+curp,		
+		campollave:"concat(IDAPLICA,IDPRESENTA)",
+		valorllave:idaplica+curp,		
 			TERMINADO:"S",
 			FECHATERMINA:lafecha,
 			TERMINO:lahora,
@@ -303,7 +306,7 @@ function cierraExamen(){
 }
 
 
-function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
+function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal,idaplica){
 	$("#contenidoAsp").empty();
 
 	var cad="";
@@ -336,9 +339,9 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 			      "<div id=\"contpreg\"></div>"+					    			
 			"</div>"+
 			"<div class=\"widget-header\" style=\"padding:10px;\">"+
-				"<button class=\"btn btn-white btn-success btn-bold pull-right\" onclick=\"aparecer(pregactiva,1);\">"+
+				"<button class=\"btn btn-white btn-success btn-bold pull-right\" onclick=\"aparecer(pregactiva,1,'"+idaplica+"');\">"+
 				"<i class=\"ace-icon fa fa-arrow-right bigger-120 blue\"></i><span id=\"etavanzar\" >Sig</span></button>"+
-				"<button  class=\"btn btn-white btn-danger btn-bold pull-right\" onclick=\"aparecer(pregactiva,-1);\">"+
+				"<button  class=\"btn btn-white btn-danger btn-bold pull-right\" onclick=\"aparecer(pregactiva,-1,'"+idaplica+"');\">"+
 				"<i class=\"ace-icon fa fa-arrow-left bigger-120 red\"></i><span>Atras</span></button>"+
 			"</div>"+
 			"<div class=\"bg-white\">"+
@@ -367,7 +370,7 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 			    hide="hide"; color="badge badge-gray";
 				if (contPreg==1){ hide=""; pregactiva=1; color="badge badge-yellow";}
 				$("#itempreg").append("<span id=\"elitem"+contPreg+"\" idPreg=\""+valorPre.IDPREG+"\" style=\"cursor:pointer;width:30px;\" class=\"itemPreg "+color+"\" "+
-									  "onclick=\"aparecer('"+contPreg+"',0)\" >"+contPreg+"</span>");
+									  "onclick=\"aparecer('"+contPreg+"',0,'"+idaplica+"')\" >"+contPreg+"</span>");
 				            cadPreg=  "<div id=\"laPregunta"+contPreg+"\" class=\""+hide+"\">"+
 									  "   <div class\"row\">"+
 									  "      <span class=\"fontAmaranthB\" style=\"font-size:18px;\">"+valorPre.PREGUNTA+"</span>"+
@@ -375,28 +378,28 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 									  "   <div class=\"row\">";
 							if (!((valorPre.RESPUESTA1=='')||(valorPre.RESPUESTA1==null))) {							
 							 cadPreg+="       <div class=\"col-sm-3\">"+
-									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','1','"+valorPre.PUNTAJE+"','"+idexa+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_1\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','1','"+valorPre.PUNTAJE+"','"+idexa+"','"+idaplica+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_1\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 									  "                                 <span class=\"lbl fontAmaranth bigger-120\">"+valorPre.RESPUESTA1+"</span></label>"+
 									  "             </div>"+
 									  "       </div>";
 							}
 							if (!((valorPre.RESPUESTA2=='')||(valorPre.RESPUESTA2==null))) {							
 							 cadPreg+="      <div class=\"col-sm-3\">"+
-									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','2','"+valorPre.PUNTAJE+"','"+idexa+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_2\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','2','"+valorPre.PUNTAJE+"','"+idexa+"','"+idaplica+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_2\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 									  "                                 <span class=\"lbl fontAmaranth bigger-120\">"+valorPre.RESPUESTA2+"</span></label>"+
 									  "             </div>"+
 									  "       </div>";
 							}
 							if (!((valorPre.RESPUESTA3=='')||(valorPre.RESPUESTA3==null))) {							
 							 cadPreg+="       <div class=\"col-sm-3\">"+
-									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','3','"+valorPre.PUNTAJE+"','"+idexa+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_3\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','3','"+valorPre.PUNTAJE+"','"+idexa+"','"+idaplica+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_3\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 									  "                                 <span class=\"lbl fontAmaranth bigger-120\">"+valorPre.RESPUESTA3+"</span></label>"+
 									  "             </div>"+
 									  "       </div>";
 							}
 							if (!((valorPre.RESPUESTA4=='')||(valorPre.RESPUESTA4==null))) {							
 							 cadPreg+="      <div class=\"col-sm-3\">"+
-									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','4','"+valorPre.PUNTAJE+"','"+idexa+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_4\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDPREG+"','"+contPreg+"','4','"+valorPre.PUNTAJE+"','"+idexa+"','"+idaplica+"')\" idpreg=\""+valorPre.IDPREG+"\" id=\"opcion_"+valorPre.IDPREG+"_4\" name=\"opcion_"+valorPre.IDPREG+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 									  "                                 <span class=\"lbl fontAmaranth bigger-120\">"+valorPre.RESPUESTA4+"</span></label>"+
 									  "             </div>"+
 									  "       </div>";
@@ -408,7 +411,7 @@ function cargandoExamen(idexa,fechaini,horaini,fechareal,horareal){
 			}); 
 
 
-			sqRes="SELECT * from linrespuestas WHERE IDEXAMEN="+idexa+" and IDPRESENTA='"+curp+"'" ;
+			sqRes="SELECT * from linrespuestas WHERE IDAPLICA="+idaplica+" and IDPRESENTA='"+curp+"'" ;
 			parametros={sql:sqRes,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
@@ -455,7 +458,7 @@ function verificarPreguntas(){
 	return resp;
 }
 
-function aparecer(idpreg,valsum){
+function aparecer(idpreg,valsum,idaplica){
 
 	if ((pregactiva+valsum)>=contPreg)  {
 		todos=verificarPreguntas();
@@ -463,7 +466,7 @@ function aparecer(idpreg,valsum){
 		if (!(todos)) {mimsj="Al parecer no ha contestado todas sus preguntas, aún así desea terminar el examen"; }
 		mostrarConfirm("dlgcierraExamen", "grid_registro", "Finalizar Examen",
 									"<span class=\"lead text-danger\"><strong>"+mimsj,
-		                             "¿Seguro que desea finalizar?","Finalizar", "cierraExamen();","modal-lg");
+		                             "¿Seguro que desea finalizar?","Finalizar", "cierraExamen('"+idaplica+"');","modal-lg");
 	}
 
 	modificarnum=parseInt(idpreg)+parseInt(valsum);
@@ -485,14 +488,14 @@ function aparecer(idpreg,valsum){
 }
 
 
-function verExamen(id,curp,contiempo,minutos,horaInicia) {
+function verExamen(id,curp,contiempo,minutos,horaInicia,idaplica) {
 	$('#btnVerExamen'+id).addClass("hide");
 	$('#casbtn_'+id).append("<img id=\"img_"+id+"\" src=\"../imagenes/menu/esperar.gif\" width=\"25px;\" height=\"25px\">");
 	elexamen=id;
 	var minAct=0;
 	var minutosInicio=0;
 	var yaabrio=false;
-	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDEXAMEN="+id+" and IDPRESENTA='"+curp+"'";
+	sq="SELECT ifnull(IDCON,0) as IDCON,FECHAINICIA, INICIO, count(*) as N FROM lincontestar WHERE IDAPLICA="+idaplica+" and IDPRESENTA='"+curp+"'";
 	parametros={sql:sq,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
@@ -549,7 +552,7 @@ function verExamen(id,curp,contiempo,minutos,horaInicia) {
 						$('#btnVerExamen'+id).removeClass("hide");
 	                    $('#img_'+id).remove();
 					return 0;}  
-					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct);		   
+					mandaExamen(id,fechaAct,horaAct,contiempo,minutos,horaInicia,minIni,minAct,idaplica);		   
 					}
 			});
 		}
@@ -564,18 +567,18 @@ $(document).ready(function(){
 		});
 });
 
-function cambioRespuesta(idpreg,num,opcion,puntaje,idexa){
+function cambioRespuesta(idpreg,num,opcion,puntaje,idexa,idaplica){
 	var hoy= new Date();
 	lahora=hoy.getHours()+":"+hoy.getMinutes()+":"+hoy.getSeconds();
     var losdatos=[];
-	losdatos[0]=idexa+"|"+curp+"|"+idpreg+"|"+opcion+"|"+puntaje+"|"+lahora;
-    var loscampos = ["IDEXAMEN","IDPRESENTA","IDPREGUNTA","RESPUESTA","PUNTAJE","HORAGRABO",];
+	losdatos[0]=idexa+"|"+curp+"|"+idpreg+"|"+opcion+"|"+puntaje+"|"+lahora+"|"+idaplica;
+    var loscampos = ["IDEXAMEN","IDPRESENTA","IDPREGUNTA","RESPUESTA","PUNTAJE","HORAGRABO","IDAPLICA",];
 
 		   parametros={
 				tabla:"linrespuestas",
-			 campollave:"CONCAT(IDEXAMEN,IDPRESENTA,IDPREGUNTA)",
+			 campollave:"CONCAT(IDAPLICA,IDPRESENTA,IDPREGUNTA)",
 			 bd:"Mysql",
-			 valorllave:idexa+curp+idpreg,
+			 valorllave:idaplica+curp+idpreg,
 			 eliminar: "S",
 			 separador:"|",
 			 campos: JSON.stringify(loscampos),

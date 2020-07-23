@@ -36,7 +36,7 @@ if (count($res)>0) {
 	}
 }
 else {
-	echo "La CURP no esta Registrada";
+	echo "La CURP no esta Registrada o su registro no fue finalizado";
 }
 
 
