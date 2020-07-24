@@ -143,5 +143,5 @@ function generaTablaInformacion(grid_data){
 
 function ImprimirReporte(){
 	enlace="nucleo/pa_miboleta/boleta.php?matricula="+usuario+"&ciclod=&ciclo="+$('#selCiclo').val();
-	abrirPesta(enlace,"Reporte_Horario");
+	abrirPesta(enlace,"Boleta de Cal.");
 }

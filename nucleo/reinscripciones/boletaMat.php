@@ -128,10 +128,15 @@
                 if (($_GET["carrera"]=="10") || ($_GET["carrera"]=="12")) {
                     $sql="SELECT * FROM vinscripciones_oc where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."' and TIPOMAT IN ('".$eltip."') ORDER BY  MATERIAD";
                 }
-                else 
+                else if ($_GET["carrera"]=="TODAS")
                   {
-                     $sql="SELECT * FROM vinscripciones where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."' ORDER BY  MATERIAD";
+                     $sql="SELECT REP, GRUPO, MATERIA,MATERIAD,PROFESOR, PROFESORD,LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO, FECHAINS FROM vinscripciones where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."'".
+                     "UNION SELECT REP, GRUPO, MATERIA,MATERIAD,PROFESOR, PROFESORD,LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO, FECHAINS FROM vinscripciones_oc where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."'";
                   }
+                else   {
+                    $sql="SELECT * FROM vinscripciones where MATRICULA='".$_GET["matricula"]."' and CICLO='".$_GET["ciclo"]."' ORDER BY  MATERIAD";
+                 }
+
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -352,6 +357,15 @@
                 $this->SetFont('Montserrat-SemiBold','',10);
                 $this->Cell(0,1,"",'B',0,'L');
                 */
+
+                $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
+                str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).
+                 "|PERIODO:".$dataCiclo[0][0].$dataCiclo[0][0].
+                 "|NUMMAT:".($n-1)."|ORIGEN:".$_GET["carrera"];
+                 
+                 
+                $this->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,$linea+104,28,28);     
+
 
      
 

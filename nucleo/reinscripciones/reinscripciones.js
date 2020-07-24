@@ -39,7 +39,7 @@ var eltipomat="";
 		$("#losalumnos").append("<span class=\"label label-danger\">Alumno</span>");
 
 			
-		addSELECT("selCiclos","losciclos","PROPIO", "SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,'|',CICL_DESCRIP) FROM ciclosesc  ORDER BY CICL_CLAVE DESC", "","BUSQUEDA");  			      
+		addSELECT("selCiclos","losciclos","PROPIO", "SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,'|',CICL_DESCRIP) FROM ciclosesc where CICL_ABIERTOREINS='S' ORDER BY CICL_CLAVE DESC", "","BUSQUEDA");  			      
 
 		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA,CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) FROM falumnos where ALUM_MATRICULA='0'", "","BUSQUEDA");  			      
 
@@ -96,6 +96,8 @@ var eltipomat="";
 
 		if (elemento=='selCiclos') {
 			$("#elciclo").html($("#selCiclos option:selected").text());
+
+
 		}
         
 	}
@@ -105,7 +107,7 @@ var eltipomat="";
     function cargarDatosAlumno(){
 
 		//Verificamos si su pago ya fue cotejado 
-		elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX='"+
+		elsql="SELECT RUTA,COTEJADO,count(*) AS N FROM eadjreins where AUX='"+
 		$("#selAlumnos").val()+"_"+$("#elciclo").html().split("|")[0]+"_"+eltipomat+"'";	
 		
 		parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -116,18 +118,27 @@ var eltipomat="";
 			success: function(data2){  
 				
 				laruta='';
+				laclase="badge-success";
 				secotejo='S';
+				msjDoc="El pago ya fue cotejado por el área de Contabilidad";
+
 				if (JSON.parse(data2)[0][2]>0) {laruta=JSON.parse(data2)[0][0]; 
-												secotejo=JSON.parse(data2)[0][1]=='S'?'S':'N'; }				
+												secotejo=JSON.parse(data2)[0][1]=='S'?'S':'N'; 
+												if (secotejo=='N') {laclase="badge-warning"; msjDoc="El pago NO se ha cotejado Contabilidad";}
+											}
+				else {laruta=""; secotejo='N'; msjDoc="El alumno NO ha subido documento de pago al SIGEA"; laclase="badge-danger"; }				
+
 				if (secotejo=='S') {
 					$("#elpago").attr("href",laruta);
-					$("#elpagospan").prop("title","El pago ya fue cotejado por el área de Contabilidad");
-					$("#elpagospan").html("<i class=\"fa white fa-check-square-o\"></i>");
+					$("#elpagospan").prop("title",msjDoc);
+					$("#elpagospan").html("Pago <i class=\"fa white fa-check-square-o\"></i>");
+					$("#elpagospan").addClass(laclase);
 				}
 				else{
 					$("#elpago").attr("href",laruta);
-					$("#elpagospan").prop("title","El pago NO se ha cotejado Contabilidad");
-					$("#elpagospan").html("<i class=\"fa white fa-times\"></i>");
+					$("#elpagospan").prop("title",msjDoc);
+					$("#elpagospan").html("Pago <i class=\"fa white fa-times\"></i>");
+					$("#elpagospan").addClass(laclase);
 				}
 
 			}
@@ -150,7 +161,7 @@ var eltipomat="";
 								if (($("#selCarreras").val()=='10') || ($("#selCarreras").val()=='12')) {cargarHorariosExt('vinscripciones_oc');} else {cargarHorarios('vinscripciones');}
 					}
 					else {
-								mostrarIfo("infoEval","grid_reinscripciones","Bloqueado para Resincripción",
+								mostrarIfo("infoEval","grid_reinscripciones","Bloqueado para Reinscripción",
 								"<div class=\"alert alert-danger\" style=\"text-align:justify; height:200px; overflow-y: scroll; \">"+errores+"</div>","modal-lg");
 							}
 							/*=================================================================================*/
@@ -831,19 +842,20 @@ function guardarRegistros(){
 					$("#c_"+i+"_2").val()+"|"+ //profesor
 					fechacap+"|"+ //fecha
 					$("#elusuario").html()+"|"+ //usuario
-					$("#c_"+i+"_1C").html(); //Tipo de cursamiento 
+					$("#c_"+i+"_1C").html()+"|"+ //Tipo de cursamiento 
+					$("#selCarreras").val(); //Tipo de cursamiento 
 					losdatos[j]=cad;				
 					j++;			
 		}
 	}
 
-	var loscampos = ["PDOCVE","MATCVE","ALUCTR","GPOCVE","IDGRUPO","LISTC15","FECHAINS","USUARIO","LISTC14"];
+	var loscampos = ["PDOCVE","MATCVE","ALUCTR","GPOCVE","IDGRUPO","LISTC15","FECHAINS","USUARIO","LISTC14","LISTC13"];
 
 	parametros={
 		tabla:"dlista",
-		campollave:"concat(PDOCVE,ALUCTR)",
+		campollave:"concat(PDOCVE,ALUCTR,LISTC13)",
 		bd:"Mysql",
-		valorllave:$("#elciclo").html().split("|")[0]+$("#selAlumnos").val(),
+		valorllave:$("#elciclo").html().split("|")[0]+$("#selAlumnos").val()+$("#selCarreras").val(),
 		eliminar: "S",
 		separador:"|",
 		campos: JSON.stringify(loscampos),

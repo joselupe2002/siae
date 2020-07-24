@@ -270,9 +270,6 @@
                         $this->Cell(90,4,utf8_decode($dataAlum[0]["CARRERAD"]),0,0,'L');
                         $this->SetFont('Montserrat-SemiBold','',10);
 
-
-                        
-                        $this->Ln();
                         $this->Ln();
                         $this->setX(20);
                         $this->SetFillColor(172,31,8);
@@ -288,7 +285,7 @@
                     
                         $this->Ln();
 
-                        $this->SetFont('Montserrat-Medium','',8);       
+                        $this->SetFont('Montserrat-Medium','',7);       
                         $this->SetFillColor(172,31,6);
                         $this->SetTextColor(0);
                         $this->SetWidths(array(25,100,10,10,35));
@@ -311,7 +308,7 @@
                             else {$nrep++;}
                             $this->Row(array( 
                                             utf8_decode($row["MATERIA"]),
-                                            utf8_decode($row["MATERIAD"]."\n".$row["PROFESORD"]),
+                                            utf8_decode($row["MATERIAD"]." / ".$row["PROFESORD"]),
                                             utf8_decode($row["CREDITOS"]),
                                             utf8_decode($lacal) ,
                                             utf8_decode($opcion)                                 
@@ -366,7 +363,13 @@
                 $this->Cell(0,1,"",'B',0,'L');
                 */
 
-     
+                $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
+                str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).
+                 "|PROMEDIO:".round(($sumaapr/$napr),0).
+                 "|MATREP:".$nrep."|CREDAPR:".$crapr;
+                 
+                 
+                $this->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,$linea+104,28,28);     
 
             }
 

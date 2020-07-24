@@ -128,6 +128,6 @@ function generaTablaInformacion(grid_data){
 
 
 function ImprimirReporte(){
-	enlace="nucleo/reinscripciones/boletaMat.php?carrera="+laCarrera+"&matricula="+usuario+"&ciclod=&ciclo="+$('#elciclo').html();
-	abrirPesta(enlace,"Reporte_Horario");
+	enlace="nucleo/reinscripciones/boletaMat.php?carrera=TODAS&matricula="+usuario+"&ciclod=&ciclo="+$('#elciclo').html();
+	abrirPesta(enlace,"Horario");
 }

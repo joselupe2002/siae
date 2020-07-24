@@ -97,7 +97,7 @@
 											<i class="ace-icon green glyphicon glyphicon-send bigger-140"></i>Enviar Propuesta<span class="btn-small"></span>            
 										</button>													
 								
-							  </di>					  
+							  </div>					  
 						</div>
 					</div>
 			   </div>

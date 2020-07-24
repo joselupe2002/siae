@@ -73,8 +73,7 @@
 					     <div class='row'>
 						      <div class="col-sm-2">
 								  <span class="text-white">Créditos:  <span title="Número de créditos que esta cursando" id="selCreditos" class="badge badge-primary">0</span>
-								  			<span title="Mensaje de Propuesta de Alumnos" onclick="verNotaAlum();" id="selMensaje" class="badge badge-pink"><i class="fa fa-comment"></i></span>
-											<a id="elpago" href="" target="_blank"><span title="" id="elpagospan" class="badge badge-success">Pago</span></a>
+								  			<span title="Mensaje de Propuesta de Alumnos" onclick="verNotaAlum();" id="selMensaje" class="badge badge-pink"><i class="fa fa-comment"></i></span>											
 								  </span> <br/>
 								  <span class="text-white">Usuario:  <span id="elusuario" class="badge badge-danger">0</span>
 								  <span style="cursor:pointer;" title="Número de asignaturas que faltan de hacer evaluación docente" onclick="verMateriasEvalDoc();" 
@@ -92,14 +91,15 @@
 										 <label>
 											   <input id="imprimirBoletaCheck" type="checkbox" class="ace ace-switch ace-switch-6" />
 											   <span class="lbl"> Vis. Bol.</span>
-										</label>
+										</label><br/>
+										<a id="elpago" href="" target="_blank"><span title="" id="elpagospan" class="badge">Pago</span></a>
 									</div>
 							  </div> 	
 							  <div class="col-sm-6">
 
 							  			
 										<button title="Cargar Propuesta Alumno" onclick="cargarPropuestaAlum();" class="btn btn-white btn-purple  btn-round"> 
-											<i class="glyphicon glyphicon-sunglasses blue bigger-140"></i> <span class="btn-small"></span>            
+											<i class="glyphicon glyphicon-sunglasses blue bigger-140"></i> <span class="btn-small"> Propuesta</span>            
 										</button>
 
 										<button title="Imprimir boleta de reinscripción" onclick="imprimeBoleta();" class="btn btn-white btn-purple  btn-round"> 
