@@ -366,9 +366,6 @@
                  
                 $this->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,$linea+104,28,28);     
 
-
-     
-
             }
 
 		}
