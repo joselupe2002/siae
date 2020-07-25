@@ -19,6 +19,22 @@ var micicloant="";
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 	
 
+		elsql="select DOCGEN_RUTA FROM edocgen where CLAVE IN ('GUIA_PAGOREINS') ORDER BY CLAVE";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){ 
+				losdatos=JSON.parse(data); 
+				$("#losciclos").append("<div class=\"row\">"+
+									  "    <div class=\"col-sm-2\"> "+
+									  "       <a href=\""+losdatos[0][0]+"\" target=\"_blank\"> <img src=\"../../imagenes/menu/ayuda1.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
+									  "       <span  class=\"badge badge-success\"></span>"+
+									  "    </div>");
+			}
+		});
+
 		elsql="SELECT CICL_CLAVE, CICL_DESCRIP, CICL_CICLOANT,count(*) from ciclosesc where CICL_ABIERTOREINS='S' ORDER BY CICL_CLAVE DESC";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({

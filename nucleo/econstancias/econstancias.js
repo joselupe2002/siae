@@ -106,6 +106,7 @@ function imprimeReporte(tipocons,consecutivo) {
 		if (tipocons=="3") {window.open("consperiodo.php?elciclo="+$("#selciclo").val()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
 		if (tipocons=="4") {window.open("conssincal.php?elciclo="+$("#selciclo").val()+"&matricula="+$("#selAlumnos").val()+"&consec="+consecutivo+"&anio="+elanio, '_blank');  }
 		if (tipocons=="5") {window.open("../avancecurri/kardex.php?matricula="+$("#selAlumnos").val(), '_blank');  }
+		if (tipocons=="6") {window.open("../pa_miboleta/boleta.php?matricula="+$("#selAlumnos").val()+"&ciclo="+$("#selciclo").val(), '_blank');  }
 	}
 }
 
