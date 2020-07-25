@@ -63,6 +63,10 @@ contAlum=1;
 $("#cuerpoMaterias").empty();
 $("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
 
+cont=1;
+$("#contenido").append("<div id=\"linea"+cont+"\" class=\"row\"></div>"); 
+
+
 jQuery.each(grid_data, function(clave, valor) { 
 
 	img1="<a href=\""+valor.DOCGEN_RUTA+"\" target=\"_blank\" > <img  id=\"img1\" src=\"../../imagenes/menu/ayuda1.png\"  style=\"width:60px; height:60px;\" /></a>";
@@ -71,7 +75,7 @@ jQuery.each(grid_data, function(clave, valor) {
 	if ((valor.ENLACEEXT=="") || (valor.ENLACEEXT==null)) {img2="";}
 	
 
-    $("#contenido").append("<div id=\"ventAyuda"+valor.CLAVE+"\" class=\" ayudaPadre fontRoboto col-xs-6 col-sm-4 col-md-3\">"+
+    $("#linea"+cont).append("<div id=\"ventAyuda"+valor.CLAVE+"\" class=\" ayudaPadre fontRoboto col-md-3\">"+
 	"<div class=\"thumbnail search-thumbnail\">"+
 	"	<div style=\"text-align:center;\">"+
 			img1+img2+
@@ -79,12 +83,12 @@ jQuery.each(grid_data, function(clave, valor) {
 	"	<div class=\"caption\">"+
 	"		<span class=\"text-success fontRobotoB layuda\" mipadre=\"ventAyuda"+valor.CLAVE+"\"  >"+valor.URES_DESCRIPLAR+"</span>"+
 	"		<h3 class=\"fontRobotoB bigger-110 layuda \">"+
-	"			<a href=\"#\" class=\"blue layuda\" mipadre=\"ventAyuda"+valor.CLAVE+"\" >"+valor.NOMBRE+"</a>"+
+	"			<span class=\"blue layuda\" mipadre=\"ventAyuda"+valor.CLAVE+"\" >"+valor.NOMBRE+"</span>"+
 	"		</h3>"+
 	"		<p style=\"text-align:justify;\" class=\"layuda\" mipadre=\"ventAyuda"+valor.CLAVE+"\" >"+valor.OBS+"</p>"+
 	"	</div>"+
 	"</div>");
-		
+	if ((contAlum % 4)==0) { cont++; $("#contenido").append("<div id=\"linea"+cont+"\" class=\"row\"></div>"); }	
 	contAlum++;     
 
 });	
