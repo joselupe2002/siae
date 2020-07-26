@@ -15,7 +15,7 @@ class UtilUser {
 
 	public function enviarCorreo($receptor,$asunto,$cuerpo,$adj1) {
 		$res="";
-		$emisor="sigea@macuspana.tecnm.mx";
+		$emisor="sigea@itsmacuspana.edu.mx";
 		$clave="Emanuel2010";
 		
 		$mail = new PHPMailer(); // create a new object
@@ -62,7 +62,7 @@ class UtilUser {
 		//$emisor="sigeli.webcore@gmail.com";
 		//$clave="esazxhyljzwtxagn";
 	
-		$emisor="sigea@macuspana.tecnm.mx";
+		$emisor="sigea@itsmacuspana.edu.mx";
 		$clave="Emanuel2010";
 	
 
