@@ -161,6 +161,8 @@ var miciclo="";
 											$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 															   "    Ya puede cursar el Servicio Social"+
 															   "</div>");
+
+													
 											OpcionesServicio();
 										}
 
@@ -178,106 +180,131 @@ var miciclo="";
 
 
    function OpcionesServicio(){
-		elsql="select CLAVE, DOCGEN_RUTA FROM edocgen where CLAVE IN ('SOLSS','CARCOMSS') ORDER BY CLAVE";
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-		$.ajax({
-			type: "POST",
-			data:parametros,
-			url:  "../base/getdatossqlSeg.php",
-			success: function(data){ 
-				losdatos=JSON.parse(data); 
-			
-				$("#servicio").append("<div class=\"row\">"+
-									  "    <div class=\"col-sm-2\"> "+
-									  "       <a href=\""+losdatos[1][1]+"\" target=\"_blank\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
-									  "       <span  class=\"badge badge-success\">1. Bajar Solicitud</span>"+
-									  "    </div>"+
-									  "    <div class=\"col-sm-2\"> "+
-									  "       <a href=\""+losdatos[0][1]+"\" target=\"_blank\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
-									  "       <span  class=\"badge badge-success\">2. Bajar Carta Compromiso</span>"+
-									  "    </div>"+
-									  "</div>"+
-									  "<div class=\"row\" style=\"text-align:left;\">"+
-									  "    <div class=\"col-sm-12\"> "+
-									  "     <div id=\"documentos\" class=\"col-sm-12\" ></div>"+
-									  "    </div>"+
-									  "</div>"
-				);
 
-				
-				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_SOLSS'";
-				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-				$.ajax({
-					type: "POST",
-					data:parametros,
-					url:  "../base/getdatossqlSeg.php",
-					success: function(data2){ 
-						laruta=""; 
-						activaEliminar="S";
-						losdatos2=JSON.parse(data2); 	
-		
-						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+	var abierto=false;
+	elsql="select count(*) as N from ecortescal where  CICLO='"+miciclo+"'"+
+	" and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
+	" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
+	" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='SOLSERSOC' "+
+	" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){
+	
+			if (JSON.parse(data)[0]["N"]>0) {				
+					elsql="select CLAVE, DOCGEN_RUTA FROM edocgen where CLAVE IN ('SOLSS','CARCOMSS') ORDER BY CLAVE";
+					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+					$.ajax({
+						type: "POST",
+						data:parametros,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(data){ 
+							losdatos=JSON.parse(data); 
 						
+							$("#servicio").append("<div class=\"row\">"+
+												"    <div class=\"col-sm-2\"> "+
+												"       <a href=\""+losdatos[1][1]+"\" target=\"_blank\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
+												"       <span  class=\"badge badge-success\">1. Bajar Solicitud</span>"+
+												"    </div>"+
+												"    <div class=\"col-sm-2\"> "+
+												"       <a href=\""+losdatos[0][1]+"\" target=\"_blank\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
+												"       <span  class=\"badge badge-success\">2. Bajar Carta Compromiso</span>"+
+												"    </div>"+
+												"</div>"+
+												"<div class=\"row\" style=\"text-align:left;\">"+
+												"    <div class=\"col-sm-12\"> "+
+												"     <div id=\"documentos\" class=\"col-sm-12\" ></div>"+
+												"    </div>"+
+												"</div>"
+							);
+
+							
+							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_SOLSS'";
+							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data2){ 
+									laruta=""; 
+									activaEliminar="S";
+									losdatos2=JSON.parse(data2); 	
+					
+									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
 									
-						dameSubirArchivoDrive("documentos","Subir Solicitud debidamente requisitada y firmadas ","solss",'RECIBOREINS','pdf',
-						'ID',usuario,'SOLICITUD DE SERVICIO ','eadjreins','alta',usuario+"_"+miciclo+"_SS_SOLSS",laruta,activaEliminar);
-					}
-				});
+												
+									dameSubirArchivoDrive("documentos","Subir Solicitud debidamente requisitada y firmadas ","solss",'RECIBOREINS','pdf',
+									'ID',usuario,'SOLICITUD DE SERVICIO ','eadjreins','alta',usuario+"_"+miciclo+"_SS_SOLSS",laruta,activaEliminar);
+								}
+							});
 
-				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOCONS'";
-				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-				$.ajax({
-					type: "POST",
-					data:parametros,
-					url:  "../base/getdatossqlSeg.php",
-					success: function(data2){ 
-						laruta=""; 
-						activaEliminar="S";
-						losdatos2=JSON.parse(data2); 	
-						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
-						dameSubirArchivoDrive("documentos","Subir Pago por concepto de Constancia de Estudios ","pagocons",'RECIBOREINS','pdf',
-						'ID',usuario,'RECIBO DE PAGO CONSTANCIA','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOCONS",laruta,activaEliminar);
-					}
-				});
+							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOCONS'";
+							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data2){ 
+									laruta=""; 
+									activaEliminar="S";
+									losdatos2=JSON.parse(data2); 	
+									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+									dameSubirArchivoDrive("documentos","Subir Pago por concepto de Constancia de Estudios ","pagocons",'RECIBOREINS','pdf',
+									'ID',usuario,'RECIBO DE PAGO CONSTANCIA','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOCONS",laruta,activaEliminar);
+								}
+							});
 
-				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_CARTACOM'";
-				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-				$.ajax({
-					type: "POST",
-					data:parametros,
-					url:  "../base/getdatossqlSeg.php",
-					success: function(data2){ 
-						laruta=""; 
-						activaEliminar="S";
-						losdatos2=JSON.parse(data2); 	
-						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
-						dameSubirArchivoDrive("documentos","Subir Carta Compromiso debidamente requisitada y firmadas ","cartacom",'RECIBOREINS','pdf',
-						'ID',usuario,'CARTA COMPROMISO SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_CARTACOM",laruta,activaEliminar);
-					}
-				});
+							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_CARTACOM'";
+							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data2){ 
+									laruta=""; 
+									activaEliminar="S";
+									losdatos2=JSON.parse(data2); 	
+									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+									dameSubirArchivoDrive("documentos","Subir Carta Compromiso debidamente requisitada y firmadas ","cartacom",'RECIBOREINS','pdf',
+									'ID',usuario,'CARTA COMPROMISO SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_CARTACOM",laruta,activaEliminar);
+								}
+							});
 
-				elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOAPERSS'";
-				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-				$.ajax({
-					type: "POST",
-					data:parametros,
-					url:  "../base/getdatossqlSeg.php",
-					success: function(data2){ 
-						laruta=""; 
-						activaEliminar="S";
-						losdatos2=JSON.parse(data2); 	
-						if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-												activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
-						dameSubirArchivoDrive("documentos","Subir Pago por concepto de apertura Servicio Social","pagoaperss",'RECIBOREINS','pdf',
-						'ID',usuario,'RECIBO DE APERTURA SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOAPERSS",laruta,activaEliminar);
-					}
-				});
+							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOAPERSS'";
+							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data2){ 
+									laruta=""; 
+									activaEliminar="S";
+									losdatos2=JSON.parse(data2); 	
+									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+									dameSubirArchivoDrive("documentos","Subir Pago por concepto de apertura Servicio Social","pagoaperss",'RECIBOREINS','pdf',
+									'ID',usuario,'RECIBO DE APERTURA SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOAPERSS",laruta,activaEliminar);
+								}
+							});
 
+						}
+					});
+				} //DEL SI ESTA ABIERO 
+				else { console.log("No hay proceso abierto");
+						$("#servicio").append("<div class=\"row\">"+
+						"    <div class=\"col-sm-12\"> "+
+						"          <div class=\"alert alert-danger\">El proceso de Solicitud de Servicio Social no esta abierto</div> "+
+						"    </div>");
+				}
 			}
-		});
+		}); //del ajax de busqueda de corte abierto 
 
 	}
 

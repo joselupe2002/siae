@@ -129,6 +129,7 @@ var eltipomat="";
 											}
 				else {laruta=""; secotejo='N'; msjDoc="El alumno NO ha subido documento de pago al SIGEA"; laclase="badge-danger"; }				
 
+			
 				if (secotejo=='S') {
 					$("#elpago").attr("href",laruta);
 					$("#elpagospan").prop("title",msjDoc);
