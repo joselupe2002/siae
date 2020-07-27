@@ -116,8 +116,8 @@ function creaEncabezado(consec,anio,clave){
 	$("#encabezadoCons").append("<table>"+
 	"    <tr>"+
 	"       <td style=\"width:50%\"></td>"+
-	"       <td style=\"width:15%\">DEPENENCIA:</td>"+
-	"       <tds tyle=\"width:20%\" ><td>DPTO DE SERV.ESCS.</td>"+
+	"       <td style=\"width:15%\">DEPARTAMENTO:</td>"+
+	"       <tds tyle=\"width:20%\" ><td>SERVICIOS ESCOLARES</td>"+
 	"    </tr>"+
 	"    <tr>"+
 	"       <td style=\"width:50%\"></td>"+
