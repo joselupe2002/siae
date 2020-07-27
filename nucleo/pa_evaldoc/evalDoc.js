@@ -26,7 +26,7 @@ function cierraExamen(){
 	
 	var hoy= new Date();
 	lahora=hoy.getHours()+":"+hoy.getMinutes();
-	lafecha=hoy.getDay()+"/"+hoy.getMonth()+"/"+hoy.getFullYear();
+	lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear();
 	parametros={
 		tabla:"ed_respuestas",
 		bd:"Mysql",
