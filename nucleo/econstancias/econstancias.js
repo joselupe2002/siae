@@ -68,7 +68,7 @@ contMat=1;
 
 function imprimeReporte(tipocons,consecutivo) {
 	var hoy= new Date();
-	lafecha=hoy.getDay()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
+	lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
 
     parametros={tabla:"econstancias",
 			    bd:"Mysql",
@@ -143,7 +143,7 @@ function creaCuerpo (MATRICULA,NOMBRE,SEMESTRE,CARRERAD,CICL_INICIO,CICL_FIN,CIC
 	PERIODOS+" DE "+CARRERAD+", EN EL PERIODO COMPRENDIDO DE "+
 	CICL_INICIO+" AL "+CICL_FIN+" CON UN PERÍODO VACACIONAL DE "+
 	CICL_VACINI+" AL "+CICL_VACFIN+" Y PROMEDIO DE "+
-	PROMEDIO_SR+" CON UN AVANCE DEL "+AVANCE.split("|")[2]+"%."+ADD+"</div>");
+	PROMEDIO_SR+" CON UN AVANCE DEL "+AVANCE+"%."+ADD+"</div>");
 }
 
 
@@ -162,7 +162,7 @@ function colocaCalificaciones(dataCal) {
 function colocaPie(consec,matricula,nombre,carrera) {
 	var hoy = new Date();
 	var anio = hoy.getFullYear();
-	var dia=hoy.getDay();
+	var dia=hoy.getDate();
 	var mes=hoy.getMonth();
 	var meses = ["ENERO", "FEEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", 
 	            "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
@@ -204,7 +204,7 @@ function creaConsCal (elciclo,matricula,consec,anio){
 						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
 						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" getavance('"+matricula+"') as AVANCE, "+
+						" round(getavanceCred('"+matricula+"'),0) as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
 						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
 						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
@@ -218,7 +218,11 @@ function creaConsCal (elciclo,matricula,consec,anio){
 							data:parametros3,
 							url:  "../base/getdatossqlSeg.php",
 							success: function(dataAlu){ 
+
+								
+
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
+					
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
 											   valorAlu.CARRERAD,valorCic.CICL_INICIO,valorCic.CICL_FIN,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
@@ -310,7 +314,7 @@ function creaConsHor(elciclo,matricula,consec,anio){
 						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
 						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" getavance('"+matricula+"') as AVANCE, "+
+						" round(getavanceCred('"+matricula+"'),0)  as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
 						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
 						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
@@ -439,7 +443,7 @@ function creaConsPer(elciclo,matricula,consec,anio){
 						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
 						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" getavance('"+matricula+"') as AVANCE, "+
+						" round(getavanceCred('"+matricula+"'),0)  as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
 						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
 						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
@@ -513,7 +517,7 @@ function creaConsIns(elciclo,matricula,consec,anio){
 						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
 						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
 						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" getavance('"+matricula+"') as AVANCE, "+
+						" round(getavanceCred('"+matricula+"'),0)  as AVANCE, "+
 						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
 						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
 						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
