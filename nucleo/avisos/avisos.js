@@ -79,8 +79,12 @@ function generaTabla(grid_data){
 		
 		$("#principal").append("<div  class=\"profile-activity clearfix\"> "+
 		                       "      <div>"+
-							   "         <div class=\"fontRobotoB col-sm-8 bigger-120 text-success\">"+valor.AVISO+"<br>"+
+							   "         <div class=\"fontRobotoB col-sm-6 bigger-120 text-success\">"+valor.AVISO+"<br>"+
 							   "             <span class=\"fontRoboto bigger-60  text-warning\">"+valor.DESCRIP+"</span>"+
+							   "         </div>"+
+							   "         <div class=\"col-sm-2\">"+
+							   "             <span class=\"label label-white middle fontRoboto bigger-60  label-primary\">"+valor.INICIA+"</span>"+"<br><br>"+
+							   "             <span class=\"label label-white middle fontRoboto bigger-60  label-danger\">"+valor.TERMINA+"</span>"+
 							   "         </div>"+
 							   "         <div class=\"col-sm-2 fontRobotoB col-sm-8 bigger-80 text-success\">"+
 							   "               <span class=\""+laclase+"\">"+(parseInt(valor.QUEDAN)+1)+" Días para Cerrar</span>"+
