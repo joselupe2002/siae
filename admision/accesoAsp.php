@@ -8,7 +8,7 @@ $miUtil = new UtilUser();
 
 
 $res=$miConex->getConsulta("Mysql","SELECT * FROM aspirantes, ciclosesc, ccarreras WHERE CURP='".$_POST["login"]."'".
-" and CICLO=CICL_CLAVE and CARRERA=CARR_CLAVE and FINALIZADO='S'  and CICL_ABIERTOEXA='S'");
+" and CICLO=CICL_CLAVE and CARRERA=CARR_CLAVE and FINALIZADO='S'  and (CICL_ABIERTOEXA='S' or CICL_ACIERTORES='S')");
 if (count($res)>0) {
 	//if ($res[0]["usua_clave"]==sha1($_POST["password"])){	
 	if ( $_POST["password"]==$res[0]["CLAVE"]) {

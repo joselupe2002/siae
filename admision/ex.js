@@ -28,7 +28,20 @@ var arr_preguntas=[];
 			cargarExamenes();
 		} 
 		else if ((abiertoRes=='S')) {
-			cargarResultados(aceptado);
+			elsql="select ACEPTADO from aspirantes, ciclosesc  where CICLO=CICL_CLAVE AND CICL_ACIERTORES='S' AND  CURP='"+usuario+"'";
+
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../nucleo/base/getdatossqlSeg.php",
+				success: function (dataExa) {
+			
+					cargarResultados(JSON.parse(dataExa)[0][0]);
+				}
+			});
+
+			
 		}
 		else {
 			cargarMensajeEspera();
@@ -40,10 +53,19 @@ var arr_preguntas=[];
 
 
 function cargarResultados(resultado) {
+	if (resultado=='S') {
 	cad="Para el <strong> Instituto Tecnológico Superior de Macuspana</strong>, es un honor y privilegio informarle que ha sido "+
 		"<span class=\"text-success\"><strong>ACEPTADO</strong></span>"+" en nuestra casa de estudios para cursar la "+
 		" carrera de <strong>"+utf8Decode(carrerad)+".</strong><br/> Para continuar con su proceso de admisión e iniciar su inscripción a la Institución "+
 		" es necesario que suba en el sistema la siguiente documentación:";
+	}
+	else {
+		cad="Lamentamos informarle que ha sido "+
+			"<span class=\"text-danger\"><strong>RECHAZADO</strong></span>"+" en nuestra casa de estudios para cursar la "+
+			" carrera de <strong>"+utf8Decode(carrerad)+".</strong><br/> Para continuar con su proceso de admisión e iniciar su inscripción a la Institución "+
+			" es necesario que suba en el sistema la siguiente documentación:";
+		}
+
 
 	$("#contenidoAsp").append("<div class='space-7'></div>"+
 	"   <div class=\"row\">"+

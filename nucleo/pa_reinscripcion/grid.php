@@ -250,6 +250,7 @@
 
 <script type="text/javascript">
    var usuario='<?php echo $_SESSION['usuario'];?>';
+   var micarrera='<?php echo $_SESSION['carrera'];?>';
 </script>
 
 </html>

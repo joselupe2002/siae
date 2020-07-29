@@ -17,7 +17,7 @@
                                  "  INS,REP,LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO, CREDITOS, CARRERA, MAPA) ".
             "SELECT '".$_POST["matricula"]."',CICLO, IDDETALLE, MATERIA, MATERIAD, ".
                     "PROFESOR, PROFESORD, SEMESTRE, SIE, CUPO,".
-                    "(SELECT COUNT(*) FROM dlista u where u.IDGRUPO=IDDETALLE) as INS,". 
+                    "(SELECT COUNT(*) FROM ".$_POST["tablaReg"]." u where u.IDGRUPO=IDDETALLE) as INS,". 
                     "(SELECT COUNT(*) FROM dlista u where u.PDOCVE<'".$_POST["ciclo"]."' AND ".
                                      "u.ALUCTR='".$_POST["matricula"]."' AND u.MATCVE=MATERIA and u.LISCAL<70) as REP,".
                     "LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO, CREDITOS, CARRERA,MAPA ".

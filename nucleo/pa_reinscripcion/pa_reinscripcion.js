@@ -7,6 +7,9 @@ var residencias=[];
 var matsineval=0;
 var cadmatsineval="";
 var micicloant="";
+var eladicional;
+var idop;
+
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -199,34 +202,56 @@ var micicloant="";
 	function realizarPropuesta() {
 		txtop=$("#tipoOperacion option:selected").text();
 		idop=$("#tipoOperacion").val();	
+		if (idop=="I") {eladicional='10'; } 
+		if (idop=="OC") {eladicional='12';}
+		if (idop=="N") {eladicional=micarrera; } 
+		
 		if (!($("#reciboreins").val()=='') || (idop=='OC')) {			
-			//verificamos si ya se envio la propuesta 	
-			
-			elsql="SELECT count(*) as N FROM dlistaprop y where y.PDOCVE='"+miciclo+
-			"' AND y.ALUCTR='"+usuario+"' and ENVIADA='S' and TIPOMAT='"+idop+"'";
+			// Verificamos si ya esta inscrito 
+			elsql="SELECT count(*) as N FROM dlista y where y.PDOCVE='"+miciclo+
+			"' AND y.ALUCTR='"+usuario+"' and LISTC13='"+eladicional+"'";
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-					type: "POST",
-					data:parametros,
-					url:  "../base/getdatossqlSeg.php",
-					success: function(data){  
-						yaenvio=JSON.parse(data);
-						if (yaenvio[0][0]>0) {
-							mostrarIfo("infoYa","grid_pa_reinscripcion","Propuesta Enviada","Su propuesta de "+txtop+" ya fue enviada con "+
-							"anterioriedad, ya la esta verificando su Jefe de División, por favor este atento a su correo electrónico y/o celular",
-							"modal-lg");
-						}
-						else {
-							$("#principal").removeClass("hide");
-							cargarHorarios();
-						}
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  
+					yains=JSON.parse(data);
+					if (yains[0][0]>0) {
+						mostrarIfo("infoYa","grid_pa_reinscripcion","Alumno Reinscrito","Usted ya se encuentra inscrito al Ciclo Escolar Actual en "+txtop,
+						"modal-lg");
 					}
-				});			
+					else {
+						elsql="SELECT count(*) as N FROM dlistaprop y where y.PDOCVE='"+miciclo+
+						"' AND y.ALUCTR='"+usuario+"' and ENVIADA='S' and TIPOMAT='"+idop+"'";
+						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+						$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data){  
+									yaenvio=JSON.parse(data);
+									if (yaenvio[0][0]>0) {
+										mostrarIfo("infoYa","grid_pa_reinscripcion","Propuesta Enviada","Su propuesta de "+txtop+" ya fue enviada con "+
+										"anterioriedad, ya la esta verificando su Jefe de División, por favor este atento a su correo electrónico y/o celular",
+										"modal-lg");
+									}
+									else {
+										$("#principal").removeClass("hide");
+										cargarHorarios();
+									}
+								}
+							});			
+					}// del else en caso de que no este inscrito
+
+				}// del success de si ya esta inscrito
+			});
 		}
 		else { alert ("Debe cargar primero su recibo de pago para tener acceso a cargar su propuesta");}
 	}
 
     function cargarHorarios(){	
+		
 		txtop=$("#tipoOperacion option:selected").text();
 		idop=$("#tipoOperacion").val();		
 		script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
@@ -268,20 +293,21 @@ var micicloant="";
 			   url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 						losdatos=JSON.parse(data);
-									
+						
 						elsqlmapa="SELECT ALUM_MAPA, ALUM_ESPECIALIDAD, ALUM_ESPECIALIDADSIE, PLACMA,PLACMI,PLAC1R, PLACM1 FROM falumnos, mapas where "+
 						" ALUM_MAPA=MAPA_CLAVE AND ALUM_MATRICULA='"+usuario+"'"	
+			
 						parametros={sql:elsqlmapa,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
 							type: "POST",
 							data:parametros,
 							url:  "../base/getdatossqlSeg.php",
-							success: function(dataMapa){  	
-								
+							success: function(dataMapa){  														
 								losdatosMapa=JSON.parse(dataMapa);
 								jQuery.each(losdatosMapa, function(clave, valor) { 
 													
 									generaTablaHorarios(losdatos,"INSCRITAS");   
+									
 																	
 									cargaMateriasDer(losdatosMapa[0]["ALUM_MAPA"],losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
 									
@@ -395,30 +421,36 @@ function selTodos() {
 
 
 function cargaMateriasDer(vmapa,vesp){
+
 	txtop=$("#tipoOperacion option:selected").text();
 	idop=$("#tipoOperacion").val();	
-	proc="getMateriasExt";
 	if (idop=="N") proc="getMaterias";	
-	if (idop=="I") {eladicional='10'; } if (idop=="OC") {eladicional='12';}
-	parametros={matricula:usuario,ciclo:miciclo,dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
+	if (idop=="OC") proc="getMateriasExt";	
+	if (idop=="I") proc="getMateriasIng";	
+	if (idop=="I") {eladicional='10'; } if (idop=="OC") {eladicional='12';} if (idop=="N") {eladicional=micarrera; } 
+	parametros={matricula:usuario,ciclo:miciclo,dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp,tablaReg:"dlistaprop",usuario:"ALUMNO"}
+
 	$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "../reinscripciones/"+proc+".php",
 		success: function(data){ 
+
             if (idop=='N') {
 				sqlNI="SELECT * FROM dlistatem where MATRICULA='"+usuario+
 					"' and SEMESTRE<=getPeriodos('"+usuario+"','"+miciclo+"') "+
 					" and INS<CUPO and IDDETALLE NOT IN (SELECT IDDETALLE FROM vreinstem y where y.CICLO='"+miciclo+
 					"' AND y.MATRICULA='"+usuario+"' and TIPOMAT='"+idop+"')"+ 
 					" and MAPA='"+vmapa+"' ORDER BY SEMESTRE, GRUPO, MATERIAD";
+				
 				}
 			else {
 				sqlNI="SELECT * FROM dlistatem where MATRICULA='"+usuario+
-				  "' and ADICIONAL='"+eladicional+"'"+
+				  "' and ADICIONAL='"+eladicional+"' and INS<CUPO"+ 
 				  " and IDDETALLE NOT IN  (SELECT IDDETALLE FROM vreinstem y where y.CICLO='"+miciclo+
 				  "' AND y.MATRICULA='"+usuario+"' and TIPOMAT='"+idop+"')"+
 				  " ORDER BY SEMESTRE, MATERIAD";
+			
 			}
 			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -457,7 +489,7 @@ function agregarCondiciones(){
 							"           </div>"+
 							"       </div>");
 
-		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+usuario+"'"+
+		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+usuario+"' and CARRERA='"+eladicional+"'"+
 		" ORDER BY SEMESTRE, MATERIAD";
 
         var titulos = [{titulo: "SEL",estilo: "text-align: center;"},
@@ -702,8 +734,10 @@ function validarCondiciones(mensaje) {
 	if (cadMat.length>0) {res+=cadMat; }
 
 	
+
 	//calculamos el total de créditos 
-	sumacred=0; for (i=1; i<contFila; i++){if ($("#c_"+i+"_99").prop("checked")) {sumacred+=parseInt($("#c_"+i+"_14").html());}}
+	totMat=0;
+	sumacred=0; for (i=1; i<contFila; i++){if ($("#c_"+i+"_99").prop("checked")) {totMat++;sumacred+=parseInt($("#c_"+i+"_14").html());}}
 	sumaRep=0; for (i=1; i<contFila; i++){ if ($("#c_"+i+"_99").prop("checked")) {sumaRep+=parseInt($("#c_"+i+"_99").attr("repitiendo"));}}
 	sumaEsp=0; for (i=1; i<contFila; i++){if ($("#c_"+i+"_99").prop("checked")) {sumaRep+=parseInt($("#c_"+i+"_99").attr("especial"));}}
 
@@ -729,6 +763,14 @@ function validarCondiciones(mensaje) {
 		res+="<span class=\"badge badge-pink\"> Para poder cursar la Residencia Prof. "+matRes+" debe cumplir el 80% de avances en créditos </span><br/>";
 	}
 	
+	if (($("#tipoOperacion").val()=='OC') && (totMat>1)){
+		res+="<span class=\"badge badge-pink\"> No puede elegir mas de una actividad Extraescolar </span><br/>";
+	}
+
+	if (totMat<=0){
+		res+="<span class=\"badge badge-pink\"> No ha elegido ninguna asignatura </span><br/>";
+	}
+
 	res+=validarcrucesReins();
 	return (res);
 }
@@ -869,8 +911,9 @@ function
 				if (confirm("¿Seguro que deseas enviar tu propuesta, ya no podrá realizar cambios?")) {
 					mostrarEspera("guardandoReins","grid_pa_reinscripcion","Guardando...");
 					res=validarCondiciones(false);	
+			
 					if (res.length==0) {
-							parametros={tabla:"dlistaprop",bd:"Mysql",campollave:"concat(PDOCVE,ALUCTR)",valorllave:miciclo+usuario,ENVIADA:"S"};
+							parametros={tabla:"dlistaprop",bd:"Mysql",campollave:"concat(PDOCVE,ALUCTR,TIPOMAT)",valorllave:miciclo+usuario+idop,ENVIADA:"S"};
 							$.ajax({
 								type: "POST",
 								url:"../base/actualiza.php",

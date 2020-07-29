@@ -464,7 +464,8 @@ function selTodos() {
 
 
 function cargaMateriasDer(vmapa,vesp,lavista){
-	parametros={matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp}
+	parametros={matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],
+	dato:sessionStorage.co,bd:"Mysql",vmapa:vmapa,vesp:vesp,tablaReg:"dlistaprop"}
 	$.ajax({
 		type: "POST",
 		data:parametros,
@@ -499,16 +500,19 @@ function cargaMateriasDer(vmapa,vesp,lavista){
 
 
 function cargaMateriasDerExt(lavista){
+	if ($("#selCarreras").val()=='10') { cadphp="getMateriasIng";}
+	if ($("#selCarreras").val()=='12') { cadphp="getMateriasExt";}
 
 	parametros={lacarrera:$("#selCarreras").val(),matricula:$("#selAlumnos").val(),ciclo:$("#elciclo").html().split("|")[0],
-	dato:sessionStorage.co,bd:"Mysql"}
+	dato:sessionStorage.co,bd:"Mysql",tablaReg:"dlista",usuario:"ADMIN"}
 	$.ajax({
 		type: "POST",
 		data:parametros,
-		url:  "getMateriasExt.php",
+		url:  cadphp+".php",
 		success: function(data){ 
 			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
 				  "' and ADICIONAL='"+$("#selCarreras").val()+"'"+
+				  " and INS<CUPO"+
 				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
 				  "' AND y.MATRICULA='"+$("#selAlumnos").val()+"')"+ 
 				  " ORDER BY SEMESTRE, MATERIAD";
@@ -535,6 +539,7 @@ function cargaMateriasDerExt(lavista){
 
 
 
+
 /*=====================================AGREGAR VENTANA ASIGNATURA CON CONDICIONES================================*/
 function agregarCondiciones(){
     if (!($('#selAlumnos').val()=="0")) {
@@ -549,7 +554,7 @@ function agregarCondiciones(){
 							"           </div>"+
 							"       </div>");
 
-		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+"'"+
+		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+"' and CARRERA='"+$("#selCarreras").val()+"'"+
 		" ORDER BY SEMESTRE, MATERIAD";
 
         var titulos = [{titulo: "SEL",estilo: "text-align: center;"},
