@@ -230,7 +230,7 @@
 		$pdf->SetFont('Arial','',11);
 		$pdf->Cell(40,10,utf8_decode("ACTIVIDAD:"),1,0,'L',false);
 		$pdf->SetFont('Arial','B',11);
-		$pdf->Cell(130,10,utf8_decode($_GET["actividad"]),1,1,'L',false);
+		$pdf->Cell(130,10,utf8_decode($data[0]["MATERIAD"]),1,1,'L',false);
 
 		$pdf->SetFont('Arial','',11);
 		$pdf->Cell(40,10,utf8_decode("RESULTADO:"),1,0,'L',false);
