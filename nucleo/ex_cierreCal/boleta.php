@@ -332,7 +332,7 @@
             $n++;
         }
         
-        $porapr=round(($apr/($n-1)),2);
+        $porapr=round(($apr/($n-1)),2)*100;
         $porrep=(100-$porapr);
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9);
