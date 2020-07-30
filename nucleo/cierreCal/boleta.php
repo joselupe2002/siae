@@ -332,7 +332,7 @@
             $n++;
         }
         
-        $porapr=round(($apr/($n-1)),2);
+        $porapr=round(($apr/($n-1)),2)*100;
         $porrep=(100-$porapr);
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9);
@@ -347,6 +347,8 @@
         $pdf->Cell(94,5,utf8_decode('% DE REPROBACIÓN'),1,0,'R',false);
         $pdf->Cell(15,5,($n-1)-$apr,1,0,'C',false);
         $pdf->Cell(55,5,$porrep." %",1,0,'L',false);
+
+        
  
         $pdf->SetTextColor(0);
      

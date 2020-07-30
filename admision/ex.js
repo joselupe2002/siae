@@ -28,7 +28,7 @@ var arr_preguntas=[];
 			cargarExamenes();
 		} 
 		else if ((abiertoRes=='S')) {
-			elsql="select ACEPTADO from aspirantes, ciclosesc  where CICLO=CICL_CLAVE AND CICL_ACIERTORES='S' AND  CURP='"+usuario+"'";
+			elsql="select ACEPTADO, ENVIODOCINS from aspirantes, ciclosesc  where CICLO=CICL_CLAVE AND CICL_ACIERTORES='S' AND  CURP='"+usuario+"'";
 
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -37,7 +37,9 @@ var arr_preguntas=[];
 				url:  "../nucleo/base/getdatossqlSeg.php",
 				success: function (dataExa) {
 			
+					enviodocins=JSON.parse(dataExa)[0][1];
 					cargarResultados(JSON.parse(dataExa)[0][0]);
+					
 				}
 			});
 
@@ -56,14 +58,31 @@ function cargarResultados(resultado) {
 	if (resultado=='S') {
 	cad="Para el <strong> Instituto Tecnológico Superior de Macuspana</strong>, es un honor y privilegio informarle que ha sido "+
 		"<span class=\"text-success\"><strong>ACEPTADO</strong></span>"+" en nuestra casa de estudios para cursar la "+
-		" carrera de <strong>"+utf8Decode(carrerad)+".</strong><br/> Para continuar con su proceso de admisión e iniciar su inscripción a la Institución "+
+		" carrera de <strong>"+utf8Decode(carrerad)+".</strong><br/>";
+	
+	cadPol="El procedimiento de inscripción está sujeto a la normatividad aplicable emitida por el "+
+		"<b>Tecnológico Nacional de México</b>, por lo que su observancia es obligatoria para quienes desean "+
+		"ingresar a una institución del sistema, como lo es el Instituto Tecnológico Superior de Macuspana.<br><br>"+
+
+		"En consecuencia, la falta de un requisito, por ejemplo, <span class=\"text-danger\"><b>no haber concluido sus estudios de bachillerato "+	
+		"(adeudo de materias) u otras análogas; </b></span>para realizar su inscripción, produce la invalidación de su procedimiento "+
+		"de inscripción en esta institución; por ello, se le invita a que realice el pago de inscripción <span class=\"text-success\"><b>SOLO SI</b></span>, "+
+		"cuenta con la documentación y requisitos solicitados para su inscripción<br><br>"+
+
+		"En caso contrario, lo hace Usted, bajo su más estricta responsabilidad en el entendido de que su "+
+		"inscripción será nula, en cualquier momento, aunque haya realizado el pago por concepto de inscripción "+
+		"o cursado asignaturas, y las consecuencias que deriven de lo anterior solo son imputables a quien realiza el pago.<br><br>"+
+
+		"<span class=\"badge badge-danger \" style=\"font-size:18px;\"><b> Fecha de Inscripción en línea : A partir de la presente fecha hasta el día 10 de Agosto del presente año.</b></span><br><br>"+
+
+		"Como primer paso para su inscripción debe adjuntar la siguiente documentación "+
 		" es necesario que suba en el sistema la siguiente documentación:";
 	}
 	else {
 		cad="Lamentamos informarle que ha sido "+
-			"<span class=\"text-danger\"><strong>RECHAZADO</strong></span>"+" en nuestra casa de estudios para cursar la "+
-			" carrera de <strong>"+utf8Decode(carrerad)+".</strong><br/> Para continuar con su proceso de admisión e iniciar su inscripción a la Institución "+
-			" es necesario que suba en el sistema la siguiente documentación:";
+			"<span class=\"text-danger\"><strong>NO ACEPTADO</strong></span>"+" en nuestra casa de estudios para cursar la "+
+			" carrera de <strong>"+utf8Decode(carrerad)+".</strong>";
+		cadPol="";
 		}
 
 
@@ -79,6 +98,8 @@ function cargarResultados(resultado) {
 	"        <div class=\"col-sm-1\"></div>"+
 	"        <div class=\"col-sm-10\" style=\"text-align:justify;\">"+
 	"             <span class=\"fontRoboto text-light bigger-180\">"+cad+
+	"             </span> <div class='space-20'></div>"+
+	"             <span class=\"fontRoboto text-light bigger-120\">"+cadPol+
 	"             </span> "+
 	"        </div>"+
 	"        <div class=\"col-sm-1\"></div>"+
@@ -773,12 +794,19 @@ function cargarAdjuntos() {
 		}	
 	});
 
-	if (todos) { msj="Al finalizar su exámen ya no podra hacer cambios."; }
-	else {msj="Al parecer no ha contestado todas las preguntas, aún así desea finalizar su examen"};
-		mostrarConfirm("confirmFinalizar", "grid_registro", "Finalizar Proceso",
-		"<span class=\"lead text-danger\"><strong>"+msj,
-		"¿Esta usted Seguro?","Finalizar Examen", "finalizar();","modal-lg");
+	if (todos) { 
+		msj="Al finalizar su exámen ya no podra hacer cambios en sus documentos";
+		mostrarConfirm("confirmFinalizar", "grid_registro", "Enviar Documentos",
+									"<span class=\"lead text-danger\"><strong>"+msj,
+		                             "¿Seguro que desea finalizar?","Finalizar", "finalizar();","modal-lg");
+	}
+
+	else {
+		msj="Al parecer no ha adjuntado todos los documentos. Y todos son obligatorios";
+		mostrarIfo("confirmFinalizar", "grid_registro", "Error",
+		"<span class=\"lead text-danger\"><strong>"+msj,"modal-lg");
    }
+}
 
    function finalizar(){
 	parametros={
@@ -802,7 +830,7 @@ function cargarAdjuntos() {
 		error: function(data) {	                  
 				alert('ERROR: '+data);
 			}					     
-		}); 
+		});
    }
 
 
@@ -813,7 +841,14 @@ function cargarAdjuntos() {
 						"   <div class=\"row\" style=\"padding:0px;  margin:0px;\">"+								  						  
 						  "    <div class=\"col-sm-12 fontRoboto\" style=\"padding:0px; margin:0px; text-align:center;\">"+								  
 						  "             <p class=\"bigger-160\">Tus documentos fueron enviados. Gracias.</p> "+
+						  "    </div>"+	
+						  "    <div class=\"col-sm-12 fontRoboto\" style=\"padding:0px; margin:0px; text-align:center;\">"+								  
+						  "        <span class=\"btn btn-white btn-primary btn-bold\" onclick=\"descargarComprobante();\">Descargar Comprobante</span>"+
 						  "    </div>"+								  														  
-						  "</div>");
-					
+						  "</div>");					
+ }
+
+
+ function descargarComprobante(){
+	 window.open("compsubida.php?idasp="+idasp+"&curp="+usuario,"_blank");
  }

@@ -137,7 +137,7 @@
 	   carrerad="<?php echo $_SESSION["carrerad"]?>";
 	   usuario="<?php echo $_SESSION["usuario"]?>";
 	   idasp="<?php echo $_SESSION["idasp"]?>";
-	   enviodocins="<?php echo $_SESSION["enviodocins"]?>";
+	  
 	   
 
 	   
