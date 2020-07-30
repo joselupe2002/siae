@@ -795,10 +795,10 @@ function cargarAdjuntos() {
 	});
 
 	if (todos) { 
-		msj="Al finalizar su exámen ya no podra hacer cambios en sus documentos";
+		msj="Al enviar su documentación ya no podra hacer cambios";
 		mostrarConfirm("confirmFinalizar", "grid_registro", "Enviar Documentos",
 									"<span class=\"lead text-danger\"><strong>"+msj,
-		                             "¿Seguro que desea finalizar?","Finalizar", "finalizar();","modal-lg");
+		                             "¿Seguro que desea enviar documentación?","Finalizar", "finalizar();","modal-lg");
 	}
 
 	else {
