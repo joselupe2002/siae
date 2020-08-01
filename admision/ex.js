@@ -15,13 +15,13 @@ var arr_preguntas=[];
 
     jQuery(function($) { 
 		
-		/*
+		
 		$(document).bind("contextmenu",function(e){return false;});
 		window.location.hash="red";
 	    window.location.hash="Red" //chrome
 		window.onhashchange=function(){window.location.hash="red";}
 		
-		*/
+		
 		cargarFoto();
 
 		if ((aceptado=='N') && (abiertoExa=='S')) {			

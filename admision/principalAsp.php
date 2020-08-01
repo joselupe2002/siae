@@ -138,9 +138,6 @@
 	   usuario="<?php echo $_SESSION["usuario"]?>";
 	   idasp="<?php echo $_SESSION["idasp"]?>";
 	  
-	   
-
-	   
 
 </script>
 
