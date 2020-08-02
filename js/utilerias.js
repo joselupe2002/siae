@@ -821,6 +821,42 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
        });
 }
 
+
+function addSELECT_CONVALOR(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect, valor) {
+
+	elsql=getSQLTipo(tipo,otrascondiciones);
+	if (tipo=='PROPIO') {elsql=sql;}
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
+        success: function(data){
+       	       losdatos=JSON.parse(data);   
+       	       eltipo="";
+       	       if (tipoSelect=='BUSQUEDA') {eltipo="chosen-select";}
+       	       $("#"+contenedor).append("<select class=\" "+eltipo+" form-control text-success\"  id=\""+nombre+"\"> </select>");
+       	       $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
+               jQuery.each(JSON.parse(data), function(clave, valor) { 	
+	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  		
+							   }); 
+				$("#"+nombre).val(valor);
+	
+               if (tipoSelect=='BUSQUEDA') {               
+		         	   $('.chosen-select').chosen({allow_single_deselect:true}); 			
+			     	   $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+			     	   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+			  		   $("#"+nombre).trigger("chosen:updated");		}
+			   
+	  		   $("#"+nombre).change(function(){change_SELECT(nombre);});                   	   
+              },
+        error: function(data) {	                  
+                   alert('ERROR: '+data);
+               }
+       });
+}
+
 function addSELECT_ST(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect,estilo) {
 
 	elsql=getSQLTipo(tipo,otrascondiciones);
