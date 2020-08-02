@@ -879,7 +879,7 @@ function addSELECTMULT_CONVALOR(nombre,contenedor,tipo, sql, otrascondiciones, t
 			   estasel="";
                jQuery.each(JSON.parse(data), function(clave, valor) {
 						 estasel="";
-						 alert (losdatos[clave][0]+" esta en "+valorDato+ " "+valorDato.indexOf(losdatos[clave][0]));
+					
 						 if (valorDato.indexOf(losdatos[clave][0])>=0) {estasel="selected=\"true\"";} 						
 	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\""+ estasel +">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  									   						
 						}); 
