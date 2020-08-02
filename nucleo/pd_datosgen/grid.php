@@ -68,79 +68,112 @@
 								   </div>
 							   </div>
 
-							   <div class="col-xs-12 col-sm-9">								    
+							   <div class="col-xs-12 col-sm-9">	
 
-                                        <div class="profile-user-info profile-user-info-striped">
-										   
-								
-								           <div class="profile-info-row"><div class="profile-info-name">No.</div>
-                                                <div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-                                                     <span id="EMPL_NUMERO"></span>
-                                                </div>
-										    </div>
-										    
-										    <div class="profile-info-row"><div class="profile-info-name">Nombre</div>
-                                                <div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-                                                     <span id="EMPL_NOMBRE">Nombre de la persona</span>
-                                                </div>
-										    </div>
+							  		 <div class="tabbable">		
+									   	<ul class="nav nav-tabs" id="myTab">
+												<li class="active">
+													<a data-toggle="tab" href="#generales">
+														<i class="green ace-icon fa fa-user bigger-120"></i>
+														Generales
+													</a>
+												</li>
 
-											<div class="profile-info-row"><div class="profile-info-name">Direcci&oacute;n </div>
-                                                <div class="profile-info-value"><i class="fa fa-map-marker light-orange bigger-110"></i>
-													<span class="editable" id="EMPL_DIRECCION" name="EMPL_DIRECCION">Direcci&oacute;n</span>
-												</div>
-											</div>
-											
-											<div class="profile-info-row"><div class="profile-info-name">Tel&eacute;fono </div>
-                                                <div class="profile-info-value"><i class="fa fa-phone light-orange bigger-110"></i>
-													<span class="editable" name="EMPL_TELEFONO" id="EMPL_TELEFONO">999999999</span>
-												</div>
-											</div>
-											
-											<div class="profile-info-row"><div class="profile-info-name">e-mail </div>
-                                                <div class="profile-info-value"><i class="fa fa-maxcdn light-orange bigger-110"></i>
-													<span class="editable" id="EMPL_CORREO">micorreo@algo.mx</span>
-												</div>
-											</div>
-											
-											<div class="profile-info-row"><div class="profile-info-name">Carrera </div>
-                                                <div class="profile-info-value"><i class="fa fa-gears light-orange bigger-110"></i>
-													<span class="editable" id="EMPL_DEPTO"></span>
-												</div>
-											</div>
+												<li>
+													<a data-toggle="tab" href="#formacion">
+													<i class="blue ace-icon fa fa-group bigger-120"></i>
+														Formación													
+													</a>
+												</li>	
+										</ul>				    
+										<div class="tab-content">
+											<div id="generales" class="tab-pane fade in active">
+												<div class="profile-user-info profile-user-info-striped">										   								
+													<div class="profile-info-row"><div class="profile-info-name">No.</div>
+														<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+															<span id="EMPL_NUMERO"></span>
+														</div>
+													</div>
+													
+													<div class="profile-info-row"><div class="profile-info-name">Nombre</div>
+														<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+															<span id="EMPL_NOMBRE">Nombre de la persona</span>
+														</div>
+													</div>
+
+													<div class="profile-info-row"><div class="profile-info-name">Direcci&oacute;n </div>
+														<div class="profile-info-value"><i class="fa fa-map-marker light-orange bigger-110"></i>
+															<span class="editable" id="EMPL_DIRECCION" name="EMPL_DIRECCION">Direcci&oacute;n</span>
+														</div>
+													</div>
+													
+													<div class="profile-info-row"><div class="profile-info-name">Tel&eacute;fono </div>
+														<div class="profile-info-value"><i class="fa fa-phone light-orange bigger-110"></i>
+															<span class="editable" name="EMPL_TELEFONO" id="EMPL_TELEFONO">999999999</span>
+														</div>
+													</div>
+													
+													<div class="profile-info-row"><div class="profile-info-name">e-mail </div>
+														<div class="profile-info-value"><i class="fa fa-maxcdn light-orange bigger-110"></i>
+															<span class="editable" id="EMPL_CORREO">micorreo@algo.mx</span>
+														</div>
+													</div>
+													
+													<div class="profile-info-row"><div class="profile-info-name">Carrera </div>
+														<div class="profile-info-value"><i class="fa fa-gears light-orange bigger-110"></i>
+															<span class="editable" id="EMPL_DEPTO"></span>
+														</div>
+													</div>
 
 
-											<div class="profile-info-row"><div class="profile-info-name">Ingreso </div>
-                                                <div class="profile-info-value"><i class="fa fa-gears light-orange bigger-110"></i>
-													<span class="editable" id="EMPL_FECING"></span>
+													<div class="profile-info-row"><div class="profile-info-name">Ingreso </div>
+														<div class="profile-info-value"><i class="fa fa-tag light-orange bigger-110"></i>
+															<span class="editable" id="EMPL_FECING"></span>
+														</div>
+													</div>											
+													
 												</div>
-											</div>
+											</div> <!--  Del contenido del primer tab -->
+											<div id="formacion" class="tab-pane fade">
+												<div class="profile-user-info profile-user-info-striped">
+													<div class="profile-info-row"><div class="profile-info-name">Formación </div>
+														<div class="profile-info-value">
+															<span id="EMPL_FORMACION"></span>
+														</div>
+													</div>
 
-											<div class="profile-info-row"><div class="profile-info-name">Formación </div>
-                                                <div class="profile-info-value">
-													<span id="EMPL_FORMACION"></span>
-												</div>
-											</div>
+													<div class="profile-info-row"><div class="profile-info-name">Egresado de </div>
+														<div class="profile-info-value">
+															<span id="EMPL_EGRESADODE"></span>
+														</div>
+													</div>
 
-											<div class="profile-info-row"><div class="profile-info-name">Egresado de </div>
-                                                <div class="profile-info-value">
-													<span id="EMPL_EGRESADODE"></span>
-												</div>
-											</div>
+													<div class="profile-info-row"><div class="profile-info-name">Ult. Grado </div>
+														<div class="profile-info-value">
+															<span  id="EMPL_ULTIGRA"></span>
+														</div>
+													</div>
 
-											<div class="profile-info-row"><div class="profile-info-name">Ult. Grado </div>
-                                                <div class="profile-info-value">
-													<span  id="EMPL_ULTIGRA"></span>
-												</div>
-											</div>
+													<div class="profile-info-row"><div class="profile-info-name">Abrevia (Ing.) </div>
+														<div class="profile-info-value"><i class="fa fa-gears light-orange bigger-110"></i>
+															<span class="editable" id="EMPL_ABREVIA"></span>
+														</div>
+													</div>
 
-											<div class="profile-info-row"><div class="profile-info-name">Abrevia (Ing.) </div>
-                                                <div class="profile-info-value"><i class="fa fa-gears light-orange bigger-110"></i>
-													<span class="editable" id="EMPL_ABREVIA"></span>
+													<div class="profile-info-row"><div class="profile-info-name">Habilidades Técnicas</div>
+														<div class="profile-info-value">
+															<span class="editable" id="EMPL_HABTEC"></span>
+														</div>
+													</div>
+
+													<div class="profile-info-row"><div class="profile-info-name">Habilidades Personales</div>
+														<div class="profile-info-value">
+															<span class="editable" id="EMPL_HABPER"></span>
+														</div>
+													</div>
 												</div>
-											</div>
-											
-										 </div>
+											</div> <!--  Del contenido del segundo  tab -->
+										</div> <!--  Del Tab principal -->
 
 										 <div class="space-20"></div>
 										 
@@ -149,8 +182,6 @@
 				                               <i class="ace-icon white fa fa-save bigger-200"></i><span class="btn-lg">Guardar Cambios Realizados</span>            
 				                               </button>
 				                         </div>
-											
-										 
 
 			                   </div> <!--  De la segunda columna del row  -->
 	    </div><!--  Del profile  -->
@@ -328,8 +359,14 @@
 						  addSELECT_CONVALOR("selEMPL_FORMACION","EMPL_FORMACION","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM pcarrempl order by CARR_DESCRIP", "","BUSQUEDA",valor.EMPL_FORMACION);  			      
 						  addSELECT_CONVALOR("selEMPL_EGRESADODE","EMPL_EGRESADODE","PROPIO", "SELECT UNIV_ID, UNIV_DESCRIP FROM puniversidades order by UNIV_DESCRIP", "","BUSQUEDA",valor.EMPL_EGRESADODE);  			      
 						  addSELECT_CONVALOR("selEMPL_ULTIGRA","EMPL_ULTIGRA","PROPIO", "select ESCO_CLAVE, ESCO_DESCRIP from cescolaridad order by ESCO_CLAVE ", "","BUSQUEDA",valor.EMPL_ULTIGRA);  			      
+						  
+						  addSELECTMULT_CONVALOR("selEMPL_HABTEC","EMPL_HABTEC","PROPIO", "select CATA_CLAVE, CATA_DESCRIP "+
+						  "from scatalogos WHERE CATA_TIPO='HABTEC' order by CATA_DESCRIP ", "","BUSQUEDA",valor.EMPL_HABTEC);  	
+						  
+						  addSELECTMULT_CONVALOR("selEMPL_HABPER","EMPL_HABPER","PROPIO", "select CATA_CLAVE, CATA_DESCRIP "+
+						  "from scatalogos WHERE CATA_TIPO='HABPER' order by CATA_DESCRIP ", "","BUSQUEDA",valor.EMPL_HABPER);  		
 	
-
+						  
 
 		    	    	 
 		    	      });		    
@@ -354,13 +391,15 @@ function guardar(){
 		    	valorllave:"<?php echo $_SESSION['usuario'];?>",
 		    	bd:"Mysql",
 		    	EMPL_DIRECCION:$("#EMPL_DIRECCION").html(),
-		    	EMPL_TELEFONO:$("#EMPL_TELEFONO").html(),
+		    	EMPL_TELEFONO:"3,4,5,5",
 		    	EMPL_CORREO:$("#EMPL_CORREO").html(),
 				EMPL_FOTO:$("#EMPL_FOTO").val(), 
 				EMPL_FORMACION:$("#selEMPL_FORMACION").val(),
 				EMPL_EGRESADODE:$("#selEMPL_EGRESADODE").val(), 
 				EMPL_ABREVIA:$("#EMPL_ABREVIA").html(), 
-				EMPL_ULTIGRA:$("#selEMPL_ULTIGRA").val()	    
+				EMPL_ULTIGRA:$("#selEMPL_ULTIGRA").val(),
+				EMPL_HABTEC: $("#selEMPL_HABTEC").val()==null?' ':$("#selEMPL_HABTEC").val().toString(), 
+				EMPL_HABPER:$("#selEMPL_HABPER").val()==null?' ':$("#selEMPL_HABPER").val().toString(), 	    
 		      };
 		    		
        $('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
