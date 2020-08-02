@@ -200,6 +200,7 @@ function cargarNoPresentaron() {
 					"                <th>CORREO</th> "+	
 					"                <th>CELULAR</th> "+	
 					"                <th>TEL. CASA</th> "+	
+					"                <th>CLAVE</th> "+	
 					"             </tr> "+
 					"            </thead>" +
 					"         </table>";
@@ -218,6 +219,7 @@ function cargarNoPresentaron() {
 				$("#rowM"+contAlum).append("<td>"+valor.CORREO+"</td>");
 				$("#rowM"+contAlum).append("<td>"+valor.TELCEL+"</td>");
 				$("#rowM"+contAlum).append("<td>"+valor.TELCASA+"</td>");
+				$("#rowM"+contAlum).append("<td>"+valor.CLAVE+"</td>");
 				contAlum++;      			
 			});	
 		}																																										

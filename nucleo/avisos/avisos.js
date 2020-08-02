@@ -21,10 +21,11 @@ function cargarInformacion(){
 
 	mostrarEspera("esperaInf","grid_avisos","Cargando Datos...");
 	elsql="SELECT usua_usuader, usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
-	cadSql="select s.*, DATEDIFF(STR_TO_DATE(TERMINA,'%d/%m/%Y'), STR_TO_DATE(INICIA,'%d/%m/%Y')) AS QUEDAN from eavisos s where  "+
+	cadSql="select s.*, DATEDIFF(STR_TO_DATE(TERMINA,'%d/%m/%Y'),now()) AS QUEDAN from eavisos s where  "+
 	" ACTIVO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y')"+
 	" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
 	" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') ";
+	
 	elsql2="";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
