@@ -61,7 +61,7 @@ function cargaMateriasCal(contenedor, ciclo,alumno){
 
 
 
-function cargaMateriasCal(contenedor, ciclo,carrera,genero){
+function cargaAlumnosRep (contenedor, ciclo,carrera,genero){
 
 	elsqlMa=elsql="select  ALUCTR AS MATRICULA, CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
 	" ALUM_CARRERAREG, CARR_DESCRIP,  if (ALUM_SEXO=1,'H','M') AS SEXO , COUNT(*) AS REP"+
