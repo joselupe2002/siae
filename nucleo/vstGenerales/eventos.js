@@ -110,10 +110,10 @@ function cargaAlumnosRepAs(contenedor, ciclo,carrera,genero){
 	" and ALUM_CARRERAREG=CARR_CLAVE "+
 	" and PDOCVE IN ('"+ciclo+"') AND IFNULL(MATE_TIPO,'0') NOT IN ('OC','T','RP','I','SS') "+
 	" AND LISCAL<70 and ALUM_SEXO='"+genero+"'"+
-	" and ALUCTR IN (select a.ASES_MATRICULA from vasesorias a where a.ASES_CICLO='"+ciclo+"')'";
+	" and ALUCTR IN (select a.ASES_MATRICULA from vasesorias a where a.ASES_CICLO='"+ciclo+"')"+
 	" GROUP BY ALUCTR,ALUM_CARRERAREG, CARR_DESCRIP, ALUM_SEXO ";
 
-	alert (elsqlMa);
+
 
 	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
 
