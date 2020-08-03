@@ -119,7 +119,7 @@ var elexamen=0;
 						$("#informacion").append(script);
 								
 						elsql="select MATRICULA,IDEXAMEN,MATRICULAD,CARRERA, CARRERAD,"+cadSecSql+" ifnull(SUM(PUNTOS),0) as TOTAL from vlinrespuestas x where "+
-						"IDAPLICA="+$("#selExamenes").val()+" AND CARRERA LIKE '"+$("#selCarreras").val()+"' GROUP BY MATRICULA,IDEXAMEN, MATRICULAD ORDER BY MATRICULA, MATRICULAD,CARRERA,CARRERAD";
+						"IDAPLICA="+$("#selExamenes").val()+" AND CARRERA LIKE '"+$("#selCarreras").val()+"' GROUP BY MATRICULA,IDEXAMEN ORDER BY MATRICULA, MATRICULAD,CARRERA,CARRERAD";
 	
 			
 						mostrarEspera("esperahor","grid_linresexa","Cargando Datos...");
