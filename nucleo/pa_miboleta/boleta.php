@@ -227,13 +227,14 @@
 
                 $this->setY(($linea+10)); 
                 $this->setX(50); 
-                $this->SetFont('Montserrat-Black','B',10);
+                $this->SetFont('Montserrat-Black','B',12);
                 $this->ln(5);
-                $this->Cell(0,5,utf8_decode('INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA'),'B',1,'C');
+                $this->Cell(50,5,"",'',0,'C');
+                $this->Cell(120,5,utf8_decode('INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA'),'',1,'C');
 
-                $this->SetFont('Montserrat-SemiBold','B',10);
+                $this->SetFont('Montserrat-SemiBold','B',12);
                 $this->setX(50);
-                $this->Cell(0,5,utf8_decode('BOLETA DE CALIFICACIONES'),0,0,'L');
+                $this->Cell(0,5,utf8_decode('BOLETA DE CALIFICACIONES'),0,0,'C');
                 $this->ln(5);
                 if ($data) {
                         $this->setX(140);
@@ -267,7 +268,7 @@
                         $this->SetFont('Montserrat-Black','B',10);
                         $this->setX(20);
                         $this->Cell(30,5,utf8_decode("CARRERA:"),0,0,'L');
-                        $this->SetFont('Montserrat-SemiBold','',8);
+                        $this->SetFont('Montserrat-SemiBold','',10);
                         $this->Cell(90,5,utf8_decode($dataAlum[0]["CARRERAD"]),0,0,'L');
                         $this->SetFont('Montserrat-SemiBold','',10);
 
