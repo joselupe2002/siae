@@ -334,7 +334,7 @@
                         $this->Cell(25,5,"CRED. APR:",1,0,'R');
                         $this->Cell(10,5,$crapr,1,1,'R');
 
-                        
+                        /*
                         $miutil = new UtilUser();
                         $nombre=$miutil->getJefe('303');//Nombre del puesto de control escolar7
 
@@ -346,6 +346,7 @@
                         $this->setX(10);$this->setY(($linea+125));
                         $this->SetFont('Montserrat-SemiBold','',8);
                         $this->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",'',0,'L');
+                        */
                     }
                 else {
                     $this->SetFont('Montserrat-SemiBold','',15);
