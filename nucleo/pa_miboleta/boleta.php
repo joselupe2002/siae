@@ -228,46 +228,47 @@
                 $this->setY(($linea+10)); 
                 $this->setX(50); 
                 $this->SetFont('Montserrat-Black','B',10);
+                $this->ln(5);
                 $this->Cell(0,5,utf8_decode('INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA'),'B',1,'C');
 
                 $this->SetFont('Montserrat-SemiBold','B',10);
                 $this->setX(50);
-                $this->Cell(0,4,utf8_decode('BOLETA DE CALIFICACIONES'),0,0,'L');
-
+                $this->Cell(0,5,utf8_decode('BOLETA DE CALIFICACIONES'),0,0,'L');
+                $this->ln(5);
                 if ($data) {
                         $this->setX(140);
-                        $this->Cell(0,4,utf8_decode('PERIODO:'),0,0,'L');
+                        $this->Cell(0,5,utf8_decode('PERIODO:'),0,0,'L');
                         $this->setX(170);
                         $this->SetFont('Montserrat-SemiBold','',10);
-                        $this->Cell(0,4,utf8_decode($dataCiclo[0][1]),0,1,'L');
+                        $this->Cell(0,5,utf8_decode($dataCiclo[0][1]),0,1,'L');
 
                         $fecha=date("d/m/Y"); 
                         $this->SetFont('Montserrat-SemiBold','B',10);
                         $this->setX(50);
-                        $this->Cell(0,4,utf8_decode('FECHA DE IMPRESIÓN:'),0,0,'L');
+                        $this->Cell(0,5,utf8_decode('FECHA DE IMPRESIÓN:'),0,0,'L');
                         $this->setX(100);
                         $this->SetFont('Montserrat-SemiBold','',10);
-                        $this->Cell(0,4,utf8_decode($fecha),0,0,'L');
+                        $this->Cell(0,5,utf8_decode($fecha),0,0,'L');
                         
                         $this->setX(140);
                         $this->Cell(0,5,utf8_decode('FECHA INS:'),0,0,'L');
                         $this->setX(170);
                         $this->SetFont('Montserrat-SemiBold','',10);
-                        $this->Cell(0,4,utf8_decode($data[0]["FECHAINS"]),0,1,'L');
+                        $this->Cell(0,5,utf8_decode($data[0]["FECHAINS"]),0,1,'L');
 
                         $this->SetFont('Montserrat-Black','B',10);
                         $this->setX(20);
-                        $this->Cell(30,4,utf8_decode($dataAlum[0]["ALUM_MATRICULA"]),0,0,'L');
-                        $this->Cell(90,4,utf8_decode($dataAlum[0]["NOMBRE"]),0,0,'L');
+                        $this->Cell(30,5,utf8_decode($dataAlum[0]["ALUM_MATRICULA"]),0,0,'L');
+                        $this->Cell(90,5,utf8_decode($dataAlum[0]["NOMBRE"]),0,0,'L');
                         $this->SetFont('Montserrat-SemiBold','',10);
-                        $this->Cell(30,4,utf8_decode("NPRDO:"),0,0,'L');
-                        $this->Cell(30,4,utf8_decode($dataAlum[0]["PERIODOS"]),0,1,'L');
+                        $this->Cell(30,5,utf8_decode("NPRDO:"),0,0,'L');
+                        $this->Cell(30,5,utf8_decode($dataAlum[0]["PERIODOS"]),0,1,'L');
 
                         $this->SetFont('Montserrat-Black','B',10);
                         $this->setX(20);
-                        $this->Cell(30,4,utf8_decode("CARRERA:"),0,0,'L');
+                        $this->Cell(30,5,utf8_decode("CARRERA:"),0,0,'L');
                         $this->SetFont('Montserrat-SemiBold','',8);
-                        $this->Cell(90,4,utf8_decode($dataAlum[0]["CARRERAD"]),0,0,'L');
+                        $this->Cell(90,5,utf8_decode($dataAlum[0]["CARRERAD"]),0,0,'L');
                         $this->SetFont('Montserrat-SemiBold','',10);
 
                         $this->Ln();
