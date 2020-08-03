@@ -65,7 +65,7 @@ var laCarrera="";
 					" cmaterias f , pempleados g  where  "+
 					"e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+
 					" and PDOCVE='"+$("#selCiclo").val()+"'"+  	                    
-					" AND e.ALUCTR='"+usuario+"' and e.BAJA='N' and CERRADO='S' "+
+					" AND e.ALUCTR='"+usuario+"' and e.BAJA='N' "+ //and CERRADO='S' 
 					" order by PDOCVE DESC";
 				
 				

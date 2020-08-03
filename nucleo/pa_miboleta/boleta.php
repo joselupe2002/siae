@@ -384,7 +384,7 @@
         $pdf->AddPage();
          
         $pdf->boleta(0);
-        $pdf->boleta(135);
+      //  $pdf->boleta(135);
  
         $pdf->Output(); 
 
