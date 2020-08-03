@@ -139,3 +139,43 @@ function cargaAlumnosRepAs(contenedor, ciclo,carrera,genero){
     });	  
 
 }
+
+
+
+
+function cargaAlumnosAprAs(contenedor, ciclo,carrera,genero){
+
+	elsqlMa="SELECT PDOCVE, ALUM_MATRICULA, NOMBRE, ALUM_CARRERAREG, CARR_DESCRIP,  ALUM_SEXO, if (ALUM_SEXO=1,'H','M') AS SEXO, REP "+
+	" FROM ( select PDOCVE, ALUM_MATRICULA, CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+	
+	" ALUM_CARRERAREG, CARR_DESCRIP,  ALUM_SEXO, if (ALUM_SEXO=1,'H','M') AS SEXO ,  "+
+	" SUM(if (LISCAL<70,1,0)) as REP  from dlista, falumnos b, cmaterias c, ccarreras d "+
+	" where ALUCTR=ALUM_MATRICULA  AND ALUM_CARRERAREG IN ('"+carrera+"') and MATCVE=MATE_CLAVE and "+
+	" ALUM_CARRERAREG=CARR_CLAVE and PDOCVE IN ('"+ciclo+"') AND IFNULL(MATE_TIPO,'0') NOT IN ('OC','T','I','SS') "+
+	" GROUP BY ALUM_MATRICULA,ALUM_CARRERAREG, CARR_DESCRIP, ALUM_SEXO)  j   WHERE j.REP<=0  "+
+	" AND ALUM_MATRICULA IN (select a.ASES_MATRICULA from vasesorias a where a.ASES_CICLO IN ('"+ciclo+"'))";
+
+
+
+	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
+
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){  						      			      
+			cad="<ol>";
+			jQuery.each(JSON.parse(data), function(clave, valor) {
+				elcolor='success';
+			   cad+="<li style=\"text-align:justify;\">"+valor.ALUM_MATRICULA+" "+valor.NOMBRE+			           				
+			        "</li>"; 
+			});	
+			cad+="</ol>";
+			
+			mostrarIfo("infoMaterias",contenedor,"Alumnos que aprobarón todo y llevaron  Asesorías",cad,"modal-lg"); 
+	 },
+	 error: function(dataMat) {	                  
+			 alert('ERROR: '+dataMat);
+						 }
+    });	  
+
+}
