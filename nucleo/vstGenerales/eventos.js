@@ -83,7 +83,7 @@ function cargaAlumnosRep (contenedor, ciclo,carrera,genero){
 			jQuery.each(JSON.parse(data), function(clave, valor) {
 				elcolor='danger';
 				if (valor.LISCAL==1) {elcolor='warning';}
-			   cad+="<li style=\"text-align:justify;\">"+valor.MATICULA+" "+valor.NOMMBRE+
+			   cad+="<li style=\"text-align:justify;\">"+valor.MATRICULA+" "+valor.NOMBRE+
 			            "<span class=\"badge badge-"+elcolor+"\">"+valor.REP+"</span>"+					
 			        "</li>"; 
 			});	
