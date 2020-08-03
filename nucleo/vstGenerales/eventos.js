@@ -102,7 +102,7 @@ function cargaAlumnosRep (contenedor, ciclo,carrera,genero){
 
 function cargaAlumnosRepAs(contenedor, ciclo,carrera,genero){
 
-	elsqlMa=elsql="select  ALUCTR AS MATRICULA, CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
+	elsqlMa="select  ALUCTR AS MATRICULA, CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
 	" ALUM_CARRERAREG, CARR_DESCRIP,  if (ALUM_SEXO=1,'H','M') AS SEXO , COUNT(*) AS REP,"+
 	" (select count(*) from vasesorias where ASES_MATRICULA=ALUCTR AND ASES_CICLO='"+ciclo+"') as ASESORIAS "+
 	" from dlista, falumnos b, cmaterias c, ccarreras d where ALUCTR=ALUM_MATRICULA  "+
@@ -112,6 +112,8 @@ function cargaAlumnosRepAs(contenedor, ciclo,carrera,genero){
 	" AND LISCAL<70 and ALUM_SEXO='"+genero+"'"+
 	" and ALUCTR IN (select a.ASES_MATRICULA from vasesorias a where a.ASES_CICLO='"+ciclo+"')'";
 	" GROUP BY ALUCTR,ALUM_CARRERAREG, CARR_DESCRIP, ALUM_SEXO ";
+
+	alert (elsqlMa);
 
 	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
 
