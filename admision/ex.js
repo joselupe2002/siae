@@ -80,8 +80,8 @@ function cargarResultados(resultado) {
 	}
 	else {
 		cad="Lamentamos informarle que ha sido "+
-			"<span class=\"text-danger\"><strong>NO ACEPTADO</strong></span>"+" en nuestra casa de estudios para cursar la "+
-			" carrera de <strong>"+utf8Decode(carrerad)+".</strong>";
+			"<span class=\"text-danger\"><strong>NO ACEPTADO</strong></span>"+" en este primer proceso para ingresar a nuestra casa de estudios para cursar la "+
+			" carrera de <strong>"+utf8Decode(carrerad)+". Te pedimos estar pendiente a tu correo electrónico donde se te informará de otra oportunidad para presentar tu examen de admisión.</strong>";
 		cadPol="";
 		}
 
