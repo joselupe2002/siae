@@ -20,7 +20,7 @@ var elexamen=0;
 		$("#losexamenes").append("<span class=\"label label-warning\">Exámenes</span>");
 		$("#losalumnos").append("<span class=\"label label-warning\">Aspirante/Alumno</span>");
 		 
-		elsql="SELECT IDAP, CONCAT(IDAP,'|',IDEXAMEN,'|',EXAMEND,'|',CICLO) from vlinaplex ORDER BY IDAP DESC";
+		elsql="SELECT IDAP, CONCAT(IDAP,'|',EXAMEND,'|',CICLO) from vlinaplex ORDER BY IDAP DESC";
 		if (essup!='S') { elsql="SELECT IDAP, CONCAT(IDAP,'|',EXAMEND,'|',CICLO) from vlinaplex  ORDER BY IDAP DESC"; }
 		addSELECT("selExamenes","losexamenes","PROPIO",elsql, "","BUSQUEDA"); 
 
