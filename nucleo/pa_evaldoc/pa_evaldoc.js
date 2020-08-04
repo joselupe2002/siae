@@ -27,7 +27,7 @@ jQuery.each(grid_data, function(clave, valor) {
     $("#row"+valor.ID).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");
     if (valor.HIZO==0) {
     $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"evaluar('"+valor.ID+"','"+valor.PROFESOR+"','"+
-                               valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.GRUPO+"','"+valor.CICLO+"','"+utf8Decode(valor.PROFESORD)+"','"+valor.ID+"');\" title=\"Capturar actividades para la asignatura\" "+
+                               valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.GRUPO+"','"+valor.CICLO+"','"+utf8Decode(valor.PROFESORD)+"','"+valor.IDGRUPO+"');\" title=\"Capturar actividades para la asignatura\" "+
             "class=\"btn btn-white btn-waarning btn-bold\">"+
             "<i class=\"ace-icon fa fa-check bigger-160 blue \"></i>"+
             "</a></td>");
@@ -80,7 +80,6 @@ function cargarMaterias() {
                 " (select count(*) from ed_respuestas where IDDETALLE=e.ID and MATRICULA='"+elusuario+"' and TERMINADA='S') HIZO "+
                 " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE "+
                 " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE=getciclo() and e.BAJA='N'";
-                alert (sqlmater);
                 parametros={sql:sqlmater,dato:sessionStorage.co,bd:"Mysql"}
 
                 if (abierto>0) { 
