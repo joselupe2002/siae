@@ -93,7 +93,7 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.maskedinput.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/select2.min.js"></script>
 
-<script src="evalDoc.js"></script>
+<script src="evalDoc.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
        var usuario="<?php echo $_SESSION["usuario"] ;?>";
 	   var nombre="<?php echo $_SESSION["nombre"] ;?>";
