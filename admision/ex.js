@@ -82,7 +82,7 @@ function cargarResultados(resultado) {
 		"<div class=\"alert alert-danger\">"+
 		"     <a href=\"https://servicios.spf.tabasco.gob.mx/re_serviciosinternet/faces/servicios?_adf.ctrl-state=5u37dhue6_3\" target=\"_blank\"> "+
 		"          Página para Realizar Pago</a>"+
-		"     <a href=\"https://drive.google.com//uc?id=11_YKcVydDV4FGTCfyXe_OaX0NrJFKGSo&\" target=\"_blank\"> "+
+		"     <a href=\"https://drive.google.com/file/d/11_YKcVydDV4FGTCfyXe_OaX0NrJFKGSo/view?usp=sharing\" target=\"_blank\"> "+
 		"          Guía para Realizar el Pago</a>"+
 		"</div>";
 
