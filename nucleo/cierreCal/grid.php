@@ -50,10 +50,10 @@
 		       <span class="label label-success">Profesor</span>
 		 </div>
 		 <div class="col-sm-4" style="padding-top:17px;"> 
-		 	  <button title="Promediar todo el Ciclo" onclick="promediarTodo()" class="btn btn-xs btn-white btn-primary btn-round">
+		 	  <button title="Promediar todas las asignaturas del Profesor" onclick="promediarTodo()" class="btn btn-xs btn-white btn-primary btn-round">
 		         <i class="ace-icon fa green fa-wrench bigger-140"></i> Promediar Todo
 			  </button>
-			  <button title="Cerrar todas las asignaturas del Ciclo" onclick="cerrarTodo()" class="btn btn-xs btn-white btn-danger btn-round">
+			  <button title="Cerrar todas las asignaturas del Profesor" onclick="cerrarTodo()" class="btn btn-xs btn-white btn-danger btn-round">
 		         <i class="ace-icon  blue glyphicon glyphicon-folder-close bigger-140"></i> Cerrar Todo
 			  </button>
 		 </div>
@@ -295,8 +295,9 @@ function imprimirRepUni(id,profesor,materia,materiad,grupo,ciclo, base,semestre)
 function promediarTodo() {
 		mostrarEspera("calculaProm","grid_cierraCal","Calculando Promedio")
 		elsql="SELECT ID, PROFESOR, PROFESORD, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
-			  " FROM vcargasprof a where  CICLO='"+$("#selCiclos").val()+
-			  "' AND CARRERA NOT IN (12,10)";
+			  " FROM vcargasprof a where  CICLO='"+$("#selCiclos").val()+"'"+
+			  " AND PROFESOR='"+$("#selProfesores").val()+"'"+
+			  " AND CARRERA NOT IN (12,10)";
 	
 	    if (!($("#vtnRes").is(":visible"))) { 
 		     mostrarVentRes('vtnRes','txtResultados','grid_cierreCal','Resultados','modal-lg');
@@ -323,6 +324,66 @@ function promediarTodo() {
 } 
 
 	
+
+function cerrarTodo() {
+		mostrarEspera("calculaProm","grid_cierraCal","Calculando Promedio")
+		elsql="SELECT ID, PROFESOR, PROFESORD, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
+			  " FROM vcargasprof a where  CICLO='"+$("#selCiclos").val()+"'"+
+			  " AND PROFESOR='"+$("#selProfesores").val()+"'"+
+			  " AND CARRERA NOT IN (12,10)";
+	
+	    if (!($("#vtnRes").is(":visible"))) { 
+		     mostrarVentRes('vtnRes','txtResultados','grid_cierreCal','Resultados','modal-lg');
+		 }
+		 
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
+	           success: function(data){
+				    listaMaterias=JSON.parse(data);
+					jQuery.each(JSON.parse(data), function(clave, valor) { 
+						
+						var f = new Date();
+						fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
+						res="";
+					
+						parametros={tabla:"edgrupos",bd:"Mysql",campollave:"DGRU_ID",valorllave:valor.ID,DGRU_CERRADOCAL:"S",
+							FECHACIERRECAL:fechacap,USERCIERRECAL:"<?php echo $_SESSION["usuario"];?>"};
+						$.ajax({
+							type: "POST",
+							url:"../base/actualiza.php",
+							data: parametros,
+							success: function(data){       
+
+							if (!(data.substring(0,1)=="0"))	{ 
+								parametros2={tabla:"dlista",bd:"Mysql",campollave:"IDGRUPO",valorllave:valor.ID,CERRADO:"S"};
+								$.ajax({
+										type: "POST",
+										url:"../base/actualiza.php",
+										data: parametros2,
+										success: function(data){       
+																																				
+										}					     
+								}); 
+							}
+							else {alert (" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
+						    }
+						});
+					
+						$('#txtResultados').val($('#txtResultados').val()+"CERRADO: "+valor.ID+" "+valor.MATERIA+" "+valor.PROFESORD+" "+valor.SIE+"\n");
+						cargarAct();  
+					});					 
+						  	       	     
+	                 },
+	           error: function(data) {	  
+	        	         ocultarEspera("calculaProm");                
+	                      alert('ERROR: '+data);	                      
+	                  }
+			  });
+} 
+
 
 
 		</script>

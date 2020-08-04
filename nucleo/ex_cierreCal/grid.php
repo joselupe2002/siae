@@ -43,12 +43,21 @@
 	<div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
     
     <div class="row" >
-		 <div class="col-sm-4" id="contCiclos"> 
+		 <div class="col-sm-2" id="contCiclos"> 
 		       <span class="label label-info">Ciclo Escolar</span>
 		 </div>
 		 <div class="col-sm-4" id="contProfesores"> 
 		       <span class="label label-success">Profesor</span>
 		 </div>
+		 <div class="col-sm-4" style="padding-top:17px;"> 
+		 	  <button title="Promediar todas las asignaturas del Profesor" onclick="promediarTodo()" class="btn btn-xs btn-white btn-primary btn-round">
+		         <i class="ace-icon fa green fa-wrench bigger-140"></i> Promediar Todo
+			  </button>
+			  <button title="Cerrar todas las asignaturas del Profesor" onclick="cerrarTodo()" class="btn btn-xs btn-white btn-danger btn-round">
+		         <i class="ace-icon  blue glyphicon glyphicon-folder-close bigger-140"></i> Cerrar Todo
+			  </button>
+		 </div>
+
 	</div>
 	<div class="space-12"></div>
 	<div  class="table-responsive" id="contTabla">
@@ -280,6 +289,99 @@ function imprimirRepUni(id,profesor,materia,materiad,grupo,ciclo, base,semestre)
 
 
 	
+
+function promediarTodo() {
+		mostrarEspera("calculaProm","grid_ex_cierraCal","Calculando Promedio")
+		elsql="SELECT ID, PROFESOR, PROFESORD, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
+			  " FROM vcargasprof a where  CICLO='"+$("#selCiclos").val()+"'"+
+			  " AND PROFESOR='"+$("#selProfesores").val()+"'"+
+			  " AND CARRERA  IN (12)";
+	
+	    if (!($("#vtnRes").is(":visible"))) { 
+		     mostrarVentRes('vtnRes','txtResultados','grid_ex_cierreCal','Resultados','modal-lg');
+		 }
+		 
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
+	           success: function(data){
+				    listaMaterias=JSON.parse(data);
+					jQuery.each(JSON.parse(data), function(clave, valor) { 	
+						calcularFinal(valor.PROFESOR,valor.MATERIA,valor.MATERIAD,valor.SIE,valor.CICLO,'cierreCal');
+						$('#txtResultados').val($('#txtResultados').val()+"CALCULADO: "+valor.MATERIA+" "+valor.PROFESORD+" "+valor.SIE+"\n");
+					});					 
+					 ocultarEspera("calculaProm");  	        	       	     
+	                 },
+	           error: function(data) {	  
+	        	         ocultarEspera("calculaProm");                
+	                      alert('ERROR: '+data);	                      
+	                  }
+			  });
+} 
+
+	
+
+function cerrarTodo() {
+		mostrarEspera("calculaProm","grid_ex_cierraCal","Calculando Promedio")
+		elsql="SELECT ID, PROFESOR, PROFESORD, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
+			  " FROM vcargasprof a where  CICLO='"+$("#selCiclos").val()+"'"+
+			  " AND PROFESOR='"+$("#selProfesores").val()+"'"+
+			  " AND CARRERA  IN (12)";
+	
+	    if (!($("#vtnRes").is(":visible"))) { 
+		     mostrarVentRes('vtnRes','txtResultados','grid_ex_cierreCal','Resultados','modal-lg');
+		 }
+		 
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
+	           success: function(data){
+				    listaMaterias=JSON.parse(data);
+					jQuery.each(JSON.parse(data), function(clave, valor) { 
+						
+						var f = new Date();
+						fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
+						res="";
+					
+						parametros={tabla:"edgrupos",bd:"Mysql",campollave:"DGRU_ID",valorllave:valor.ID,DGRU_CERRADOCAL:"S",
+							FECHACIERRECAL:fechacap,USERCIERRECAL:"<?php echo $_SESSION["usuario"];?>"};
+						$.ajax({
+							type: "POST",
+							url:"../base/actualiza.php",
+							data: parametros,
+							success: function(data){       
+
+							if (!(data.substring(0,1)=="0"))	{ 
+								parametros2={tabla:"dlista",bd:"Mysql",campollave:"IDGRUPO",valorllave:valor.ID,CERRADO:"S"};
+								$.ajax({
+										type: "POST",
+										url:"../base/actualiza.php",
+										data: parametros2,
+										success: function(data){       
+																																				
+										}					     
+								}); 
+							}
+							else {alert (" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
+						    }
+						});
+					
+						$('#txtResultados').val($('#txtResultados').val()+"CERRADO: "+valor.ID+" "+valor.MATERIA+" "+valor.PROFESORD+" "+valor.SIE+"\n");
+						cargarAct();  
+					});					 
+						  	       	     
+	                 },
+	           error: function(data) {	  
+	        	         ocultarEspera("calculaProm");                
+	                      alert('ERROR: '+data);	                      
+	                  }
+			  });
+} 
+
 
 
 		</script>
