@@ -66,7 +66,8 @@ function cargarResultados(resultado) {
 
 		"En consecuencia, la falta de un requisito, por ejemplo, <span class=\"text-danger\"><b>no haber concluido sus estudios de bachillerato "+	
 		"(adeudo de materias) u otras análogas; </b></span>para realizar su inscripción, produce la invalidación de su procedimiento "+
-		"de inscripción en esta institución; por ello, se le invita a que realice el pago de inscripción <span class=\"text-success\"><b>SOLO SI</b></span>, "+
+		"de inscripción en esta institución; por ello, se le invita a que realice el "+
+		" <a href=\"https://servicios.spf.tabasco.gob.mx/re_serviciosinternet/faces/servicios?_adf.ctrl-state=5u37dhue6_3\"> pago </a> de inscripción <span class=\"text-success\"><b>SOLO SI</b></span>, "+
 		"cuenta con la documentación y requisitos solicitados para su inscripción<br><br>"+
 
 		"En caso contrario, lo hace Usted, bajo su más estricta responsabilidad en el entendido de que su "+
@@ -75,8 +76,18 @@ function cargarResultados(resultado) {
 
 		"<span class=\"badge badge-danger \" style=\"font-size:18px;\"><b> Fecha de Inscripción en línea : A partir de la presente fecha hasta el día 07 de Agosto del presente año.</b></span><br><br>"+
 
+
 		"Como primer paso para su inscripción debe adjuntar la siguiente documentación "+
-		" es necesario que suba en el sistema la siguiente documentación:";
+		" es necesario que suba en el sistema la siguiente documentación:"+
+		"<div class=\"alert alert-danger\">"+
+		"     <a href=\"https://servicios.spf.tabasco.gob.mx/re_serviciosinternet/faces/servicios?_adf.ctrl-state=5u37dhue6_3\"> "+
+		"          Página para Realizar Pago</a>"+
+		"     <a href=\"https://drive.google.com//uc?id=11_YKcVydDV4FGTCfyXe_OaX0NrJFKGSo&\"> "+
+		"          Guía para Realizar el Pago</a>"+
+		"</div>";
+
+
+
 	}
 	else {
 		cad="Lamentamos informarle que ha sido "+

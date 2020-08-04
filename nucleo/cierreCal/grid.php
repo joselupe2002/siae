@@ -43,11 +43,19 @@
 	<div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
     
     <div class="row" >
-		 <div class="col-sm-4" id="contCiclos"> 
+		 <div class="col-sm-2" id="contCiclos"> 
 		       <span class="label label-info">Ciclo Escolar</span>
 		 </div>
 		 <div class="col-sm-4" id="contProfesores"> 
 		       <span class="label label-success">Profesor</span>
+		 </div>
+		 <div class="col-sm-4" style="padding-top:17px;"> 
+		 	  <button title="Promediar todo el Ciclo" onclick="promediarTodo()" class="btn btn-xs btn-white btn-primary btn-round">
+		         <i class="ace-icon fa green fa-wrench bigger-140"></i> Promediar Todo
+			  </button>
+			  <button title="Cerrar todas las asignaturas del Ciclo" onclick="cerrarTodo()" class="btn btn-xs btn-white btn-danger btn-round">
+		         <i class="ace-icon  blue glyphicon glyphicon-folder-close bigger-140"></i> Cerrar Todo
+			  </button>
 		 </div>
 	</div>
 	<div class="space-12"></div>
@@ -141,7 +149,8 @@
         if (elemento=='selCiclos') {
 		
 			actualizaSelect("selProfesores","select distinct PROFESOR, CONCAT( PROFESORD ,' ',PROFESOR) from vcargasprof where CICLO='"+
-			                            $("#selCiclos").val()+"' ORDER BY PROFESORD","BUSQUEDA");
+										$("#selCiclos").val()+"' and CARRERA not in (12,10) ORDER BY PROFESORD","BUSQUEDA");
+										
 			
 			}
 	    if (elemento=='selProfesores') {
@@ -213,7 +222,7 @@
 function cargarAct(){
 		$('#dlgproceso').modal({show:true, backdrop: 'static'});
 		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
-			  " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' ";
+			  " FROM vcargasprof a where  PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' AND CARRERA NOT IN (12,10)";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
 	    $.ajax({
 			   type: "POST",
@@ -278,6 +287,40 @@ function imprimirRepUni(id,profesor,materia,materiad,grupo,ciclo, base,semestre)
 								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre, '_blank'); 
 }
 
+
+
+
+
+
+function promediarTodo() {
+		mostrarEspera("calculaProm","grid_cierraCal","Calculando Promedio")
+		elsql="SELECT ID, PROFESOR, PROFESORD, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
+			  " FROM vcargasprof a where  CICLO='"+$("#selCiclos").val()+
+			  "' AND CARRERA NOT IN (12,10)";
+	
+	    if (!($("#vtnRes").is(":visible"))) { 
+		     mostrarVentRes('vtnRes','txtResultados','grid_cierreCal','Resultados','modal-lg');
+		 }
+		 
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
+	           success: function(data){
+				    listaMaterias=JSON.parse(data);
+					jQuery.each(JSON.parse(data), function(clave, valor) { 	
+						calcularFinal(valor.PROFESOR,valor.MATERIA,valor.MATERIAD,valor.SIE,valor.CICLO,'cierreCal');
+						$('#txtResultados').val($('#txtResultados').val()+"CALCULADO: "+valor.MATERIA+" "+valor.PROFESORD+" "+valor.SIE+"\n");
+					});					 
+					 ocultarEspera("calculaProm");  	        	       	     
+	                 },
+	           error: function(data) {	  
+	        	         ocultarEspera("calculaProm");                
+	                      alert('ERROR: '+data);	                      
+	                  }
+			  });
+} 
 
 	
 
