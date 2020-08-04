@@ -435,7 +435,7 @@ function cargaMateriasDer(vmapa,vesp){
 		data:parametros,
 		url:  "../reinscripciones/"+proc+".php",
 		success: function(data){ 
-
+        //alert (data);
             if (idop=='N') {
 				sqlNI="SELECT * FROM dlistatem where MATRICULA='"+usuario+
 					"' and SEMESTRE<=getPeriodos('"+usuario+"','"+miciclo+"') "+

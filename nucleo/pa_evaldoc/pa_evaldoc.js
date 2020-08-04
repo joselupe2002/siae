@@ -18,7 +18,8 @@ $("#cuerpo").empty();
 $("#tabHorarios").append("<tbody id=\"cuerpo\">");
 jQuery.each(grid_data, function(clave, valor) { 	
         
-    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");    	   
+    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">"); 
+    $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");   	   
     $("#row"+valor.ID).append("<td>"+valor.GRUPO+"</td>");
     $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
     $("#row"+valor.ID).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
