@@ -105,6 +105,7 @@
 	   var materiad="<?php echo $_GET["materiad"] ;?>";
 	   var grupo="<?php echo $_GET["grupo"] ;?>";
 	   var idgrupo="<?php echo $_GET["idgrupo"] ;?>";
+	   alert ("idgrupo");
 </script>
 
 </body>
