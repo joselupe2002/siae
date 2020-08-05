@@ -1917,8 +1917,9 @@ $.ajax({
 		 $("#tabFechas").append("<tbody id=\"cuerpoFechas\">");
 		 c=0; 
 		 
+		 alert ("pase");
 		 elTema=JSON.parse(data)[0]["TMACVE"];
-
+		 alert (elTema);
 
 		   $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
 		   $("#row"+c).append("<td width=\"50%\" colspan=\"2\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
@@ -1935,7 +1936,7 @@ $.ajax({
 			   c++;
 			   }
 		
-			   alert ("pase");
+			   
 			 $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");   		          
 			 $("#row"+c).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold; white-space: normal;\">"+valor.SMACVE+" "+utf8Decode(valor.SUBTEMA)+"</span></td>");	   		          	             		         
 			
