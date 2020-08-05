@@ -500,6 +500,7 @@ function cargaMateriasDer(vmapa,vesp,lavista){
 
 
 function cargaMateriasDerExt(lavista){
+	cadExtraesc="";
 	if ($("#selCarreras").val()=='10') { cadphp="getMateriasIng";}
 	if ($("#selCarreras").val()=='12') { cadphp="getMateriasExt";}
 
@@ -510,30 +511,46 @@ function cargaMateriasDerExt(lavista){
 		data:parametros,
 		url:  cadphp+".php",
 		success: function(data){ 
-			sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
-				  "' and ADICIONAL='"+$("#selCarreras").val()+"'"+
-				  " and INS<CUPO"+
-				  " and IDDETALLE NOT IN (SELECT IDDETALLE FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
-				  "' AND y.MATRICULA='"+$("#selAlumnos").val()+"')"+ 
-				  " ORDER BY SEMESTRE, MATERIAD";
+	
 
-			parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
-			$.ajax({
-				type: "POST",
-				data:parametros,
-				url:  "../base/getdatossqlSeg.php",
-				success: function(dataNI){ 
-					losdatosNI=JSON.parse(dataNI);				
-					generaTablaHorarios(losdatosNI,"NOINSCRITAS");				  					  
-				 },
-				 error: function(data) {	                  
-							alert('ERROR: '+data);
-										  }
-		     });	       			  					  
-		 },
-		 error: function(data) {	                  
-					alert('ERROR: '+data);
-								  }
+				sqlgrupo="select c.GRUPO, count(*) from dlista a, cmaterias b, ex_grupos c where a.MATCVE=b.MATE_CLAVE "+
+				"AND MATE_TIPO='OC' and MATE_CLAVE=c.MATERIA and ALUCTR='"+$("#selAlumnos").val()+"' ORDER BY PDOCVE DESC";
+				parametros={sql:sqlgrupo,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url: "../base/getdatossqlSeg.php",
+					success: function(datagrupo){ 
+						arrgrupo=JSON.parse(datagrupo);	
+						if ((arrgrupo[0][1]>0) && ($("#selCarreras").val()=='12')) { cadExtraesc=" and MATERIA IN (SELECT MATERIA FROM ex_grupos where GRUPO='"+arrgrupo[0][0]+"')";}
+
+						sqlNI="SELECT * FROM dlistatem where MATRICULA='"+$("#selAlumnos").val()+
+						"' and ADICIONAL='"+$("#selCarreras").val()+"'"+
+						" and INS<CUPO"+
+						" and IDDETALLE NOT IN (SELECT IDDETALLE FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+						"' AND y.MATRICULA='"+$("#selAlumnos").val()+"')"+ 
+						cadExtraesc+
+						" ORDER BY SEMESTRE, MATERIAD";
+
+
+						parametros={sql:sqlNI,dato:sessionStorage.co,bd:"Mysql"}
+						$.ajax({
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(dataNI){ 
+								losdatosNI=JSON.parse(dataNI);				
+								generaTablaHorarios(losdatosNI,"NOINSCRITAS");				  					  
+							},
+							error: function(data) {	                  
+										alert('ERROR: '+data);
+													}
+						});	     
+					
+					}// del success de la buqueda de grupo 
+				});
+			  			  					  
+		 }// del success principal
  });	       
 }
 

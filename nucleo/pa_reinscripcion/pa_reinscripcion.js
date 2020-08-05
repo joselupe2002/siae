@@ -58,7 +58,7 @@ var idop;
 							"	<option value=\"0\">Elija una opción</option>"+
 							"	<option value=\"N\">Carrera</option>"+
 							"	<option value=\"I\">Inglés</option>"+
-							"	<option value=\"OC\">ExtraEscolares</option>"+
+						//	"	<option value=\"OC\">ExtraEscolares</option>"+
 							"</select>");
 						    
 

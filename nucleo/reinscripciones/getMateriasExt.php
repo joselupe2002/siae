@@ -36,8 +36,13 @@
                                      "u.ALUCTR='".$_POST["matricula"]."' AND u.MATCVE=MATERIA and u.LISCAL<70) as REP,".
                     "LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO, CREDITOS, CARRERA,MAPA, y.CARRERA".
                     " FROM vedgrupos y where y.CICLO='".$_POST["ciclo"]."' ".
-                    " and y.MATERIA IN (select VMAT_MATERIA from vmatciclo where CARRERA IN (12)) ".$addsql;                                      
+                    " and y.MATERIA IN (select VMAT_MATERIA from vmatciclo where CARRERA IN (12)".
+                                        " and  VMAT_MATERIA NOT IN ".
+                                        " (SELECT MATCVE from dlista h where h.ALUCTR='".$_POST["matricula"]."'".
+                                        "            and (LISCAL>=70 or PDOCVE='".$_POST["ciclo"]."')) ". 
+                                        ") ".$addsql;                                      
 
+   
        $res=$miConex->afectaSQL($_SESSION["bd"],$sql);   
        $msj="";
        if (!($res=='')) {
@@ -45,13 +50,7 @@
        }
        else
        {$msj="1:Registro actualizado satisfactoriamente";}
-       
-       $sql2="call dameMaterias('".$_POST["ciclo"]."','".$_POST["matricula"]."','".$_POST["vmapa"]."','".$_POST["vesp"]."')";
-       $res=$miConex->afectaSQL($_SESSION["bd"],$sql2);
-
-	       $msj="";
-	       if (!($res=='')) { $msj= "0: ".$res."\n";}
-	       else {$msj="1:Registro actualizado satisfactoriamente";}
+      
        		     
        echo $msj;
  } else {header("Location: index.php");}

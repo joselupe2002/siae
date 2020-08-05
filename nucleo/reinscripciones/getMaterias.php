@@ -50,12 +50,6 @@
        else
        {$msj="1:Registro actualizado satisfactoriamente";}
        
-       $sql2="call dameMaterias('".$_POST["ciclo"]."','".$_POST["matricula"]."','".$_POST["vmapa"]."','".$_POST["vesp"]."')";
-       $res=$miConex->afectaSQL($_SESSION["bd"],$sql2);
-
-	       $msj="";
-	       if (!($res=='')) { $msj= "0: ".$res."\n";}
-	       else {$msj="1:Registro actualizado satisfactoriamente";}
        		     
        echo $msj;
  } else {header("Location: index.php");}
