@@ -1917,17 +1917,19 @@ $.ajax({
 		 $("#tabFechas").append("<tbody id=\"cuerpoFechas\">");
 		 c=0; 
 		 
-		 alert ("pase");
 		 elTema=JSON.parse(data)[0]["TMACVE"];
-		 alert (elTema);
+		 
 
 		   $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
 		   $("#row"+c).append("<td width=\"50%\" colspan=\"2\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
 		   $("#row"+c).append("</tr>");
 		   c++;
 
+		   alert (data);
 		 
 		  jQuery.each(JSON.parse(data), function(clave, valor) { 
+
+			alert ("pase");
 		   if (!(elTema==valor.TMACVE)) {
 			  $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
 			   $("#row"+c).append("<td width=\"50%\" colspan=\"1\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.TMACVE+" "+utf8Decode(valor.TEMA)+"</span></td>");
