@@ -1919,6 +1919,7 @@ $.ajax({
 		 
 		 elTema=JSON.parse(data)[0]["TMACVE"];
 		 
+alert (JSON.parse(data)[0]["TEMA"]);
 
 		   $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
 		   $("#row"+c).append("<td width=\"50%\" colspan=\"2\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
