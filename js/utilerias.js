@@ -1905,7 +1905,7 @@ $.ajax({
    data:parametros,
    url:  "../base/getdatossqlSeg.php",
    success: function(data){    
-	     alert (data);
+
 		 $("#laTabla").empty();
 		 $("#laTabla").append("<table id=tabFechas class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
 				 "<thead><tr><th>SUBTEMA</th>"+
@@ -1935,6 +1935,7 @@ $.ajax({
 			   c++;
 			   }
 		
+			   alert ("pase");
 			 $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");   		          
 			 $("#row"+c).append("<td><span class=\"text-primary\" style=\"font-size:11px; font-weight:bold; white-space: normal;\">"+valor.SMACVE+" "+utf8Decode(valor.SUBTEMA)+"</span></td>");	   		          	             		         
 			
