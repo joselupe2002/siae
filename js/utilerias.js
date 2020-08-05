@@ -1898,6 +1898,7 @@ elsql="SELECT l.UNID_PRED AS TMACVE, "+
 	  "        AND j.TMACVE=l.UNID_PRED and j.SMACVE=l.UNID_NUMERO),'') AS FECHAFINPROG "+
       " FROM eunidades l where l.UNID_MATERIA='"+materia+"'  and l.UNID_PRED<>''"+
 	  " order by UNID_PRED,UNID_NUMERO ";
+	  alert (elsql);
 
 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 $.ajax({
@@ -1913,24 +1914,22 @@ $.ajax({
 				 "<span class=\"badge badge-danger\"><i class=\"fa fa-flag\"></i> FECHA FIN</span></th></tr>"+ 
 				 "</thead></table> ");
 
-	   $("#cuerpoFechas").empty();
+	     $("#cuerpoFechas").empty();
 		 $("#tabFechas").append("<tbody id=\"cuerpoFechas\">");
 		 c=0; 
 		 
 		 elTema=JSON.parse(data)[0]["TMACVE"];
 		 
-alert (JSON.parse(data)[0]["TEMA"]);
+		alert (JSON.parse(data)[0]["TEMA"]);
 
 		   $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
 		   $("#row"+c).append("<td width=\"50%\" colspan=\"2\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+elTema+" "+utf8Decode(JSON.parse(data)[0]["TEMA"])+"</span></td>");
 		   $("#row"+c).append("</tr>");
 		   c++;
 
-		   alert (data);
 		 
 		  jQuery.each(JSON.parse(data), function(clave, valor) { 
 
-			alert ("pase");
 		   if (!(elTema==valor.TMACVE)) {
 			  $("#cuerpoFechas").append("<tr id=\"row"+c+"\">");
 			   $("#row"+c).append("<td width=\"50%\" colspan=\"1\"><span class=\"text-success\" style=\"font-size:11px; font-weight:bold;\">"+valor.TMACVE+" "+utf8Decode(valor.TEMA)+"</span></td>");
