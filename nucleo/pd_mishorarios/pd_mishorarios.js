@@ -135,7 +135,7 @@ function generaTablaInformacion(grid_data){
 
 
 function ImprimirReporte(){
-	enlace="nucleo/vcargasprof/horario.php?ID="+usuario+"&ciclod=&ciclo="+$('#selCiclo').val();
+	enlace="nucleo/vcargasprof/horario.php?ID="+usuario+"&ciclod="+$('#selCiclo option:selected').text()+"&ciclo="+$('#selCiclo').val();
 		var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:100%;"></iframe></div>';	
 		$('#parentPrice', window.parent.document).html();
 		window.parent.$("#myTab").tabs('add',{
