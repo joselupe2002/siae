@@ -1905,6 +1905,7 @@ $.ajax({
    data:parametros,
    url:  "../base/getdatossqlSeg.php",
    success: function(data){    
+	     alert (data);
 		 $("#laTabla").empty();
 		 $("#laTabla").append("<table id=tabFechas class= \"table table-sm table-condensed table-bordered table-hover\" style=\"overflow-y: auto;\">"+
 				 "<thead><tr><th>SUBTEMA</th>"+
