@@ -74,7 +74,7 @@ function cargarResultados(resultado) {
 		"inscripción será nula, en cualquier momento, aunque haya realizado el pago por concepto de inscripción "+
 		"o cursado asignaturas, y las consecuencias que deriven de lo anterior solo son imputables a quien realiza el pago.<br><br>"+
 
-		"<span class=\"badge badge-danger \" style=\"font-size:18px;\"><b> Fecha de Inscripción en línea : A partir de la presente fecha hasta el día 07 de Agosto del presente año.</b></span><br><br>"+
+		"<span class=\"badge badge-danger \" style=\"font-size:18px;\"><b> Fecha de Inscripción en línea : A partir de la presente fecha hasta el día 14 de Agosto del presente año.</b></span><br><br>"+
 
 
 		"Como primer paso para su inscripción debe adjuntar la siguiente documentación "+
