@@ -803,7 +803,7 @@ class UtilUser {
 	
 			$sql="select a.proc_proceso, a.proc_descrip  from sprocesos a, sderprocesos b  WHERE 
                   (a.proc_modulo=b.derp_modulo and a.proc_proceso=b.derp_proceso)
-	              and b.derp_usuario in (".$us.") and b.derp_modulo in ('".$modulo."')";			
+	              and b.derp_usuario in (".$us.") and b.derp_modulo in ('".$modulo."') order by proc_descrip";			
 		}
 		
 		$res=$miConexU->getConsulta("SQLite",$sql);
