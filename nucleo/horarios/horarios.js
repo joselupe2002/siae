@@ -71,7 +71,7 @@ var matser="";
 
     function cargarHorarios(){
 		
-		script="<table id=\"tabHorarios\" class= \"table table-condensed table-bordered table-hover\" "+
+		script="<table id=\"tabHorarios\" class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
 		        ">"+
 	   	   "        <thead>  "+
 		   "             <tr>"+
@@ -268,7 +268,7 @@ function generaTablaHorarios(grid_data){
 		$("#row"+c).append("<td>"+ "<label id=\"c_"+c+"_0\" class=\"small text-info font-weight-bold\">"+valor.id+"</label</td>");
 		$("#row"+c).append("<td>"+valor.SEM+"</td>");
 	    $("#row"+c).append("<td><input  style=\"width:100%\" type=\"hidden\" value=\""+valor.materia+"\" id=\"c_"+c+"_1\"></input>"+
-	        					                     "<label  id=\"c_"+c+"_1B\" class=\"font-weight-bold small text-info\">"+valor.materiad+"</label></td>");
+	        					                     "<label  id=\"c_"+c+"_1B\" class=\"font-weight-bold small text-info\">"+"<span class=\"fontRobotoB text-success\">"+valor.materia+" </span>"+valor.materiad+"</label></td>");
 	    $("#row"+c).append("<td><select chosen-select form-control\" id=\"c_"+c+"_2\" style=\"width:200px;\"></select></td>");
 	    $("#row"+c).append("<td><input style=\"width:50px;\" id=\"c_"+c+"_2SIE\" value=\""+valor.SIE+"\"></td>");
 		$("#row"+c).append("<td><input style=\"width:100%\" type=\"text\" class=\"input-mask-numero\" value=\""+valor.cupo+"\" id=\"c_"+c+"_10\"></input></td>");

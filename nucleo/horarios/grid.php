@@ -26,6 +26,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
 
         <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }</style>
 	</head>
@@ -128,7 +129,7 @@
 <script src="<?php echo $nivel; ?>assets/js/bootbox.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.gritter.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
-<script src="horarios.js"></script>
+<script src="horarios.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 </script>
 
