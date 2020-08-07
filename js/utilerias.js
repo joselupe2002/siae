@@ -2117,7 +2117,7 @@ function calcularFinal(profesor,materia,materiad,grupo,ciclo, modulo){
 						"IFNULL(LISFA13,'0') AS LISFA13,IFNULL(LISFA14,'0') AS LISFA14,IFNULL(LISFA15,'0') AS LISFA15,"+
 						"(select count(*) as N  from eunidades where UNID_MATERIA=MATCVE and UNID_PRED='') AS NUMUNI"+
 						" from dlista a where a.PDOCVE='"+ciclo+"' and a.MATCVE='"+materia+"'"+
-						" and a.GPOCVE='"+grupo+"'";		
+						" and a.GPOCVE='"+grupo+"' and CERRADO='N'";		
 			 
 			parametros={sql:sqlLista,dato:sessionStorage.co,bd:"Mysql"}
 			 $.ajax({

@@ -578,7 +578,7 @@ function impEncuadre(id, materia, descrip){
 	    		    	  type: "POST",
 	    		    	  url:"../base/grabadetalle.php",
 	    		    	  data: parametros,
-	    		    	  success: function(data){
+	    		    	  success: function(data){							  
 	    		    	  if (data.length>0) {alert ("Ocurrio un error: "+data); console.log(data);}
 	    		    	  else {  
 

@@ -207,7 +207,7 @@ function verPago(modulo,usuario,essuper){
 		    
 	}
 	else {
-		alert ("Debe seleccionar un Mapa Curricular");
+		alert ("Debe seleccionar un Registro");
 		return 0;
 
 		}
@@ -239,6 +239,95 @@ function setPagado(id,valor,obs){
 	   });    	                
 }
 
+
+/*============================PAGO DE LA INSCRIPCIÓN====================================================*/
+
+function VerPagoIns(modulo,usuario,essuper){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+
+		    // SE DEBE AGREGAR EL CICLO ESCOLAR MAS ADELANTE PROCESO 2021
+			sqlAsp="SELECT ifnull(RUTA,'') AS RUTA FROM adjaspirantes b where "+
+				   " b.AUX=CONCAT('PAIN','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
+			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
+		    $.ajax({
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
+		           success: function(data){  
+						  losdatos=JSON.parse(data);  
+						  entre=false;
+						  jQuery.each(losdatos, function(clave, valor) { 	
+							   ruta=valor.RUTA;
+							   entre=true;
+						   });			
+						   
+						   if (entre) {
+							   window.open(ruta, '_blank'); 
+						   }
+						   else {alert ("No se adjunto documento de pago");}
+		        	        		        	    
+		                 },
+		           error: function(data) {	                  
+		                      alert('ERROR: '+data);
+		                  }
+		   });
+			   
+		    
+	}
+	else {
+		alert ("Debe seleccionar un Registro");
+		return 0;
+
+		}
+	
+}
+
+
+
+function setPagadoIns(id,valor,obs){
+	$('#modalDocument').modal({show:true, backdrop: 'static'});	 
+	   parametros={
+		   tabla:"aspirantes",
+		   campollave:"IDASP",
+		   bd:"Mysql",
+		   valorllave:id,
+		   PAGADOINS: valor,
+		   OBSINS:obs
+	   };
+	   $.ajax({
+	   type: "POST",
+	   url:"actualiza.php",
+	   data: parametros,
+	   success: function(data){
+		   $('#dlgproceso').modal("hide"); 
+		   if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}
+		   //else {alert ("La actividad: "+table.rows('.selected').data()[0]["ACTIVIDAD"]+" ha sido autorizada")}	
+		   window.parent.document.getElementById('FRvaspirantes').contentWindow.location.reload();
+	   }					     
+	   });    	                
+}
+
+
+function marcarPagadoIns(modulo,usuario,essuper){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data()[0]["FINALIZADO"]=='S') {
+		$("#confirmPagado").empty();
+		mostrarConfirm("confirmPagado", "grid_vaspirantes",  "Proceso de Pagado",
+		"<span class=\"label label-success\">Observaciones</span>"+
+		"     <textarea id=\"obsPagado\" style=\"width:100%; height:100%; resize: none;\">"+table.rows('.selected').data()[0]["OBSPAGOINS"]+"</textarea>",
+		"¿Marcar como Pagado? "+
+		"<SELECT id=\"pagado\"><OPTION value=\"S\">S</OPTION><OPTION value=\"N\">N</OPTION></SELECT>"
+		,"Finalizar Proceso", "btnMarcarPagadoIns('"+table.rows('.selected').data()[0]["IDASP"]+"');","modal-sm");
+	}
+	else {alert ("El registro de este aspirante no esta finalizado");}
+}
+
+function btnMarcarPagadoIns(id){
+	setPagadoIns(id,$("#pagado").val(),$("#obsPagado").val());
+}
+
+/*================================================================================================*/
 
 function setCotejado(id,valor,obs){
 	$('#modalDocument').modal({show:true, backdrop: 'static'});	 
