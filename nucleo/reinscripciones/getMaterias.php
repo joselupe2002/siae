@@ -26,15 +26,13 @@
                                         "select VMAT_MATERIA from vmatciclo where ".
                                         " VMAT_MAPA='".$_POST["vmapa"]."' and  ".
                                         " VMAT_MATERIA IN ( select VMAT_MATERIA  from vmatciclo p where ".
-                                        "                   p.VMAT_MAPA='".$_POST["vmapa"]."'   ".                              
-                                        "                   and VMAT_TIPOMAT NOT IN ('T') ".
+                                        "                   p.VMAT_MAPA='".$_POST["vmapa"]."'   ".                                                                      
                                         "                   and ifnull(p.CVEESP,'0')='0'".
                                         "                   and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_POST["matricula"]."'".
                                         "                                            and (LISCAL>=70 or PDOCVE='".$_POST["ciclo"]."'))".
                                         "                   UNION ".
                                                         "   select p.VMAT_MATERIA from vmatciclo p where ".
-                                                        "   p.VMAT_MAPA='".$_POST["vmapa"]."'  ".
-                                                        "   and VMAT_TIPOMAT NOT IN ('T') ".
+                                                        "   p.VMAT_MAPA='".$_POST["vmapa"]."'  ".                                                        
                                                         "   AND ifnull(p.CVEESP,'0')='".$_POST["vesp"]."'".
                                                         "    and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_POST["matricula"]."'".
                                                             "                         and (LISCAL>=70 or PDOCVE='".$_POST["ciclo"]."'))   ".     
