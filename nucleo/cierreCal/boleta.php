@@ -171,7 +171,7 @@
 			{				
                 $miConex = new Conexion();
                 $sql="select EMPL_NUMERO, CONCAT(EMPL_ABREVIA,' ',EMPL_NOMBRE, ' ',EMPL_APEPAT, ' ',EMPL_APEMAT) AS NOMBRE, ".
-                " EMPL_DEPTO from pempleados a where a.EMPL_NUMERO='".$_GET["profesor"]."'";
+                " EMPL_DEPTO, EMPL_CORREOINS from pempleados a where a.EMPL_NUMERO='".$_GET["profesor"]."'";
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
 					$data[] = $row;
@@ -352,9 +352,48 @@
  
         $pdf->SetTextColor(0);
      
-        
 
-            $pdf->Output(); 
+        if ($_GET["tipo"]=='0') { $pdf->Output(); }
+		
+		if ($_GET["tipo"]=='2') {
+			$doc = $pdf->Output('', 'S');
+			?>
+		       <html lang="en">
+	               <head>
+						<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+						<meta charset="utf-8" />
+						<link rel="icon" type="image/gif" href="imagenes/login/sigea.ico">
+						<title>Sistema de Gesti&oacute;n Escolar-Administrativa</title>
+						<meta name="description" content="User login page" />
+						<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+						<link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
+						<link rel="stylesheet" href="../../assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+						<link rel="stylesheet" href="../../assets/css/select2.min.css" />
+						<link rel="stylesheet" href="../../assets/css/fonts.googleapis.com.css" />
+					    <link rel="stylesheet" href="../../assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+						<link rel="stylesheet" href="../../assets/css/ace-rtl.min.css" />		
+						<script src="../../assets/js/ace-extra.min.js"></script>		
+						<link rel="stylesheet" href="../../assets/css/jquery-ui.min.css" />
+	                </head>
+	      <?php 
+					foreach($dataProfesor as $rowdes)
+					{
+
+						$res=$miutil->enviarCorreo($rowdes['EMPL_CORREOINS'],'SIGEA:ITSM Acta de Calificación'.$_GET["materia"]."-".$_GET["materiad"],
+						'Materia:  '.$_GET["materia"]."-".$_GET["materiad"].'<br>'.
+						'Grupo:  '.$_GET["grupo"].'<br>'.
+						'Profesor: '.utf8_decode($dataProfesor[0]["NOMBRE"]).'<br>'.
+						' <br/> En adjunto encontrará el Acta de Calificación. ',$doc);	
+						if ($res=="") {echo "<span class=\"label label-success arrowed\">Correo Eviado a: ". $rowdes['NOMBRE']." ". $rowdes['EMPL_CORREOINS']."</span><br/><br/>"; }
+						else { echo "<span class=\"label label-danger arrowed-in\">".$res."</span><br/><br/>"; }
+						
+					}
+		}
+		if ($_GET["tipo"]=='1') {
+			$pdf->Output(); 
+		}
+
+
 
 
  } else {header("Location: index.php");}

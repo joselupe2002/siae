@@ -192,7 +192,7 @@
 	      <?php 
 					foreach($dataProf as $rowdes)
 					{
-						$res=$miutil->enviarCorreo($rowdes[2],'<b>SIGEA:ITSM Liberación de Comisión '.$data[0]["COMI_ID"].$data[0]["COMI_ACTIVIDAD"]."</b>",
+						$res=$miutil->enviarCorreo($rowdes[2],'SIGEA:ITSM Liberación de Comisión '.$data[0]["COMI_ID"].$data[0]["COMI_ACTIVIDAD"],
 						'Liberación de Comisión:  '.$data[0]["COMI_ACTIVIDAD"].'<br>'.
 						'Fechas:  '.$data[0]["COMI_FECHAINI"].' al:  '.utf8_decode($data[0]["COMI_FECHAFIN"]).'<br>'.
 						'Lugar: '.$data[0]["COMI_LUGAR"].'<br>'.

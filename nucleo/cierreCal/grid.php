@@ -175,6 +175,7 @@
 							"				<th style=\"text-align: center;\">Promedia</th> "+
 							"				<th style=\"text-align: center;\">Rep. Uni.</th> "+
 							"				<th style=\"text-align: center;\">Boleta</th> "+
+							"				<th style=\"text-align: center;\">Enviar</th> "+
 							"				<th style=\"text-align: center;\">Cerrar</th> 	   "+                                                         	   	  
 							"			</tr> "+
 							"		</thead> "+
@@ -204,7 +205,13 @@
 			//Boton de Boleta
 			$("#rowCierre"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Imprimir Boleta de Calificaci&oacute;n\" onclick=\"imprimirBoleta('"+valor.ID+"','"+$("#selProfesores").val()+"','"+
     	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"','"+valor.SEM+"');\""+
-    	    	                              " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon blue fa fa-print bigger-140\"></i></button></td>");								  
+											  " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon blue fa fa-print bigger-140\"></i></button></td>");	
+
+			//Boton de enviar boleta por correo
+			$("#rowCierre"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Enviar email de Boleta de Calificaci&oacute;n\" onclick=\"enviarBoleta('"+valor.ID+"','"+$("#selProfesores").val()+"','"+
+    	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"','"+valor.SEM+"');\""+
+											  " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon pink fa fa-envelope bigger-140\"></i></button></td>");	
+											  
 			
 			accion='S'; iconcierre="red glyphicon glyphicon-folder-close"; tit="Cerrar";
 			if (valor.CERRADOCAL=='S') { accion='N'; iconcierre="green glyphicon glyphicon-folder-open"; tit="Abrir";}
@@ -278,9 +285,17 @@ function cerrarBoleta(id,profesor,materia,materiad,grupo,ciclo, base,valor){
 
 
 function imprimirBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
-	window.open("boleta.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor="+$("#selProfesores").val()+"&materia="+
-								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre, '_blank'); 
+	tit='Boleta';
+	abrirPesta("nucleo/cierreCal/boleta.php?tipo=0&grupo="+grupo+"&ciclo="+ciclo+"&profesor="+$("#selProfesores").val()+"&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre,tit);
 }
+
+function enviarBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
+	tit='Enviando ...';
+	abrirPesta("nucleo/cierreCal/boleta.php?tipo=2&grupo="+grupo+"&ciclo="+ciclo+"&profesor="+$("#selProfesores").val()+"&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre,tit);
+}
+
 
 function imprimirRepUni(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
 	window.open("../pd_captcal/repUni.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor="+$("#selProfesores").val()+"&materia="+
