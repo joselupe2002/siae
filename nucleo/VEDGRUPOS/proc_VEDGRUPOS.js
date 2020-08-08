@@ -78,6 +78,12 @@ function verPlanea(modulo,usuario,institucion, campus,essuper){
 	table.rows('.selected').data()[0]["GRUPO"],table.rows('.selected').data()[0]["CICLO"],"grid_VEDGRUPOS",'S');
 }
 
+function verEncuadre(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	enlace="nucleo/pd_portasegui/encuadres.php?ID="+table.rows('.selected').data()[0]["IDDET"]+"&materiad="+table.rows('.selected').data()[0]["MATERIA"];
+	abrirPesta(enlace,'Encuadre')
+}
+
 
 
 function verRepUni(modulo,usuario,institucion, campus,essuper){
