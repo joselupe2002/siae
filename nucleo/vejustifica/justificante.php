@@ -56,7 +56,7 @@
 				for($i=0;$i<count($headerdes);$i++)
 					$this->Cell($w[$i],7,$headerdes[$i],1,0,'C',true);
 					$this->Ln();
-					// Restauración de colores y fuentes
+					// Restauraciï¿½n de colores y fuentes
 					$this->SetFillColor(255,254,174);
 					$this->SetTextColor(0);
 					$this->SetFont('');
@@ -83,7 +83,7 @@
 					$this->SetFont('Montserrat-ExtraBold','B',8);					
 					$this->Ln();
 					$this->Cell(array_sum($w),0,'','T');
-					// Línea de cierre
+					// Lï¿½nea de cierre
 			}
 
 			
@@ -138,7 +138,7 @@
 		$fechadec2=$miutil->formatFecha($data[0]["JUST_FECFIN"]);
 		$fecha2=date("d", strtotime($fechadec2))." de ".$miutil->getFecha($fechadec2,'MES'). " del ".date("Y", strtotime($fechadec2));
 		
-		$textofecha=" los días del ";
+		$textofecha=" los dï¿½as del ";
 		if ($fecha1==$fecha2) {$fecha2=""; $textofecha=" el "; } else {$fecha2=" AL ".$fecha2;}
 		
 		$rechum=$miutil->getJefe('402');
@@ -167,7 +167,7 @@
 		
 		$pdf->SetFont('Montserrat-SemiBold','',10);
 		$pdf->MultiCell(0,5,'Por medio de la presente solicito a usted se le justifiquen las faltas al(a) alumno(a) '.utf8_decode($data[0]["JUST_NOMBREC"]).
-				', con número de control '.utf8_decode($data[0]["JUST_MATRICULA"]).' de la carrera de '.utf8_decode($data[0]["JUST_CARRERAD"]).
+				', con nï¿½mero de control '.utf8_decode($data[0]["JUST_MATRICULA"]).' de la carrera de '.utf8_decode($data[0]["JUST_CARRERAD"]).
 				', '.$textofecha.utf8_decode($fecha1).$fecha2.', Por motivos de '.utf8_decode($data[0]["JUST_TIPOD"]).' ('.utf8_decode($data[0]["JUST_OBS"]).').',0,'J', false);
 		$pdf->Ln(5);
 		$pdf->MultiCell(0,5,'Agradezco coloque su firma de enterado, el formato correspondiente ya fue enviado a su correo institucional.',0,'J', false);
@@ -182,7 +182,7 @@
 		
 		$pdf->SetFont('Montserrat-SemiBold','',10);
 		$pdf->Ln(5);
-		$pdf->MultiCell(0,5,'Sin más por el momento aprovecho para enviarle un cordial saludo. ',0,'J', false);
+		$pdf->MultiCell(0,5,'Sin mï¿½s por el momento aprovecho para enviarle un cordial saludo. ',0,'J', false);
 		$pdf->Ln(5);
 		
 		$pdf->setX(25);$pdf->setY(220);
@@ -190,7 +190,7 @@
 		$pdf->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
 		$pdf->setX(25);$pdf->setY(225);
 		$pdf->SetFont('Montserrat-ExtraLight','I',8);
-		$pdf->Cell(0,0,'Excelencia en Educación Tecnológica',0,1,'L');
+		$pdf->Cell(0,0,'Excelencia en Educaciï¿½n Tecnolï¿½gica',0,1,'L');
 		$pdf->setX(25);$pdf->setY(236);
 		$pdf->SetFont('Montserrat-ExtraBold','B',10);
 		$pdf->Cell(0,0,utf8_decode($data[0]["JUST_AUTORIZOD"]),0,1,'L');
@@ -199,7 +199,7 @@
 		
 		$pdf->setX(25);$pdf->setY(245);
 		$pdf->SetFont('Montserrat-Medium','',7);
-		$pdf->Cell(0,0,"C.c.p. ".utf8_decode($subdir)."; Subdirección académica.",0,1,'L');
+		$pdf->Cell(0,0,"C.c.p. ".utf8_decode($subdir)."; Subdirecciï¿½n acadï¿½mica.",0,1,'L');
 		
 		
 
@@ -231,9 +231,9 @@
 					{
 						$res=$miutil->enviarCorreo($rowdes[2],'Justificante de falta: '.utf8_decode($data[0]["JUST_NOMBREC"]),
 								'Por medio de la presente solicito a usted se le justifiquen las faltas al(a) alumno(a) '.utf8_decode($data[0]["JUST_NOMBREC"]).
-								', con número de control '.utf8_decode($data[0]["JUST_MATRICULA"]).' de la carrera de '.utf8_decode($data[0]["JUST_CARRERAD"]).
-								', los días del '.utf8_decode($fecha1).$fecha2.', Por motivos de '.utf8_decode($data[0]["JUST_TIPOD"]).' ('.utf8_decode($data[0]["JUST_OBS"]).').'.
-								' <br/> En adjunto encontrará el formato debidamente firmado y sellado. '
+								', con nÃºmero de control '.utf8_decode($data[0]["JUST_MATRICULA"]).' de la carrera de '.utf8_decode($data[0]["JUST_CARRERAD"]).
+								', los dÃ­as del '.utf8_decode($fecha1).$fecha2.', Por motivos de '.utf8_decode($data[0]["JUST_TIPOD"]).' ('.utf8_decode($data[0]["JUST_OBS"]).').'.
+								' <br/> En adjunto encontrarÃ¡ el formato debidamente firmado y sellado. '
 								,$doc);	
 						if ($res=="") {echo "<span class=\"label label-success arrowed\">Correo Eviado a: ". $rowdes[1]." ". $rowdes[2]."</span><br/><br/>"; }
 						else { echo "<span class=\"label label-danger arrowed-in\">".$res."</span><br/><br/>"; }

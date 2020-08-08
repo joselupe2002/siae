@@ -3,37 +3,98 @@
 //tipo 1 Oficio Con sello y firma 
 //tipo 2 Oficio con sello y firma y enviar al correo
 
+
 function reporteCom(modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
-	elid=table.rows('.selected').data()[0][0];
-	window.open("../pcomisiones/oficiocom.php?tipo=0&ID="+elid, '_blank');
+	$("#confirmPagado").empty();
+	mostrarIfo("losoficios", "grid_pcomisiones",  "Oficios",
+	"<div class=\"row\" style=\"text-align:left;\">"+
+		"<div class=\"col-sm-4\">"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"reporteComision('"+table.rows('.selected').data()[0]["ID"]+"','0');\" "+
+			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon  blue glyphicon glyphicon-hand-right bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Oficio Asignación</button><br/>"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"reporteComision('"+table.rows('.selected').data()[0]["ID"]+"','1');\" "+
+			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon blue glyphicon glyphicon-qrcode bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Oficio Asignación Sellado</button><br/>"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"reporteComision('"+table.rows('.selected').data()[0]["ID"]+"','2');\" "+
+			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon pink glyphicon glyphicon-envelope bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Correo Oficio Asignación</button><br/>"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"reporteComRH('"+table.rows('.selected').data()[0]["ID"]+"','0');\" "+
+			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon blue fa fa-group bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Oficio RH</button><br/>"+
+		"</div>"+
+		"<div class=\"col-sm-4\">"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"oficioCumplida('"+modulo+"','0');\" "+
+			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon  blue fa fa-thumbs-up bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Oficio Liberación</button><br/>"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"oficioCumplida('"+modulo+"','1');\" "+
+			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon blue glyphicon glyphicon-qrcode bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Oficio Liberación Sellado</button><br/>"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"oficioCumplida('"+modulo+"','2');\" "+
+			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon pink glyphicon glyphicon-envelope bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Correo Oficio Liberación</button><br/>"+
+		"</div>"+
+		"<div class=\"col-sm-4\">"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"oficioNoCumplida('"+modulo+"','0');\" "+
+			" class=\"btn btn-white btn-danger btn-round\"><i class=\"ace-icon  blue fa fa-thumbs-up bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Oficio Incumplimiento</button><br/>"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"oficioNoCumplida('"+modulo+"','1');\" "+
+			" class=\"btn btn-white btn-danger btn-round\"><i class=\"ace-icon blue glyphicon glyphicon-qrcode bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Oficio Incumplimiento Sellado</button><br/>"+
+			"<button style=\"width:100%; text-align:left;\" onclick=\"oficioNoCumplida('"+modulo+"','2');\" "+
+			" class=\"btn btn-white btn-danger btn-round\"><i class=\"ace-icon pink glyphicon glyphicon-envelope bigger-140\">"+
+			"</i><span class=\"btn-small\"></span> Correo Oficio Incumplimiento</button><br/>"+
+		"</div>"+
+
+	"</div>"
+		
+	,"modal-sm");
+
+}
+
+function reporteComision(elid,tipo){
+	tit='OficioCom';
+	if (tipo==2) {tit='Enviando..';}
+	abrirPesta("nucleo/pcomisiones/oficiocom.php?tipo="+tipo+"&ID="+elid,tit);
     return false;
 }
 
 
+function reporteComRH(elid, tipo){
+	tit='OficioRH';
+	abrirPesta("nucleo/pcomisiones/oficiocomRH.php?tipo="+tipo+"&ID="+elid,tit);
+	//window.open("../pcomisiones/oficiocomRH.php?tipo=0&ID="+elid, '_blank');
+    return false;
+}
 
-function reporteComSell(modulo,usuario,institucion, campus,essuper){
+
+function oficioCumplida(modulo,tipo){
 	table = $("#G_"+modulo).DataTable();
 	elid=table.rows('.selected').data()[0][0];
-	window.open("../pcomisiones/oficiocom.php?tipo=1&ID="+elid, '_blank');
+	if (table.rows('.selected').data()[0]["CUMPLIDA"]=='S') {
+				tit='OficioSI';
+		        if (tipo==2) {tit='Enviando..';}
+				abrirPesta("nucleo/pcomisiones/oficiocumple.php?tipo="+tipo+"&ID="+elid,tit);
+				//window.open("../pcomisiones/oficiocumple.php?tipo="+tipo+"&ID="+elid, '_blank');
+	}
+	else {alert ("La actividad no esta marcada como cumplida")}
     return false;
 }
 
 
-function envComision(modulo,usuario,institucion, campus,essuper){
+function oficioNoCumplida(modulo,tipo){
 	table = $("#G_"+modulo).DataTable();
 	elid=table.rows('.selected').data()[0][0];
-	window.open("../pcomisiones/oficiocom.php?tipo=2&ID="+elid, '_blank');
+	if (table.rows('.selected').data()[0]["CUMPLIDA"]=='N') {
+				tit='OficioNO';
+		        if (tipo==2) {tit='Enviando..';}
+		        abrirPesta("nucleo/pcomisiones/oficionocumple.php?tipo="+tipo+"&ID="+elid, tit)
+				//window.open("../pcomisiones/oficionocumple.php?tipo="+tipo+"&ID="+elid, '_blank');
+	}
+	else {alert ("La actividad no esta marcada como NO cumplida")}
     return false;
 }
 
-
-function reporteComRH(modulo,usuario,institucion, campus,essuper){
-	table = $("#G_"+modulo).DataTable();
-	elid=table.rows('.selected').data()[0][0];
-	window.open("../pcomisiones/oficiocomRH.php?tipo=0&ID="+elid, '_blank');
-    return false;
-}
 
 
 function copiarCom(modulo,usuario,institucion, campus,essuper){
@@ -202,5 +263,50 @@ function crearCopias(id,modulo){
 	
 	return 0;
 }
+
+
+///============================================================0
+function setCumplido(id,valor,obs){
+	$('#modalDocument').modal({show:true, backdrop: 'static'});	 
+	   parametros={
+		   tabla:"pcomisiones",
+		   campollave:"COMI_ID",
+		   bd:"Mysql",
+		   valorllave:id,
+		   COMI_CUMPLIDA: valor,
+		   COMI_OBS:obs
+	   };
+	   $.ajax({
+	   type: "POST",
+	   url:"actualiza.php",
+	   data: parametros,
+	   success: function(data){
+
+		   $('#dlgproceso').modal("hide"); 
+		   if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}
+		   //else {alert ("La actividad: "+table.rows('.selected').data()[0]["ACTIVIDAD"]+" ha sido autorizada")}	
+		   window.parent.document.getElementById('FRpcomisiones').contentWindow.location.reload();
+	   }					     
+	   });    	                
+}
+
+
+function marcaCumplir(modulo,usuario,essuper){
+	table = $("#G_"+modulo).DataTable();
+	
+		$("#confirmPagado").empty();
+		mostrarConfirm("confirmPagado", "grid_pcomisiones",  "Resultado de la comisión",
+		"<span class=\"label label-success\">Observaciones</span>"+
+		"     <textarea id=\"obsComision\" style=\"width:100%; height:100%; resize: none;\">"+table.rows('.selected').data()[0]["OBS"]+"</textarea>",
+		"¿Marcar como comisión Cumplida? "+
+		"<SELECT id=\"estacumplida\"><OPTION value=\"S\">SI</OPTION><OPTION value=\"N\">NO</OPTION></SELECT>"
+		,"Finalizar Proceso", "btnMarcar('"+table.rows('.selected').data()[0]["ID"]+"');","modal-sm");
+
+}
+
+function btnMarcar(id){
+	setCumplido(id,$("#estacumplida").val(),$("#obsComision").val());
+}
+//=======================================================================================================
 
 

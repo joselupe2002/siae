@@ -50,7 +50,7 @@ class UtilUser {
 		if(!$mail->Send()) {
 			$res="Ocurrio error al enviar correo a: ".$receptor." (". $mail->ErrorInfo.")";
 		} else {
-			$res=$cuerpo;
+			$res="";
 		}
 		
 		return $res;
@@ -96,7 +96,7 @@ class UtilUser {
 		if(!$mail->Send()) {
 			$res="Ocurrio error al enviar correo a: ".$receptor." (". $mail->ErrorInfo.")";
 		} else {
-			$res=$cuerpo;
+			$res="";
 		}
 		
 		return $res;

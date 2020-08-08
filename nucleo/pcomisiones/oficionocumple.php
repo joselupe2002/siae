@@ -128,11 +128,9 @@
 		$subdir=$miutil->getJefe('304');
 		
 		
-		if (($_GET["tipo"]=='1') ||($_GET["tipo"]=='2')) {
-			
+		if (($_GET["tipo"]=='1') ||($_GET["tipo"]=='2')) {			
 			$pdf->Image($data[0]["EMPL_SELLO"],150,200,45);
-			$pdf->Image($data[0]["EMPL_FIRMA"],50,215,40);
-			
+			$pdf->Image($data[0]["EMPL_FIRMA"],50,215,40);			
 		}
 		
 		
@@ -156,10 +154,11 @@
 		$laetfecha ='del '.$fechaini.' al '.$fechafin; $etfin=utf8_decode(" en fechas y horas señaladas.");
 		if ($fechaini==$fechafin) {$laetfecha="el ".$fechaini; $etfin=utf8_decode(" en fecha y hora señalada.");}
 		
-		$pdf->MultiCell(0,8,utf8_decode('Por medio de la presente, le informó a usted que ha sido comisionado para la siguiente actividad: "').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
-		utf8_decode('", la cual se llevará a cabo ').$laetfecha.', en horario de '.utf8_decode($data[0]["COMI_HORAINI"]).
-				' a '.$data[0]["COMI_HORAFIN"].', favor de presentarse en '.utf8_decode($data[0]["COMI_LUGAR"]).$etfin,0,'J', false);
+		$pdf->MultiCell(0,8,utf8_decode('Por medio de la presente, se hace constar que usted NO CUMPLIO con la actividad "').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
+		utf8_decode('", la cual se llevó a cabo ').$laetfecha.', en horario de '.utf8_decode($data[0]["COMI_HORAINI"]).
+				' a '.$data[0]["COMI_HORAFIN"],0,'J', false);
 		$pdf->Ln(5);
+		$pdf->MultiCell(0,8,utf8_decode($data[0]["COMI_OBS"]),0,'J', false);
 		$pdf->Ln(5);
 		$pdf->MultiCell(0,8,utf8_decode('Sin más por el momento aprovecho para enviarle un cordial saludo.'),0,'J', false);
 		
@@ -193,9 +192,9 @@
 	      <?php 
 					foreach($dataProf as $rowdes)
 					{
-
-						$res=$miutil->enviarCorreo($rowdes[2],'<b>SIGEA:ITSM Asignación de Comisión '.$data[0]["COMI_ID"].$data[0]["COMI_ACTIVIDAD"]."</b>",
+						$res=$miutil->enviarCorreo($rowdes[2],'<b>SIGEA:ITSM NO CUMPLIMIENTO DE COMISIÓN '.$data[0]["COMI_ID"].$data[0]["COMI_ACTIVIDAD"]."</b>",
 						'Comisión:  '.$data[0]["COMI_ACTIVIDAD"].'<br>'.
+						'STATUS:  '."NO CUMPLIDA".'<br>'.
 						'Fechas:  '.$data[0]["COMI_FECHAINI"].' al:  '.utf8_decode($data[0]["COMI_FECHAFIN"]).'<br>'.
 						'Lugar: '.$data[0]["COMI_LUGAR"].'<br>'.
 						' <br/> En adjunto encontrará el Oficio debidamente firmado y sellado. ',$doc);	
