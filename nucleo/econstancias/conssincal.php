@@ -250,7 +250,7 @@
         $pdf->MultiCell(0,5,utf8_decode("LA QUE SUSCRIBE, HACE CONSTAR, QUE SEGÚN EL ARCHIVO ESCOLAR, LA (EL) ".
         $dataAlum[0]["NOMBRE"]." CON  MATRICULA ". $dataAlum[0]["ALUM_MATRICULA"].", ESTA CURSANDO EL SEMESTRE ".
         $dataAlum[0]["SEMESTRE"]." DE ".$dataAlum[0]["CARRERAD"].", EN EL PERIODO COMPRENDIDO DE ".
-        $dataCiclo[0]["CICL_INICIO"]." AL ". $dataCiclo[0]["CICL_FIN"]." CON UN PERÍODO VACACIONAL DE ".
+        $dataCiclo[0]["CICL_INICIOR"]." AL ". $dataCiclo[0]["CICL_FINR"]." CON UN PERÍODO VACACIONAL DE ".
         $dataCiclo[0]["CICL_VACINI"]." AL ". $dataCiclo[0]["CICL_VACFIN"]." Y PROMEDIO DE ".
         $dataAlum[0]["PROMEDIO_SR"]. " CON UN AVANCE DEL ".explode("|",$dataAlum[0]["AVANCE"])[2]."%."),0,'J',FALSE);
 

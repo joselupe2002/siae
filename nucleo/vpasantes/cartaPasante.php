@@ -293,7 +293,7 @@
         $pdf->Ln(15);
 		$pdf->MultiCell(0,5,utf8_decode("POR MEDIO DEL PRESENTE LE COMUNICO QUE HA SIDO LIBERADA SU ACTIVIDAD COMPLEMENTARIA ".
 		"CON EL NIVEL DE DESEMPEÑO ".$data[0]["CALLET"]." Y UN VALOR NUMÉRICO DE ".$data[0]["CALCER"].", ".
-		"DURANTE EL PERÍODO ESCOLAR ".$data[0]["CICL_INICIO"]." AL ".$data[0]["CICL_FIN"]."  CON UN VALOR CURRICULAR DE ".
+		"DURANTE EL PERÍODO ESCOLAR ".$data[0]["CICL_INICIOR"]." AL ".$data[0]["CICL_FINR"]."  CON UN VALOR CURRICULAR DE ".
 		" 05 CRÉDITOS."),0,'J',FALSE);
 
 		$fechapie=$miutil->aletras(date("d", strtotime($fechadecof)))." DÍAS DEL MES DE ".

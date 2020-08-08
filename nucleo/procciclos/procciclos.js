@@ -80,8 +80,8 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+c).append("<td>"+(clave+1)+"</td>");     	
 		 $("#row"+c).append("<td><span class=\"fontRobotoB  text-primary\">"+valor.CICL_CLAVE+"</span></td>");    
 		 $("#row"+c).append("<td><span class=\"fontRobotoB  text-success\">"+valor.CICL_DESCRIP+"</span></td>");  
-		 $("#row"+c).append("<td><span class=\"fontRobotoB label label-lg label-pink arrowed-right\">"+valor.CICL_INICIO+"</span></td>"); 
-		 $("#row"+c).append("<td><span class=\"fontRobotoB label label-lg label-purple arrowed\">"+valor.CICL_FIN+"</span></td>");     
+		 $("#row"+c).append("<td><span class=\"fontRobotoB label label-lg label-pink arrowed-right\">"+valor.CICL_INICIOR+"</span></td>"); 
+		 $("#row"+c).append("<td><span class=\"fontRobotoB label label-lg label-purple arrowed\">"+valor.CICL_FINR+"</span></td>");     
 		 
 
 

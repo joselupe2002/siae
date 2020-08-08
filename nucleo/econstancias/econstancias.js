@@ -137,12 +137,12 @@ function creaEncabezado(consec,anio,clave){
 	"</table>");
 }
 
-function creaCuerpo (MATRICULA,NOMBRE,SEMESTRE,CARRERAD,CICL_INICIO,CICL_FIN,CICL_VACINI, CICL_VACFIN,PROMEDIO_SR, AVANCE, PERIODOS,ADD){
+function creaCuerpo (MATRICULA,NOMBRE,SEMESTRE,CARRERAD,CICL_INICIOR,CICL_FINR,CICL_VACINI, CICL_VACFIN,PROMEDIO_SR, AVANCE, PERIODOS,ADD){
 	$("#cuerpoCons").append("<br/><div style=\"text-align:justify\">LA QUE SUSCRIBE, HACE CONSTAR, QUE SEGÚN EL ARCHIVO ESCOLAR, LA (EL) <strong>C."+
 	NOMBRE+"</strong> CON  MATRICULA <strong>"+MATRICULA+"</strong>, ESTA CURSANDO EL SEMESTRE "+
 	PERIODOS+" DE "+CARRERAD+", EN EL PERIODO COMPRENDIDO DE "+
-	CICL_INICIO+" AL "+CICL_FIN+" CON UN PERÍODO VACACIONAL DE "+
-	CICL_VACINI+" AL "+CICL_VACFIN+" Y PROMEDIO DE "+
+	CICL_INICIOR+" AL "+CICL_FIN+" CON UN PERÍODO VACACIONAL DE "+
+	CICL_VACINIR+" AL "+CICL_VACFIN+" Y PROMEDIO DE "+
 	PROMEDIO_SR+" CON UN AVANCE DEL "+AVANCE+"%."+ADD+"</div>");
 }
 
@@ -224,7 +224,7 @@ function creaConsCal (elciclo,matricula,consec,anio){
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 					
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
-											   valorAlu.CARRERAD,valorCic.CICL_INICIO,valorCic.CICL_FIN,
+											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
 											   valorAlu.AVANCE,valorAlu.PERIODOS," CON LAS CALIFICACIONES QUE A CONTINUACION SE ENLISTAN:" );
 									
@@ -330,7 +330,7 @@ function creaConsHor(elciclo,matricula,consec,anio){
 							success: function(dataAlu){ 
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
-											   valorAlu.CARRERAD,valorCic.CICL_INICIO,valorCic.CICL_FIN,
+											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
 											   valorAlu.AVANCE,valorAlu.PERIODOS," CON EL HORARIO QUE A CONTINUACION SE ENLISTAN:" );
 									
@@ -459,7 +459,7 @@ function creaConsPer(elciclo,matricula,consec,anio){
 							success: function(dataAlu){ 
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
-											   valorAlu.CARRERAD,valorCic.CICL_INICIO,valorCic.CICL_FIN,
+											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
 											   valorAlu.AVANCE,valorAlu.PERIODOS," CON LAS CALIFICACIONES QUE A CONTINUACION SE ENLISTAN:" );
 									
@@ -533,7 +533,7 @@ function creaConsIns(elciclo,matricula,consec,anio){
 							success: function(dataAlu){ 
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
-											   valorAlu.CARRERAD,valorCic.CICL_INICIO,valorCic.CICL_FIN,
+											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
 											   valorAlu.AVANCE,valorAlu.PERIODOS,"" );
 											   colocaPie(consec,valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.CARRERAD);
