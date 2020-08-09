@@ -46,6 +46,10 @@
 				         <div id="losciclos" class="col-sm-1">
 						</div> 	
 						<div id="losreportes" class="col-sm-4" >
+							<button style="width:25px; height:25px; margin:0px;" title="Ayuda sobre el reporte" onclick="getInfoInd();" 
+							    class="btn btn-white btn-success btn-round"> 
+								<i class="ace-icon pink fa fa-info" style="padding-top:0px; margin:0px;" ></i>           
+							</button>	
 						</div>   
 						<div id="losciclossel" class="col-sm-2" >
 						</div>                    				
@@ -56,10 +60,11 @@
 						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
 							</button>
-							<button title="Buscar Registros" onclick="convertirDataTable('tabInformacion');" 
+							<button title="Exportar Registros " onclick="convertirDataTable('tabInformacion');" 
 							    class="btn btn-white btn-success btn-round" value="Agregar"> 
 								<i class="ace-icon blue fa fa-wrench bigger-140"></i><span class="btn-small"></span>            
-							</button>																							 									
+							</button>		
+																												 									
 						</div>
 		            </div> 
 		      </div>

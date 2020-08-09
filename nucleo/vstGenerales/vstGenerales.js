@@ -1,6 +1,7 @@
 var id_unico="";
 var estaseriando=false;
 var matser="";
+var miayuda="";
 contR=1;
 contMat=1;
 
@@ -42,7 +43,7 @@ contMat=1;
 
 		
 		$("#losreportes").append("<span class=\"label label-danger\">Reporte</span>");
-		$("#losreportes").append("<select id=\"selReportes\"  class=\" chosen-select form-control text-success\" ></select>");	
+		$("#losreportes").append("<select id=\"selReportes\" onchange=\" cargaInfoSel();\"  class=\" chosen-select form-control text-success\" ></select>");	
 		$('.chosen-select').chosen({allow_single_deselect:true}); 			
 		$(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
 		$(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
@@ -58,8 +59,21 @@ contMat=1;
 	
 	
 		 
-	function change_SELECT(elemento) {
+	function cargaInfoSel() {
+
+			elsql="select * from strepgenerales where id="+$("#selReportes").val();
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  
 	
+					miayuda=JSON.parse(data)[0]["DESCRIPCION"];
+				}
+			});
+
 	}
 	
 	function cargaReportes(){
@@ -129,6 +143,7 @@ contMat=1;
 					miscampos=JSON.parse(data)[0]["CAMPOS"].split("|");
 					misclases=JSON.parse(data)[0]["CLASES"].split("|");
 					miseventos=JSON.parse(data)[0]["EVENTOS"].split("|");
+					miayuda=JSON.parse(data)[0]["DESCRIPCION"];
 					parametros={sql:elsqlCon,dato:sessionStorage.co,bd:"Mysql"}
 
 				
@@ -201,3 +216,9 @@ function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
 } 
 
 
+function getInfoInd(){
+	mostrarIfo("infoInd","grid_vstGenerales","Información de Indicador",
+	"<div style=\"text-align:left;\">"+
+	"     <span class=\"badge badge-warning\">Indicador: "+	 $("#selReportes option:selected").text()+"</span><br>"+
+	      miayuda+"</div>","modal-lg");
+}
