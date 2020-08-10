@@ -250,7 +250,7 @@ function cargarInformacionInd(){
 					losroles=JSON.parse(data)[0][0].split(",");
 					if (JSON.parse(data)[0][1]!='S') {
 						losroles.forEach(function callback(currentValue, index, array) {					
-							elsql2+="(SELECT ID, CATEGORIA, NOMBRE, CATA_DESCRIP AS NOMBRE, DESCRIPCION, ICO FROM strepgenerales, scatalogos where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  where USUARIOSPERM LIKE '%"+currentValue+"%' ORDER BY CATEGORIA,NOMBRE) UNION ";
+							elsql2+="(SELECT ID, CATEGORIA, NOMBRE, CATA_DESCRIP, DESCRIPCION, ICO FROM strepgenerales a, scatalogos  where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  AND  USUARIOSPERM LIKE '%"+currentValue+"%' ORDER BY CATEGORIA,NOMBRE) UNION ";
 						});
                         elsql2=elsql2.substring(0,elsql2.length-7);   
 					}
