@@ -49,7 +49,7 @@ function cargarInformacion(){
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data2){  
 							generaTabla(JSON.parse(data2));   													
-							ocultarEspera("esperahor");  	
+							ocultarEspera("esperaInf");  	
 
 						}
 					});
