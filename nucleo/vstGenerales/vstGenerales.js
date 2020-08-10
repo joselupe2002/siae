@@ -11,12 +11,23 @@ contMat=1;
 
 
     jQuery(function($) { 
+		cargarInformacionInd();
+	});
+	
+	function regresarInd(){
+		$("#principal").addClass("hide");
+		$("#principal_1").removeClass("hide");
+	}
 
-		
+	function CargarIndicador(indicador){
+		$("#principal_1").addClass("hide");
+		$("#principal").removeClass("hide");
+
 		$(".input-mask-hora").mask("99:99");
 		$(".input-mask-horario").mask("99:99-99:99");
 		$(".input-mask-numero").mask("99");
 
+		$("#lascarreras").empty();
 		$("#lascarreras").append("<span class=\"label label-primary\">Carrera</span>");
 		addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_CLAVE=0", "","");  			      
 
@@ -35,13 +46,13 @@ contMat=1;
 				   }
 		   });
 		
+		$("#losciclossel").empty();
 		$("#losciclossel").append("<span class=\"label label-primary\">Ciclo Escolar</span>");
 		addSELECT("selCiclos","losciclossel","PROPIO", "SELECT CICL_CLAVE, CICL_DESCRIP FROM ciclosesc WHERE CICL_CLAVE=9999", "","");  			      
-	
 		actualizaSelect("selCiclos", "SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc UNION SELECT '%','TODOS LOS CICLO' FROM DUAL order by 1 DESC", "",""); 
 		
 
-		
+		$("#losreportes").empty();
 		$("#losreportes").append("<span class=\"label label-danger\">Reporte</span>");
 		$("#losreportes").append("<select id=\"selReportes\" onchange=\" cargaInfoSel();\"  class=\" chosen-select form-control text-success\" ></select>");	
 		$('.chosen-select').chosen({allow_single_deselect:true}); 			
@@ -49,18 +60,13 @@ contMat=1;
 		$(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
 		 $("#selReportes").trigger("chosen:updated");	
 
-		cargaReportes();
-	
-		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
-		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
-		colocarCiclo("elciclo","CLAVE");
-		
-	});
-	
-	
-		 
-	function cargaInfoSel() {
+		cargaReportes(indicador);
 
+	}
+		 
+	function change_SELECT(reporte) {}
+
+	function cargaInfoSel() {
 			elsql="select * from strepgenerales where id="+$("#selReportes").val();
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
@@ -73,10 +79,10 @@ contMat=1;
 					miayuda=JSON.parse(data)[0]["DESCRIPCION"];
 				}
 			});
-
 	}
 	
-	function cargaReportes(){
+	function cargaReportes(indicador){
+
 		mostrarEspera("esperaInf","grid_vstGenerales","Cargando Datos...");
 		elsql="SELECT usua_usuader, usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
 		elsql2="";
@@ -104,8 +110,12 @@ contMat=1;
 							url:  "../base/getdatossqlSeg.php",
 							success: function(data2){  
 								jQuery.each(JSON.parse(data2), function(clave, valor) { 
-								     $("#selReportes").append("<option value=\""+valor.ID+"\">"+valor.NOMBRE+"</option>");
+									 sel="";
+									 if (valor.ID==indicador) {sel="selected";}
+									 $("#selReportes").append("<option value=\""+valor.ID+"\""+sel+">"+valor.NOMBRE+"</option>");
+									 
 								});
+							
 								$("#selReportes").trigger("chosen:updated");	
 								ocultarEspera("esperaInf");  
 							}
@@ -222,3 +232,92 @@ function getInfoInd(){
 	"     <span class=\"badge badge-warning\">Indicador: "+	 $("#selReportes option:selected").text()+"</span><br>"+
 	      miayuda+"</div>","modal-lg");
 }
+
+
+/*=======================================================================================*/
+function cargarInformacionInd(){
+
+	mostrarEspera("esperaInf","grid_vstGenerales","Cargando Datos...");
+
+	elsql="SELECT usua_usuader, usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
+		elsql2="";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  
+					losroles=JSON.parse(data)[0][0].split(",");
+					if (JSON.parse(data)[0][1]!='S') {
+						losroles.forEach(function callback(currentValue, index, array) {					
+							elsql2+="(SELECT ID, CONCAT(CATEGORIA,' ',NOMBRE), CATA_DESCRIP AS NOMBRE, DESCRIPCION, ICO FROM strepgenerales, scatalogos where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  where USUARIOSPERM LIKE '%"+currentValue+"%' ORDER BY CATEGORIA,NOMBRE) UNION ";
+						});
+                        elsql2=elsql2.substring(0,elsql2.length-7);   
+					}
+					else {
+                       elsql2="SELECT ID, CONCAT(CATEGORIA,' ',NOMBRE) AS NOMBRE, CATA_DESCRIP, DESCRIPCION, ICO FROM strepgenerales, scatalogos where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  order by CATEGORIA, NOMBRE DESC";
+					}
+
+
+					parametrosw={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}				
+					$.ajax({
+							type: "POST",
+							data:parametrosw,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data2){  
+								generaTablaInd(JSON.parse(data2));
+								ocultarEspera("esperaInf");  
+							}
+						});
+				}
+			});	  		
+}
+
+function generaTablaInd(grid_data){	
+contAlum=1;
+$("#cuerpoMaterias").empty();
+$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
+cont=1;
+$("#contenido_1").append("<div id=\"linea"+cont+"\" class=\"row\"></div>"); 
+
+jQuery.each(grid_data, function(clave, valor) { 
+    $("#linea"+cont).append("<div id=\"ventAyuda"+valor.ID+"\" class=\" ayudaPadre fontRoboto col-md-3\">"+
+	"<div class=\"thumbnail search-thumbnail\" onclick=\"CargarIndicador('"+valor.ID+"');\" style=\"cursor:pointer\">"+
+	"	<div style=\"text-align:center;\"><i class=\" "+valor.ICO+" bigger-300\"></i>"+
+	"   </div>"+
+	"	<div class=\"caption\">"+
+	"		<span class=\"text-success fontRobotoB layuda\" mipadre=\"ventAyuda"+valor.ID+"\"  >"+valor.CATA_DESCRIP+"</span>"+
+	"		<h3 class=\"fontRobotoB bigger-110 layuda \">"+
+	"			<span class=\"blue layuda\" mipadre=\"ventAyuda"+valor.ID+"\" >"+valor.NOMBRE+"</span>"+
+	"		</h3>"+
+	"		<p style=\"text-align:justify;\" class=\"layuda\" mipadre=\"ventAyuda"+valor.ID+"\" >"+valor.DESCRIPCION+"</p>"+
+	"	</div>"+
+	"</div>");
+	if ((contAlum % 4)==0) { cont++; $("#contenido_1").append("<div id=\"linea"+cont+"\" class=\"row\"></div>"); }	
+	contAlum++;     
+
+});	
+} 
+
+
+function filtrarMenu() {
+
+	var input = $('#filtrar').val();
+	var filter = input.toUpperCase();
+	var contenidoMenu="";
+	
+	if (filter.length == 0) { // show all if filter is empty	
+			$(".ayudaPadre").removeClass("hide");
+		return;
+	} else {														
+
+		$(".ayudaPadre").addClass("hide");
+		$(' .layuda:contains("' + filter + '")').each(function() {				
+		
+		   $("#"+$(this).attr("mipadre")).removeClass("hide");
+		});
+		
+	}
+}
+
+/*=====================================================================*/

@@ -19,7 +19,7 @@ contMat=1;
 /*===========================================================POR MATERIAS ==============================================*/
 function cargarInformacion(){
 
-	mostrarEspera("esperaInf","grid_vstGenerales","Cargando Datos...");
+	mostrarEspera("esperaInf","grid_ayudaTec","Cargando Datos...");
 	elsql="SELECT usua_usuader, usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
 	elsql2="";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}

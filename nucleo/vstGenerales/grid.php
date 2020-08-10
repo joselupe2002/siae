@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-
+		<link rel="stylesheet" href="../../css/sigea.css" />
         
 
 		<style type="text/css">
@@ -39,11 +39,40 @@
 
 	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
 	   
+
+	<div class="widget-box widget-color-purple" id="principal_1">
+			  <div class="widget-header widget-header-small">
+			      <div class="row" >							
+						<div class="col-sm-8" style="padding-left:20px;padding-top:5px;">                            
+                            <span class="badge badge-warning bigger-180"><i class="fa fa-bar-chart-o"></i></span>
+                            <span class="fontRobotoB bigger-140"> Centro de Indicadores</span>																													 									
+						</div>
+						<div class="col-sm-4">
+						   <span class="label label-success">Filtrar</span>
+							<span class="input-icon">
+								<input id="filtrar"  onkeyup="filtrarMenu();" type="text" id="form-field-icon-1" />
+								<i class="ace-icon fa fa-search blue"></i>
+							</span>
+						</div>   
+		            </div> 
+		      </div>
+              <div class="widget-body">
+			  		<div class="tab-pane" style="margin-top:10px;" >
+						<div class="profile-users clearfix" id="contenido_1">
+                                 
+						</div><!-- del user profile  -->	
+			  		</div><!-- del taboane  -->	
+				</div><!-- del widget body principal -->	
+	</div><!-- del widbox principal -->	
+
 	    
-	<div class="widget-box widget-color-green" id="principal">
+	<div class=" hide widget-box widget-color-green" id="principal">
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
 				         <div id="losciclos" class="col-sm-1">
+						 	<span title="Exportar Registros " onclick="regresarInd();" style="padding-top:10px; cursor:pointer;"> 
+								<i class="ace-icon red fa fa-mail-reply bigger-240"></i>          
+							</span>	
 						</div> 	
 						<div id="losreportes" class="col-sm-4" >
 							<button style="width:25px; height:25px; margin:0px;" title="Ayuda sobre el reporte" onclick="getInfoInd();" 
