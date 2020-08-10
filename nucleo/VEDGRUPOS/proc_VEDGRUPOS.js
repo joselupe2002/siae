@@ -84,6 +84,16 @@ function verEncuadre(modulo,usuario,institucion, campus,essuper){
 	abrirPesta(enlace,'Encuadre')
 }
 
+function verPlanImp(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	enlace="nucleo/pd_portasegui/planeacion.php?ID="+table.rows('.selected').data()[0]["IDDET"]+"&materia="+table.rows('.selected').data()[0]["MATERIA"];
+	abrirPesta(enlace,'Planeacion');
+
+}
+
+
+
+
 
 
 function verRepUni(modulo,usuario,institucion, campus,essuper){

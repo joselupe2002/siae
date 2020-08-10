@@ -137,6 +137,7 @@
 			
 			function loadDatosMateria()
 			{
+				$data=[];
 				$miConex = new Conexion();
 				$resultado=$miConex->getConsulta("Mysql","select * from cmaterias a where MATE_CLAVE='".$_GET["materia"]."'");
 				foreach ($resultado as $row) {
