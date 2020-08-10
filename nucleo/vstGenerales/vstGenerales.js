@@ -22,6 +22,7 @@ contMat=1;
 	function CargarIndicador(indicador){
 		$("#principal_1").addClass("hide");
 		$("#principal").removeClass("hide");
+		$("#informacion").empty();
 
 		$(".input-mask-hora").mask("99:99");
 		$(".input-mask-horario").mask("99:99-99:99");
@@ -192,7 +193,6 @@ contMat=1;
 
 
 function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
-	
 	contR=1;
 	$("#cuerpoInformacion").empty();
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
@@ -250,12 +250,12 @@ function cargarInformacionInd(){
 					losroles=JSON.parse(data)[0][0].split(",");
 					if (JSON.parse(data)[0][1]!='S') {
 						losroles.forEach(function callback(currentValue, index, array) {					
-							elsql2+="(SELECT ID, CONCAT(CATEGORIA,' ',NOMBRE), CATA_DESCRIP AS NOMBRE, DESCRIPCION, ICO FROM strepgenerales, scatalogos where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  where USUARIOSPERM LIKE '%"+currentValue+"%' ORDER BY CATEGORIA,NOMBRE) UNION ";
+							elsql2+="(SELECT ID, CATEGORIA, NOMBRE, CATA_DESCRIP AS NOMBRE, DESCRIPCION, ICO FROM strepgenerales, scatalogos where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  where USUARIOSPERM LIKE '%"+currentValue+"%' ORDER BY CATEGORIA,NOMBRE) UNION ";
 						});
                         elsql2=elsql2.substring(0,elsql2.length-7);   
 					}
 					else {
-                       elsql2="SELECT ID, CONCAT(CATEGORIA,' ',NOMBRE) AS NOMBRE, CATA_DESCRIP, DESCRIPCION, ICO FROM strepgenerales, scatalogos where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  order by CATEGORIA, NOMBRE DESC";
+                       elsql2="SELECT ID, CATEGORIA,NOMBRE, CATA_DESCRIP, DESCRIPCION, ICO FROM strepgenerales, scatalogos where CATA_CLAVE=CATEGORIA AND CATA_TIPO='REPGENERALES'  order by CATEGORIA, NOMBRE DESC";
 					}
 
 
@@ -283,11 +283,12 @@ $("#contenido_1").append("<div id=\"linea"+cont+"\" class=\"row\"></div>");
 jQuery.each(grid_data, function(clave, valor) { 
     $("#linea"+cont).append("<div id=\"ventAyuda"+valor.ID+"\" class=\" ayudaPadre fontRoboto col-md-3\">"+
 	"<div class=\"thumbnail search-thumbnail\" onclick=\"CargarIndicador('"+valor.ID+"');\" style=\"cursor:pointer\">"+
+	"		<span class=\" pull-right label label-success fontRobotoB layuda\" mipadre=\"ventAyuda"+valor.ID+"\"  >"+valor.CATA_DESCRIP+"</span>"+
 	"	<div style=\"text-align:center;\"><i class=\" "+valor.ICO+" bigger-300\"></i>"+
 	"   </div>"+
 	"	<div class=\"caption\">"+
-	"		<span class=\"text-success fontRobotoB layuda\" mipadre=\"ventAyuda"+valor.ID+"\"  >"+valor.CATA_DESCRIP+"</span>"+
-	"		<h3 class=\"fontRobotoB bigger-110 layuda \">"+
+	
+	"		<h3 class=\"fontRobotoB bigger-110 layuda \" style=\"text-align:justify;\" >"+
 	"			<span class=\"blue layuda\" mipadre=\"ventAyuda"+valor.ID+"\" >"+valor.NOMBRE+"</span>"+
 	"		</h3>"+
 	"		<p style=\"text-align:justify;\" class=\"layuda\" mipadre=\"ventAyuda"+valor.ID+"\" >"+valor.DESCRIPCION+"</p>"+

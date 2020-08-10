@@ -70,9 +70,11 @@
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
 				         <div id="losciclos" class="col-sm-1">
-						 	<span title="Exportar Registros " onclick="regresarInd();" style="padding-top:10px; cursor:pointer;"> 
-								<i class="ace-icon red fa fa-mail-reply bigger-240"></i>          
-							</span>	
+							<button  title="Regresar al Centro de Indicadores" onclick="regresarInd();" 
+							    class="btn btn-white btn-success btn-round"> 
+								<i class="ace-icon pink fa fa-mail-reply" style="padding-top:0px; margin:0px;" ></i>           
+							</button>
+
 						</div> 	
 						<div id="losreportes" class="col-sm-4" >
 							<button style="width:25px; height:25px; margin:0px;" title="Ayuda sobre el reporte" onclick="getInfoInd();" 
