@@ -245,7 +245,7 @@
         
         $pdf->Ln(5);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);
-        $pdf->Cell(0,0,'ACTA DE CALIFICACIONES',0,1,'C');
+        $pdf->Cell(0,0,'REPORTE DE UNIDADES',0,1,'C');
         $pdf->Ln(5);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);$pdf->Cell(0,0,'MATERIA: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(50);$pdf->Cell(0,0,utf8_decode($_GET["materia"]."-".$_GET["materiad"]),0,1,'L');
