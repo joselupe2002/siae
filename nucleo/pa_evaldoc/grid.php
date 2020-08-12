@@ -47,7 +47,8 @@
 		     <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 				   	<thead>  
 					    <tr style="background-color:#000C52; color: white;">
-							<th style="text-align: center;">ID</th> 				        					       
+							<th style="text-align: center;">ID</th> 		
+							<th style="text-align: center;">Ciclo</th> 		        					       
 					        <th style="text-align: center;">Grupo</th> 
 					        <th style="text-align: center;">Clave</th> 					        
 					        <th style="text-align: center;">Asigantura</th> 

@@ -419,10 +419,7 @@ function impEncuadre(id, materia, descrip){
 			   "      </div>"+ //div del modal dialog
 			   "   </div>"+ //div del modal-fade
 			   "</div>";
-		 
-			
-			
-			
+
 			 $("#modalDocumentEnc").remove();
 		    if (! ( $("#modalDocumentEnc").length )) {
 		        $("#grid_<?php echo $_GET['modulo']; ?>").append(script);

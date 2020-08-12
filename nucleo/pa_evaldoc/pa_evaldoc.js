@@ -19,7 +19,8 @@ $("#tabHorarios").append("<tbody id=\"cuerpo\">");
 jQuery.each(grid_data, function(clave, valor) { 	
         
     $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">"); 
-    $("#row"+valor.ID).append("<td><span class=\"badge badge-success\">"+valor.IDGRUPO+"</span></td>");   	   
+    $("#row"+valor.ID).append("<td><span class=\"badge badge-success\">"+valor.IDGRUPO+"</span></td>");  
+    $("#row"+valor.ID).append("<td><span class=\"badge badge-primary\">"+valor.CICLO+"</span></td>");   	   
     $("#row"+valor.ID).append("<td>"+valor.GRUPO+"</td>");
     $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");
     $("#row"+valor.ID).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
@@ -57,8 +58,8 @@ $('.fileSigea').ace_file_input({
 
 function cargarMaterias() {
     $('#dlgproceso').modal({show:true, backdrop: 'static'});
-    elsql="select CICLO,CICL_DESCRIP AS CICLOD, COUNT(*) AS HAY from ecortescal a, ciclosesc b where  CICLO=getciclo() "+
-    " and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') Between STR_TO_DATE(INICIA,'%d/%m/%Y')  "+
+    elsql="select CICLO,CICL_DESCRIP AS CICLOD, COUNT(*) AS HAY from ecortescal a, ciclosesc b where  "+
+    " STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') Between STR_TO_DATE(INICIA,'%d/%m/%Y')  "+
     " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='EVALDOC'"+
     " and a.CICLO=b.CICL_CLAVE";
 
@@ -79,7 +80,7 @@ function cargarMaterias() {
                 " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD, "+
                 " (select count(*) from ed_respuestas where IDDETALLE=e.ID and MATRICULA='"+elusuario+"' and TERMINADA='S') HIZO "+
                 " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE "+
-                " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE=getciclo() and e.BAJA='N'";
+                " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE="+cad1+" and e.BAJA='N'";
                 parametros={sql:sqlmater,dato:sessionStorage.co,bd:"Mysql"}
 
                 if (abierto>0) { 
