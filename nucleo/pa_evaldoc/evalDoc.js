@@ -125,14 +125,14 @@ function cargandoExamen(){
 									  "   <div class=\"row\">";
 							if (!((valorPre.RESPUESTA1=='')||(valorPre.RESPUESTA1==null))) {							
 							 cadPreg+="       <div class=\"col-sm-3\">"+
-									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','5','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_1\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','5','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_5\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 									  "                                 <span class=\"lbl fontRoboto bigger-80\">"+valorPre.RESPUESTA1+"</span> <li class=\"fa fa-thumbs-o-up blue\"></li> </label>"+
 									  "             </div>"+
 									  "       </div>";
 							}
 							if (!((valorPre.RESPUESTA2=='')||(valorPre.RESPUESTA2==null))) {							
 							 cadPreg+="      <div class=\"col-sm-2\">"+
-									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','4','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_2\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','4','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_4\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 									  "                                 <span class=\"lbl fontRoboto bigger-80\">"+valorPre.RESPUESTA2+"</span> <li class=\"fa fa-thumbs-o-up green\"></li></label>"+
 									  "             </div>"+
 									  "       </div>";
@@ -146,14 +146,14 @@ function cargandoExamen(){
 							}
 							if (!((valorPre.RESPUESTA4=='')||(valorPre.RESPUESTA4==null))) {							
 							 cadPreg+="      <div class=\"col-sm-2\">"+
-									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','2','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_4\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+									  "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','2','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_2\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 									  "                                 <span class=\"lbl fontRoboto bigger-80\">"+valorPre.RESPUESTA4+"</span> <li class=\"fa fa-thumbs-o-down orange\"></label>"+
 									  "             </div>"+
 									  "       </div>";
 							}
 							if (!((valorPre.RESPUESTA5=='')||(valorPre.RESPUESTA5==null))) {							
 								cadPreg+="      <div class=\"col-sm-3\">"+
-										 "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','1','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_5\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
+										 "             <div class=\"radio\"><label><input onchange=\"cambioRespuesta('"+valorPre.IDP+"','"+contPreg+"','1','"+valorPre.PUNTAJE+"','"+1+"')\" idpreg=\""+valorPre.IDP+"\" id=\"opcion_"+valorPre.IDP+"_1\" name=\"opcion_"+valorPre.IDP+"\" type=\"radio\" class=\"opresp ace input-lg\"/>"+
 										 "                                 <span class=\"lbl fontRoboto bigger-80\">"+valorPre.RESPUESTA5+"</span> <li class=\"fa fa-thumbs-o-down red\"></label>"+
 										 "             </div>"+
 										 "       </div>";
@@ -172,7 +172,7 @@ function cargandoExamen(){
 				data:parametros,
 				url:  "../base/getdatossqlSeg.php",
 				success: function (dataRes) {	
-					alert (dataRes);
+				
 					jQuery.each(JSON.parse(dataRes), function(clave, valorRes) {						  
 						   $("#opcion_"+valorRes.IDPREGUNTA+"_"+valorRes.RESPUESTA).attr('checked', true);
 						   $(".itemPreg[idPreg='"+valorRes.IDPREGUNTA+"']").addClass("badge-primary");
