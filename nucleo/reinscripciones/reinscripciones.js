@@ -571,8 +571,14 @@ function agregarCondiciones(){
 							"           </div>"+
 							"       </div>");
 
-		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+"' and CARRERA='"+$("#selCarreras").val()+"'"+
+		cadFil=" AND CARRERA IN (10,13) ";
+		if (eltipomat=='I') {cadFil=" AND CARRERA  IN (10) ";}
+		if (eltipomat=='OC') {cadFil=" AND CARRERA  IN (12) ";}
+		if (eltipomat=='N') {cadFil=" AND CARRERA NOT IN (10,12) ";}
+		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+"'"+
+		cadFil+
 		" ORDER BY SEMESTRE, MATERIAD";
+		alert (sql);
 
         var titulos = [{titulo: "SEL",estilo: "text-align: center;"},
 					   {titulo: "SEM",estilo: "text-align: center;"}, 
