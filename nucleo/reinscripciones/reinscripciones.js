@@ -578,7 +578,7 @@ function agregarCondiciones(){
 		sql="SELECT '' as BTN, a.* FROM dlistatem a where MATRICULA='"+$("#selAlumnos").val()+"'"+
 		cadFil+
 		" ORDER BY SEMESTRE, MATERIAD";
-		alert (sql);
+
 
         var titulos = [{titulo: "SEL",estilo: "text-align: center;"},
 					   {titulo: "SEM",estilo: "text-align: center;"}, 
