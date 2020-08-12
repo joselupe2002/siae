@@ -172,6 +172,7 @@ function cargandoExamen(){
 				data:parametros,
 				url:  "../base/getdatossqlSeg.php",
 				success: function (dataRes) {	
+					alert (dataRes);
 					jQuery.each(JSON.parse(dataRes), function(clave, valorRes) {						  
 						   $("#opcion_"+valorRes.IDPREGUNTA+"_"+valorRes.RESPUESTA).attr('checked', true);
 						   $(".itemPreg[idPreg='"+valorRes.IDPREGUNTA+"']").addClass("badge-primary");
