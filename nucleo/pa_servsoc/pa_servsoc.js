@@ -95,6 +95,7 @@ var miciclo="";
 						losdatos=JSON.parse(data); 
 						real=losdatos[0][0];
 						porcReal=(parseInt(real)/parseInt(totalcred)*100).toFixed(0);
+						console.log("Real="+real+" Cred:"+totalcred);
 						$("#etelavance").html(porcReal);                               
 						$('#elavance').data('easyPieChart').update(porcReal);
 						$("#etelavance2").html("Real ("+real+")");  
