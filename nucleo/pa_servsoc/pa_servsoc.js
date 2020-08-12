@@ -77,7 +77,7 @@ var miciclo="";
 
 			   totalcred=losdatos[0]["PLACRED"];
 			   elmapa=losdatos[0]["ALUM_MAPA"];
-			   laesp=losdatos[0]["CVEESP"];
+			   laesp=losdatos[0]["ALUM_ESPECIALIDAD"];
 			   //Los avances de los creditos 
 			   real=0;
 				elsql="select IFNULL(sum(h.CICL_CREDITO),0) from dlista b, eciclmate h where "+
