@@ -80,7 +80,7 @@ function cargarMaterias() {
                 " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD, "+
                 " (select count(*) from ed_respuestas where IDDETALLE=e.ID and MATRICULA='"+elusuario+"' and TERMINADA='S') HIZO "+
                 " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE "+
-                " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE="+cad1+" and e.BAJA='N'";
+                " AND e.ALUCTR='"+elusuario+"' and e.PDOCVE="+cad1+" and e.BAJA='N' and LISTC15<>9999";
                 parametros={sql:sqlmater,dato:sessionStorage.co,bd:"Mysql"}
 
                 if (abierto>0) { 
