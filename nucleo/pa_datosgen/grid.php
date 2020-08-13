@@ -134,6 +134,12 @@
 													<span class="editable" id="carrera"></span>
 												</div>
 											</div>
+
+											<div title="Esta contraseña solo será usada la primera vez que ingrese a la plataform Moodle" class="profile-info-row"><div class="profile-info-name">Moodle </div>
+                                                <div class="profile-info-value"><i class="fa fa-key light-red bigger-110"></i>
+													<span class="text text-success" id="moodle"><b>Temporal2020</b></span>
+												</div>
+											</div>
 											
 										 </div>
 

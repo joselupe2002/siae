@@ -127,7 +127,8 @@
                 $miConex = new Conexion();
                 $sql="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,". 
                 "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,".
-                "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 ORDER BY SEMESTRE, MATERIAD";
+                "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas where "+
+                "MATRICULA='".$_GET["matricula"]."' AND CERRADO='S'  AND CAL>=70 ORDER BY SEMESTRE, MATERIAD";
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -154,7 +155,7 @@
 			{				
                 $data=[];	
                 $miConex = new Conexion();
-                $sql="SELECT * FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' and CICLO='".$ciclo."' ORDER BY SEMESTRE, MATERIAD";
+                $sql="SELECT * FROM kardexcursadas where MATRICULA='".$_GET["matricula"]."' AND CERRADO='N'  and CICLO='".$ciclo."' ORDER BY SEMESTRE, MATERIAD";
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -177,7 +178,7 @@
                 " getPromedio('".$_GET["matricula"]."','N') as PROMEDIO_SR,".
                 " getPeriodos('".$_GET["matricula"]."',getciclo()) AS PERIODOS,".
                 " getcuatrialum('".$_GET["matricula"]."',getciclo()) as SEMESTRE,".
-                " (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and a.MATRICULA='".$_GET["matricula"]."') AS CRECUR ".
+                " (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() AND CERRADO='N'  and a.MATRICULA='".$_GET["matricula"]."') AS CRECUR ".
                 " from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where ".
                 " CARR_CLAVE=ALUM_CARRERAREG".
                 " and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='".$_GET["matricula"]."'";

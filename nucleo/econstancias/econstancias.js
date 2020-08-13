@@ -231,7 +231,7 @@ function creaConsCal (elciclo,matricula,consec,anio){
 									elsqlCal="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,"+ 
 									         "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,"+
 											 "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas "+											
-											 " where MATRICULA='"+matricula+"' AND CAL>=70 ORDER BY SEMESTRE, MATERIAD";
+											 " where MATRICULA='"+matricula+"' AND CAL>=70 AND CERRADO='S'  ORDER BY SEMESTRE, MATERIAD";
 									parametros4={sql:elsqlCal,dato:sessionStorage.co,bd:"Mysql"}
 									$.ajax({
 										type: "POST",

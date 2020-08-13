@@ -138,7 +138,7 @@
                 "      WHEN TIPOMAT='SS' THEN (select CALLET from ecalcertificado i where i.MATRICULA=a.MATRICULA and i.MATERIA=a.MATERIA limit 1) ".
                 " ELSE CAL END) AS CAL,".
                 "TCAL,CICLO,CREDITO,TIPOMAT, VECES, PRIMERA, SEGUNDA, TERCERA FROM kardexcursadas a ".
-                " where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 AND CERRADO='S' ORDER BY SEMESTRE, MATERIAD";
+                " where MATRICULA='".$_GET["matricula"]."' AND CAL>=70 AND CERRADO='S' AND CERRADO='S' ORDER BY SEMESTRE, MATERIAD";
             
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
