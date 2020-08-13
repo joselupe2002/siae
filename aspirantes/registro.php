@@ -122,7 +122,7 @@
 			 <div class="col-sm-12">
 				  <span class="badge badge-yellow bigger-120">4</span>
 				  <span class="fontAmaranth text-light bigger-120"> Haber realizado el pago correspondiente de
-					  <span class="fontAmaranth text-danger bigger-140"> $ 545.00 </span> por concepto de Ficha. Debe tener escaneado en formato PDF el Recibo
+					  <span class="fontAmaranth text-danger bigger-140"> $ 1,090.00 </span> por concepto de Ficha. Debe tener escaneado en formato PDF el Recibo
 				  </span>
 				  <a href="docCuenta.pdf" target="_blank">
 					  <span class="fontAmaranth label label-white label-success middle">Datos Cuenta</span>
