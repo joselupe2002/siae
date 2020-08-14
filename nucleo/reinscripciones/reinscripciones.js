@@ -9,6 +9,10 @@ var miciclo="";
 var micicloant="";
 var mensajeAlumno="";
 var eltipomat="";
+var credMax=0;
+var credMin=0;
+var cred1R=0;
+var credM1=0;
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -245,10 +249,16 @@ var eltipomat="";
 									$("#laespecialidad").html(losdatosMapa[0]["ALUM_ESPECIALIDAD"]);
 									$("#laespecialidadSIE").html(losdatosMapa[0]["ALUM_ESPECIALIDADSIE"]);
 									$("#selAvance").html(losdatosMapa[0]["AVANCE"]);		
-									$("#CMA").html(losdatosMapa[0]["PLACMA"]);
-									$("#CMI").html(losdatosMapa[0]["PLACMI"]);	
+									$("#CMA").html(losdatosMapa[0]["PLACMA"]);									
+									$("#CMI").html(losdatosMapa[0]["PLACMI"]);										
 									$("#C1R").html(losdatosMapa[0]["PLAC1R"]);	
-									$("#CM1").html(losdatosMapa[0]["PLACM1"]);									
+									$("#CM1").html(losdatosMapa[0]["PLACM1"]);	
+
+									credMax=losdatosMapa[0]["PLACMA"];
+									credMin=losdatosMapa[0]["PLACMI"];
+									cred1R=losdatosMapa[0]["PLAC1R"];
+									credM1=losdatosMapa[0]["PLACM1"];
+
 									validarCondiciones(false);	
 
 									if (lavista="vreinstem") {
@@ -841,10 +851,10 @@ function validarCondiciones(mensaje) {
 	if ((parseInt($("#selRepitiendo").html())==1) && (parseInt($("#selCreditos").html())>parseInt($("#C1R").html()))) {
 		res+="<span class=\"badge badge-primary\"> Si esta cursando una asignatura en repitición solo debe llevar "+$("#C1R").html()+" créditos</span><br/>";}
 
-	if ((parseInt($("#selRepitiendo").html()>1)) && (parseInt($("#selCreditos").html()>$("#CM1").html()))) {
+	if ((parseInt($("#selRepitiendo").html()>1)) && (parseInt($("#selCreditos").html())>$("#CM1").html())) {
 		res+="<span class=\"badge badge-warning\"> Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créditos</span><br/>";}
 
-	if  (parseInt($("#selCreditos").html()>$("#CMA").html())) {
+	if  (parseInt($("#selCreditos").html())>parseInt(credMax)) {
 			res+="<span class=\"badge badge-warning\"> Los créditos máximos que puedes cursar son:  "+$("#CMA").html()+" créditos</span><br/>";}
 	
 	matRes=checarResidencia();

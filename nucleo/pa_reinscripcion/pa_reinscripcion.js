@@ -9,7 +9,10 @@ var cadmatsineval="";
 var micicloant="";
 var eladicional;
 var idop;
-
+var credMax=0;
+var credMin=0;
+var cred1R=0;
+var credM1=0;
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
