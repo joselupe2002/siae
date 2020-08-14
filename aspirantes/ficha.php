@@ -10,7 +10,7 @@
 	$nivel="../../";
 	
 
-	class VariableStream
+class VariableStream
 {
     private $varname;
     private $position;
@@ -93,8 +93,10 @@
             imagepng($im);
             $data = ob_get_clean();
             $this->MemImage($data, $x, $y, $w, $h, $link);
-        }
-        /*============================================================================================*/
+        }       
+        
+        
+    /*============================================================================================*/
         
         function parseVar($key='',$value='') {
             if(empty($key) or empty($value)) return;
@@ -286,6 +288,7 @@
                 if (!empty($dataFoto)) { 
                     $lafoto=$dataFoto[0][0]; 
                     $logo = file_get_contents($lafoto);
+                    echo $logo;
                     $this->MemImage($logo,20,37,22,28);
                 }
             
