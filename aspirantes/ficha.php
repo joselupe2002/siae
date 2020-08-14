@@ -282,13 +282,13 @@
                 $dataFoto = $this->LoadFoto();
                 $miutil = new UtilUser();    
                      
-                /*
+                
                 if (!empty($dataFoto)) { 
                     $lafoto=$dataFoto[0][0]; 
                     $logo = file_get_contents($lafoto);
                     $this->MemImage($logo,20,37,22,28);
                 }
-                */
+            
 
                  
                 $fecha=date("d/m/Y"); 
