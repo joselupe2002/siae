@@ -758,7 +758,7 @@ function validarCondiciones(mensaje) {
 	if ((parseInt($("#selRepitiendo").html())==1) && (parseInt($("#selCreditos").html())>parseInt($("#C1R").html()))) {
 		res+="<span class=\"badge badge-primary\"> Si esta cursando una asignatura en repitición solo debe llevar "+$("#C1R").html()+" créditos</span><br/>";}
 
-	if ((parseInt($("#selRepitiendo").html()>1)) && (parseInt($("#selCreditos").html())>$("#CM1").html())) {
+	if ((parseInt($("#selRepitiendo").html())>1) && (parseInt($("#selCreditos").html())>$("#CM1").html())) {
 		res+="<span class=\"badge badge-warning\"> Si esta cursando dos o mas asignaturas en repitición solo debe llevar "+$("#CM1").html()+" créditos</span><br/>";}
 	
 	if  (parseInt($("#selCreditos").html())>parseInt($("#CMA").html())) {
