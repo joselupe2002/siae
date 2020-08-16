@@ -111,7 +111,10 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Carrera</th>"+
 	"<th style=\"text-align: center;\">Observación Cotejo</th>"+
 	"<th style=\"text-align: center;\">Fecha Cotejo</th>"+
-	"<th style=\"text-align: center;\">Fecha Subida</th>"
+	"<th style=\"text-align: center;\">Fecha Subida</th>"+
+	"<th style=\"text-align: center;\">Fecha Atendido</th>"+
+	"<th style=\"text-align: center;\">Usuario Atendio</th>"
+
 	); 
 
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
@@ -153,6 +156,8 @@ function generaTablaInformacion(grid_data){
 		 
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHACOTEJO+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHARUTA+"</td>");
+		 $("#row"+valor.IDDET).append("<td>"+valor.FECHAATENDIO+"</td>");
+		 $("#row"+valor.IDDET).append("<td>"+valor.USERATENDIO+"</td>");
 		 
 		$("#row"+valor.IDDET).append("</tr>");
 	 });
