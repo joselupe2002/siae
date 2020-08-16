@@ -100,6 +100,7 @@ function generaTablaInformacion(grid_data){
 
 	$("#tabInformacion").append("<thead><tr id=\"headMaterias\">"+
 	"<th style=\"text-align: center;\">Atendido</th>"+ 
+	"<th style=\"text-align: center;\">No.</th>"+ 
 	"<th style=\"text-align: center;\">Id</th>"+ 
 	"<th style=\"text-align: center;\">Ciclo</th>"+ 
 	"<th style=\"text-align: center;\">Cve_Tipo</th>"+
@@ -119,6 +120,7 @@ function generaTablaInformacion(grid_data){
 
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 	
+	 n=1;
 	 jQuery.each(grid_data, function(clave, valor) { 			
 		cadFile="";	
 
@@ -131,7 +133,7 @@ function generaTablaInformacion(grid_data){
 		}
 
 		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.IDDET+"\">");   
-		 
+		 $("#row"+valor.IDDET).append("<td><span badge badge-success>"+n+"<span></td>");   
 		 $("#row"+valor.IDDET).append("<td>"+btnAten+"</td>");   
 		 $("#row"+valor.IDDET).append("<td>"+valor.IDDET+"</td>");   	
 		 $("#row"+valor.IDDET).append("<td>"+valor.CICLO+"</td>");    
@@ -162,6 +164,7 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.IDDET).append("<td>"+valor.USERATENDIO+"</td>");
 		 
 		$("#row"+valor.IDDET).append("</tr>");
+		n++;
 	 });
 	$('#dlgproceso').modal("hide"); 
 }	
