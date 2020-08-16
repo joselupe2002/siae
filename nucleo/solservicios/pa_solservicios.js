@@ -106,7 +106,8 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Cve_Tipo</th>"+
 	"<th style=\"text-align: center;\">Tipo</th>"+
 	"<th style=\"text-align: center;\">Matricula</th>"+
-	"<th style=\"text-align: center;\">Nombre</th>"+	
+	"<th style=\"text-align: center;\">Nombre</th>"+
+	"<th style=\"text-align: center;\">Comprobante</th>"+	
 	"<th style=\"text-align: center;\">Cotejado</th>"+
 	"<th style=\"text-align: center;\">Atendido</th>"+
 	"<th style=\"text-align: center;\">Carrera</th>"+
@@ -160,8 +161,8 @@ function generaTablaInformacion(grid_data){
 		 
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHACOTEJO+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHARUTA+"</td>");
-		 $("#row"+valor.IDDET).append("<td>"+valor.FECHAATENDIO+"</td>");
-		 $("#row"+valor.IDDET).append("<td>"+valor.USERATENDIO+"</td>");
+		 $("#row"+valor.IDDET).append("<td>"+valor.FECHAATENCION+"</td>");
+		 $("#row"+valor.IDDET).append("<td>"+valor.USERATECION+"</td>");
 		 
 		$("#row"+valor.IDDET).append("</tr>");
 		n++;
