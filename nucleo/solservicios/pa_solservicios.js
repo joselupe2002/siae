@@ -132,9 +132,9 @@ function generaTablaInformacion(grid_data){
 			btnAten="<i title=\"Marcar el Pago como NO atendido\"  onclick=\"marcarAtendido('"+valor.IDDET+"','N');\" class=\"ace-icon red fa fa-thumbs-down bigger-200\" style=\"cursor:pointer;\"></i>";
 		}
 
-		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.IDDET+"\">");   
-		 $("#row"+valor.IDDET).append("<td><span badge badge-success>"+n+"<span></td>");   
+		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.IDDET+"\">");   		
 		 $("#row"+valor.IDDET).append("<td>"+btnAten+"</td>");   
+		 $("#row"+valor.IDDET).append("<td><span class=\"badge badge-success\">"+n+"<span></td>");  
 		 $("#row"+valor.IDDET).append("<td>"+valor.IDDET+"</td>");   	
 		 $("#row"+valor.IDDET).append("<td>"+valor.CICLO+"</td>");    
 		 $("#row"+valor.IDDET).append("<td>"+valor.TIPO+"</td>");         	    
