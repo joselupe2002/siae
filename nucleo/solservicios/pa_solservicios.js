@@ -162,7 +162,7 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHACOTEJO+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHARUTA+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHAATENCION+"</td>");
-		 $("#row"+valor.IDDET).append("<td>"+valor.USERATECION+"</td>");
+		 $("#row"+valor.IDDET).append("<td>"+valor.USERATENCION+"</td>");
 		 
 		$("#row"+valor.IDDET).append("</tr>");
 		n++;
