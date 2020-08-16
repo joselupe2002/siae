@@ -917,7 +917,32 @@ function guardarRegistros(){
 			}
 			limpiarVentana();
 		}					     
-	});    	         
+	});  
+	
+	//ACTUALIZAMOS EL DOCUMENTO DE REINSCRIPCION COMO ATENDIDO 
+	fecha=dameFecha("FECHAHORA");
+
+	parametros={tabla:"eadjreins",						    		    	      
+	bd:"Mysql",
+	campollave:"AUX",
+	valorllave:$("#selAlumnos").val()+"_"+$("#elciclo").html().split("|")[0]+"_N",
+	ATENDIDO:'S',
+	FECHAATENCION:fecha,
+	USERATENCION:elusuario
+	};	      
+	$.ajax({
+	type: "POST",
+	url:"../base/actualiza.php",
+	data: parametros,
+	success: function(data){  
+   			    		
+		$('#dlgproceso').modal("hide");
+		cargarInformacion();
+	   }		
+	}); 
+
+
+
 }
 
 

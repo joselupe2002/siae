@@ -263,8 +263,9 @@
 
 <script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
 <script src="<?php echo $nivel; ?>nucleo/reinscripciones/reinscripciones.js?v=<?php echo date('YmdHis'); ?>"></script>
-
+<script type="text/javascript"> var elusuario="<?php echo $_SESSION["usuario"];?>";</script>
 </body>
+
 <?php } else {header("Location: index.php");}?>
 </html>
 
