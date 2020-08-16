@@ -139,6 +139,8 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.IDDET).append("<td>"+valor.TIPOD+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.MATRICULA+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.NOMBRE+"</td>");
+		 $("#row"+valor.IDDET).append("<td style=\"text-align:center;\"><a href=\""+valor.RUTA+"\" target=\"_blank\" >"+
+		                                   "<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a></td>");
 		 
 
 		 if ((valor.COTEJADO=='N') && (valor.OBSCOTEJO=='' || valor.OBSCOTEJO==null)) {tit="En espera de ser cotejado"; cadCotejado="fa-retweet blue";}
