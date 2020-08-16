@@ -744,6 +744,11 @@ function dameFecha(tipo,dias){
 		       pad(lafecha.getHours(),2,'0')+":"+pad(lafecha.getMinutes(),2,'0');
 	 }
 
+	 if (tipo=="TAG") {
+		return pad(lafecha.getDate(),2,'0')+pad(lafecha.getMonth()+1,2,'0')+lafecha.getFullYear()+
+		       pad(lafecha.getHours(),2,'0')+pad(lafecha.getMinutes(),2,'0');
+	 }
+
 }
 
 function calcularEdad(fecha) {

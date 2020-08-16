@@ -16,10 +16,8 @@ function verPagosGen(modulo,usuario,essuper){
 }
 
 
-
-
-
-function setCotejado(id,valor,obs){
+function setCotejado(id,valor,obs, eluser){
+	fecha=dameFecha("FECHAHORA");
 	$('#modalDocument').modal({show:true, backdrop: 'static'});	 
 	   parametros={
 		   tabla:"eadjreins",
@@ -27,7 +25,9 @@ function setCotejado(id,valor,obs){
 		   bd:"Mysql",
 		   valorllave:id,
 		   COTEJADO: valor,
-		   OBSCOTEJO:obs
+		   OBSCOTEJO:obs,
+		   FECHACOTEJO:fecha,
+		   USERCOTEJO:eluser
 	   };
 	   $.ajax({
 	   type: "POST",
@@ -55,12 +55,13 @@ function CotejarPago (modulo,usuario,essuper){
 		"     <textarea id=\"obsCotejado\" style=\"width:100%; height:100%; resize: none;\">"+table.rows('.selected').data()[0]["OBSCOTEJO"]+"</textarea>",
 		"¿Marcar como Cotejado? "+
 		"<SELECT id=\"cotejado\"><OPTION value=\"S\">SI</OPTION><OPTION value=\"N\">NO</OPTION></SELECT>"
-		,"Finalizar Proceso", "btnMarcarCotejado('"+table.rows('.selected').data()[0]["IDDET"]+"','"+modulo+"');","modal-sm");
+		,"Finalizar Proceso", "btnMarcarCotejado('"+table.rows('.selected').data()[0]["IDDET"]+"','"+modulo+"','"+usuario+"');","modal-sm");
 }
 
-function btnMarcarCotejado(id,modulo){
-	setCotejado(id,$("#cotejado").val(),$("#obsCotejado").val());
-	enviarCorreo(modulo,$("#cotejado").val(),$("#obsCotejado").val());
+function btnMarcarCotejado(id,modulo,eluser){
+	setCotejado(id,$("#cotejado").val(),$("#obsCotejado").val(),eluser);
+	enviarCorreo(modulo,$("#cotejado").val(),$("#obsCotejado").val(),table.rows('.selected').data()[0]["TIPOD"]);
+
 	//Materias de las carreras 
 	if (($("#cotejado").val()=='S') && (table.rows('.selected').data()[0]["TIPO"]=='N')) {
 		enviarCorreoJefe(modulo,$("#cotejado").val(),$("#obsCotejado").val(),
@@ -83,13 +84,13 @@ function btnMarcarCotejado(id,modulo){
 /*======================================Envio de Correos =====================================*/
 
 
-function enviarCorreo(modulo,cotejado, obs){
+function enviarCorreo(modulo,cotejado, obs, tipo){
 	table = $("#G_"+modulo).DataTable();
 	elcorreo=table.rows('.selected').data()[0]["CORREO"];
 	eltipo=table.rows('.selected').data()[0]["TIPOD"];
 
-	mensaje="<html>Tu pago ha sido <span style=\"color:blue\"><b> VALIDADO </b></span> por el &aacute;rea de Contabilidad, "+
-	" ya puedes continuar tu proceso de reinscripci&oacute;n <html>";
+	mensaje="<html>Tu pago "+tipo+" ha sido <span style=\"color:blue\"><b> VALIDADO </b></span> por el &aacute;rea de Contabilidad, "+
+	" ya se podia continuar con el proceso para ofrecerte el servicio soclitado. <html>";
 	if (cotejado=='N') {mensaje="<html> Tu pago <span style=\"color:red\"> <b> NO SE HA VALIDADO </b></span> por el &aacute;rea de Contabilidad, "+
 	                      "presenta las siguientes observaciones: <br/><html>"+obs;}
 
