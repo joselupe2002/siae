@@ -61,7 +61,7 @@ var miciclo="";
 			" and CARRERA in ("+carrera+") ORDER BY IDDET DESC";
 		}
 
-
+      alert (elsql);
 
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
