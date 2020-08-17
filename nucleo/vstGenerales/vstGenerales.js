@@ -216,7 +216,7 @@ function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
 					cadIni=currentValue;
 					elDatoEvento=grid_data[contR-1][currentValue];
 					if (!(typeof cadIni === 'undefined')) {  
-						if (cadIni.indexOf('{')>=0) {alert ("entre: " +cadIni.substring(1,cadIni.length-1)); elDatoEvento=cadIni.substring(1,cadIni.length-1);}
+						if (cadIni.indexOf('{')>=0) {elDatoEvento=cadIni.substring(1,cadIni.length-1);}
 					}
 							
 					if (index>0) {cadEvento+="'"+elDatoEvento+"',";}

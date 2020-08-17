@@ -179,13 +179,14 @@ function cargaAlumnosAprAs(contenedor, ciclo,carrera,genero){
 }
 
 
-function cargaAlumnosRep(contenedor, ciclo,carrera,numrep){
+/*Listado de alumnos que reprobaron un determinado numero de materias */
+function cargaAlumnosRep(contenedor, ciclo,carrera,genero,numrep){
 
 	cadnumrep=" and NUMREP="+numrep; if (numrep>=6) cadnumrep=' and NUMREP >=6';
+	elge=" and SEXO='"+genero+"'"; if (genero=='%') elge='';
 
-	elsqlMa="SELECT * FROM vstlisnumrep h where h.CICLO='"+ciclo+"' AND h.CARRERA='"+carrera+"'"+cadnumrep;
+	elsqlMa="SELECT * FROM vstlisnumrep h where h.CICLO='"+ciclo+"' AND h.CARRERA='"+carrera+"'"+elge+cadnumrep;
 
-	alert (elsqlMa);
 	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
 
 	$.ajax({
@@ -209,36 +210,3 @@ function cargaAlumnosRep(contenedor, ciclo,carrera,numrep){
     });	  
 
 }
-
-
-function cargaAlumnosRepSex(contenedor, ciclo,carrera,genero,numrep){
-
-	cadnumrep=" and NUMREP="+numrep; if (numrep>=6) cadnumrep=' and NUMREP >=6';
-
-	elsqlMa="SELECT * FROM vstlisnumrep h where h.CICLO='"+ciclo+"' AND h.CARRERA='"+carrera+"'"+cadnumreP+" and SEXO='"+genero+"'";
-
-	alert (elsqlMa);
-	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
-
-	$.ajax({
-		type: "POST",
-		data:parametros,
-		url:  "../base/getdatossqlSeg.php",
-		success: function(data){  						      			      
-			cad="<ol>";
-			jQuery.each(JSON.parse(data), function(clave, valor) {
-				elcolor='success';
-			   cad+="<li style=\"text-align:justify;\">"+valor.MATRICULA+" "+valor.NOMBRE+"<span badge badge-danger>"+valor.NUMREP+"</span>"			           				
-			        "</li>"; 
-			});	
-			cad+="</ol>";
-			
-			mostrarIfo("infoMaterias",contenedor,"Alumnos que reprobaron "+numrep+" Asignaturas ",cad,"modal-lg"); 
-	 },
-	 error: function(dataMat) {	                  
-			 alert('ERROR: '+dataMat);
-						 }
-    });	  
-
-}
-
