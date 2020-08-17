@@ -215,6 +215,7 @@ function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
 
 					elDatoEvento=grid_data[contR-1][currentValue];
 					if (!(typeof elDatoEvento === 'undefined')) {  
+						alert (elDatoEvento);
 						if (elDatoEvento.indexOf('{')>=0) {alert ("entre: " +elDatoEvento.substring(1,elDatoEvento.length-1)); elDatoEvento=elDatoEvento.substring(1,elDatoEvento.length-1);}
 					}
 							
