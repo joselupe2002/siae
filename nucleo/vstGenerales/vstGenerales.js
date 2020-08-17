@@ -211,10 +211,14 @@ function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
 			if (!(miseventos[index]=="")) {
 				miev=miseventos[index].split(",");			
 				cadEvento=" style=\"cursor:pointer;\" onclick=\""+ miev[0]+"('grid_vstGenerales',";
-				miev.forEach(function callback(currentValue, index, array) {
-					cadDato=grid_data[contR-1][currentValue];	
-					if (grid_data[contR-1][currentValue].indexOf('{')>=0) {cadDato=cadDato.substring(1,cadDato.length-1);}		
-					if (index>0) {cadEvento+="'"+cadDato+"',";}
+				miev.forEach(function callback(currentValue, index, array) {	
+
+					elDatoEvento=grid_data[contR-1][currentValue];
+					if (!(typeof elDatoEvento === 'undefined')) {  
+						if (elDatoEvento.indexOf('{')>=0) {elDatoEvento=elDatoEvento.substring(1,elDatoEvento.length-1);}
+					}
+							
+					if (index>0) {cadEvento+="'"+elDatoEvento+"',";}
 				});
 				cadEvento=cadEvento.substring(0,cadEvento.length-1)+");\"";				
 			}
