@@ -213,10 +213,10 @@ function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
 				cadEvento=" style=\"cursor:pointer;\" onclick=\""+ miev[0]+"('grid_vstGenerales',";
 				miev.forEach(function callback(currentValue, index, array) {	
 
+					cadIni=currentValue;
 					elDatoEvento=grid_data[contR-1][currentValue];
-					if (!(typeof elDatoEvento === 'undefined')) {  
-						alert (elDatoEvento);
-						if (elDatoEvento.indexOf('{')>=0) {alert ("entre: " +elDatoEvento.substring(1,elDatoEvento.length-1)); elDatoEvento=elDatoEvento.substring(1,elDatoEvento.length-1);}
+					if (!(typeof cadIni === 'undefined')) {  
+						if (cadIni.indexOf('{')>=0) {alert ("entre: " +cadIni.substring(1,cadIni.length-1)); elDatoEvento=cadIni.substring(1,cadIni.length-1);}
 					}
 							
 					if (index>0) {cadEvento+="'"+elDatoEvento+"',";}
