@@ -183,7 +183,7 @@ function cargaAlumnosRep(contenedor, ciclo,carrera,numrep){
 
 	cadnumrep=" and NUMREP="+numrep; if (numrep>=6) cadnumrep=' and NUMREP >=6';
 
-	elsqlMa="SELECT * FROM vstlisnumrep h where h.CICLO='"+ciclo+"' AND h.CARRERA='"+carrera+"'"+cadnumreP;
+	elsqlMa="SELECT * FROM vstlisnumrep h where h.CICLO='"+ciclo+"' AND h.CARRERA='"+carrera+"'"+cadnumrep;
 
 	alert (elsqlMa);
 	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
