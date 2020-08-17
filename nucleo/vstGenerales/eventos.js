@@ -183,11 +183,10 @@ function cargaAlumnosAprAs(contenedor, ciclo,carrera,genero){
 function cargaAlumnosRep(contenedor, ciclo,carrera,genero,numrep){
 
 	cadnumrep=" and NUMREP="+numrep; if (numrep>=6) cadnumrep=' and NUMREP >=6';
-	elge=" and SEXO='"+genero+"'"; if (genero=='%') elge='';
+	elge=" and SEXOD='"+genero+"'"; if (genero=='%') elge='';
 
 	elsqlMa="SELECT * FROM vstlisnumrep h where h.CICLO='"+ciclo+"' AND h.CARRERA='"+carrera+"'"+elge+cadnumrep;
 
-	alert (elsqlMa);
 	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
 
 	$.ajax({
