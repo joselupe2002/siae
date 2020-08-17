@@ -187,6 +187,7 @@ function cargaAlumnosRep(contenedor, ciclo,carrera,genero,numrep){
 
 	elsqlMa="SELECT * FROM vstlisnumrep h where h.CICLO='"+ciclo+"' AND h.CARRERA='"+carrera+"'"+elge+cadnumrep;
 
+	alert (elsqlMa);
 	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
 
 	$.ajax({
