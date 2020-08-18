@@ -44,7 +44,7 @@ var miciclo="";
     function cargarInformacion(){
 		$("#informacion").empty();
 		mostrarEspera("esperaInf","grid_pa_mispagos","Cargando Datos...");
-		elsql="SELECT * FROM vcotejarpagos where MATRICULA='"+usuario+"' AND CICLO='"+$("#selCiclo").val()+"' ORDER BY IDDET DESC";
+		elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES FROM vcotejarpagos n where MATRICULA='"+usuario+"' AND CICLO='"+$("#selCiclo").val()+"' ORDER BY IDDET DESC";
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
@@ -86,7 +86,7 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Comprobante de Pago</th>"+
 	"<th style=\"text-align: center;\">Cotejado</th>"+
 	"<th style=\"text-align: center;\">Atendido</th>"+
-
+	"<th style=\"text-align: center;\">Respuesta</th>"+
 	"<th style=\"text-align: center;\">Observación Cotejo</th>"+
 	"<th style=\"text-align: center;\">Fecha Cotejo</th>"+
 	"<th style=\"text-align: center;\">Fecha Subida</th>"
@@ -124,6 +124,7 @@ function generaTablaInformacion(grid_data){
 		 if (valor.ATENDIDO=='S') {tit="El servicio ya fue atendido"; cadAten="fa-check-square-o green";}
 		 $("#row"+valor.IDDET).append("<td><i title=\""+tit+"\" class=\"fa "+cadAten+" bigger-200\"></i></td>");
 
+		 $("#row"+valor.IDDET).append("<td><div id=\"respuesta"+valor.IDDET+"\"></div></td>");
 
 		 $("#row"+valor.IDDET).append("<td>"+valor.OBSCOTEJO+"</td>");
 		 
@@ -138,6 +139,11 @@ function generaTablaInformacion(grid_data){
 			txtop=valor.TIPOD; idop=valor.TIPO;
 			dameSubirArchivoDrive("file"+valor.IDDET,"","recibo"+valor.IDDET,'RECIBOREINS','pdf',
 			'ID',valor.ID,'RECIBO DE PAGO '+txtop,'eadjreins','alta',usuario+"_"+miciclo+"_"+idop,valor.RUTA,activaEliminar);	
+		}
+
+		if (!(valor.RUTARES=='')) {
+			$("#respuesta"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
+			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a>");	
 		}
 
 

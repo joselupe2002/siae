@@ -54,15 +54,14 @@ var miciclo="";
 		if ($("#nocotejados").prop("checked")) {cadex+=" and COTEJADO='N'";} else {cadex+=" and COTEJADO='S'";}
 
 		if (essuper=="S") {
-			elsql="SELECT * FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='"+$("#selServicios").val()+"' ORDER BY IDDET DESC";
+			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES  FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='"+$("#selServicios").val()+"' ORDER BY IDDET DESC";
 		}
 		else {
-			elsql="SELECT * FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='"+$("#selServicios").val()+"'"+
+			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='"+$("#selServicios").val()+"'"+
 			" and CARRERA in ("+carrera+") ORDER BY IDDET DESC";
 		}
 
     
-
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
@@ -110,12 +109,15 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Comprobante</th>"+	
 	"<th style=\"text-align: center;\">Cotejado</th>"+
 	"<th style=\"text-align: center;\">Atendido</th>"+
+	"<th style=\"text-align: center;\">Respuesta</th>"+
 	"<th style=\"text-align: center;\">Carrera</th>"+
 	"<th style=\"text-align: center;\">Observación Cotejo</th>"+
 	"<th style=\"text-align: center;\">Fecha Cotejo</th>"+
 	"<th style=\"text-align: center;\">Fecha Subida</th>"+
 	"<th style=\"text-align: center;\">Fecha Atendido</th>"+
-	"<th style=\"text-align: center;\">Usuario Atendio</th>"
+	"<th style=\"text-align: center;\">Usuario Atendio</th>"+
+	"<th style=\"text-align: center;\">Teléfono</th>"+
+	"<th style=\"text-align: center;\">Correo</th>"
 
 	); 
 
@@ -155,7 +157,11 @@ function generaTablaInformacion(grid_data){
 		 if (valor.ATENDIDO=='S') {tit="El servicio ya fue atendido"; cadAten="fa-check-square-o green";}
 		 $("#row"+valor.IDDET).append("<td><i title=\""+tit+"\" class=\"fa "+cadAten+" bigger-200\"></i></td>");
 
+
+		 $("#row"+valor.IDDET).append("<td><div style=\"width:200px;\" id=\"file"+valor.IDDET+"\"></div></td>");
+
 		 $("#row"+valor.IDDET).append("<td>"+valor.CARRERAD+"</td>");
+
 
 		 $("#row"+valor.IDDET).append("<td>"+valor.OBSCOTEJO+"</td>");
 		 
@@ -163,8 +169,24 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHARUTA+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.FECHAATENCION+"</td>");
 		 $("#row"+valor.IDDET).append("<td>"+valor.USERATENCION+"</td>");
-		 
-		$("#row"+valor.IDDET).append("</tr>");
+		 $("#row"+valor.IDDET).append("<td>"+valor.TELEFONO+"</td>");
+		 $("#row"+valor.IDDET).append("<td>"+valor.CORREO+"</td>");
+		 $("#row"+valor.IDDET).append("</tr>");
+
+
+		if (valor.ATENDIDO=='N') {
+			cadRuta=valor.RUTARES;		
+			if(typeof cadRuta === 'undefined'){ cadRuta="";}
+			activaEliminar="S";
+			txtop=valor.TIPOD; idop=valor.TIPO;
+			dameSubirArchivoDrive("file"+valor.IDDET,"","recibo"+valor.IDDET,'RECIBOREINS','pdf',
+			'ID',valor.IDDET,'RECIBO DE PAGO '+txtop,'eadjreinsres','alta',valor.IDDET,cadRuta,activaEliminar);	
+		}
+		else {
+			$("#file"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
+						"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a>");				
+		}
+
 		n++;
 	 });
 	$('#dlgproceso').modal("hide"); 
