@@ -183,7 +183,7 @@ function generaTablaInformacion(grid_data){
 			'ID',valor.IDDET,'RECIBO DE PAGO '+txtop,'eadjreinsres','alta',valor.IDDET,cadRuta,activaEliminar);	
 		}
 		else {
-			if (valor.RUTARES=="") {
+			if (!(valor.RUTARES=="")) {
 		      	$("#file"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
 						"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a>");
 			}				
