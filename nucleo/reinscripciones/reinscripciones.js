@@ -909,6 +909,7 @@ function guardarRegistros(){
 		url:"../base/grabadetalle.php",
 		data: parametros,
 		success: function(data){
+			console.log(data);
 			if (data.length>0) {alert ("Ocurrio un error: "+data);}
 			ocultarEspera("guardandoReins");
 			
@@ -934,10 +935,8 @@ function guardarRegistros(){
 	type: "POST",
 	url:"../base/actualiza.php",
 	data: parametros,
-	success: function(data){  
-   			    		
+	success: function(data){     			    		
 		$('#dlgproceso').modal("hide");
-		cargarInformacion();
 	   }		
 	}); 
 
