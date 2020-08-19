@@ -135,7 +135,7 @@
                 " cmaterias f , pempleados g  where  ".
                 "e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE".
                 " and PDOCVE='".$_GET["ciclo"]."'".  	                    
-                " AND e.ALUCTR='".$_GET["matricula"]."' and e.BAJA='N' and CERRADO='N' and IFNULL(MATE_TIPO,'0') NOT IN ('I','OC','T')".
+                " AND e.ALUCTR='".$_GET["matricula"]."' and e.BAJA='N' and CERRADO='S' and IFNULL(MATE_TIPO,'0') NOT IN ('I','OC','T')".
                 " order by PDOCVE DESC";
                 
                 
