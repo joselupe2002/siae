@@ -161,7 +161,7 @@ function nuevoPago(){
 							   "</div>");
 		
 		$("#lostipos").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
-		addSELECT("selTiposPagos","lostipos","PROPIO", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOSPAGOS' order by CATA_DESCRIP", "","");  	
+		addSELECT("selTiposPagos","lostipos","PROPIO", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOSPAGOS' and CATA_ACTIVO='S' order by CATA_DESCRIP", "","");  	
 	}
 	else {alert ("Por favor elija primero el ciclo escolar actual");}
 
