@@ -99,7 +99,7 @@
 		$dataGen = $pdf->LoadDatosGen();
 	
 	
-		$dataof=$miutil->verificaOficio("521","COMISION",$_GET["id"]);
+		$dataof=$miutil->verificaOficio("521","CARTPRES",$_GET["id"]);
 		
 		$fechadecof=$miutil->formatFecha($dataof[0]["CONT_FECHA"]);
 		$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
