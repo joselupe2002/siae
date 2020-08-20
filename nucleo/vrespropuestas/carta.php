@@ -127,8 +127,8 @@
 
 		$pdf->SetFont('Montserrat-Medium','',9);
 		$elperiodo='del '.$fechaini.' al '.$fechafin;
-		$pdf->MultiCell(0,5,utf8_decode('El Instituto Tecnológico Superior de Macuspana, tiene a bien presentar a sus finas atenciones a (la) C ').
-		utf8_decode($data[0]["NOMBRE"]).utf8_decode("con número de control ").utf8_decode($data[0]["MATRICULA"]).
+		$pdf->MultiCell(0,5,utf8_decode('El Instituto Tecnológico Superior de Macuspana, tiene a bien presentar a sus finas atenciones a (la) C. ').
+		utf8_decode($data[0]["NOMBRE"]).utf8_decode(" con número de control ").utf8_decode($data[0]["MATRICULA"]).
 		utf8_decode(', de la carrera de ').utf8_decode($data[0]["CARRERAD"]).utf8_decode(", quien desea desarrollar en esa empresa su proyecto ".
 		"de Residencia Profesional, por lo que se requiere de ser aceptado(a), nos proporcione el nombre del proyecto en la ".
 		"que realizara sus actividades y el nombre del departamento al cuál será asignado; así mismo se le informa que cubrirá ".
