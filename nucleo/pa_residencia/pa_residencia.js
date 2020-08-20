@@ -159,7 +159,7 @@ var miciclo="";
 										losdatos=JSON.parse(data); 						
 										if ((porcProyectado>=80) && (losdatos[0][0]<=0)) {
 											$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
-															   "  Podrías cursar la Residencia Profesional, si llegas a cursar todas las asignaturas de el semestre no cerrado"+
+															   "  Podrías alcanzar los crédtios para la Residencia Profesional, si apruebas todas las asignaturas de el semestre no cerrado"+
 															   "</div>");		   
 										}
 										if ((porcProyectado<70) && (losdatos[0][0]<=0)) {
@@ -175,7 +175,7 @@ var miciclo="";
 
 										if ((porcReal>=70) && (losdatos[0][0]<=0)) {
 											$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
-															   "    Ya puede cursar La Residencia Profesional"+
+															   "    Ya cumples el requisito de los crédtios para cursar La Residencia Profesional"+
 															   "</div>");													
 											OpcionesResidencia();
 										}
@@ -193,13 +193,54 @@ var miciclo="";
    }  
 
 
-   function OpcionesResidencia(){
+function cargarDatosPropuesta(tipo){
+	$("#servicio").append("<div class=\"fontRobotoB\" id=\"lapropuesta\" style=\"text-align:left;\"></div>");
 
+	$("#lapropuesta").append("<div class=\"row\">"+
+								 "<div class=\"col-sm-6\"> "+
+									"<label>Nombre de la Empresa</label><input class=\"form-control\" id=\"empresa\"></input>"+
+								"</div>"+
+								"<div class=\"col-sm-6\"> "+
+								    "<label>Persona para Oficio</label><input class=\"form-control\" id=\"persona\"></input>"+
+								"</div>");
+
+	$("#lapropuesta").append("<div class=\"row\">"+
+								"<div class=\"col-sm-6\"> "+
+								   "<label>Puesto de la Persona</label><input class=\"form-control\" id=\"puesto\"></input>"+
+							   "</div>"+
+							   "<div class=\"col-sm-6\"> "+
+								   "<label>Dirección Empresa, (Calle, número, ciudad, estado) </label><input class=\"form-control\" id=\"direccion\"></input>"+
+							   "</div>");
+
+	$("#lapropuesta").append("<div class=\"row\">"+
+								 "<div class=\"col-sm-6\"> "+
+									"<label>Inicia Residencia</label>"+
+									" <div class=\"input-group\"><input  class=\"form-control date-picker\"  id=\"inicia\" "+
+									" type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
+									" <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
+								"</div>"+
+								"<div class=\"col-sm-6\"> "+
+									"<label>Termina Residencia</label>"+
+									" <div class=\"input-group\"><input  class=\"form-control date-picker\"  id=\"termina\" "+
+									" type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
+									" <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
+								"</div>");
+	$("#lapropuesta").append("<br><div style=\"text-align:center;\"><button  onclick=\"enviarPropuesta();\" class=\"btn  btn-bold btn-danger\" value=\"Agregar\">"+
+	                         "     <i class=\"ace-icon white fa fa-save bigger-200\"></i><span class=\"btn-lg\">Enviar propuesta</span>"+
+	                         "</button></div>");								
+
+	//Para los componentes de fecha 
+    $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+   }
+
+
+
+   function OpcionesResidencia(){
 	var abierto=false;
 	elsql="select count(*) as N from ecortescal where  CICLO='"+miciclo+"'"+
 	" and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
 	" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
-	" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='SOLRESPROF' "+
+	" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='RESPROF' "+
 	" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -208,107 +249,28 @@ var miciclo="";
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
 		success: function(data){	
-			if (JSON.parse(data)[0]["N"]>0) {				
-					elsql="select CLAVE, DOCGEN_RUTA FROM edocgen where CLAVE IN ('SOLSS','CARCOMSS') ORDER BY CLAVE";
+			if (JSON.parse(data)[0]["N"]>0) {	
+					// Verficamos si ya envio su propuesta de empresa. 
+					var abierto=false;
+					elsql="select a.*, count(*) as HAY FROM respropuestas a where MATRICULA='"+usuario+"' and CICLO='"+miciclo+"'";
 					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		
 					$.ajax({
-						type: "POST",
-						data:parametros,
-						url:  "../base/getdatossqlSeg.php",
-						success: function(data){ 
-							losdatos=JSON.parse(data); 
-						
-							$("#servicio").append("<div class=\"row\">"+
-												"    <div class=\"col-sm-2\"> "+
-												"       <a href=\""+losdatos[1][1]+"\" target=\"_blank\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
-												"       <span  class=\"badge badge-success\">1. Bajar Solicitud</span>"+
-												"    </div>"+
-												"    <div class=\"col-sm-2\"> "+
-												"       <a href=\""+losdatos[0][1]+"\" target=\"_blank\"> <img src=\"../../imagenes/menu/word.png\" height=\"40px;\" width=\"40px;\"> </img></a>"+
-												"       <span  class=\"badge badge-success\">2. Bajar Carta Compromiso</span>"+
-												"    </div>"+
-												"</div>"+
-												"<div class=\"row\" style=\"text-align:left;\">"+
-												"    <div class=\"col-sm-12\"> "+
-												"     <div id=\"documentos\" class=\"col-sm-12\" ></div>"+
-												"    </div>"+
-												"</div>"
-							);
-
-							
-							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_SOLSS'";
-							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-							$.ajax({
-								type: "POST",
-								data:parametros,
-								url:  "../base/getdatossqlSeg.php",
-								success: function(data2){ 
-									laruta=""; 
-									activaEliminar="S";
-									losdatos2=JSON.parse(data2); 	
-					
-									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
-									
-												
-									dameSubirArchivoDrive("documentos","Subir Solicitud debidamente requisitada y firmadas ","solss",'RECIBOREINS','pdf',
-									'ID',usuario,'SOLICITUD DE SERVICIO ','eadjreins','alta',usuario+"_"+miciclo+"_SS_SOLSS",laruta,activaEliminar);
-								}
-							});
-
-							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOCONS'";
-							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-							$.ajax({
-								type: "POST",
-								data:parametros,
-								url:  "../base/getdatossqlSeg.php",
-								success: function(data2){ 
-									laruta=""; 
-									activaEliminar="S";
-									losdatos2=JSON.parse(data2); 	
-									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
-									dameSubirArchivoDrive("documentos","Subir Pago por concepto de Constancia de Estudios ","pagocons",'RECIBOREINS','pdf',
-									'ID',usuario,'RECIBO DE PAGO CONSTANCIA','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOCONS",laruta,activaEliminar);
-								}
-							});
-
-							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_CARTACOM'";
-							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-							$.ajax({
-								type: "POST",
-								data:parametros,
-								url:  "../base/getdatossqlSeg.php",
-								success: function(data2){ 
-									laruta=""; 
-									activaEliminar="S";
-									losdatos2=JSON.parse(data2); 	
-									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
-									dameSubirArchivoDrive("documentos","Subir Carta Compromiso debidamente requisitada y firmadas ","cartacom",'RECIBOREINS','pdf',
-									'ID',usuario,'CARTA COMPROMISO SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_CARTACOM",laruta,activaEliminar);
-								}
-							});
-
-							elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_SS_PAGOAPERSS'";
-							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-							$.ajax({
-								type: "POST",
-								data:parametros,
-								url:  "../base/getdatossqlSeg.php",
-								success: function(data2){ 
-									laruta=""; 
-									activaEliminar="S";
-									losdatos2=JSON.parse(data2); 	
-									if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-															activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
-									dameSubirArchivoDrive("documentos","Subir Pago por concepto de apertura Servicio Social","pagoaperss",'RECIBOREINS','pdf',
-									'ID',usuario,'RECIBO DE APERTURA SERVICIO SOCIAL','eadjreins','alta',usuario+"_"+miciclo+"_SS_PAGOAPERSS",laruta,activaEliminar);
-								}
-							});
-
-						}
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data){	
+								losdatos=JSON.parse(data); 
+								if (losdatos[0]["HAY"]>0) {								
+										$("#servicio").append("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
+										"    Tu Solicitud ya fue enviada"+
+										"</div>");
+									}
+									 
+								else {cargarDatosPropuesta(0);}
+							}
 					});
+
 				} //DEL SI ESTA ABIERO 
 				else { console.log("No hay proceso abierto para solicitud de Residencia Profesional");
 						$("#servicio").append("<div class=\"row\">"+
@@ -318,8 +280,37 @@ var miciclo="";
 				}
 			}
 		}); //del ajax de busqueda de corte abierto 
-
 	}
-
-
-    
+	
+	function enviarPropuesta(){
+		var hoy= new Date();
+		lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
+		parametros={tabla:"respropuestas",
+					bd:"Mysql",
+					_INSTITUCION:"ITSM",
+					_CAMPUS:"0",
+					MATRICULA:usuario,
+					CICLO:miciclo,
+					EMPRESA:$("#empresa").val(),
+					PUESTO:$("#puesto").val(),
+					DOMICILIO:$("#direccion").val(),
+					PERSONA:$("#persona").val(),
+					EMPRESA:$("#empresa").val(),
+					INICIA:$("#inicia").val(),
+					TERMINA:$("#termina").val(),
+					FECHAENVIADA:lafecha,
+					USUARIO:usuario,
+					FECHAUS:lafecha
+				};
+					$.ajax({
+						   type: "POST",
+						   url:"../base/inserta.php",
+						   data: parametros,
+						   success: function(data){ 
+							   $("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
+							   "    Tu Solicitud ya fue enviada"+
+							   "</div>");						
+							}
+						});
+	
+	}
