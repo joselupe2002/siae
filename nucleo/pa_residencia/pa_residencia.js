@@ -52,7 +52,7 @@ var miciclo="";
 		 
 	function cargarAvance() {
 
-		elsql="select ALUM_MATRICULA, ALUM_FOTO, ALUM_MAPA, ALUM_ESPECIALIDAD,"+ 
+		elsql="select ALUM_MATRICULA, ALUM_CORREO, ALUM_FOTO, ALUM_MAPA, ALUM_ESPECIALIDAD,"+ 
 		"CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) as ALUM_NOMBREC,"+
 		"b.CLAVEOF as CVEESP, b.DESCRIP AS ESPECIALIDADD, ALUM_CARRERAREG, CARR_DESCRIP AS CARRERAD, PLACRED "+
 		" from falumnos a "+
@@ -74,6 +74,7 @@ var miciclo="";
 			   $("#mapa").html(losdatos[0]["ALUM_MAPA"]); 
 			   $("#especialiad").html(losdatos[0]["CVEESP"]+" "+losdatos[0]["ESPECIALIDADD"]);
 			   $("#carrera").html(losdatos[0]["ALUM_CARRERAREG"]+" "+losdatos[0]["CARRERAD"]);
+			   $("#micorreo").html(losdatos[0]["ALUM_CORREO"]);
 
 			   totalcred=losdatos[0]["PLACRED"];
 			   elmapa=losdatos[0]["ALUM_MAPA"];
@@ -283,34 +284,36 @@ function cargarDatosPropuesta(tipo){
 	}
 	
 	function enviarPropuesta(){
-		var hoy= new Date();
-		lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
-		parametros={tabla:"respropuestas",
-					bd:"Mysql",
-					_INSTITUCION:"ITSM",
-					_CAMPUS:"0",
-					MATRICULA:usuario,
-					CICLO:miciclo,
-					EMPRESA:$("#empresa").val(),
-					PUESTO:$("#puesto").val(),
-					DOMICILIO:$("#direccion").val(),
-					PERSONA:$("#persona").val(),
-					EMPRESA:$("#empresa").val(),
-					INICIA:$("#inicia").val(),
-					TERMINA:$("#termina").val(),
-					FECHAENVIADA:lafecha,
-					USUARIO:usuario,
-					FECHAUS:lafecha
-				};
-					$.ajax({
-						   type: "POST",
-						   url:"../base/inserta.php",
-						   data: parametros,
-						   success: function(data){ 
-							   $("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
-							   "    Tu Solicitud ya fue enviada"+
-							   "</div>");						
-							}
-						});
+		if (($("#puesto").val()!='') && ($("#persona").val()!='') && ($("#inicia").val()!='') && ($("#empresa").val()!='') && ($("#domicilio").val()!='')) {
+			var hoy= new Date();
+			lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
+			parametros={tabla:"respropuestas",
+						bd:"Mysql",
+						_INSTITUCION:"ITSM",
+						_CAMPUS:"0",
+						MATRICULA:usuario,
+						CICLO:miciclo,					
+						PUESTO:$("#puesto").val().toUpperCase(),
+						DOMICILIO:$("#direccion").val().toUpperCase(),
+						PERSONA:$("#persona").val().toUpperCase(),
+						EMPRESA:$("#empresa").val().toUpperCase(),
+						INICIA:$("#inicia").val(),
+						TERMINA:$("#termina").val(),
+						FECHAENVIADA:lafecha,
+						USUARIO:usuario,
+						FECHAUS:lafecha
+					};
+						$.ajax({
+							type: "POST",
+							url:"../base/inserta.php",
+							data: parametros,
+							success: function(data){ 
+								$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
+								"    Tu Solicitud ya fue enviada"+
+								"</div>");						
+								}
+							});
+						}
+		else {alert ("Todos los datos son necesarios, por favor llene todos los campos");}
 	
 	}

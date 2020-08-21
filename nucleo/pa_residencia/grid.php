@@ -111,6 +111,11 @@
 					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
 						<span class="fontRoboto" id="carrera"></span>
 					</div>
+				</div>	
+				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Correo:</div>
+					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+						<span class="fontRobotoB text-success"  id="micorreo"></span>
+					</div>
 				</div>			
 			</div>
 			<br>
