@@ -262,6 +262,7 @@ function generaTablaAlumnos(grid_data){
 	$("#cuerpoReinsAlum").empty();
 	$("#tabHorariosAlum").append("<tbody id=\"cuerpoReinsAlum\">");
 
+	contFilaAlum=0;
 	jQuery.each(grid_data, function(clave, valor) { 	 	
 	
 	    $("#cuerpoReinsAlum").append("<tr id=\"rowRAlum"+contFilaAlum+"\">");
