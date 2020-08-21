@@ -222,10 +222,10 @@ function cargarAlumnos(){
 	   "                <th>Matricula</th> "+	   
 	   "                <th>Nombre</th> "+	
 	   "                <th>Paterno</th> "+	   
-	   "                <th>Materno</th> "+	  
+	   "                <th>Materno</th> "+	 
+	   "                <th>Ciudad</th> "+ 
 	   "                <th>Dirección</th> "+ 
-	   "                <th>Carrera</th> "+	   	   
-	   "                <th>Ciudad</th> "+
+	   "                <th>Carrera</th> "+	   	   	   
 	   "                <th>Municipio</th> "+
 	   "                <th>Estado</th> "+	   
 	   "             </tr> "+
@@ -285,9 +285,10 @@ function generaTablaAlumnos(grid_data){
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.APEPAT+"</td>");
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.APEMAT+"</td>");
 		
+		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.CIUDADRES+"</td>");
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.CALLE+"</td>");
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.CARRERA+"</td>");
-		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.CIUDADRES+"</td>");
+		
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.MUNRESD+"</td>");
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.ESTRESD+"</td>");
 					
