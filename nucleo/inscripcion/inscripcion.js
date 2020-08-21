@@ -356,6 +356,7 @@ function guardarRegistros(matricula){
 		url:"../base/grabadetalle.php",
 		data: parametros,
 		success: function(data){
+			console.log(data);
 			$("#INS_"+matricula).html("<i class=\"fa fa-check-circle-o\"></i>");
 
 			if (data.length>0) {alert ("Ocurrio un error: "+data);}	
