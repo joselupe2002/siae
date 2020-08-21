@@ -149,7 +149,7 @@
         if (elemento=='selCiclos') {
 		
 			actualizaSelect("selProfesores","select distinct PROFESOR, CONCAT( PROFESORD ,' ',PROFESOR) from vcargasprof where CICLO='"+
-										$("#selCiclos").val()+"' and CARRERA not in (12,10) ORDER BY PROFESORD","BUSQUEDA");
+										$("#selCiclos").val()+"' and CARRERA not in (12) ORDER BY PROFESORD","BUSQUEDA");
 										
 			
 			}
@@ -229,7 +229,7 @@
 function cargarAct(){
 		$('#dlgproceso').modal({show:true, backdrop: 'static'});
 		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
-			  " FROM vcargasprof a where  PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' AND CARRERA NOT IN (10)";
+			  " FROM vcargasprof a where  PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' AND CARRERA NOT IN (12)";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
 	    $.ajax({
 			   type: "POST",
