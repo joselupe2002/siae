@@ -217,8 +217,7 @@ function cargarAlumnos(){
 			">"+
 		  "        <thead>  "+
 	   "             <tr>"+
-	   "                <th><input type=\"checkbox\" checked =\"true\" id=\"chkTodosAlum\" onclick=\"selTodosAlum();\"/>Sel</th> "+	
-	   "                <th>R</th> "+	
+	   "                <th><input type=\"checkbox\" checked =\"true\" id=\"chkTodosAlum\" onclick=\"selTodosAlum();\"/>Sel</th> "+		
 	   "                <th>Matricula</th> "+	   
 	   "                <th>Nombre</th> "+	
 	   "                <th>Paterno</th> "+	   
@@ -279,8 +278,7 @@ function generaTablaAlumnos(grid_data){
 		
 		cadIns="";
 		if (valor.INS>0) cadIns="<i>"+valor.INS+"</i>";
-
-		$("#rowRAlum"+contFilaAlum).append("<td>"+contFila+"</td>");		
+		
 		$("#rowRAlum"+contFilaAlum).append("<td <label id=\"cAlum_"+contFila+"_0\" class=\"small text-info font-weight-bold\">"+valor.MATRICULA+"</label</td>");		
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\"><span class=\"badge badge-primary\" id=\"INS_"+valor.MATRICULA+"\">"+cadIns+"</span>"+valor.NOMBRE+"</td>");
 		$("#rowRAlum"+contFilaAlum).append("<td style=\"font-size:10px;\">"+valor.APEPAT+"</td>");
