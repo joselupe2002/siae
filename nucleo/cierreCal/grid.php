@@ -229,7 +229,7 @@
 function cargarAct(){
 		$('#dlgproceso').modal({show:true, backdrop: 'static'});
 		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, CERRADOCAL "+                
-			  " FROM vcargasprof a where  PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' AND CARRERA NOT IN (12,10)";
+			  " FROM vcargasprof a where  PROFESOR='"+$("#selProfesores").val()+"' and CICLO='"+$("#selCiclos").val()+"' AND CARRERA NOT IN (10)";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}			   
 	    $.ajax({
 			   type: "POST",
