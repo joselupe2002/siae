@@ -262,7 +262,7 @@ function generaTablaAlumnos(grid_data){
 	$("#cuerpoReinsAlum").empty();
 	$("#tabHorariosAlum").append("<tbody id=\"cuerpoReinsAlum\">");
 
-	contFilaAlum=0;
+	contFilaAlum=1;
 	jQuery.each(grid_data, function(clave, valor) { 	 	
 	
 	    $("#cuerpoReinsAlum").append("<tr id=\"rowRAlum"+contFilaAlum+"\">");
@@ -376,7 +376,8 @@ function inscribir(){
 //	if (($("#selCarreras").val()>0) && ($("#selGrupos").val()>0)) {
 		mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
 		for (u=1; u<contFilaAlum; u++){
-			cad="";		
+			cad="";	
+			console.log("INS:"+$("#cAlum_"+u+"_99").attr("matricula"));	
 			if ($("#cAlum_"+u+"_99").prop("checked")) {			
 				guardarRegistros($("#cAlum_"+u+"_99").attr("matricula"));
 			}
