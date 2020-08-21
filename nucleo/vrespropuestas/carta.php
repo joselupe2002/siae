@@ -119,9 +119,9 @@
 		$pdf->SetFont('Montserrat-ExtraBold','B',10);
 		$pdf->Ln(10);
 
-		$pdf->Cell(0,4,utf8_decode(strtoupper ($data[0]["PERSONA"])),0,1,'L');
-		$pdf->Cell(0,4,utf8_decode(strtoupper ($data[0]["PUESTO"])),0,1,'L');
-		$pdf->MultiCell(100,5,utf8_decode(strtoupper ($data[0]["EMPRESA"])),0,'L',false);
+		$pdf->Cell(0,4,mb_strtoupper($data[0]["PERSONA"],'utf-8'),0,1,'L');
+		$pdf->Cell(0,4,mb_strtoupper($data[0]["PUESTO"],'utf-8'),0,1,'L');
+		$pdf->MultiCell(100,5,mb_strtoupper($data[0]["EMPRESA"],'utf-8'),0,'L',false);
 
 		$pdf->Ln(10);
 
