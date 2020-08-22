@@ -13,13 +13,41 @@ include("../.././includes/Conexion.php");
 $miConex = new Conexion();
 
 
+$inputFileName='lista.xlsx';
+$sheetnames='VALO';
+echo "<br/>OK 1-A";
+/**  GESTION DU FICHIER EXCEL  **/
+/**  Identify the type of $inputFileName  **/
+$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+echo '<br/>File ',pathinfo($inputFileName,PATHINFO_BASENAME),' has been identified as an ',$inputFileType,' file<br />';
+echo "OK 1-B<br/>";
+/**  Create a new Reader of the type that has been identified  **/
+echo 'Loading file ',pathinfo($inputFileName,PATHINFO_BASENAME),' using IOFactory with the identified reader type<br />';
+$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+echo "OK 1-C<br/>";
+/**  Advise the Reader that we only want to load cell data  **/
+echo 'Turning Formatting off for Load<br />';
+$objReader->setReadDataOnly(true);
+echo "OK 1-D<br/>";
+/**  Advise the Reader of which WorkSheets we want to load  **/ 
+echo 'Loading Sheet "',$sheetnames,'" only<br />';
+$objReader->setLoadSheetsOnly($sheetnames); 
+echo "OK 1-E<br/>";
+/**  Load $inputFileName to a PHPExcel Object  **/
+$objPHPExcel = $objReader->load($inputFileName);
+echo "OK 1-F<br/>";
+/**  Selection de la feuille EXCEL  **/
+$sheetData = $objPHPExcel->getSheetByName($sheetnames);
+echo "OK 1-G";
+
+/*
 $objPHPExcel = new PHPExcel();
 
   //initialize cache, so the phpExcel will not throw memory overflow
   $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
   $cacheSettings = array(' memoryCacheSize ' => '8MB');
   PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
-  
+
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("lista.xlsx");
 $objPHPExcel->setActiveSheetIndex(0);
@@ -93,7 +121,7 @@ header('Cache-Control: max-age=0');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
 
-
+*/
 
 } else {header("Location: index.php");}
 
