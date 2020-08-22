@@ -12,20 +12,12 @@ require_once '../../PHPExcel/Classes/PHPExcel/Reader/Excel2007.php';
 include("../.././includes/Conexion.php");
 $miConex = new Conexion();
 
-/*
+
 $objPHPExcel = new PHPExcel();
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("lista.xlsx");
 $objPHPExcel->setActiveSheetIndex(0);
-*/
 
-
-
-phpinfo();
-
-echo "entre bien ";
-
-/*
 
 
 $resultado=$miConex->getConsulta($_SESSION["bd"],"select MATE_DESCRIP from cmaterias s where MATE_CLAVE='".$_GET['materia']."'");
@@ -94,7 +86,7 @@ header('Content-Disposition: attachment;filename="'.$_GET['grupo'].'-'.$_GET['ma
 header('Cache-Control: max-age=0');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
-*/
+
 
 
 } else {header("Location: index.php");}
