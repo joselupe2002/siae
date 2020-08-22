@@ -14,6 +14,12 @@ $miConex = new Conexion();
 
 
 $objPHPExcel = new PHPExcel();
+
+  //initialize cache, so the phpExcel will not throw memory overflow
+  $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
+  $cacheSettings = array(' memoryCacheSize ' => '8MB');
+  PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+  
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("lista.xlsx");
 $objPHPExcel->setActiveSheetIndex(0);
