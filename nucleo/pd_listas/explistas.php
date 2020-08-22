@@ -15,7 +15,7 @@ $miConex = new Conexion();
 
 $objPHPExcel = new PHPExcel();
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
-//$objPHPExcel = $objReader->load("../../file/Lista.xlsx");
+$objPHPExcel = $objReader->load("../../file/Lista.xlsx");
 $objPHPExcel->setActiveSheetIndex(0);
 
 
