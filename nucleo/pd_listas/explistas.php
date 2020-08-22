@@ -13,7 +13,7 @@ include("../.././includes/Conexion.php");
 $miConex = new Conexion();
 
 
-$inputFileName='lista.xlsx';
+$inputFileName='listab.xls';
 $sheetnames='VALO';
 echo "<br/>OK 1-A";
 /**  GESTION DU FICHIER EXCEL  **/
