@@ -19,12 +19,9 @@ $objPHPExcel = $objReader->load("lista.xlsx");
 $objPHPExcel->setActiveSheetIndex(0);
 */
 
-$file_name = 'excel_file.xlsx';
-$objReader = new PHPExcel_Reader_Excel2007();
-$objPHPExcel = $objReader->load("lista.xlsx");
-$objPHPExcel->setActiveSheetIndex(0);
 
 
+phpinfo();
 
 echo "entre bien ";
 
