@@ -31,6 +31,8 @@ foreach ($resultado2 as $row) {
 	$elProfe=$row[0];
 }
 
+
+/*
 $objPHPExcel->getActiveSheet()->SetCellValue('D5',utf8_encode($_GET['materia']."-".$descMat));
 $objPHPExcel->getActiveSheet()->SetCellValue('D6', utf8_encode($_GET['profesor']."-".$elProfe));
 $objPHPExcel->getActiveSheet()->SetCellValue('D7', $_GET['letra']);
@@ -71,7 +73,7 @@ foreach ($resultado2 as $row) {
 
 
 
-/*
+
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="'.$_GET['grupo'].'-'.$_GET['materia'].'.xlsx"');
 header('Cache-Control: max-age=0');
