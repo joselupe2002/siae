@@ -13,6 +13,8 @@ $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("../../file/Lista.xlsx");
 $objPHPExcel->setActiveSheetIndex(0);
 
+/*
+
 $resultado=$miConex->getConsulta($_SESSION["bd"],"select MATE_DESCRIP from cmaterias s where MATE_CLAVE='".$_GET['materia']."'");
 foreach ($resultado as $row) {
 	$descMat=$row[0];
@@ -32,7 +34,7 @@ foreach ($resultado2 as $row) {
 }
 
 
-/*
+
 $objPHPExcel->getActiveSheet()->SetCellValue('D5',utf8_encode($_GET['materia']."-".$descMat));
 $objPHPExcel->getActiveSheet()->SetCellValue('D6', utf8_encode($_GET['profesor']."-".$elProfe));
 $objPHPExcel->getActiveSheet()->SetCellValue('D7', $_GET['letra']);
