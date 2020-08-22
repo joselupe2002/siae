@@ -19,7 +19,7 @@ foreach ($resultado as $row) {
 }
 
 
-$resultado2=$miConex->getConsulta($_SESSION["bd"],"select GRUP_CICLO from egrupos s where s.grup_clave='".$_GET['grupo']."'");
+$resultado2=$miConex->getConsulta($_SESSION["bd"],"select DGRU_CICLO from edgrupos s where s.DGRU_ID='".$_GET['grupo']."'");
 foreach ($resultado2 as $row) {
 	$elCiclo=$row[0];
 }
@@ -33,7 +33,7 @@ foreach ($resultado2 as $row) {
 
 $objPHPExcel->getActiveSheet()->SetCellValue('D5',utf8_encode($_GET['materia']."-".$descMat));
 $objPHPExcel->getActiveSheet()->SetCellValue('D6', utf8_encode($_GET['profesor']."-".$elProfe));
-$objPHPExcel->getActiveSheet()->SetCellValue('D7', $_GET['grupo']);
+$objPHPExcel->getActiveSheet()->SetCellValue('D7', $_GET['letra']);
 
 $letras = array("D", "E", "F", "G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
 		"AA","AB","AC","AD", "AE", "AF", "AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ",
