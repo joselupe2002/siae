@@ -2,18 +2,23 @@
 
 session_start(); if (($_SESSION['inicio']==1)) {
 
+
+echo "entre";
+
+/*
 require_once '../../PHPExcel/Classes/PHPExcel.php';
 require_once '../../PHPExcel/Classes/PHPExcel/IOFactory.php';
 require_once '../../PHPExcel/Classes/PHPExcel/Reader/Excel2007.php';
 include("../.././includes/Conexion.php");
 $miConex = new Conexion();
 
+
 $objPHPExcel = new PHPExcel();
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("../../file/Lista.xlsx");
 $objPHPExcel->setActiveSheetIndex(0);
 
-/*
+
 
 $resultado=$miConex->getConsulta($_SESSION["bd"],"select MATE_DESCRIP from cmaterias s where MATE_CLAVE='".$_GET['materia']."'");
 foreach ($resultado as $row) {
