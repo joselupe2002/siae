@@ -69,7 +69,8 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">EXAMEN</th>"+
 	"<th style=\"text-align: center;\">RESULTADOS</th>"+
 	"<th style=\"text-align: center;\">REINSCRIPCIÓN</th>"+
-	"<th style=\"text-align: center;\">CIERRES</th>"
+	"<th style=\"text-align: center;\">EGRESADOS</th>"+
+	"<th style=\"text-align: center;\">BAJAS</th>"
 	); 
 
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
@@ -121,6 +122,12 @@ function generaTablaInformacion(grid_data){
 							"<i class=\"ace-icon green blue glyphicon glyphicon-education bigger-140\"></i><span class=\"btn-small\"> "+
 							" </span></button>"+
 		 "</td>");  
+		 $("#row"+c).append("<td>"+
+							"<button title=\"Marcar como bajas definitivas alumnos por reglamento\" onclick=\"bajaDefinitiva('"+valor.CICL_CLAVE+"');\" "+
+							" class=\"btn btn-white btn-info btn-round\" >"+ 
+							"<i class=\"ace-icon red red fa fa-times-circle bigger-140\"></i><span class=\"btn-small\"> "+
+							" </span></button>"+
+					"</td>");  
 		 
 	
 
@@ -152,22 +159,173 @@ function setStatus(ciclo,elcampo){
 
 }
 
+function bajaDefinitiva(ciclo){
+	mostrarEspera("esperahor","grid_procciclos","Procesando..");
+    if (confirm("Le recordamos que primero se debe correr el botón Egresados. ¿Seguro desea aplicar las bajas definitivas para el ciclo "+ciclo+" ? ")) {
+		mostrarIfo("infoEval","grid_procciclos","Alumnos que aplicaron Baja Definitiva",
+		"<div style=\"text-align:justify;\" id=\"lisegre\"></div>","modal-lg");
 
-function asignarRol(ciclo){
-    if (confirm("¿Seguro desea asignar rol y status a los egresados?")) {
-		elsql="select * from falumnos a,dlista b where a.ALUM_MATRICULA=b.ALUCTR "+
-		      "and PDOCVE='"+ciclo+"' and a.ALUM_ACTIVO<>5"+ 
-		      "and getavanceCred(ALUM_MATRICULA)>=100"; // and CERRADO='S'
-		
-	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		lafecha=dameFecha("FECHAHORA");
+	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",ciclo:ciclo}
 		$.ajax({
 		type: "POST",
 		data:parametros,
-		url:  "../base/getdatossqlSeg.php",
-		success: function(data){ 		          	
-		    generaTablaInformacion(JSON.parse(data));   
-			ocultarEspera("esperaInf");     	     		   
+		url:  "getBajasDef.php",
+		success: function(data){ 
+            
+			elsql="select ALUM_MATRICULA, ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT, ALUM_CARRERAREG FROM falumnos a, inscritos c where  "+
+			"a.ALUM_MATRICULA=c.MATRICULA and  c.BAJA='S' AND ALUM_ACTIVO<>4";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}     	
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){ 
+      
+					jQuery.each(JSON.parse(data), function(clave, valor) { 
+						 //actualizamos tabla de alumnos
+						 parametros={
+							tabla:"falumnos",
+							bd:"Mysql",
+							campollave:"ALUM_MATRICULA",
+							valorllave:valor.ALUM_MATRICULA,
+							ALUM_ACTIVO: '4'						
+							};
+							$.ajax({
+								type: "POST",
+								url:"../base/actualiza.php",
+								data: parametros,
+								success: function(data){        			        	
+																			 
+							},
+							error: function(data) {	                  
+									alert('ERROR: '+data);
+								}					     
+							}); 
+
+							 //INSERTAMOS AL ALUMNOS EN CAJA DEFINITIVA
+							 parametros={tabla:"ebajas",
+							 bd:"Mysql",
+							 _INSTITUCION:"ITSM",
+							 _CAMPUS:"0",
+							 MATRICULA:valor.ALUM_MATRICULA,
+							 CICLO:ciclo,
+							 MOTIVO:"BAJA POR REGLAMENTO-AUTOMÁTICA",							
+							 TIPOBAJA: 4,
+							 FECHABAJA:lafecha,
+							 OBS: "BAJA DADA POR SIGEA",
+							 FECHAUS:lafecha,
+							 USUARIOS:usuario
+							 };     
+						 $.ajax({
+								 type: "POST",
+								 url:"../base/inserta.php",
+								 data: parametros,
+								 success: function(data){ 
+												
+								 }
+							 });
+
+						$("#lisegre").append("<i class=\"fa fa-times-circle red bigger-160\"> <span class=\"badge badge-success\">"+valor.ALUM_MATRICULA+"</span>"+
+											 "<span class=\"text text-danger\">"+valor.ALUM_NOMBRE+" "+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+"</span>");
+						
+					});	          	
 				
+					ocultarEspera("esperahor");     	     		   				
+				},
+				error: function(data) {	                  
+						alert('ERROR: '+data);
+						$('#dlgproceso').modal("hide");  
+					}
+				}); 		     		   				
+		},
+		error: function(data) {	                  
+				alert('ERROR: '+data);
+				$('#dlgproceso').modal("hide");  
+			}
+		}); 	
+			  		
+
+	}
+
+}
+
+
+function asignarRol(ciclo){
+	mostrarEspera("esperahor","grid_procciclos","Procesando..");
+    if (confirm("¿Seguro desea asignar rol y status a los egresados?")) {
+		mostrarIfo("infoEval","grid_procciclos","Alumnos Egresados",
+		"<div style=\"text-align:justify;\" id=\"lisegre\"></div>","modal-lg");
+
+	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",ciclo:ciclo}
+		$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "getEgresados.php",
+		success: function(data){ 	
+
+			elsql="select ALUM_MATRICULA, ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT, ALUM_CARRERAREG FROM falumnos a, inscritos c where  "+
+			"a.ALUM_MATRICULA=c.MATRICULA and  c.EGRESADO='S' AND ALUM_ACTIVO<>5";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}     	
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){ 
+
+					jQuery.each(JSON.parse(data), function(clave, valor) { 
+						 //actualizamos tabla de alumnos
+						 parametros={
+							tabla:"falumnos",
+							bd:"Mysql",
+							campollave:"ALUM_MATRICULA",
+							valorllave:valor.ALUM_MATRICULA,
+							ALUM_ACTIVO: '5', 
+							ALUM_CICLOTER: ciclo						
+							};
+							$.ajax({
+								type: "POST",
+								url:"../base/actualiza.php",
+								data: parametros,
+								success: function(data){        			        	
+																			 
+							},
+							error: function(data) {	                  
+									alert('ERROR: '+data);
+								}					     
+							}); 
+
+							 //actualizamos tabla de usuarios
+							 parametros={
+								tabla:"cusuarios",
+								bd:"SQLite",
+								campollave:"usua_usuario",
+								valorllave:valor.ALUM_MATRICULA,
+								usua_usuader: 'EGRESADOS'					
+								};
+								$.ajax({
+									type: "POST",
+									url:"../base/actualiza.php",
+									data: parametros,
+									success: function(data){        			        	
+																				 
+								},
+								error: function(data) {	                  
+										alert('ERROR: '+data);
+									}					     
+								}); 
+						$("#lisegre").append("<i class=\"fa fa-check green bigger-160\"> <span class=\"badge badge-success\">"+valor.ALUM_MATRICULA+"</span>"+
+											 "<span class=\"text text-success\">"+valor.ALUM_NOMBRE+" "+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+"</span>");
+						
+					});	          	
+				
+					ocultarEspera("esperahor");     	     		   				
+				},
+				error: function(data) {	                  
+						alert('ERROR: '+data);
+						$('#dlgproceso').modal("hide");  
+					}
+				}); 		     		   				
 		},
 		error: function(data) {	                  
 				alert('ERROR: '+data);
