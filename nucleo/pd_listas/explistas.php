@@ -13,10 +13,22 @@ include("../.././includes/Conexion.php");
 $miConex = new Conexion();
 
 
+$inputFileName='listab.xls';
+$sheetnames='VALO';
+$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+
+
+$objReader->setReadDataOnly(true);
+$objReader->setLoadSheetsOnly($sheetnames); 
+$objPHPExcel = $objReader->load($inputFileName);
+$sheetData = $objPHPExcel->getSheetByName($sheetnames);
+
 
 
 $objPHPExcel = new PHPExcel();
 
+/*
   //initialize cache, so the phpExcel will not throw memory overflow
   $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
   $cacheSettings = array(' memoryCacheSize ' => '8MB');
@@ -25,6 +37,8 @@ $objPHPExcel = new PHPExcel();
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("listab.xls");
 $objPHPExcel->setActiveSheetIndex(0);
+
+*/
 
 
 
