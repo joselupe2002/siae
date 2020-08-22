@@ -163,7 +163,7 @@ function bajaDefinitiva(ciclo){
 	
     if (confirm("Le recordamos que primero se debe correr el botón Egresados. ¿Seguro desea aplicar las bajas definitivas para el ciclo "+ciclo+" ? ")) {
 		mostrarIfo("infoEval","grid_procciclos","Alumnos que aplicaron Baja Definitiva",
-		"<div style=\"text-align:justify; hight:300px; overflow-y: scroll;\" id=\"lisegre\"></div>","modal-lg");
+		"<div style=\"text-align:justify; height:200px; overflow-y: auto;\" id=\"lisegre\"></div>","modal-lg");
 		mostrarEspera("esperahor","grid_procciclos","Procesando..");
 		lafecha=dameFecha("FECHAHORA");
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",ciclo:ciclo}
@@ -255,7 +255,7 @@ function asignarRol(ciclo){
 	
     if (confirm("¿Seguro desea asignar rol y status a los egresados?")) {
 		mostrarIfo("infoEval","grid_procciclos","Alumnos Egresados",
-		"<div style=\"text-align:justify;  hight:300px; overflow-y: scroll; \" id=\"lisegre\"></div>","modal-lg");
+		"<div style=\"text-align:justify;  height:300px; overflow-y: scroll; \" id=\"lisegre\"></div>","modal-lg");
 		mostrarEspera("esperahor","grid_procciclos","Procesando..");
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",ciclo:ciclo}
 		$.ajax({
