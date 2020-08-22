@@ -71,13 +71,13 @@ foreach ($resultado2 as $row) {
 
 
 
-
+/*
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="'.$_GET['grupo'].'-'.$_GET['materia'].'.xlsx"');
 header('Cache-Control: max-age=0');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
-
+*/
 
 
 } else {header("Location: index.php");}
