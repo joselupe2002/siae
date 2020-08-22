@@ -160,11 +160,11 @@ function setStatus(ciclo,elcampo){
 }
 
 function bajaDefinitiva(ciclo){
-	mostrarEspera("esperahor","grid_procciclos","Procesando..");
+	
     if (confirm("Le recordamos que primero se debe correr el botón Egresados. ¿Seguro desea aplicar las bajas definitivas para el ciclo "+ciclo+" ? ")) {
 		mostrarIfo("infoEval","grid_procciclos","Alumnos que aplicaron Baja Definitiva",
-		"<div style=\"text-align:justify;\" id=\"lisegre\"></div>","modal-lg");
-
+		"<div style=\"text-align:justify; hight:300px; overflow-y: scroll;\" id=\"lisegre\"></div>","modal-lg");
+		mostrarEspera("esperahor","grid_procciclos","Procesando..");
 		lafecha=dameFecha("FECHAHORA");
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",ciclo:ciclo}
 		$.ajax({
@@ -172,7 +172,7 @@ function bajaDefinitiva(ciclo){
 		data:parametros,
 		url:  "getBajasDef.php",
 		success: function(data){ 
-            
+            ocultarEspera("esperahor");  
 			elsql="select ALUM_MATRICULA, ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT, ALUM_CARRERAREG FROM falumnos a, inscritos c where  "+
 			"a.ALUM_MATRICULA=c.MATRICULA and  c.BAJA='S' AND ALUM_ACTIVO<>4";
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}     	
@@ -210,7 +210,7 @@ function bajaDefinitiva(ciclo){
 							 _CAMPUS:"0",
 							 MATRICULA:valor.ALUM_MATRICULA,
 							 CICLO:ciclo,
-							 MOTIVO:"BAJA POR REGLAMENTO-AUTOMÁTICA",							
+							 MOTIVO:5,							
 							 TIPOBAJA: 4,
 							 FECHABAJA:lafecha,
 							 OBS: "BAJA DADA POR SIGEA",
@@ -226,8 +226,8 @@ function bajaDefinitiva(ciclo){
 								 }
 							 });
 
-						$("#lisegre").append("<i class=\"fa fa-times-circle red bigger-160\"> <span class=\"badge badge-success\">"+valor.ALUM_MATRICULA+"</span>"+
-											 "<span class=\"text text-danger\">"+valor.ALUM_NOMBRE+" "+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+"</span>");
+						$("#lisegre").append("<i class=\"fa fa-times-circle red bigger-160\" /> <span class=\"badge badge-success\">"+valor.ALUM_MATRICULA+"</span>"+
+											 "<span class=\"text text-danger\">"+valor.ALUM_NOMBRE+" "+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+"</span><br/>");
 						
 					});	          	
 				
@@ -252,18 +252,18 @@ function bajaDefinitiva(ciclo){
 
 
 function asignarRol(ciclo){
-	mostrarEspera("esperahor","grid_procciclos","Procesando..");
+	
     if (confirm("¿Seguro desea asignar rol y status a los egresados?")) {
 		mostrarIfo("infoEval","grid_procciclos","Alumnos Egresados",
-		"<div style=\"text-align:justify;\" id=\"lisegre\"></div>","modal-lg");
-
+		"<div style=\"text-align:justify;  hight:300px; overflow-y: scroll; \" id=\"lisegre\"></div>","modal-lg");
+		mostrarEspera("esperahor","grid_procciclos","Procesando..");
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",ciclo:ciclo}
 		$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "getEgresados.php",
 		success: function(data){ 	
-
+			ocultarEspera("esperahor");  
 			elsql="select ALUM_MATRICULA, ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT, ALUM_CARRERAREG FROM falumnos a, inscritos c where  "+
 			"a.ALUM_MATRICULA=c.MATRICULA and  c.EGRESADO='S' AND ALUM_ACTIVO<>5";
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}     	
@@ -315,7 +315,7 @@ function asignarRol(ciclo){
 									}					     
 								}); 
 						$("#lisegre").append("<i class=\"fa fa-check green bigger-160\"> <span class=\"badge badge-success\">"+valor.ALUM_MATRICULA+"</span>"+
-											 "<span class=\"text text-success\">"+valor.ALUM_NOMBRE+" "+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+"</span>");
+											 "<span class=\"text text-success\">"+valor.ALUM_NOMBRE+" "+valor.ALUM_APEPAT+" "+valor.ALUM_APEMAT+"</span><br/>");
 						
 					});	          	
 				

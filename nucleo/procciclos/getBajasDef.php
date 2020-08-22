@@ -6,7 +6,8 @@
    if (($_SESSION['inicio']==1) && ($_SESSION['idsesion']==$_POST["dato"])) { 
        $miConex = new Conexion();
 
-       $sql="UPDATE inscritos set BAJA='S' where getPeriodos(MATRICULA,getciclo())>=13 AND EGRESADO='N';";
+       $sql="UPDATE inscritos set BAJA='S' where getPeriodos(MATRICULA,getciclo())>=13 AND EGRESADO='N'  ".
+       "AND MATRICULA NOT IN (SELECT MATRICULA FROM econvenios h where h.CICLO=getciclo() and TIPOCONV='SEMESTRE13')";
        $res=$miConex->afectaSQL($_SESSION["bd"],$sql);   
        $msj="";
        if (!($res=='')) { $msj= "0: PRIMERO ".$res."\n";}
