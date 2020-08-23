@@ -136,7 +136,7 @@ function generaTablaInformacion(grid_data){
 		$("#rowM"+contR).append("<td>"+valor.MATRICULA+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.NOMBRE+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.MAPA+"</td>");
-		$("#rowM"+contR).append("<td><select onchange=\"grabar();\" class=\"losselectesp\" matricula=\""+valor.MATRICULA+"\" id=\"sel_"+valor.MATRICULA+"\"></select></td>");	
+		$("#rowM"+contR).append("<td><select onchange=\"actualizaEsp('"+valor.MATRICULA+"','"+$("#losselectesp").val()+"');\" class=\"losselectesp\" matricula=\""+valor.MATRICULA+"\" id=\"sel_"+valor.MATRICULA+"\"></select></td>");	
 		//$("#rowM"+contR).append("<td><span class=\"badge badge-danger\">"+valor.AVANCE+"</span></td>");		
 		$("#sel_"+valor.MATRICULA).html($("#selEspecialidad").html());	
 		$("#sel_"+valor.MATRICULA).val(valor.ESPECIALIDAD);	

@@ -26,6 +26,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
+		<link rel="stylesheet" href="../../css/sigea.css" />
 
         
 
@@ -45,22 +46,23 @@
 			      <div class="row" >	
 				         <div id="losciclos" class="col-sm-1">
 						</div> 	
-						<div id="losciclos2" class="col-sm-3" >
+						<div id="losciclos2" class="col-sm-2" >
 						</div>   
-						<div id="lasmaterias" class="col-sm-3" >
+						<div id="lasmaterias" class="col-sm-4" >
+						</div>                    				
+						<div id="lafecha" class="col-sm-2" >
 						</div>                    				
 	
-						<div class="col-sm-6" style="padding-top:14px;">
+	
+						<div class="col-sm-3" style="padding-top:14px;">
 						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"> Ver Horario</span>            
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"> Ver Lista</span>            
 							</button>
 							<button title="Buscar Registros" onclick="convertirDataTable('tabInformacion');" 
 							    class="btn btn-white btn-success btn-round" value="Agregar"> 
 								<i class="ace-icon blue fa fa-wrench bigger-140"></i><span class="btn-small"> Exportar</span>            
 							</button>	
-							<button title="Buscar Registros" onclick="ImprimirReporte();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon red glyphicon glyphicon-calendar bigger-140"></i><span class="btn-small"> Reporte</span>            
-							</button>																						 									
+																								 									
 						</div>
 		            </div> 
 		      </div>
