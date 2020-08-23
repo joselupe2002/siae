@@ -42,7 +42,7 @@ contMat=1;
 	function change_SELECT(elemento) {
 
 		if (elemento=='selCiclo') {
-			actualizaSelect("selMaterias", "SELECT IDDETALLE, concat(MATERIAD,'(',SIE,')') FROM vedgrupos a where a.CICLO='"+$("#selCiclo").val()+"' AND PROFESOR='"+usuario+"' order by MATERIAD, SIE", "","");  	
+			actualizaSelect("selMaterias", "SELECT IDDETALLE, concat(MATERIAD,'(',SIE,')') FROM vedgrupos a where a.CERRADOCAL='N' and a.CICLO='"+$("#selCiclo").val()+"' AND PROFESOR='"+usuario+"' order by MATERIAD, SIE", "","");  	
 		}
 
 		if (elemento=='selMaterias') {			
