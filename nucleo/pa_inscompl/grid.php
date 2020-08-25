@@ -26,6 +26,8 @@
         <link href="imagenes/login/sigea.png" rel="image_src" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
 		<link rel="stylesheet" href="../../css/sigea.css" />
+
+
         <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }
                th, td {  word-wrap: break-word;        
                          overflow-wrap: break-word;   }
@@ -46,7 +48,7 @@
 
           
              
-         <div class="tabbable">
+         <div class="tabbable fontRoboto">
 			 <ul class="nav nav-tabs" id="myTab">
 			 	 <li class="active">
 					  <a data-toggle="tab" href="#act">Actividades<span id="lisact" class="badge badge-danger">0</span></a>
@@ -295,9 +297,7 @@
 
 
 function confirma(id,matricula,ciclo,laactividad){
-
 if (numAct>=2) {alert ("Ya tiene "+numAct+" Actividades inscritas para este ciclo ya no se puede inscribir a mas"); return 0;}  
-
 if (confirm("Seguro que desea Inscribirse a la Actividad: "+laactividad)) {
 	 var losdatos=[];
 
@@ -324,7 +324,8 @@ if (confirm("Seguro que desea Inscribirse a la Actividad: "+laactividad)) {
          success: function(data){		                                	                      
              if (!(data.substring(0,1)=="0"))	
 	                 { 						                  
-            	       cargarAct();
+            	       $("#row"+id).remove();
+					   numAct++;
 	                  }	
              else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
          }					     
@@ -374,7 +375,7 @@ function cargarAct(){
 	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){
 				     numAct=JSON.parse(data)[0]["NUMINS"];
-					 generaTabla(JSON.parse(data)); 				   	     
+	        	     generaTabla(JSON.parse(data));	        	     
 	                 },
 	           error: function(data) {	                  
 	                      alert('ERROR: '+data);
