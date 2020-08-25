@@ -325,6 +325,7 @@ if (confirm("Seguro que desea Inscribirse a la Actividad: "+laactividad)) {
              if (!(data.substring(0,1)=="0"))	
 	                 { 						                  
             	       $("#row"+id).remove();
+					   cargarActIns();
 					   numAct++;
 	                  }	
              else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
