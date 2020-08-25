@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>estilos/preloader.css" type="text/css" media="screen">         
         <link href="imagenes/login/sigea.png" rel="image_src" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
-
+		<link rel="stylesheet" href="../../css/sigea.css" />
         <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }
                th, td {  word-wrap: break-word;        
                          overflow-wrap: break-word;   }
@@ -68,7 +68,7 @@
 					  <div id="ins" class="tab-pane">
 							 <h3 class="header smaller lighter red">Listado de Actividades Complementarias</h3>
 			                 <div  class="table-responsive">
-				                 <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
+				                 <table id=tabHorarios class= "fontRoboto display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 				   	                 <thead>  
 					                      <tr>
 					                          <th style="text-align: center;">Inscribir</th> 
@@ -77,7 +77,9 @@
 					                          <th style="text-align: center;">Inicia</th> 
 					                          <th style="text-align: center;">Termina</th> 
 					                          <th style="text-align: center;">Responsable</th> 	
-					                          <th style="text-align: center;">Requerimientos</th> 		                          
+											  <th style="text-align: center;">Lugar/Aula</th> 	
+					                          <th style="text-align: center;">Requerimientos</th> 	
+											  <th style="text-align: center;">Carrera</th> 		                          
 					                          <th style="text-align: center;">Lunes</th> 
 					                          <th style="text-align: center;">Martes</th> 
 					                          <th style="text-align: center;">Miercoles</th> 
@@ -160,6 +162,7 @@
 		var ext=false;
 		var elnombre="";
 		var miciclo="";
+		var numAct=0;
 
 		<?php if ( isset($_GET["matricula"])) { 
 			echo "lamat='".$_GET["matricula"]."';";
@@ -189,14 +192,17 @@
        jQuery.each(grid_data, function(clave, valor) { 	
     	    
     	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
-    	    $("#row"+valor.ID).append("<td><button onclick=\"confirma('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+valor.CICLO+"');\" class=\"btn btn-xs btn-succcess\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i></button></td>");
+    	    $("#row"+valor.ID).append("<td><button onclick=\"confirma('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+valor.CICLO+"','"+valor.ACTIVIDAD+"');\" "+			
+			        "class=\"btn btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i> Inscribirme</button></td>");
     	    $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.ACTIVIDAD+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.INICIA+"</td>");
     	    $("#row"+valor.ID).append("<td>"+valor.TERMINA+"</td>");
     	    
     	    $("#row"+valor.ID).append("<td>"+valor.RESPONSABLED+"</td>");
+			$("#row"+valor.ID).append("<td>"+valor.AULA+"</td>");
 		    $("#row"+valor.ID).append("<td>"+valor.REQUERIMIENTO+"</td>");
+			$("#row"+valor.ID).append("<td>"+valor.CARRERAD+"</td>");
 		    $("#row"+valor.ID).append("<td>"+valor.LUNES+"</td>");
 		    $("#row"+valor.ID).append("<td>"+valor.MARTES+"</td>");
 		    $("#row"+valor.ID).append("<td>"+valor.MIERCOLES+"</td>");
@@ -288,8 +294,11 @@
 }		
 
 
-function confirma(id,matricula,ciclo){
+function confirma(id,matricula,ciclo,laactividad){
 
+if (numAct>=2) {alert ("Ya tiene "+numAct+" Actividades inscritas para este ciclo ya no se puede inscribir a mas"); return 0;}  
+
+if (confirm("Seguro que desea Inscribirse a la Actividad: "+laactividad)) {
 	 var losdatos=[];
 
 	 var f = new Date();
@@ -315,13 +324,13 @@ function confirma(id,matricula,ciclo){
          success: function(data){		                                	                      
              if (!(data.substring(0,1)=="0"))	
 	                 { 						                  
-            	       $("#row"+id).remove();
-            	       cargarActIns();
+            	       cargarAct();
 	                  }	
              else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
          }					     
      });      
-     
+}
+
 }
 
 
@@ -353,17 +362,19 @@ function cargarActIns() {
 
 
 function cargarAct(){
-	    elsql="select a.CICLO, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
-	        		                                                   " a.AULA from vecomplementaria a where a.`CUPO`>a.INS AND a.`CICLO`=getciclo() and AUTORIZADO='VOLVERSLUEGO' "+
-																	   " and a.ID NOT IN (SELECT ACTIVIDAD FROM einscompl WHERE MATRICULA='"+lamat+"');"
+	    elsql="select a.CICLO, a.CARRERAD, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
+		      "(select count(*) from einscompl where MATRICULA='"+lamat+"' and CICLO=getciclo()) as NUMINS,"+
+	          " a.AULA from vecomplementaria a where a.CUPO>a.INS AND a.CICLO=getciclo() and AUTORIZADO='S' "+			  
+			 " and a.ID NOT IN (SELECT ACTIVIDAD FROM einscompl WHERE MATRICULA='"+lamat+"');"
+
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
 			   data:parametros,
 	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){
-
-	        	     generaTabla(JSON.parse(data));	        	     
+				     numAct=JSON.parse(data)[0]["NUMINS"];
+					 generaTabla(JSON.parse(data)); 				   	     
 	                 },
 	           error: function(data) {	                  
 	                      alert('ERROR: '+data);
