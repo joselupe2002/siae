@@ -59,8 +59,7 @@
 		     <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 				   	<thead>  
 					    <tr>
-					        <th style="text-align: center;">ID</th> 
-							<th style="text-align: center;">CICLO</th> 
+					        <th style="text-align: center;">ID</th> 							
 					        <th style="text-align: center;">Actividad</th> 
 					        <th style="text-align: center;">Horas</th> 
 					        <th style="text-align: center;">Lunes</th> 
@@ -181,8 +180,7 @@
     	    if (valor.DESC_ABIERTA=='S') {proceso="agregarActividad"; etiqueta="Capt. Actividades"; elcolor="btn-success";}
     	    
     	    $("#cuerpo").append("<tr id=\"row"+valor.DESC_ID+"\">");
-			$("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ID+"</td>");
-			$("#row"+valor.DESC_ID).append("<td>"+valor.CICLO+"</td>");
+			$("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ID+"</td>");			
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ACTIVIDADD+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.DESC_HORAS+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.LUNES+"</td>");
