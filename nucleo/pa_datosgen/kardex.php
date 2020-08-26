@@ -175,14 +175,17 @@
                 " where o.ALUM_MAPA=p.VMAT_MAPA and  ifnull(p.CVEESP,'0')='0' ".
                 " and o.ALUM_MATRICULA='".$_GET["matricula"]."' and VMAT_TIPOMAT NOT IN ('T') ".
                 " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where ".
-                " h.ALUCTR='".$_GET["matricula"]."' and (PDOCVE='".$ciclo."'))".
+                " h.ALUCTR='".$_GET["matricula"]."' and (PDOCVE='".$ciclo."')) ".
+                " AND VMAT_MATERIA NOT IN (SELECT MATCVE FROM dlista where ALUCTR='".$_GET["matricula"]."'".
+                " AND LISCAL>=70)".
                 " UNION ".
                 " select p.VMAT_MATERIA AS MATERIA, p.VMAT_MATERIAD AS MATERIAD,p.VMAT_CUATRIMESTRE AS SEMESTRE,".
                 " p.`VMAT_CREDITO` AS CREDITO from falumnos o, vmatciclo p ".
                 " where o.ALUM_MAPA=p.VMAT_MAPA  and o.ALUM_MATRICULA='".$_GET["matricula"]."' ".
                 " and VMAT_TIPOMAT NOT IN ('T') AND ifnull(p.CVEESP,'0')=ALUM_ESPECIALIDAD ".
                 " and VMAT_MATERIA NOT IN (SELECT MATCVE from dlista h where h.ALUCTR='".$_GET["matricula"]."' ".
-                " and ( PDOCVE='".$ciclo."'))";
+                " and ( PDOCVE='".$ciclo."')) AND VMAT_MATERIA NOT IN (SELECT MATCVE FROM dlista where ALUCTR='".$_GET["matricula"]."'
+                AND LISCAL>=70)";
                // echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -363,13 +366,13 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(30);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["CICLOINS"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(70); $pdf->Cell(0,0,'MAT. TOT: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["PLAMAT"]),0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,"{mattotales}",0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(115); $pdf->Cell(0,0,'MAT. APR: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,"{matapr}",0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'CON REPROB: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,$dataAlum[0]["PROMEDIO_CR"],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,"{promreprobadas}",0,1,'L');
         
         //======================================================================
         $pdf->Ln(3);
@@ -377,7 +380,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(30);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["CICLOTER"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(70); $pdf->Cell(0,0,'MAT. CUR: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,"{matcur}",0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,"{matcursadas}",0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(115); $pdf->Cell(0,0,'SIT: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["SITUACION"]),0,1,'L');
@@ -411,9 +414,13 @@
         $pdf->SetTextColor(0);
         $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
         $n=1;
+        $sumacursadas=0;
+        $cursadas=0;
+        $materiasaprobadas=0;
+        $matTotales=0;
         foreach($data as $row) {
             $lacal=$row["CAL"];
-            if ($row["CAL"]<70 && ($row["CAL"]!='AC')) {$lacal='NA';}
+            if ($row["CAL"]<70 && ($row["CAL"]!='AC')) {$lacal='NA';} else {$materiasaprobadas++;}
             $pdf->Row(array( str_pad($n,  3, "0",STR_PAD_LEFT),
                              utf8_decode($row["MATERIA"]),
                              utf8_decode($row["MATERIAD"]),
@@ -427,10 +434,13 @@
                              )
                       );
             $n++;
+            $matTotales++;
+            if (is_numeric($row["CAL"])) {$sumacursadas+=$row["CAL"]; $cursadas++; }            
         }
 
-        $pdf->parseVar('{matapr}',$n-1); // convertimos la variable.
-        $materiasaprobadas=$n-1;
+        $pdf->parseVar('{matapr}',$materiasaprobadas); // convertimos la variable.
+        $pdf->parseVar('{promreprobadas}',round($sumacursadas/($cursadas),0)); // Sacamos el promedio con materias reprobadas
+        $pdf->parseVar('{matcursadas}',$cursadas); // convertimos la variable de materias cursadas
 
 //=====================================================================================================
         $pdf->Ln(5);
@@ -473,19 +483,16 @@
                              )
                       );
             $n++;
+            $matTotales++;
         }
-        $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
+        $pdf->parseVar('{matcursando}',$n-1); // convertimos la variable de materias cursando
         $materiascursando=$n-1;
+        
+      
        
-        $pdf->SetFont('Montserrat-ExtraBold','B',7);
-        $pdf->SetFillColor(255,255,255);
-        $pdf->SetTextColor(0);
-        $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
-        $pdf->Ln();
-        $pdf->Cell(0,5,utf8_decode('Nota: Este Reporte solo es válido para los trámites internos avalados '.
-        'por la Dirección General del ITSM y para uso personal de alumno.'),0,0,'J',true);
+      
 //=====================================================================================================
-/*
+
         $data3 = $pdf->LoadDatosporCursar($elciclo); 
         $pdf->Ln(5);
         $pdf->setX(30);
@@ -527,9 +534,19 @@
                              )
                       );
             $n++;
+            $matTotales++;
         }
         $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
-*/
+        $pdf->parseVar('{mattotales}',$matTotales); // convertimos la variable de materias totales
+
+        $pdf->SetFont('Montserrat-ExtraBold','B',7);
+        $pdf->SetFillColor(255,255,255);
+        $pdf->SetTextColor(0);
+        $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
+        $pdf->Ln();
+        $pdf->Cell(0,5,utf8_decode('Nota: Este Reporte solo es válido para los trámites internos avalados '.
+        'por la Dirección General del ITSM y para uso personal de alumno.'),0,0,'J',true);
+
 
         $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
                 str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).

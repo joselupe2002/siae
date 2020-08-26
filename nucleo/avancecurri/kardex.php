@@ -378,13 +378,14 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(30);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["CICLOINS"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(70); $pdf->Cell(0,0,'MAT. TOT: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["PLAMAT"]),0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,"{mattotales}",0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(115); $pdf->Cell(0,0,'MAT. APR: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,"{matapr}",0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'CON REPROB: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,$dataAlum[0]["PROMEDIO_CR"],0,1,'L');
+        //$pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,$dataAlum[0]["PROMEDIO_CR"],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,"{promreprobadas}",0,1,'L');
         
         //======================================================================
         $pdf->Ln(3);
@@ -392,13 +393,13 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(30);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["CICLOTER"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(70); $pdf->Cell(0,0,'MAT. CUR: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,"{matcur}",0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,"{matcursadas}",0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(115); $pdf->Cell(0,0,'SIT: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["SITUACION"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'SIN REPROB: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,$dataAlum[0]["PROMEDIO_SR"],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,round($dataAlum[0]["PROMEDIO_SR"],0),0,1,'L');
         
         $pdf->Ln(5);
         $pdf->setX(30);
@@ -426,9 +427,13 @@
         $pdf->SetTextColor(0);
         $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
         $n=1;
+        $sumacursadas=0;
+        $cursadas=0;
+        $materiasaprobadas=0;
+        $matTotales=0;
         foreach($data as $row) {
             $lacal=$row["CAL"];
-            if (($row["CAL"]<70) && ($row["CAL"]!='AC')) {$lacal='NA';}
+            if (($row["CAL"]<70) && ($row["CAL"]!='AC')) {$lacal='NA'; } else {$materiasaprobadas++;}
             $pdf->Row(array( str_pad($n,  3, "0",STR_PAD_LEFT),
                              utf8_decode($row["MATERIA"]),
                              utf8_decode($row["MATERIAD"]),
@@ -441,11 +446,16 @@
                              "",
                              )
                       );
+            $matTotales++;
             $n++;
+            if (is_numeric($row["CAL"])) {$sumacursadas+=$row["CAL"]; $cursadas++; }
+            
         }
 
-        $pdf->parseVar('{matapr}',$n-1); // convertimos la variable.
-        $materiasaprobadas=$n-1;
+        $pdf->parseVar('{matapr}',$materiasaprobadas); // convertimos la variable.
+        $pdf->parseVar('{promreprobadas}',round($sumacursadas/($cursadas),0)); // Sacamos el promedio con materias reprobadas
+        $pdf->parseVar('{matcursadas}',$cursadas); // convertimos la variable de materias cursadas
+ 
 
 //=====================================================================================================
        
@@ -490,17 +500,17 @@
                                     )
                             );
                     $n++;
+                    $matTotales++;
                 }
                 $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
                 $materiascursando=$n-1;}
             else  {
-                $pdf->parseVar('{matcur}',0);
+                $pdf->parseVar('{matcursando}',0);
                 $materiascursando=0;
             }
 
-
-        $data3 = $pdf->LoadDatosporCursar($elciclo); 
 //=====================================================================================================
+        $data3 = $pdf->LoadDatosporCursar($elciclo); 
         $pdf->Ln(5);
         $pdf->setX(30);
         $pdf->SetFont('Montserrat-Medium','',9);
@@ -541,8 +551,10 @@
                              )
                       );
             $n++;
+            $matTotales++;
         }
         $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
+        $pdf->parseVar('{mattotales}',$matTotales); // convertimos la variable de materias totales
 
         $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
                 str_replace(" ","|",$dataAlum[0]["NOMBRE"])."|".str_replace(" ","|",$dataAlum[0]["CARRERAD"]).

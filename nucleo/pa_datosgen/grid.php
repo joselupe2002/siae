@@ -450,7 +450,7 @@ function verMaterias(tipo){
 		var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:100%;"></iframe></div>';	
 		$('#parentPrice', window.parent.document).html();
 		window.parent.$("#myTab").tabs('add',{
-				    	    title:'Notificacion',				    	    
+				    	    title:'Mi Kardex',				    	    
 				    	    content:content,
 				    	    closable:true		    
 				    	});
