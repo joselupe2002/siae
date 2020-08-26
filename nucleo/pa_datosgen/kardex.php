@@ -386,7 +386,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["SITUACION"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(160); $pdf->Cell(0,0,'SIN REPROB: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,$dataAlum[0]["PROMEDIO_SR"],0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(185);$pdf->Cell(0,0,round($dataAlum[0]["PROMEDIO_SR"],0),0,1,'L');
         
         $pdf->Ln(5);
         $pdf->setX(30);
