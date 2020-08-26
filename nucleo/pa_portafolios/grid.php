@@ -257,7 +257,8 @@ function cargarMaterias() {
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=CONCAT(PDOCVE,ALUCTR,MATCVE) and b.AUX='DIAGNOSTICA' ORDER BY IDDET DESC LIMIT 1),'') AS RUTADIAGNOSTICA "+     
         		  " from dlista e, cmaterias f where e.MATCVE=f.MATE_CLAVE and ifnull(MATE_TIPO,'0') NOT IN ('AC')"+
 				  " and e.BAJA='N' AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N') order by PDOCVE DESC";
-				  
+		
+				  alert(elsql);
 	   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 	 $.ajax({
