@@ -114,7 +114,8 @@
  
    	
 			function LoadData()
-			{				
+			{		
+                $data=[];		
                 $miConex = new Conexion();
                 $sql="select ID, ".
                 "IFNULL(LISPA1,'0') AS LISPA1,IFNULL(LISPA2,'0') AS LISPA2,IFNULL(LISPA3,'0') AS LISPA3,".
