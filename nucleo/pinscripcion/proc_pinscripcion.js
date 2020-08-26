@@ -215,6 +215,22 @@ function editaUsuario(lafila,modulo,institucion, campus) {
 }
 
 
+
+function verKardex(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	fila=table.rows('.selected').data();
+	enlace="nucleo/pa_datosgen/kardex.php?matricula="+fila[0]["MATRICULA"];
+	var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:100%;"></iframe></div>';	
+	$('#parentPrice', window.parent.document).html();
+	window.parent.$("#myTab").tabs('add',{
+						title:'Kardex'+fila[0]["MATRICULA"],				    	    
+						content:content,
+						closable:true		    
+					});
+   //window.open(enlace, '_blank'); 
+  }
+
+
 function actualizaCarrera(modulo,usuario,institucion, campus,essuper){
 
 	table = $("#G_"+modulo).DataTable();
