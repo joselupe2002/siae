@@ -179,7 +179,7 @@ var credM1=0;
 
 
 	function cargarPropuestaAlum (){
-		
+		$("#loshorarios").empty();
 		if (eltipomat=='N') {cargarHorarios('vreinstem');}
 		else {cargarHorariosExt('vreinstem');}
 	}
@@ -294,6 +294,24 @@ var credM1=0;
 }
 
 
+function cargarHorarioCapturado(){
+	    if (eltipomat=='OC') {lostipos="'N','I'";} else {lostipos="'N','OC'";}
+		elsql="SELECT * FROM vinscripciones y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
+			   "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' and TIPOMAT in ("+lostipos+") order by SEMESTRE, GRUPO, MATERIAD";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  
+					losdatos=JSON.parse(data);
+					generaTablaHorarios(losdatos,"VISTAHORARIO");
+				}
+		});
+
+}
+
+
 function cargarHorariosExt(lavista){		
 	script="<table id=\"tabHorariosReins\" class= \"table table-condensed table-bordered table-hover\" "+
 			">"+
@@ -323,8 +341,8 @@ function cargarHorariosExt(lavista){
 	   "         </table>";
 	   $("#loshorarios").empty();
 	   $("#loshorarios").append(script);
-			
-
+	   cargarHorarioCapturado();	
+	   
 	elsql="SELECT * FROM "+lavista+" y where y.CICLO='"+$("#elciclo").html().split("|")[0]+
 		   "' AND y.MATRICULA='"+$("#selAlumnos").val()+"' AND y.TIPOMAT='"+eltipomat+"' order by SEMESTRE, MATERIAD";	
 	mostrarEspera("esperahor","grid_reinscripciones","Cargando Horarios...");
@@ -367,8 +385,7 @@ function cargarHorariosExt(lavista){
 											type: "POST",
 											data:parametros,
 											url:  "../base/getdatossqlSeg.php",
-											success: function(data){  
-												
+											success: function(data){  												
 												if ((JSON.parse(data)[0][1])>0) {mensajeAlumno=JSON.parse(data)[0][0];}
 											}
 										});
@@ -393,18 +410,27 @@ function cargarHorariosExt(lavista){
 function generaTablaHorarios(grid_data, tipo){
 	
 	colorSem=["success","warning","danger","info","purple","inverse","pink","yellow","grey","success"];
-
 	valorcheck="";
 	if (tipo=="INSCRITAS") {
-		$("#cuerpoReins").empty();
-		$("#tabHorariosReins").append("<tbody id=\"cuerpoReins\">");
+		if (!($("#cuerpoReins").length)) {
+			$("#cuerpoReins").empty();
+			$("#tabHorariosReins").append("<tbody id=\"cuerpoReins\">");
+		}
 		valorcheck="checked =\"true\"";
 	}
 	if (tipo=="NO INSCRITAS COND") {
 		valorcheck="checked =\"true\"";
 	}
+	if (tipo=="VISTAHORARIO") {
+		$("#cuerpoReins").empty();
+		$("#tabHorariosReins").append("<tbody id=\"cuerpoReins\">");
+		valorcheck="checked =\"true\" disabled=\"true\"";
+	}
 
-	jQuery.each(grid_data, function(clave, valor) { 	 		
+
+
+
+	jQuery.each(grid_data, function(clave, valor) { 
 		cadRep="N";colorrepit="white";claserepit="etRepit_N"; propRep=" repitiendo='0'"; propEsp=" especial='0''";
 		if (valor.REP==1) {propRep=" repitiendo='1'";  claserepit="etRepit_R"; cadRep="R"; colorrepit="warning";}
 		if (valor.REP>1) { propEsp=" especial='1'";  claserepit="etRepit_E"; cadRep="E"; colorrepit="danger";}
@@ -876,7 +902,7 @@ function guardarRegistros(){
 	var losdatos=[];
 	for (i=1; i<contFila; i++){
 		cad="";
-		if ($("#c_"+i+"_99").prop("checked")) {
+		if ($("#c_"+i+"_99").prop("checked") && !($("#c_"+i+"_99").prop("disabled")) ) {
 					cad=$("#elciclo").html().split("|")[0]+"|"+ //PDOCVE
 					$("#c_"+i+"_13").html()+"|"+    //MATCVE
 					$("#selAlumnos").val()+"|"+    //ALUCTR                  
