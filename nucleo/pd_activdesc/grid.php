@@ -60,6 +60,7 @@
 				   	<thead>  
 					    <tr>
 					        <th style="text-align: center;">ID</th> 
+							<th style="text-align: center;">CICLO</th> 
 					        <th style="text-align: center;">Actividad</th> 
 					        <th style="text-align: center;">Horas</th> 
 					        <th style="text-align: center;">Lunes</th> 
@@ -180,7 +181,8 @@
     	    if (valor.DESC_ABIERTA=='S') {proceso="agregarActividad"; etiqueta="Capt. Actividades"; elcolor="btn-success";}
     	    
     	    $("#cuerpo").append("<tr id=\"row"+valor.DESC_ID+"\">");
-    	    $("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ID+"</td>");
+			$("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ID+"</td>");
+			$("#row"+valor.DESC_ID).append("<td>"+valor.CICLO+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ACTIVIDADD+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.DESC_HORAS+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.LUNES+"</td>");
@@ -199,7 +201,7 @@
 
 
 function cargarMaterias() {
-	 elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";
+	 elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE='2201' ";
 	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
@@ -221,7 +223,7 @@ function cargarMaterias() {
         });
 
 
-	elsql="SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and a.DESC_CICLO=getciclo() ";
+	elsql="SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and a.DESC_CICLO='2201'";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
