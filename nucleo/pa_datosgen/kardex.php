@@ -366,7 +366,7 @@
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(30);$pdf->Cell(0,0,utf8_decode($dataAlum[0]["CICLOINS"]),0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(70); $pdf->Cell(0,0,'MAT. TOT: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,"{mattotales}",0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(90);$pdf->Cell(0,0,$dataAlum[0]["PLAMAT"],0,1,'L');
 
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(115); $pdf->Cell(0,0,'MAT. APR: ',0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(135);$pdf->Cell(0,0,"{matapr}",0,1,'L');
