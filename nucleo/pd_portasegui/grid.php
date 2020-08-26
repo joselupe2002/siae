@@ -288,7 +288,7 @@ function cargarMaterias() {
 	elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='ENCUADRE'),'') AS RUTAENCUADRE, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='DIAGNOSTICA'),'') AS RUTADIAGNOSTICA "+                 
-				 " FROM vcargasprof a where ifnull(TIPOMAT,'') NOT IN ('T') and PROFESOR='<?php echo $_SESSION['usuario']?>' "+
+				 " FROM vcargasprof a where ifnull(TIPOMAT,'')  and PROFESOR='<?php echo $_SESSION['usuario']?>' "+
 				 " and CERRADOCAL='N' order by CICLO DESC,MATERIA";
    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}				 				 
 	 $.ajax({
