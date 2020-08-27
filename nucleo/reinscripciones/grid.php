@@ -53,12 +53,17 @@
 
 							<button title="Cargar Datos Alumnos" onclick="cargarDatosAlumno();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 											<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
-							</button>			  
+							</button>
+										  
+							
+						</div>
+						<div class="col-sm-2" style="padding-top:14px;">
 							<button title="Guardar Todos los registros" onclick="guardarTodos();" class="btn btn-white btn-purple  btn-round"> 
 								<i class="ace-icon purple fa fa-save bigger-140"></i>Guardar<span class="btn-small"></span>            
 							</button>
-							
+
 						</div>
+
 		            </div> 
 		      </div>
 

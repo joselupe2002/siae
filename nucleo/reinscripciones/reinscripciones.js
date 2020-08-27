@@ -978,6 +978,8 @@ function limpiarVentana(){
 }
 
 function guardarTodos(){
+
+
 	mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
 	res=validarCondiciones(false);
 
