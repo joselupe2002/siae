@@ -166,11 +166,11 @@
 		
 		
 		$pdf->SetFont('Montserrat-SemiBold','',10);
-		$pdf->MultiCell(0,5,'Por medio de la presente solicito a usted se le justifiquen las faltas al(a) alumno(a) '.utf8_decode($data[0]["JUST_NOMBREC"]).
-				', con n�mero de control '.utf8_decode($data[0]["JUST_MATRICULA"]).' de la carrera de '.utf8_decode($data[0]["JUST_CARRERAD"]).
+		$pdf->MultiCell(0,5,utf8_decode('Por medio de la presente solicito a usted se le justifiquen las faltas al(a) alumno(a) ').utf8_decode($data[0]["JUST_NOMBREC"]).
+		utf8_decode(', con número de control ').utf8_decode($data[0]["JUST_MATRICULA"]).' de la carrera de '.utf8_decode($data[0]["JUST_CARRERAD"]).
 				', '.$textofecha.utf8_decode($fecha1).$fecha2.', Por motivos de '.utf8_decode($data[0]["JUST_TIPOD"]).' ('.utf8_decode($data[0]["JUST_OBS"]).').',0,'J', false);
 		$pdf->Ln(5);
-		$pdf->MultiCell(0,5,'Agradezco coloque su firma de enterado, el formato correspondiente ya fue enviado a su correo institucional.',0,'J', false);
+		$pdf->MultiCell(0,5,utf8_decode('Agradezco coloque su firma de enterado, el formato correspondiente ya fue enviado a su correo institucional.'),0,'J', false);
 		$pdf->Ln(5);
 		
 		
@@ -182,7 +182,7 @@
 		
 		$pdf->SetFont('Montserrat-SemiBold','',10);
 		$pdf->Ln(5);
-		$pdf->MultiCell(0,5,'Sin m�s por el momento aprovecho para enviarle un cordial saludo. ',0,'J', false);
+		$pdf->MultiCell(0,5,utf8_decode('Sin más por el momento aprovecho para enviarle un cordial saludo. '),0,'J', false);
 		$pdf->Ln(5);
 		
 		$pdf->setX(25);$pdf->setY(220);
@@ -190,7 +190,7 @@
 		$pdf->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
 		$pdf->setX(25);$pdf->setY(225);
 		$pdf->SetFont('Montserrat-ExtraLight','I',8);
-		$pdf->Cell(0,0,'Excelencia en Educaci�n Tecnol�gica',0,1,'L');
+		$pdf->Cell(0,0,utf8_decode('Excelencia en Educación Tecnológica'),0,1,'L');
 		$pdf->setX(25);$pdf->setY(236);
 		$pdf->SetFont('Montserrat-ExtraBold','B',10);
 		$pdf->Cell(0,0,utf8_decode($data[0]["JUST_AUTORIZOD"]),0,1,'L');
@@ -199,7 +199,7 @@
 		
 		$pdf->setX(25);$pdf->setY(245);
 		$pdf->SetFont('Montserrat-Medium','',7);
-		$pdf->Cell(0,0,"C.c.p. ".utf8_decode($subdir)."; Subdirecci�n acad�mica.",0,1,'L');
+		$pdf->Cell(0,0,"C.c.p. ".utf8_decode($subdir."; Subdirección académica."),0,1,'L');
 		
 		
 

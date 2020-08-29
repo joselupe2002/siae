@@ -1012,9 +1012,47 @@ function actualizaSelect(nombre,elsql,tipoSelect,eltipo){
                    alert('ERROR: '+data);
                    $('#dlgproceso').modal("hide");  
                }
-       });
-     
+       });    
 }
+
+
+function actualizaSelectMarcar(nombre,elsql,tipoSelect,eltipo,eldato){
+	$('#dlgproceso').modal({show:true, backdrop: 'static'});
+	$("#"+nombre).empty();
+	$("#"+nombre).append("<option value=\"0\">Elija una opci&oacute;n</option>");
+	$("#"+nombre).trigger("chosen:updated");
+	fuera="";
+	if (eltipo=="FUERA") {fuera="nucleo/";}
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+	   type: "POST",
+	   data:parametros,
+	   url:  "../"+fuera+"base/getdatossqlSeg.php",
+	   success: function(data){  
+		   losdatos=JSON.parse(data);
+		   
+		   jQuery.each(JSON.parse(data), function(clave, valor) {
+
+			   sele=""; if (eldato==losdatos[clave][0]) {sele="selected";}
+			   $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\""+sele+">"+utf8Decode(losdatos[clave][1])+"</option>");       	     
+			 });
+		  
+		   if (tipoSelect=='BUSQUEDA') {    
+		 
+			  $("#"+nombre).trigger("chosen:updated");		
+			  }
+		   
+		   $('#dlgproceso').modal("hide");  
+		   },
+	   error: function(data) {	                  
+				  alert('ERROR: '+data);
+				  $('#dlgproceso').modal("hide");  
+			  }
+	  });
+	
+}
+
 /*=============================================================================================*/
 
 

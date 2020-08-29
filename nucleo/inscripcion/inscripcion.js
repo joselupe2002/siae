@@ -330,14 +330,14 @@ function guardarRegistros(matricula){
 					elgrupo+"|"+ //iddetalle
 					$("#c_"+i+"_2").val()+"|"+ //profesor
 					fechacap+"|"+ //fecha
-					$("#elusuario").html()+"|N"; //usuario				
+					$("#elusuario").html()+"|N|"+$("#selCarreras").val(); //carrera				
 					losdatos[j]=cad;
 								
 					j++;			
 		}
 	}
 
-	var loscampos = ["PDOCVE","MATCVE","ALUCTR","GPOCVE","IDGRUPO","LISTC15","FECHAINS","USUARIO","LISTC14"];
+	var loscampos = ["PDOCVE","MATCVE","ALUCTR","GPOCVE","IDGRUPO","LISTC15","FECHAINS","USUARIO","LISTC14","LISTC13"];
 
 	parametros={
 		tabla:"dlista",

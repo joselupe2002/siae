@@ -24,7 +24,7 @@
         <link href="imagenes/login/sigea.png" rel="image_src" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css?v=<?php echo date('YmdHis'); ?>" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
 
 		<style type="text/css">
@@ -174,7 +174,7 @@
 <script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
 <script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
 <script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
-<script src="<?php echo $nivel; ?>js/utilerias.js"></script>
+<script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/bootbox.js"></script>
@@ -192,6 +192,8 @@
 <script src="pa_residencia.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
 	var usuario="<?php echo $_SESSION["usuario"];?>";
+	var lainstitucion="<?php echo $_SESSION["INSTITUCION"];?>";
+	var elcampus="<?php echo $_SESSION["CAMPUS"];?>";
 	var maxuni=0;
 </script>
 
