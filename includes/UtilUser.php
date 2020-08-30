@@ -304,6 +304,8 @@ class UtilUser {
 	    return ($anio."-".$mes."-".$dia);
 	}
 	
+	
+
 	public function getFecha($fecha,$tipo) {
 		$dias=["Domingo","Lunes", "Martes", "Miercoles", "Jueves","Viernes","Sabado"];
 		$meses=["Enero","Febrero", "Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];

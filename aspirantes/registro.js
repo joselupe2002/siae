@@ -5,13 +5,15 @@ var elciclo="";
 
 
     jQuery(function($) { 
-		elsql="SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' order by CICL_ORDEN DESC";
+		elsql="SELECT CICL_CLAVE, count(*) as hay FROM ciclosesc where CICL_ADMISION='S' order by CICL_ORDEN DESC";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
 			data:parametros,
 			url:  "../nucleo/base/getdatossqlSeg.php",
-			success: function(data){				 
+			success: function(data){	
+					if (!(JSON.parse(data)[0]["hay"]>0)) {window.location.href="cerrado.php";}
+
 				   jQuery.each(JSON.parse(data), function(clave, valor) { 	
 				      elciclo=valor.CICL_CLAVE;			  
 								   }); 				   

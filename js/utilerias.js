@@ -1620,6 +1620,49 @@ function getElementoEd(padre,nombre,tipo,etiqueta,sql,dato,esllave,ico,autoinc,f
 	}
 	
 	
+	if (tipo=="SELECT_BUSQUEDA_BTN") {
+				
+		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
+		    "<div class=\"input-group\">"+
+                 " <select onchange=\"cambioSelect('"+nombre+"')\""+estilo+" class=\"chosen-select form-control\" name=\""+nombre+"\"  id=\""+nombre+"\" data-placeholder=\"Elija una Opci&oacute;-->\">\n";
+	        "<option value=\""+dato+"\" selected></option>"
+		cad+="</SELECT><span onclick=\""+nombre+"clicadd();\" style=\"cursor:pointer;\"class=\"input-group-addon\">"+
+		     "<i class=\"ace-icon blue "+ico+"\"></i></span></div>";
+       
+	     param=buscarBD(bd,sql);
+	
+	     $("#"+padre).append(cad);
+	     
+	     if (sql.substring(0,1)=='|') { 
+			 $("#"+nombre).html(getOptions(sql));
+		 }
+		 
+		 else {
+			parametros={sql:param[1],dato:sessionStorage.co,bd:param[0],sel:dato}
+			 $.ajax({
+				 type: "POST",
+				 data:parametros,
+	             url: "dameselectSeg.php", 
+	             success: function(data){                    
+	                  $("#"+nombre).html(data); 
+	                  $('#'+nombre).trigger("chosen:updated");
+	                  $('.chosen-select').chosen({allow_single_deselect:true}); 
+	                     
+	                  $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width':"100%"});})}).trigger('resize.chosen');
+	         		  $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this);   $this.next().css({'width':"100%"});})});
+
+	          },
+	          error: function(data) {
+	             alert('ERROR: '+data);
+	          }
+	        }); 	
+		 }
+		 
+ 		
+		 return 0;
+	}
+	
+
 	
 	
 if (tipo=="SELECT_MULTIPLE") {

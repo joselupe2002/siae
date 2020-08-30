@@ -305,6 +305,27 @@
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
 
+	co=Math.round(Math.random() * (999999 - 111111) + 111111); 
+	parametros={cose:co}; $.ajax({type: "POST",url:  "../nucleo/base/iniciaPincipal.php", data:parametros, success: function(data){}});sessionStorage.setItem("co",co);
+
+	jQuery(function($) { 
+		elsql="SELECT count(*) as hay  FROM ciclosesc where CICL_ADMISION='S' order by CICL_ORDEN DESC";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../nucleo/base/getdatossqlSeg.php",
+			success: function(data){	
+				   if (!(JSON.parse(data)[0]["hay"]>0)) {
+					  window.location.href="cerrado.php";
+				   }
+				   	
+				  },
+			error: function(data) {	                  
+					   alert('ERROR: '+data);
+				   }
+		   });
+		});
 	
 
 </script>
