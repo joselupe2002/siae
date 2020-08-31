@@ -143,7 +143,8 @@
 			<div class="main-content">
 				<div class="main-content-inner"> 		
 					<div id="myTab" class="easyui-tabs" style="width:100%; height:600px; overflow-y: hidden;">
-					       <div title="Inicio" style="padding:20px;">					       
+					       <div title="Inicio" style="padding:20px;">	
+									<div class="row" id="prorroga"> </div>
 						            <div class="widget-main">
 						                <div class="row">
 						                     <div class="col-xs-12" style="text-align: center;">
@@ -209,9 +210,10 @@
         <script type="text/javascript" src="easyUI/jquery.min.js"></script>
         <script type="text/javascript" src="easyUI/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="js/utilerias.js"></script>
+		<script type="text/javascript" src="prorrogas.js"></script>
 		<script type="text/javascript">
 
-
+		var usuario="<?php echo $_SESSION["usuario"]?>";
 		$(document).ready(function(){					
 			co=Math.round(Math.random() * (999999 - 111111) + 111111); 
 			parametros={cose:co}; $.ajax({type: "POST",url:  "nucleo/base/iniciaPincipal.php", data:parametros, 
