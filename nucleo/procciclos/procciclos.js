@@ -66,6 +66,7 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">INICIA</th>"+
 	"<th style=\"text-align: center;\">TERMINA</th>"+
 	"<th style=\"text-align: center;\">ADMISIÓN</th>"+	
+	"<th style=\"text-align: center;\">REG.LINEA</th>"+	
 	"<th style=\"text-align: center;\">EXAMEN</th>"+
 	"<th style=\"text-align: center;\">RESULTADOS</th>"+
 	"<th style=\"text-align: center;\">REINSCRIPCIÓN</th>"+
@@ -90,6 +91,14 @@ function generaTablaInformacion(grid_data){
 		 chk=" <div class=\"checkbox\" style=\"padding:0px; margin: 0px;\">"+
 			  "   	<label><input id=\""+valor.CICL_CLAVE+"_CICL_ADMISION\" type=\"checkbox\"  "+escheck+
 			  "            onclick=\"setStatus('"+valor.CICL_CLAVE+"','CICL_ADMISION');\" class=\"ace ace-switch ace-switch-6\" />"+
+			  " <span class=\"lbl\"></span></label> </div>";
+		 $("#row"+c).append("<td>"+chk+"</td>");  
+
+
+		 escheck=(valor.CICL_REGISTROLINEA=='S')?"checked":"";
+		 chk=" <div class=\"checkbox\" style=\"padding:0px; margin: 0px;\">"+
+			  "   	<label><input id=\""+valor.CICL_CLAVE+"_CICL_REGISTROLINEA\" type=\"checkbox\"  "+escheck+
+			  "            onclick=\"setStatus('"+valor.CICL_CLAVE+"','CICL_REGISTROLINEA');\" class=\"ace ace-switch ace-switch-6\" />"+
 			  " <span class=\"lbl\"></span></label> </div>";
 		 $("#row"+c).append("<td>"+chk+"</td>");  
 		 
@@ -143,6 +152,7 @@ function setStatus(ciclo,elcampo){
 
 	cadVal=$("#"+ciclo+"_"+elcampo).prop("checked")?"S":"N";
 	if (elcampo=='CICL_ADMISION') {parametros={tabla:"ciclosesc",bd:"Mysql",campollave:"CICL_CLAVE",valorllave:ciclo,CICL_ADMISION:cadVal};}
+	if (elcampo=='CICL_REGISTROLINEA') {parametros={tabla:"ciclosesc",bd:"Mysql",campollave:"CICL_CLAVE",valorllave:ciclo,CICL_REGISTROLINEA:cadVal};}
 	if (elcampo=='CICL_ABIERTOEXA') {parametros={tabla:"ciclosesc",bd:"Mysql",campollave:"CICL_CLAVE",valorllave:ciclo,CICL_ABIERTOEXA:cadVal};}
 	if (elcampo=='CICL_ACIERTORES') {parametros={tabla:"ciclosesc",bd:"Mysql",campollave:"CICL_CLAVE",valorllave:ciclo,CICL_ACIERTORES:cadVal};}
 	if (elcampo=='CICL_ABIERTOREINS') {parametros={tabla:"ciclosesc",bd:"Mysql",campollave:"CICL_CLAVE",valorllave:ciclo,CICL_ABIERTOREINS:cadVal};}
