@@ -237,8 +237,10 @@ function evaluar(id,profesor,materia,materiad,grupo,ciclo, base){
 
 
 function imprimirBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
-	window.open("repUni.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor=<?php echo $_SESSION["usuario"];?>&materia="+
-								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre, '_blank'); 
+	enlace="nucleo/pd_captcal/repUni.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor=<?php echo $_SESSION["usuario"];?>&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre;
+	abrirPesta(enlace,"Rep.Uni.");
+
 }
 
 	

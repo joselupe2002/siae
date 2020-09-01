@@ -80,8 +80,9 @@ contMat=1;
 		elsql="SELECT ID, CARR_DESCRIP AS CARRERAD, ALUCTR as MATRICULA, ALUM_CORREOINS, ALUM_CORREO, ALUM_TELEFONO, concat(b.ALUM_APEPAT,' ',b.ALUM_APEMAT,' ', b.ALUM_NOMBRE) AS NOMBRE,"+
 		"(select VALOR FROM asistencia m where m.IDGRUPO=a.IDGRUPO and m.MATRICULA=ALUCTR AND m.FECHA='"+$("#selFechas").val()+"') AS VALOR"+
 		" from dlista a, falumnos b, ccarreras c where ALUCTR=ALUM_MATRICULA AND  IDGRUPO="+$("#selMaterias").val()+
-		" and ALUM_CARRERAREG=CARR_CLAVE"
+		" and ALUM_CARRERAREG=CARR_CLAVE"+
 		" ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE ";
+
 
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -205,5 +206,12 @@ function insertaFecha (matricula) {
 					});									
 			}		
 		}); 		    
+
+}
+
+
+function listapdf(){
+	enlace="nucleo/pd_listas/listaAsis.php?id="+$("#selMaterias").val()+"&ciclo="+$("#selCiclo").val();
+	abrirPesta(enlace,"Lista-"+$("#selMaterias").val());
 
 }

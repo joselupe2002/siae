@@ -48,13 +48,13 @@
 						</div> 	
 						<div id="losciclos2" class="col-sm-2" >
 						</div>   
-						<div id="lasmaterias" class="col-sm-4" >
+						<div id="lasmaterias" class="col-sm-3" >
 						</div>                    				
 						<div id="lafecha" class="col-sm-2" >
 						</div>                    				
 	
 	
-						<div class="col-sm-3" style="padding-top:14px;">
+						<div class="col-sm-4" style="padding-top:14px;">
 						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"> Ver Lista</span>            
 							</button>
@@ -62,6 +62,11 @@
 							    class="btn btn-white btn-success btn-round" value="Agregar"> 
 								<i class="ace-icon blue fa fa-wrench bigger-140"></i><span class="btn-small"> Exportar</span>            
 							</button>	
+							<button title="Buscar Registros" onclick="listapdf();" 
+							    class="btn btn-white btn-success btn-round" value="Agregar"> 
+								<i class="ace-icon purple fa fa-th bigger-140"></i><span class="btn-small"> PDF</span>            
+							</button>	
+										
 																								 									
 						</div>
 		            </div> 
