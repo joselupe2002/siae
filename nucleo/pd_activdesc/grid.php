@@ -199,7 +199,7 @@
 
 
 function cargarMaterias() {
-	 elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE='2201' ";
+	 elsql="SELECT CICL_CLAVE, CICL_DESCRIP from ciclosesc a where a.CICL_CLAVE=getciclo() ";
 	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
@@ -221,7 +221,7 @@ function cargarMaterias() {
         });
 
 
-	elsql="SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and a.DESC_CICLO='2201'";
+	elsql="SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and a.DESC_CICLO=getciclo()";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
