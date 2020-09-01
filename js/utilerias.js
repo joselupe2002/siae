@@ -291,6 +291,7 @@ function dameVentana(nombre,contenedor,titulo,tam,colorfondohead,imaico, alto){
 /*================================================FUNCION PARA AGREGAR DIALOGO DE ESPERA =================================================*/
 
 function mostrarEspera (nombre,contenedor, mensaje){
+
 	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
 	           "   <div class=\"modal-dialog modal-sm \" role=\"document\">"+
                "         <div class=\"modal-content\">"+

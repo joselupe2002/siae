@@ -86,7 +86,7 @@ function generaTabla(grid_data){
 							   "           		  <span class=\""+laclase+"\">"+leyendaday+"</span>"+							   
 							   "        	 </div>"+
 							   "             <div class=\"row\" style=\"text-align:right;\">"+
-							   "                  <button onclick=\"enviarNotiPago();\" class=\"btn btn-white btn-info btn-bold\">"+
+							   "                  <button onclick=\"enviarNotiPago('img_reciboreins"+valor.ID+"');\" class=\"btn btn-white btn-info btn-bold\">"+
 							   "                  <i class=\"ace-icon fa fa-share-square-o bigger-120 blue\"></i>"+
 							   "                  Enviar Notificación de Pago</button> "+
 							   "        	 </div>"+
@@ -115,13 +115,12 @@ function generaTabla(grid_data){
 
 			
 			if (valor.RUTA=='') { 
-	
 					$('#enlace_RUTA'+valor.ID).attr('disabled', 'disabled');
 					$('#enlace_RUTA'+valor.ID).attr('href', '#');
-					$('#pdf_RUTA'+valor.ID).attr('src', "../../imagenes/menu/pdfno.png");
+					$('#pdf_RUTA'+valor.ID).attr('src', "../../imagenes/menu/pdfno.png");					
 				 }
 
-			if (valor.AUTORIZADA=='S') {$("#file_RUTA").remove();}
+			if (valor.AUTORIZADA=='S') {$("#file_RUTA"+valor.ID).remove();}
 
 			eltag=dameFecha("TAG");
 			txtop="PAGO PRORROGA "+valor.TIPOPAGOD;
@@ -154,52 +153,62 @@ function generaTabla(grid_data){
 } 
 
 
-function enviarNotiPago(){
-
-	elsql="select EMPL_CORREOINS from fures b, pempleados c where URES_URES=406 and b.URES_JEFE=c.EMPL_NUMERO";
-
-	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	$.ajax({
-	type: "POST",
-	data:parametros,
-	url:  "../base/getdatossqlSeg.php",
-	success: function(data){   
+function enviarNotiPago(comp){
+	if ($("#"+comp).attr("src")!='..\\..\\imagenes\\menu\\pdfno.png'){
 	
-			elcorreoConta=JSON.parse(data)[0][0];
-			mensaje="<html>El alumno <span style=\"color:green\"><b>"+matricula+" "+nombre+"</b></span> ha subido su pago de prorroga para ser cotejado <br>"+
-			"<b>Datos de contacto del alumno:</b><br>"+
-			"<b>Correo:</b>"+elcorreo+"<br>"+
-			"<b>Correo:</b>"+eltel+"<br>"+
-			" <html>";
+			mostrarEspera("esperaInf","grid_pa_prorrogas","Enviando Correo...");
+			elsql="SELECT (select EMPL_CORREOINS from fures b, pempleados c where URES_URES=406 and b.URES_JEFE=c.EMPL_NUMERO) AS CORREOCONTA,"+ 
+						 "(select EMPL_CORREOINS from falumnos a, fures b, pempleados c where ALUM_MATRICULA='"+matricula+"' AND ALUM_CARRERAREG=b.CARRERA and b.URES_JEFE=c.EMPL_NUMERO) as CORREOJEFE "+
+						 " FROM DUAL";
+	
 
-			var parametros = {
-				"MENSAJE": mensaje,
-				"ADJSERVER": 'N',
-				"ASUNTO": 'ITSM: PAGO DE PRORROGA SUBIDO '+matricula+" "+nombre,
-				"CORREO" :  elcorreoConta,
-				"NOMBRE" :  nombre,
-				"ADJUNTO":''
-			};
-		
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
-				data:  parametros,
-				type: "POST",
-				url: "../base/enviaCorreo.php",
-				success: function(response)
-				{
-				   console.log("CONTABILIDAD: "+response);
-				   alert ("Su notificación ha sido enviado, no es necesario que vuelva a dar clic a este botón")
-				},
-				error : function(error) {
-					console.log(error);
-					alert ("Error en ajax "+error.toString()+"\n");
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){   
+			
+					elcorreoConta=JSON.parse(data)[0][0];
+					elcorreoJefe=JSON.parse(data)[0][1];
+					mensaje="<html>El alumno <span style=\"color:green\"><b>"+matricula+" "+nombre+"</b></span> ha subido su pago de prorroga para ser cotejado <br>"+
+					"<b>Datos de contacto del alumno:</b><br>"+
+					"<b>Correo:</b>"+elcorreo+"<br>"+
+					"<b>Correo:</b>"+eltel+"<br>"+
+					" <html>";
+
+					var parametros = {
+						"MENSAJE": mensaje,
+						"ADJSERVER": 'N',
+						"ASUNTO": 'ITSM: PAGO DE PRORROGA SUBIDO '+matricula+" "+nombre,
+						"CORREO" :  elcorreoConta,
+						"NOMBRE" :  nombre,
+						"ADJUNTO":'',
+						"COPIA": elcorreoJefe
+					};
+				
+					$.ajax({
+						data:  parametros,
+						type: "POST",
+						url: "../base/enviaCorreoCopia.php",
+						success: function(response)
+						{
+						console.log("CONTABILIDAD: "+response);
+						ocultarEspera("esperaInf");  
+						alert ("Su notificación ha sido enviado, no es necesario que vuelva a dar clic a este botón")
+						},
+						error : function(error) {
+							console.log(error);
+							alert ("Error en ajax "+error.toString()+"\n");
+						}
+					});
+			},
+			error: function(data) {	                  
+					alert('ERROR: '+data);
+					$('#dlgproceso').modal("hide");  
 				}
-			});
-	},
-	error: function(data) {	                  
-			alert('ERROR: '+data);
-			$('#dlgproceso').modal("hide");  
+			}); 	  
 		}
-	}); 	    
+		else { alert ("No se ha adjuntado el pago");}  
 
 }
