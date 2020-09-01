@@ -341,9 +341,9 @@ function guardarRegistros(matricula){
 
 	parametros={
 		tabla:"dlista",
-		campollave:"concat(PDOCVE,ALUCTR)",
+		campollave:"concat(PDOCVE,ALUCTR,LISTC13)",
 		bd:"Mysql",
-		valorllave:$("#elciclo").html().split("|")[0]+matricula,
+		valorllave:$("#elciclo").html().split("|")[0]+matricula+$("#selCarreras").val(),
 		eliminar: "S",
 		separador:"|",
 		campos: JSON.stringify(loscampos),
