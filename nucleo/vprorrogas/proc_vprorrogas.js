@@ -216,8 +216,8 @@ function adjFormato(modulo,usuario,institucion, campus,essuper){
 	
 	    $('#file_RUTA').ace_file_input({
 			no_file:'No File ...',
-			btn_choose:'Choose',
-			btn_change:'Change',
+			btn_choose:'Buscar',
+			btn_change:'Cambiar',
 			droppable:false,
 			onchange:null,
 			thumbnail:false, //| true | large

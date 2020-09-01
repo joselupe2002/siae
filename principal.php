@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
 		<link rel="stylesheet" href="assets/css/jquery.gritter.min.css" />
         <link href="imagenes/login/sigea.png" rel="image_src" />
+		<link rel="stylesheet" href="assets/css/chosen.min.css" />
         <link rel="stylesheet" href="css/sigea.css" type="text/css" media="screen">
 
 
@@ -203,16 +204,23 @@
 		     if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 		</script>		
 		<script src="assets/js/bootstrap.min.js"></script>	
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
 		<script src="assets/js/jquery-ui.custom.min.js"></script>
         <script src="assets/js/jquery-ui.min.js"></script>        
-        <script src="assets/js/ace-elements.min.js"></script>
-        <script src="assets/js/ace.min.js"></script>
         <script type="text/javascript" src="easyUI/jquery.min.js"></script>
         <script type="text/javascript" src="easyUI/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="js/utilerias.js"></script>
-		<script type="text/javascript" src="prorrogas.js"></script>
-		<script type="text/javascript">
+		<script src="assets/js/chosen.jquery.min.js"></script>
+		<script src="js/subirArchivos.js?v=<?php echo date('YmdHis'); ?>"></script>        
+		<!-- -------------------ultimos ----------------------->
+	
+		<script type="text/javascript" src="assets/js/jquery.validate.min.js"></script>
+		<script src="js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 
+
+
+<script type="text/javascript">
 		var usuario="<?php echo $_SESSION["usuario"]?>";
 		$(document).ready(function(){					
 			co=Math.round(Math.random() * (999999 - 111111) + 111111); 
@@ -296,7 +304,30 @@
 				});
 				
 				
+		//Verificamos si el alumnos tiene prorrogas
+		cadSql="select count(*) AS HAY  from vprorrogas a where MATRICULA='"+usuario+"' AND CICLO=getciclo() AND AUTORIZADA='S' AND PAGADA='N'";
 
+		parametros={sql:cadSql,dato:sessionStorage.co,bd:"Mysql"}
+		$("#informacion").empty();		
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "nucleo/base/getdatossqlSeg.php",
+				success: function(data2){  
+					   if (JSON.parse(data2)[0]["HAY"]>0) {
+							var alto=$(window).height()+"px";
+							url="nucleo/pa_prorrogas/grid.php"	;   	      	
+							var content = '<iframe frameborder="0" id="FR'+"pa_prorrroga"+'" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';	
+							$('#myTab').tabs('add',{
+									title:"Prorroga",
+								// href:"nucleo/grid.php?modulo="+modulo,
+								content:content,
+									closable:true		    
+								});
+							}
+
+				}
+			});
 
 		});
 	

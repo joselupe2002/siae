@@ -437,6 +437,10 @@ function subirPDFDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, exte
 
 
 
+
+
+
+
 function subirImagenDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera,campoid,id,descrip,tabla, operacion, aux){
 	var haymayor=false;
 	laruta=$("#"+nombreInput).attr("value"); 
