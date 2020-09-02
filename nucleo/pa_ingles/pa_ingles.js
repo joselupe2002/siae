@@ -1,0 +1,164 @@
+var id_unico="";
+var estaseriando=false;
+var matser="";
+contR=1;
+contMat=1;
+var laCarrera="";
+var porcProyectado=0;
+var porcPosible=0;
+var porcReal=0;
+var miciclo="";
+
+
+    $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
+    $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
+
+
+    jQuery(function($) { 
+		
+		$('.easy-pie-chart.percentage').each(function(){
+			var barColor = $(this).data('color') || '#2979FF';
+			var trackColor = '#E2E2E2';
+			var size = parseInt($(this).data('size')) || 72;
+			$(this).easyPieChart({
+				barColor: barColor,
+				trackColor: trackColor,
+				scaleColor: false,
+				lineCap: 'butt',
+				lineWidth: parseInt(size/5),
+				animate:false,
+				size: size
+			}).css('color', barColor);
+			});
+
+		elsql="select CICL_CLAVE, CICL_DESCRIP from ciclosesc where CICL_CLAVE=getciclo()";	
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){ 
+					losdatos=JSON.parse(data); 
+					miciclo=losdatos[0][0];
+					$("#elciclo").html(losdatos[0][0]+" "+losdatos[0][1]);
+				}
+			});
+
+			
+		cargarAvance();
+	});
+	
+	
+		 
+	function cargarAvance() {
+
+		elsql="select ALUM_MATRICULA, ALUM_FOTO, ALUM_MAPA, ALUM_ESPECIALIDAD,"+ 
+		"CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) as ALUM_NOMBREC,"+
+		"b.CLAVEOF as CVEESP, b.DESCRIP AS ESPECIALIDADD, ALUM_CARRERAREG, CARR_DESCRIP AS CARRERAD, PLACRED "+
+		" from falumnos a "+
+		" LEFT OUTER join especialidad b on (a.ALUM_ESPECIALIDAD=b.ID)"+
+		" LEFT OUTER join ccarreras c on (a.ALUM_CARRERAREG=c.CARR_CLAVE)"+
+		" LEFT OUTER join mapas d on (a.ALUM_MAPA=d.MAPA_CLAVE)"+
+		" where a.ALUM_MATRICULA='"+usuario+"'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	   $.ajax({
+		   type: "POST",
+		   data:parametros,
+		   url:  "../base/getdatossqlSeg.php",
+		   success: function(data){ 
+			   losdatos=JSON.parse(data); 
+			   $("#matricula").html(losdatos[0]["ALUM_MATRICULA"]);                               
+			   $("#foto").attr('src',losdatos[0]["ALUM_FOTO"]);
+			   $("#nombre").html(losdatos[0]["ALUM_NOMBREC"]); 
+			   $("#carrera").html(losdatos[0]["ALUM_CARRERAREG"]+" "+losdatos[0]["CARRERAD"]); 
+			   $("#mapa").html(losdatos[0]["ALUM_MAPA"]); 
+			   $("#especialiad").html(losdatos[0]["CVEESP"]+" "+losdatos[0]["ESPECIALIDADD"]);
+			   $("#carrera").html(losdatos[0]["ALUM_CARRERAREG"]+" "+losdatos[0]["CARRERAD"]);
+
+			   totalcred=losdatos[0]["PLACRED"];
+			   elmapa=losdatos[0]["ALUM_MAPA"];
+			   laesp=losdatos[0]["ALUM_ESPECIALIDAD"];
+			   //Los avances de los creditos 
+			   real=0;
+				elsql="select IFNULL(sum(h.CICL_CREDITO),0) from dlista b, eciclmate h where "+
+				" b.ALUCTR='"+usuario+"' and h.CICL_MAPA='"+elmapa+"'  and ((IFNULL(h.cveesp,'0')='"+laesp+"') "+
+				" or (IFNULL(h.cveesp,'0')='0'))"+
+				" and h.CICL_MATERIA=b.MATCVE and b.LISCAL>=70 and CERRADO='S' "+
+				" and CICL_TIPOMAT NOT IN ('T'); ";
+
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data){ 
+						losdatos=JSON.parse(data); 
+						real=losdatos[0][0];
+						porcReal=(parseInt(real)/parseInt(totalcred)*100).toFixed(0);
+						console.log("Real="+real+" Cred:"+totalcred);
+						$("#etelavance").html(porcReal);                               
+						$('#elavance').data('easyPieChart').update(porcReal);
+						$("#etelavance2").html("Real ("+real+")");  
+								OpcionesServicio();		
+						
+					}
+				});
+
+		   }
+	   });
+   }  
+
+
+   function OpcionesServicio(){
+
+	$("#servicio").append("<div class=\"row\" style=\"text-align:left;\"><div id=\"documentos\" class=\"col-sm-12\" ></div></div>");
+
+	
+	elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_LI'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data2){ 
+					laruta=""; 
+					activaEliminar="S";
+					losdatos2=JSON.parse(data2); 	
+	
+					if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
+											activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+					
+								
+					dameSubirArchivoDrive("documentos","Subir pago de liberación de Inglés","pagolib",'RECIBOREINS','pdf',
+					'ID',usuario,'PAGO DE LIBERACION DE INGLÉS','eadjreins','alta',usuario+"_"+miciclo+"_LI",laruta,activaEliminar);
+					
+					$("#documentos").append("<div class=\"alert alert-danger\"><i class=\"fa fa-info blue bigger-150\"/>  Si Ingresaste en el 2015 en adelante debes subir Certificado de Inglés</div>");
+			}
+	});
+
+	
+
+	elsql="SELECT RUTA,RESPUESTA,VALIDADO,count(*) FROM eadjlibing where AUX LIKE '"+usuario+"_"+miciclo+"_CERING'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data2){ 
+					laruta=""; 
+					activaEliminar="S";
+					losdatos2=JSON.parse(data2); 	
+	
+					if ((losdatos2[0][3])>0){laruta=losdatos2[0]["RUTA"]; 
+											larutares=losdatos2[0]["RESPUESTA"]; 
+											activaEliminar=losdatos2[0]["VALIDADO"]=='N'?'S':'N';}
+													
+					dameSubirArchivoDrive("documentos","Subir Certificado de Inglés","cering",'RECIBOREINS','pdf',
+					'ID',usuario,'CERTIFICADO DE INGÉS','eadjlibing','alta',usuario+"_"+miciclo+"_CERING",laruta,activaEliminar);
+			}
+	});
+
+}
+
+
+    
