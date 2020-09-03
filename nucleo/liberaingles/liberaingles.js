@@ -49,17 +49,11 @@ var miciclo="";
 		if ($("#atendidos").prop("checked")) {cadex=" and ATENDIDO='S'";} else {cadex+=" and ATENDIDO='N'";} 
 		if ($("#nocotejados").prop("checked")) {cadex+=" and COTEJADO='N'";} else {cadex+=" and COTEJADO='S'";}
 
-		if (essuper=="S") {
+
 			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES, "+
 			"IFNULL((select RUTA from eadjlibing i where i.AUX=concat(n.MATRICULA,'_',n.CICLO,'_CERING')),'') AS RUTACER "+
 			"  FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='LI' ORDER BY IDDET DESC";
-		}
-		else {
-			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES, "+
-			"IFNULL((select RUTA from eadjlibing i where i.AUX=concat(n.MATRICULA,'_',n.CICLO,'_CERING')),'') AS RUTACER "+
-			"FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='LI'"+
-			" and CARRERA in ("+carrera+") ORDER BY IDDET DESC";
-		}
+
 
 
 
