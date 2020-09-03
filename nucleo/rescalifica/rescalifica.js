@@ -137,7 +137,7 @@ function generaTablaMaterias(grid_data){
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.PROYECTO+"</td>");	
 		
 		$("#"+valor.MATRICULA+"_cal").html($("#base").html());
-		
+		$("#"+valor.MATRICULA+"_cal option[value="+ valor.CALIF +"]").attr("selected",true);
 	    contAlum++;      			
 	});	
 } 
