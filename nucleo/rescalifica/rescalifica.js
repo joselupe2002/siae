@@ -89,11 +89,11 @@ contMat=1;
 				"             <tr id=\"headMaterias\">"+
 				"                <th>No.</th> "+
 				"                <th>Matricula</th> "+
-				"                <th>Nombre</th> "+		
-				"                <th>Proyecto</th> "+
+				"                <th>Nombre</th> "+						
 				"                <th>Asesor</th> "+	
 				"                <th>Cal.</th> "+	
-				"                <th>Guardar</th> "+			   
+				"                <th>Guardar</th> "+	
+				"                <th>Proyecto</th> "+		   
 				"             </tr> "+
 				"            </thead>" +
 				"         </table>";
@@ -122,7 +122,7 @@ function generaTablaMaterias(grid_data){
 		$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.MATRICULA+"</span></td>");
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+valor.NOMBRE+"</span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.PROYECTO+"</td>");	
+		
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.ASESOR+"</td>");
 		if (valor.CALASEN=='') {
 			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><SELECT id=\""+valor.MATRICULA+"_cal"+"\"></SELECT></td>");
@@ -134,6 +134,7 @@ function generaTablaMaterias(grid_data){
 			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"verOficio('"+valor.MATRICULA+"')\" "+
 		                           "class=\"btn btn-white\"><i class=\"fa fa-info red bigger-160\"></i></span></td>");
 		}
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.PROYECTO+"</td>");	
 		
 		$("#"+valor.MATRICULA+"_cal").html($("#base").html());
 		
