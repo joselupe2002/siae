@@ -50,10 +50,14 @@ var miciclo="";
 		if ($("#nocotejados").prop("checked")) {cadex+=" and COTEJADO='N'";} else {cadex+=" and COTEJADO='S'";}
 
 		if (essuper=="S") {
-			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES  FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='LI' ORDER BY IDDET DESC";
+			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES, "+
+			"IFNULL((select RUTA from eadjlibing i where i.AUX=concat(n.MATRICULA,'_',n.CICLO,'_CERING')),'') AS RUTACER "+
+			"  FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='LI' ORDER BY IDDET DESC";
 		}
 		else {
-			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='LI'"+
+			elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES "+
+			"IFNULL((select RUTA from eadjlibing i where i.AUX=concat(n.MATRICULA,'_',n.CICLO,'_CERING')),'') AS RUTACER "+
+			"FROM vcotejarpagos n where CICLO='"+$("#selCiclo").val()+"'"+cadex+" and TIPO='LI'"+
 			" and CARRERA in ("+carrera+") ORDER BY IDDET DESC";
 		}
 
@@ -102,7 +106,8 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Tipo</th>"+
 	"<th style=\"text-align: center;\">Matricula</th>"+
 	"<th style=\"text-align: center;\">Nombre</th>"+
-	"<th style=\"text-align: center;\">Comprobante</th>"+	
+	"<th style=\"text-align: center;\">Pago</th>"+	
+	"<th style=\"text-align: center;\">Certificado</th>"+	
 	"<th style=\"text-align: center;\">Cotejado</th>"+
 	"<th style=\"text-align: center;\">Atendido</th>"+
 	"<th style=\"text-align: center;\">2010</th>"+
@@ -145,6 +150,11 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.IDDET).append("<td style=\"text-align:center;\"><a href=\""+valor.RUTA+"\" target=\"_blank\" >"+
 		                                   "<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a></td>");
 		 
+		 eltit="No ha adjuntado el Certificado de INGLÉS";
+		 laimg="../../imagenes/menu/pdfno.png"; if (valor.RUTACER!='') { laimg="../../imagenes/menu/pdf.png";  eltit="Clic para ver el Certificado de INGLÉS";}
+		 $("#row"+valor.IDDET).append("<td style=\"text-align:center;\"><a href=\""+valor.RUTACER+"\" target=\"_blank\" >"+
+		                                   "<img title=\""+eltit+"\"src=\""+laimg+"\" style=\"width:25px; height:25px;\"></a></td>");
+		 
 
 		 if ((valor.COTEJADO=='N') && (valor.OBSCOTEJO=='' || valor.OBSCOTEJO==null)) {tit="En espera de ser cotejado"; cadCotejado="fa-retweet blue";}
 		 if ((valor.COTEJADO=='N') && (valor.OBSCOTEJO!='' && valor.OBSCOTEJO!=null)) { tit="El recibo de pago no fue aceptado tiene observaciones"; cadCotejado="fa-times red"; }
@@ -155,10 +165,10 @@ function generaTablaInformacion(grid_data){
 		 if (valor.ATENDIDO=='S') {tit="El servicio ya fue atendido"; cadAten="fa-check-square-o green";}
 		 $("#row"+valor.IDDET).append("<td><i title=\""+tit+"\" class=\"fa "+cadAten+" bigger-200\"></i></td>");
 
-		 $("#row"+valor.IDDET).append("<td><button title=\"Reporte de Generaciónes antes del 2015\" onclick=\"reporte(1);\" "+
+		 $("#row"+valor.IDDET).append("<td><button title=\"Reporte de Generaciónes antes del 2015\" onclick=\"reporte(1,'"+valor.IDDET+"');\" "+
 		 "class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon green glyphicon glyphicon-copy bigger-140\"></i><span class=\"btn-small fontRoboto\"></span></button>");
 		 
-		 $("#row"+valor.IDDET).append("<td><button title=\"Reporte de Generaciónes a partir del 2015\" onclick=\"reporte(2);\" "+
+		 $("#row"+valor.IDDET).append("<td><button title=\"Reporte de Generaciónes a partir del 2015\" onclick=\"reporte(2,'"+valor.IDDET+"');\" "+
 		 "class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon blue glyphicon glyphicon-paste  bigger-140\"></i><span class=\"btn-small fontRoboto\"></span></button>");
 		 
 		 $("#row"+valor.IDDET).append("<td><div style=\"width:200px;\" id=\"file"+valor.IDDET+"\"></div></td>");
@@ -226,3 +236,12 @@ function marcarAtendido(elid,elvalor){
 	}
 	
 };
+
+
+function reporte (tipo,id){
+  if (tipo==1) { enlace="nucleo/liberaingles/oficio2010.php?id="+id+"&tipo=0";} 
+  if (tipo==2) {enlace="nucleo/liberaingles/oficio2015.php?id="+id+"&tipo=0";}
+  abrirPesta(enlace,"OficioLib");
+
+
+}

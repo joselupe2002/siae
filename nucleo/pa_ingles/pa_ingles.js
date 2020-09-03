@@ -8,6 +8,7 @@ var porcProyectado=0;
 var porcPosible=0;
 var porcReal=0;
 var miciclo="";
+var miid=0;
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -114,7 +115,7 @@ var miciclo="";
 	$("#servicio").append("<div class=\"row\" style=\"text-align:left;\"><div id=\"documentos\" class=\"col-sm-12\" ></div></div>");
 
 	
-	elsql="SELECT RUTA,COTEJADO,count(*) FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_LI'";
+	elsql="SELECT RUTA,COTEJADO,IDDET,IFNULL(ATENDIDO,'N') AS ATENDIDO,count(*) AS N FROM eadjreins where AUX LIKE '"+usuario+"_"+miciclo+"_LI'";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 			type: "POST",
@@ -125,12 +126,21 @@ var miciclo="";
 					activaEliminar="S";
 					losdatos2=JSON.parse(data2); 	
 	
-					if ((losdatos2[0][2])>0){laruta=losdatos2[0][0]; 
-											activaEliminar=losdatos2[0][1]=='N'?'S':'N';}
+					miid=0;
+					atendido=losdatos2[0]["ATENDIDO"];
+					if ((losdatos2[0]["N"])>0){laruta=losdatos2[0]["RUTA"]; 
+											activaEliminar=losdatos2[0]["COTEJADO"]=='N'?'S':'N';
+											miid=losdatos2[0]["IDDET"];											
+										}
 					
-								
-					dameSubirArchivoDrive("documentos","Subir pago de liberación de Inglés","pagolib",'RECIBOREINS','pdf',
-					'ID',usuario,'PAGO DE LIBERACION DE INGLÉS','eadjreins','alta',usuario+"_"+miciclo+"_LI",laruta,activaEliminar);
+					if (activaEliminar=='S') {		
+						dameSubirArchivoDrive("documentos","Subir pago de liberación de Inglés","pagolib",'RECIBOREINS','pdf',
+						'ID',usuario,'PAGO DE LIBERACION DE INGLÉS','eadjreins','alta',usuario+"_"+miciclo+"_LI",laruta,activaEliminar);
+					} else {
+						$("#documentos").append("<span class=\"badge badge-primary\">"+
+										        "Recibo de Pago </span> <a href=\""+laruta+"\" target=\"_blank\" >"+
+												"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a><br/>");
+					}
 					
 					$("#documentos").append("<div class=\"alert alert-danger\"><i class=\"fa fa-info blue bigger-150\"/>  Si Ingresaste en el 2015 en adelante debes subir Certificado de Inglés</div>");
 
@@ -148,9 +158,36 @@ var miciclo="";
 									if ((losdatos2[0][3])>0){laruta=losdatos2[0]["RUTA"]; 
 															larutares=losdatos2[0]["RESPUESTA"]; 
 															activaEliminar=losdatos2[0]["VALIDADO"]=='N'?'S':'N';}
-																	
-									dameSubirArchivoDrive("documentos","Subir Certificado de Inglés","cering",'RECIBOREINS','pdf',
-									'ID',usuario,'CERTIFICADO DE INGÉS','eadjlibing','alta',usuario+"_"+miciclo+"_CERING",laruta,activaEliminar);
+											
+									if (atendido=='N') {
+									     dameSubirArchivoDrive("documentos","Subir Certificado de Inglés","cering",'RECIBOREINS','pdf',
+										 'ID',usuario,'CERTIFICADO DE INGÉS','eadjlibing','alta',usuario+"_"+miciclo+"_CERING",laruta,activaEliminar);
+									}
+									else {
+										$("#documentos").append("<span class=\"badge badge-danger\">"+
+										                        "Certificado de Inglés </span> <a href=\""+laruta+"\" target=\"_blank\" >"+
+														"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a><br/>");
+									}
+									
+
+									//Checamos si ya hay respuesta de PDF
+									elsql="SELECT RUTA FROM eadjreinsres where AUX="+miid;
+									parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+									$.ajax({
+											type: "POST",
+											data:parametros,
+											url:  "../base/getdatossqlSeg.php",
+											success: function(data2){ 
+											
+													losdatos2=JSON.parse(data2); 	
+													if (!(losdatos2[0]["RUTA"]=='')) {
+														$("#documentos").append("<span class=\"badge badge-success\">"+
+														"Oficio de Liberación </span> <a href=\""+losdatos2[0]["RUTA"]+"\" target=\"_blank\" >"+
+														"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a>");	
+													}
+												}
+									});
+
 							}
 					});
 
