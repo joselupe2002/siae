@@ -157,7 +157,6 @@ function generaTablaActividad(grid_data){
 
 function subirArchivo (id,actividad) {
 
-	alert (id);
 	ladefault="..\\..\\imagenes\\menu\\pdf.png";
 	script="<div class=\"modal fade\" id=\"modalFile\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
     "   <div class=\"modal-dialog modal-sm \" role=\"document\">"+
@@ -179,7 +178,7 @@ function subirArchivo (id,actividad) {
 		"                                    <div class=\"col-sm-1\"></div>"+
 		"                                    <div class=\"col-sm-10\">"+
 		"                                        <input class=\"fileSigea\" type=\"file\" id=\"file_"+id+"\" name=\"file_"+id+"\""+
-	        "                                        onchange=\"subirPDFDriveSave('file_"+id+"','ACTDESCARGA','pdf_"+id+"','I_"+id+"','pdf','S','PLAN_ID','"+id+"','"+actividad+"','eplandescarga');\">"+
+	        "                                        onchange=\"subirPDFDriveSave('file_"+id+"','ACTDESCARGA','pdf_"+id+"','I_"+id+"','pdf','S','PLAN_ID','"+id+"','"+actividad+"','eplandescarga','edita','');\">"+
 	        "                                    <\div>"+  
 	        "                                    <div class=\"col-sm-1\"></div>"+	         	                                     
 	        "                                  <\div>"+
