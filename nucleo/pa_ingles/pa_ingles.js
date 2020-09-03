@@ -133,30 +133,33 @@ var miciclo="";
 					'ID',usuario,'PAGO DE LIBERACION DE INGLÉS','eadjreins','alta',usuario+"_"+miciclo+"_LI",laruta,activaEliminar);
 					
 					$("#documentos").append("<div class=\"alert alert-danger\"><i class=\"fa fa-info blue bigger-150\"/>  Si Ingresaste en el 2015 en adelante debes subir Certificado de Inglés</div>");
+
+					elsql="SELECT RUTA,RESPUESTA,VALIDADO,count(*) FROM eadjlibing where AUX LIKE '"+usuario+"_"+miciclo+"_CERING'";
+					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+					$.ajax({
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data2){ 
+									laruta=""; 
+									activaEliminar="S";
+									losdatos2=JSON.parse(data2); 	
+					
+									if ((losdatos2[0][3])>0){laruta=losdatos2[0]["RUTA"]; 
+															larutares=losdatos2[0]["RESPUESTA"]; 
+															activaEliminar=losdatos2[0]["VALIDADO"]=='N'?'S':'N';}
+																	
+									dameSubirArchivoDrive("documentos","Subir Certificado de Inglés","cering",'RECIBOREINS','pdf',
+									'ID',usuario,'CERTIFICADO DE INGÉS','eadjlibing','alta',usuario+"_"+miciclo+"_CERING",laruta,activaEliminar);
+							}
+					});
+
 			}
 	});
 
 	
 
-	elsql="SELECT RUTA,RESPUESTA,VALIDADO,count(*) FROM eadjlibing where AUX LIKE '"+usuario+"_"+miciclo+"_CERING'";
-	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	$.ajax({
-			type: "POST",
-			data:parametros,
-			url:  "../base/getdatossqlSeg.php",
-			success: function(data2){ 
-					laruta=""; 
-					activaEliminar="S";
-					losdatos2=JSON.parse(data2); 	
 	
-					if ((losdatos2[0][3])>0){laruta=losdatos2[0]["RUTA"]; 
-											larutares=losdatos2[0]["RESPUESTA"]; 
-											activaEliminar=losdatos2[0]["VALIDADO"]=='N'?'S':'N';}
-													
-					dameSubirArchivoDrive("documentos","Subir Certificado de Inglés","cering",'RECIBOREINS','pdf',
-					'ID',usuario,'CERTIFICADO DE INGÉS','eadjlibing','alta',usuario+"_"+miciclo+"_CERING",laruta,activaEliminar);
-			}
-	});
 
 }
 
