@@ -157,6 +157,7 @@ function generaTablaActividad(grid_data){
 
 function subirArchivo (id,actividad) {
 
+	alert (id);
 	ladefault="..\\..\\imagenes\\menu\\pdf.png";
 	script="<div class=\"modal fade\" id=\"modalFile\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
     "   <div class=\"modal-dialog modal-sm \" role=\"document\">"+
