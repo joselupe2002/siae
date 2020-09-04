@@ -101,93 +101,18 @@ var miciclo="";
 						console.log("Real="+real+" Cred:"+totalcred);
 						$("#etelavance").html(porcReal);                               
 						$('#elavance').data('easyPieChart').update(porcReal);
-						$("#etelavance2").html("Real ("+real+")");  
 
-						//checamos los avances posibles 
-						elsql="select ifnull(sum(h.CICL_CREDITO),0) "+
-						" from dlista b, eciclmate h where "+
-						" b.ALUCTR='"+usuario+"'"+
-						" and h.CICL_MAPA='"+elmapa+"'"+
-						" and ((IFNULL(h.cveesp,'0')='"+laesp+"') or (IFNULL(h.cveesp,'0')='0'))"+
-						" and h.`CICL_MATERIA`=b.`MATCVE`"+
-						" and CERRADO='N' "+
-						" and CICL_TIPOMAT NOT IN ('T')";
 
-						posible=0;
-						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-						$.ajax({
-							type: "POST",
-							data:parametros,
-							url:  "../base/getdatossqlSeg.php",
-							success: function(data){
-								losdatos=JSON.parse(data); 
-								posibles=losdatos[0][0];
-								porcPosible=(parseInt(posibles)/parseInt(totalcred)*100).toFixed(0);  
-								$("#etposible").html(porcPosible);     				                     
-								$('#posible').data('easyPieChart').update(porcPosible);
-								$("#etposible2").html("Posibles ("+posibles+")");  
-															
-								porcProyectado=((parseInt(real)+parseInt(posibles))/parseInt(totalcred)*100).toFixed(0);
-								
-								$("#etproyectados").html(porcProyectado);                      
-								$('#proyectados').data('easyPieChart').update(porcProyectado);
-								$("#etproyectados2").html("Proyectado ("+(parseInt(real)+parseInt(posibles))+")");  
-
-								elsql="select count(*) from dlista b, eciclmate h where "+
-								" b.ALUCTR='"+usuario+"' and h.CICL_MAPA='"+elmapa+"'"+
-								" and h.CICL_MATERIA=b.MATCVE and b.LISCAL>=70 and CERRADO='S' "+
-								" and CICL_TIPOMAT  IN ('RP'); ";
-
-								parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-								$.ajax({
-									type: "POST",
-									data:parametros,
-									url:  "../base/getdatossqlSeg.php",
-									success: function(data){ 
-
-										//========================================================
-										elsql="";
-
-										parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-										$.ajax({
-											type: "POST",
-											data:parametros,
-											url:  "../base/getdatossqlSeg.php",
-											success: function(data){ 
-											}
-										});
-
-										//========================================================
-										
-										losdatos=JSON.parse(data); 						
-										if ((porcProyectado>=80) && (losdatos[0][0]<=0)) {
-											$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
-															   "  Podrías alcanzar los crédtios para la Residencia Profesional, si apruebas todas las asignaturas de el semestre no cerrado"+
-															   "</div>");		   
-										}
-										if ((porcProyectado<70) && (losdatos[0][0]<=0)) {
-											$("#servicio").html("<div class=\"alert alert-danger\" style=\"width:100%;\">"+ 									        
-															   "    Todavía no cumples los créditos necesarios para inscribir la Residencia Profesional "+
-															   "</div>");
-										}
-										if (losdatos[0][0]>1) {
-											$("#servicio").html("<div class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
-															   "   Ya has cursado la Residencia Profesional "+
-															   "</div>");
-										}
-
-										if ((porcReal>=70) && (losdatos[0][0]<=0)) {
-											$("#servicio").html("<div class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
-															   "    Ya cumples el requisito de los crédtios para cursar La Residencia Profesional"+
-															   "</div>");													
-											OpcionesResidencia();
-										}
-
-									}
-								});
-							}
-						});
+						//========================================================
 						
+						losdatos=JSON.parse(data); 						
+
+						if ((porcReal>=85)) {
+							$("#servicio").html("<div id=\"yapuedes\" class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
+											   "    Ya cumples el requisito de los crédtios para cursar La Residencia Profesional"+
+											   "</div>");													
+							OpcionesResidencia();
+						}				
 					}
 				});
 
@@ -264,18 +189,32 @@ function cargarDatosPropuesta(tipo){
 							url:  "../base/getdatossqlSeg.php",
 							success: function(data){	
 								losdatos=JSON.parse(data); 
-								if (losdatos[0]["HAY"]>0) {								
-										$("#servicio").append("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
+								if (losdatos[0]["HAY"]>0) {	
+									    $("#yapuedes").remove();							
+										$("#servicio").append("<div id=\"solenviada\" class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 										"   <i class=\"fa fa-check green\"></i> Tu Solicitud Carta de Presentación ya fue enviada"+
 										"</div>");
 
 										//Si ya se envio solicitud para Carta de Presentación se abre captura de Solicitud de Proyecto
+						
 										$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
 										"    <div class=\"col-sm-12\"> "+
-										"     <div id=\"documentos\" class=\"col-sm-12\" ></div>"+
+										"     <div id=\"documentos2\" class=\"col-sm-12\" ></div>"+										
 										"    </div>"+
 										"</div>");
+										$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
+										"    <div class=\"col-sm-12\"> "+
+										"     <div id=\"documentos3\" class=\"col-sm-12\" ></div>"+										
+										"    </div>"+
+										"</div>");
+
+									
 										abrirCapturaProyecto();
+
+
+										OpcionesEvaluaciones();
+
+										
 
 									}
 									 
@@ -344,15 +283,17 @@ function cargarDatosPropuesta(tipo){
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){	
 
+				$("#documentos2").append("<div class=\"row\"><div id=\"cartaPres\" class=\"col-sm-6\"></div><div id=\"cartaAcep\" class=\"col-sm-6\"></div></div>");
 				activaEliminar="";
 				if (JSON.parse(data)[0]["RUTAPRES"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("documentos","Subir Carta de Presentación Sellada de Recibido","cartapres",'ADJRESIDENCIA','pdf',
+				dameSubirArchivoDrive("cartaPres","Carta Presenta. Sellada","cartapres",'ADJRESIDENCIA','pdf',
 				'ID',usuario,'CARTA DE PRESENTACIÓN','eadjresidencia','alta',usuario+"_"+miciclo+"_CARTAPRES",JSON.parse(data)[0]["RUTAPRES"],activaEliminar);
 				
 				activaEliminar="";
 				if (JSON.parse(data)[0]["RUTAACEP"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("documentos","Subir Carta de Aceptación Empresa","cartaacep",'ADJRESIDENCIA','pdf',
+				dameSubirArchivoDrive("cartaAcep","Carta de Aceptación","cartaacep",'ADJRESIDENCIA','pdf',
 				'ID',usuario,'CARTA DE ACEPTACIÓN','eadjresidencia','alta',usuario+"_"+miciclo+"_CARTAACEP",JSON.parse(data)[0]["RUTAACEP"],activaEliminar);
+				
 				
 				
 			}
@@ -376,7 +317,7 @@ function cargarDatosPropuesta(tipo){
 
 				if (JSON.parse(data)[0]["N"]>0) {						
 					//Si esta abierto aparecemos la opción de capturar Proyecto.
-					$("#servicio").append("<div style=\"text-align:center;\">"+
+					$("#documentos2").append("<hr><div style=\"text-align:center;\">"+
 							"<button  onclick=\"capturaProyecto();\" class=\"btn btn-white btn-info btn-bold\">"+
 							"     <i class=\"ace-icon green glyphicon glyphicon-book\"></i>1. Capturar Sol. Proyecto"+
 							"</button> &nbsp;  &nbsp; "+
@@ -386,16 +327,25 @@ function cargarDatosPropuesta(tipo){
 					"</div>");
 
 				}
+				else {
+					$("#documentos2").append("<hr><div style=\"text-align:center;\">"+
+							"<div class=\"alert alert-danger\">No se encuentra abierto el proceso de Captura de Sol. de proyectos</div> &nbsp;  &nbsp; "+
+							"<button  onclick=\"verProyecto();\" class=\"btn btn-white btn-success btn-bold\">"+
+							"     <i class=\"ace-icon pink glyphicon glyphicon-print\"></i>2. Imprimir Sol. Proyecto"+
+							"</button>"+
+					"</div>");
+				}
 			}
 		});
 	
+
+		
+
 	}
 
 
 
 	function capturaProyecto(){
-
-	
 
 
 		elsql="select ifnull(ID,'0') as ID,ifnull( MATRICULA,'') AS MATRICULA,ifnull( CICLO,'') AS CICLO,ifnull( INICIA,'') AS INICIA,"+
@@ -406,7 +356,7 @@ function cargarDatosPropuesta(tipo){
 		"ifnull( FIRMA,'') AS FIRMA,ifnull( PSTOFIRMA,'') as PSTOFIRMA,ifnull( CORREOFIRMA,'') as CORREOFIRMA,"+
 		"ifnull( HORARIO,'LUNES A VIERNES DE DE HH:MM HORAS A HH:MM HORAS') as HORARIO,ifnull( VALIDADO,'') AS VALIDADI,"+
 		"ifnull( USUARIO,'') AS USUARIO,ifnull( FECHAUS,'') AS FECHAUS,ifnull( _INSTITUCION,'') AS _INSTITUCION,"+
-		"ifnull( _CAMPUS,'') AS _CAMPUS,ifnull( RFC,'') AS RFC,"+
+		"ifnull( _CAMPUS,'') AS _CAMPUS,ifnull( RFC,'') AS RFC, VALIDADO AS VALIDADO,"+
 		"count(*) as HAY from rescapproy a where  CICLO='"+miciclo+"'"+
 		" and MATRICULA='"+usuario+"'";
 
@@ -419,8 +369,6 @@ function cargarDatosPropuesta(tipo){
 
 				misdatos=JSON.parse(data);
 
-				
-				
 				if (misdatos[0]["HAY"]>0) {proceso="actualizaDatos("+misdatos[0]["ID"]+");"; } else {proceso="grabarDatos();";}
 				mostrarConfirm2("infoError","grid_pa_residencia","Captura de Datos del Proyecto",
 				"<div class=\"ventanaSC\" style=\"text-align:justify; width:99%; height:250px; overflow-y:auto; overflow-x:hidden;\">"+
@@ -667,3 +615,68 @@ function cargarDatosPropuesta(tipo){
 		});
 	
 	}
+
+
+
+	function OpcionesEvaluaciones(){
+		var abierto=false;
+		elsql="select count(*) as N from ecortescal where  CICLO='"+miciclo+"'"+
+		" and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
+		" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
+		" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='RESEVALUA' "+
+		" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
+	
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){	
+				if (JSON.parse(data)[0]["N"]>0) {	
+				    // Abrimos las opciones para subir documentacion de residencia 	
+					elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_EVAL1'),'') AS EVAL1, "+
+							"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_EVAL2'),'') AS EVAL2,"+
+							"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_EVALF'),'') AS EVALF FROM DUAL"; 
+
+					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+					$.ajax({
+						type: "POST",
+						data:parametros,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(data){	
+
+							$("#documentos3").append("<hr><div class=\"row\"><div id=\"EVAL1\" class=\"col-sm-6\"></div><div id=\"EVAL2\" class=\"col-sm-6\"></div></div>"+
+							"<div class=\"row\"><div id=\"EVALF\" class=\"col-sm-6\"></div><div id=\"REPFIN\" class=\"col-sm-6\"></div></div>");
+			
+							activaEliminar="";
+							if (JSON.parse(data)[0]["EVAL1"]!='') {	activaEliminar='S';}					
+							dameSubirArchivoDrive("EVAL1","1ra Evaluación","eval1",'ADJRESIDENCIA','pdf',
+							'ID',usuario,'PRIMERA EVALUACIÓN','eadjresidencia','alta',usuario+"_"+miciclo+"_EVAL1",JSON.parse(data)[0]["EVAL1"],activaEliminar);
+							
+							activaEliminar="";
+							if (JSON.parse(data)[0]["EVAL2"]!='') {	activaEliminar='S';}					
+							dameSubirArchivoDrive("EVAL2","Carta de Aceptación","eval2",'ADJRESIDENCIA','pdf',
+							'ID',usuario,'SEGUNDA EVALUACION','eadjresidencia','alta',usuario+"_"+miciclo+"_EVAL2",JSON.parse(data)[0]["EVAL2"],activaEliminar);
+							
+							activaEliminar="";
+							if (JSON.parse(data)[0]["EVALF"]!='') {	activaEliminar='S';}					
+							dameSubirArchivoDrive("EVALF","1ra Evaluación","evalf",'ADJRESIDENCIA','pdf',
+							'ID',usuario,'EVALUACIÓN FINAL','eadjresidencia','alta',usuario+"_"+miciclo+"_EVALF",JSON.parse(data)[0]["EVALF"],activaEliminar);							
+							
+						}
+					});
+						
+						
+								
+					} //DEL SI ESTA ABIERO 
+					else {
+						alert ("entre al no"); 
+						$("#servicio").append("<div class=\"row\">"+
+							"    <div class=\"col-sm-12\"> "+
+							"          <div class=\"alert alert-danger\">El proceso para subir Evaluaciones no esta abierto</div> "+
+							"    </div>");
+					}
+				}
+			}); //del ajax de busqueda de corte abierto 
+		}
+	

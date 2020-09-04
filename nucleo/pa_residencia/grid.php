@@ -43,14 +43,15 @@
 	</div>
 
 	<div class="row">  
-		<div class="col-sm-4"  style="text-align:center;">   				
-			<span class="profile-picture" style="text-align:center;">
-				<img id="foto"  style="width: 80px; height: 90px;" class="img-responsive" src="../../imagenes/menu/esperar.gif"/>				
-			</span>			
-		</div>
-		<div class="col-sm-8">   
-			<div class="row"> 
-				<div class="col-sm-4" style="text-align:center;">  
+		<div class="col-sm-5"  style="text-align:center;">   				
+			
+			<div class="row">   
+				<div class="col-sm-6">  
+					<span class="profile-picture" style="text-align:center;">
+						<img id="foto"  style="width: 80px; height: 90px;" class="img-responsive" src="../../imagenes/menu/esperar.gif"/>								
+					</span>	
+				</div>
+				<div class="col-sm-6">  	
 					<div class="infobox-progress" title="Total de Créditos que tiene aprobados">
 						<div id="elavance" id="porcavance" class="easy-pie-chart percentage" data-color="green" data-percent="0" data-size="100">
 							<span id="etelavance"  class="percent"></span>%
@@ -59,79 +60,61 @@
 					<div class="infobox-data">
 						<span id="etelavance2" class="fontRobotoB infobox-text bigger-120 text-success">Real</span>
 					</div>
-					
 				</div>
-				<div class="col-sm-4" style="text-align:center;">
-					<div class="infobox-progress" title="Total de Créditos de las asignaturas que esta cursando" >
-						<div id="posible"  class="easy-pie-chart percentage" data-color="blue" data-percent="0" data-size="100">
-							<span id="etposible"  class="percent"></span>%
-						</div>
+			</div>
+
+			<div class="row">  
+				<div class="col-sm-12">   
+					<div class="profile-user-info"> 
+						<div><div class="fontRobotoB" id="nombre" style=" text-align:center; background-color:#77BBD2;"></div></div> 
 					</div>
-					<div class="infobox-data">
-						<span  id="etposible2" class="fontRobotoB infobox-text bigger-120 text-primary">Posibles</span>
+
+					<div class="profile-user-info profile-user-info-striped">    				
+						<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Matricula</div>
+							<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+								<span class="fontRoboto" id="matricula"></span>
+							</div>
+						</div>	
+						<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Plan:</div>
+							<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+								<span class="fontRoboto" id="mapa"></span>
+							</div>
+						</div>		
+						<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Especialidad:</div>
+							<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+								<span class="fontRoboto" id="especialiad"></span>
+							</div>
+						</div>	
+						<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Carrera:</div>
+							<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+								<span class="fontRoboto" id="carrera"></span>
+							</div>
+						</div>	
+						<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Correo:</div>
+							<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+								<span class="fontRobotoB text-success"  id="micorreo"></span>
+							</div>
+						</div>			
+					</div>
+					<br>
+					<div class="profile-user-info profile-user-info-striped" style="text-align:center">  
+						<div class="fontRobotoB text-danger bigger-150">CICLO ESCOLAR:</div>
+						<div id="elciclo" class="fontRobotoB text-success bigger-150"></div>
 					</div>
 				</div>
-				<div class="col-sm-4" style="text-align:center;">
-					<div class="infobox-progress" title="Total de Créditos que pudierá acumular en caso de que apruebe las asignaturas que esta cursando">
-						<div id="proyectados"  class="easy-pie-chart percentage" data-color="red" data-percent="0" data-size="100">
-							<span id="etproyectados"  class="percent"></span>%
-						</div>
-					</div>
-					<div class="infobox-data" >
-						<span id="etproyectados2"  class="fontRobotoB infobox-text bigger-120 text-danger">Proyectados</span>
-					</div>
+			</div>
+		</div>
+
+		<div class="col-sm-7">   
+			<div class="row"> 
+				<div class="col-sm-12" id="servicio" style="text-align:center;">
+				
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="row">  
-		<div class="col-sm-4">   
-		    <div class="profile-user-info"> 
-				<div><div class="fontRobotoB" id="nombre" style=" text-align:center; background-color:#77BBD2;"></div></div> 
-		    </div>
-
-			<div class="profile-user-info profile-user-info-striped">    				
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Matricula</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="matricula"></span>
-					</div>
-				</div>	
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Plan:</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="mapa"></span>
-					</div>
-				</div>		
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Especialidad:</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="especialiad"></span>
-					</div>
-				</div>	
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Carrera:</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRoboto" id="carrera"></span>
-					</div>
-				</div>	
-				<div class="profile-info-row"><div class="profile-info-name fontRobotoB">Correo:</div>
-					<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-						<span class="fontRobotoB text-success"  id="micorreo"></span>
-					</div>
-				</div>			
-			</div>
-			<br>
-			<div class="profile-user-info profile-user-info-striped" style="text-align:center">  
-				<div class="fontRobotoB text-danger bigger-150">CICLO ESCOLAR:</div>
-				<div id="elciclo" class="fontRobotoB text-success bigger-150"></div>
-			</div>
-		</div>
-
-		<div id="servicio" class="col-sm-8" style="text-align:center;">   
-			
-
-		</div>
-
-	</div>
-
+	
 <!-- ============================================================================================================-->			
 		 							
 <!-- -------------------Primero ----------------------->
