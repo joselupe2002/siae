@@ -623,14 +623,14 @@ function cargarDatosPropuesta(tipo){
 
 		//Verificamos el ciclo escolar 
 		elsq="select max(CICLO), count(*) AS HAY from residencias a where a.MATRICULA='"+usuario+"'";
-		alert (elsql);
+	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
 			data:parametros,
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){	
-alert (JSON.parse(data)[0]["HAY"]);
+
 				if (JSON.parse(data)[0]["HAY"]>0) {
 					elciclo=JSON.parse(data)[0][0];
 					var abierto=false;
