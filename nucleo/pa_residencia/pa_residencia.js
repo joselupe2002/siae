@@ -117,7 +117,7 @@ var miciclo="";
 							"     <div id=\"documentos2\" class=\"col-sm-12\" ></div>"+										
 							"    </div>"+
 							"</div>");
-							
+
 							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
 							"    <div class=\"col-sm-12\"> "+
 							"     <div id=\"documentos3\" class=\"col-sm-12\" ></div>"+										
@@ -125,7 +125,9 @@ var miciclo="";
 							"</div>");
 
 							OpcionesResidencia();
-							OpcionesEvaluaciones();
+							abrirCapturaProyecto();
+							OpcionesEvaluaciones();							
+							
 						}				
 					}
 				});
@@ -207,19 +209,7 @@ function cargarDatosPropuesta(tipo){
 									    $("#yapuedes").remove();							
 										$("#servicio").append("<div id=\"solenviada\" class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 										"   <i class=\"fa fa-check green\"></i> Tu Solicitud Carta de Presentación ya fue enviada"+
-										"</div>");
-
-										//Si ya se envio solicitud para Carta de Presentación se abre captura de Solicitud de Proyecto
-						
-									
-
-									
-										abrirCapturaProyecto();
-
-
-										
-
-										
+										"</div>");										
 
 									}
 									 
