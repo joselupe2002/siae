@@ -108,10 +108,7 @@ var miciclo="";
 						losdatos=JSON.parse(data); 						
 
 						if ((porcReal>=85)) {
-							$("#servicio").html("<div id=\"yapuedes\" class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
-											   "    Ya cumples el requisito de los crédtios para cursar La Residencia Profesional"+
-											   "</div>");	
-							
+														
 							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
 							"    <div class=\"col-sm-12\"> "+
 							"     <div id=\"documentos2\" class=\"col-sm-12\" ></div>"+										
@@ -128,7 +125,12 @@ var miciclo="";
 							abrirCapturaProyecto();
 							OpcionesEvaluaciones();							
 							
-						}				
+						}	
+					else {
+						$("#servicio").html("<div id=\"yapuedes\" class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
+						"   No cumples el requisito de los créditos para cursar La Residencia Profesional"+
+						"</div>");	
+					}			
 					}
 				});
 
@@ -205,14 +207,11 @@ function cargarDatosPropuesta(tipo){
 							url:  "../base/getdatossqlSeg.php",
 							success: function(data){	
 								losdatos=JSON.parse(data); 
-								if (losdatos[0]["HAY"]>0) {	
-									    $("#yapuedes").remove();							
+								if (losdatos[0]["HAY"]>0) {										    							
 										$("#servicio").append("<div id=\"solenviada\" class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 										"   <i class=\"fa fa-check green\"></i> Tu Solicitud Carta de Presentación ya fue enviada"+
 										"</div>");										
-
-									}
-									 
+									}									 
 								else {cargarDatosPropuesta(0);}
 							}
 					});
