@@ -110,7 +110,20 @@ var miciclo="";
 						if ((porcReal>=85)) {
 							$("#servicio").html("<div id=\"yapuedes\" class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
 											   "    Ya cumples el requisito de los crédtios para cursar La Residencia Profesional"+
-											   "</div>");													
+											   "</div>");	
+							
+							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
+							"    <div class=\"col-sm-12\"> "+
+							"     <div id=\"documentos2\" class=\"col-sm-12\" ></div>"+										
+							"    </div>"+
+							"</div>");
+							
+							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
+							"    <div class=\"col-sm-12\"> "+
+							"     <div id=\"documentos3\" class=\"col-sm-12\" ></div>"+										
+							"    </div>"+
+							"</div>");
+
 							OpcionesResidencia();
 							OpcionesEvaluaciones();
 						}				
@@ -198,16 +211,7 @@ function cargarDatosPropuesta(tipo){
 
 										//Si ya se envio solicitud para Carta de Presentación se abre captura de Solicitud de Proyecto
 						
-										$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
-										"    <div class=\"col-sm-12\"> "+
-										"     <div id=\"documentos2\" class=\"col-sm-12\" ></div>"+										
-										"    </div>"+
-										"</div>");
-										$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
-										"    <div class=\"col-sm-12\"> "+
-										"     <div id=\"documentos3\" class=\"col-sm-12\" ></div>"+										
-										"    </div>"+
-										"</div>");
+									
 
 									
 										abrirCapturaProyecto();
