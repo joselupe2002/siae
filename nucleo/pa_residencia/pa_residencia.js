@@ -112,6 +112,7 @@ var miciclo="";
 											   "    Ya cumples el requisito de los crédtios para cursar La Residencia Profesional"+
 											   "</div>");													
 							OpcionesResidencia();
+							OpcionesEvaluaciones();
 						}				
 					}
 				});
@@ -212,7 +213,7 @@ function cargarDatosPropuesta(tipo){
 										abrirCapturaProyecto();
 
 
-										OpcionesEvaluaciones();
+										
 
 										
 
@@ -636,7 +637,8 @@ function cargarDatosPropuesta(tipo){
 				    // Abrimos las opciones para subir documentacion de residencia 	
 					elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_EVAL1'),'') AS EVAL1, "+
 							"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_EVAL2'),'') AS EVAL2,"+
-							"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_EVALF'),'') AS EVALF FROM DUAL"; 
+							"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_EVALF'),'') AS EVALF,"+
+							"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_REPTEC'),'') AS REPTEC FROM DUAL"; 
 
 					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 					$.ajax({
@@ -646,7 +648,7 @@ function cargarDatosPropuesta(tipo){
 						success: function(data){	
 
 							$("#documentos3").append("<hr><div class=\"row\"><div id=\"EVAL1\" class=\"col-sm-6\"></div><div id=\"EVAL2\" class=\"col-sm-6\"></div></div>"+
-							"<div class=\"row\"><div id=\"EVALF\" class=\"col-sm-6\"></div><div id=\"REPFIN\" class=\"col-sm-6\"></div></div>");
+							"<div class=\"row\"><div id=\"EVALF\" class=\"col-sm-6\"></div><div id=\"REPTEC\" class=\"col-sm-6\"></div></div>");
 			
 							activaEliminar="";
 							if (JSON.parse(data)[0]["EVAL1"]!='') {	activaEliminar='S';}					
@@ -655,13 +657,18 @@ function cargarDatosPropuesta(tipo){
 							
 							activaEliminar="";
 							if (JSON.parse(data)[0]["EVAL2"]!='') {	activaEliminar='S';}					
-							dameSubirArchivoDrive("EVAL2","Carta de Aceptación","eval2",'ADJRESIDENCIA','pdf',
+							dameSubirArchivoDrive("EVAL2","Segunda Evaluación","eval2",'ADJRESIDENCIA','pdf',
 							'ID',usuario,'SEGUNDA EVALUACION','eadjresidencia','alta',usuario+"_"+miciclo+"_EVAL2",JSON.parse(data)[0]["EVAL2"],activaEliminar);
 							
 							activaEliminar="";
 							if (JSON.parse(data)[0]["EVALF"]!='') {	activaEliminar='S';}					
-							dameSubirArchivoDrive("EVALF","1ra Evaluación","evalf",'ADJRESIDENCIA','pdf',
+							dameSubirArchivoDrive("EVALF","Evaluación Final","evalf",'ADJRESIDENCIA','pdf',
 							'ID',usuario,'EVALUACIÓN FINAL','eadjresidencia','alta',usuario+"_"+miciclo+"_EVALF",JSON.parse(data)[0]["EVALF"],activaEliminar);							
+
+							activaEliminar="";
+							if (JSON.parse(data)[0]["REPTEC"]!='') {	activaEliminar='S';}					
+							dameSubirArchivoDrive("REPTEC","Reporte Técnico","reptec",'ADJRESIDENCIA','pdf',
+							'ID',usuario,'REPORTE TÉCNICO','eadjresidencia','alta',usuario+"_"+miciclo+"_REPTEC",JSON.parse(data)[0]["REPTEC"],activaEliminar);							
 							
 						}
 					});
