@@ -103,6 +103,29 @@
 					</div>
 				</div>
 			</div>
+			<div class="row"> 
+				<div class="col-sm-2">
+				    CUMPLE
+					<i id='ppuede' title="Indica si el alumno ya puede dar residencia Profesional" class=" glyphicon glyphicon-unchecked blue bigger-260"> </i>
+				</div>	
+				<div class="col-sm-2">
+				    CARTA
+					<i id='pcarta' title="Proceso de Solicitud de Carta de Presentación"  class=" glyphicon glyphicon-unchecked blue bigger-260"> </i>
+				</div>	
+				<div class="col-sm-2">
+					CAPT.PROY.
+					<i id='pcapt' title="Proceso de Captura de Proyecto"  class=" glyphicon glyphicon-unchecked blue bigger-260"> </i>
+				</div>	
+				<div class="col-sm-2">
+					REG.
+					<i id='preg' title="Si el alumno se encuentra registrado como residente"  class="glyphicon glyphicon-unchecked blue bigger-260"> </i>
+				</div>
+				<div class="col-sm-2">
+					EVAL
+					<i id='peval' title="Proceso de Captura de Evaluaciones de Proyecto"  class="glyphicon glyphicon-unchecked blue bigger-260"> </i>
+				</div>
+			</div>
+
 		</div>
 
 		<div class="col-sm-7">   

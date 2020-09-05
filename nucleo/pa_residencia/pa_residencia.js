@@ -120,6 +120,8 @@ var miciclo="";
 							"     <div id=\"documentos3\" class=\"col-sm-12\" ></div>"+										
 							"    </div>"+
 							"</div>");
+							$("#ppuede").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+							$("#ppuede").addClass("fa  fa-check green bigger-260");	
 
 							OpcionesResidencia();
 							abrirCapturaProyecto();
@@ -127,9 +129,9 @@ var miciclo="";
 							
 						}	
 					else {
-						$("#servicio").html("<div id=\"yapuedes\" class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
-						"   No cumples el requisito de los créditos para cursar La Residencia Profesional"+
-						"</div>");	
+						alert ("No cumples los créditos todavia para cursar la  Residencia Profesional");
+						$("#ppuede").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+						$("#ppuede").addClass("fa fa-times red bigger-260");	
 					}			
 					}
 				});
@@ -196,6 +198,9 @@ function cargarDatosPropuesta(tipo){
 		url:  "../base/getdatossqlSeg.php",
 		success: function(data){	
 			if (JSON.parse(data)[0]["N"]>0) {	
+
+					$("#pcarta").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+					$("#pcarta").addClass("fa  fa-check green bigger-260");
 					// Verficamos si ya envio su propuesta de empresa. 
 					var abierto=false;
 					elsql="select a.*, count(*) as HAY FROM respropuestas a where MATRICULA='"+usuario+"' and CICLO='"+miciclo+"'";
@@ -207,10 +212,9 @@ function cargarDatosPropuesta(tipo){
 							url:  "../base/getdatossqlSeg.php",
 							success: function(data){	
 								losdatos=JSON.parse(data); 
-								if (losdatos[0]["HAY"]>0) {										    							
-										$("#servicio").append("<div id=\"solenviada\" class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
-										"   <i class=\"fa fa-check green\"></i> Tu Solicitud Carta de Presentación ya fue enviada"+
-										"</div>");										
+								if (losdatos[0]["HAY"]>0) {	
+									$("#pacarta").removeClass("glyphicon glyphicon-unchecked blue bigger-260");									    							
+									$("#pcarta").addClass("fa  fa-check purple bigger-260");									
 									}									 
 								else {cargarDatosPropuesta(0);}
 							}
@@ -218,10 +222,8 @@ function cargarDatosPropuesta(tipo){
 
 				} //DEL SI ESTA ABIERO 
 				else { console.log("No hay proceso abierto para solicitud de Residencia Profesional");
-						$("#servicio").append("<div class=\"row\">"+
-						"    <div class=\"col-sm-12\"> "+
-						"          <div class=\"alert alert-danger\">El proceso de Solicitud de Residencia Profesional no esta abierto</div> "+
-						"    </div>");
+						$("#pcarta").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+						$("#pcarta").addClass("fa  fa-times red bigger-260");
 				}
 			}
 		}); //del ajax de busqueda de corte abierto 
@@ -311,6 +313,8 @@ function cargarDatosPropuesta(tipo){
 
 				if (JSON.parse(data)[0]["N"]>0) {						
 					//Si esta abierto aparecemos la opción de capturar Proyecto.
+					$("#pcapt").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+					$("#pcapt").addClass("fa  fa-check green bigger-260");
 					$("#documentos2").append("<hr><div style=\"text-align:center;\">"+
 							"<button  onclick=\"capturaProyecto();\" class=\"btn btn-white btn-info btn-bold\">"+
 							"     <i class=\"ace-icon green glyphicon glyphicon-book\"></i>1. Capturar Sol. Proyecto"+
@@ -322,8 +326,9 @@ function cargarDatosPropuesta(tipo){
 
 				}
 				else {
-					$("#documentos2").append("<hr><div style=\"text-align:center;\">"+
-							"<div class=\"alert alert-danger\">No se encuentra abierto el proceso de Captura de Sol. de proyectos</div> &nbsp;  &nbsp; "+
+					$("#pcapt").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+					$("#pcapt").addClass("fa  fa-times red bigger-260");
+					$("#documentos2").append("<hr>"+
 							"<button  onclick=\"verProyecto();\" class=\"btn btn-white btn-success btn-bold\">"+
 							"     <i class=\"ace-icon pink glyphicon glyphicon-print\"></i>2. Imprimir Sol. Proyecto"+
 							"</button>"+
@@ -624,6 +629,8 @@ function cargarDatosPropuesta(tipo){
 			success: function(data){	
 
 				if (JSON.parse(data)[0]["HAY"]>0) {
+					$("#preg").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+					$("#preg").addClass("fa  fa-check green bigger-260");
 					elciclo=JSON.parse(data)[0][0];
 					var abierto=false;
 					elsql="select count(*) as N from ecortescal where  CICLO='"+elciclo+"'"+
@@ -639,6 +646,8 @@ function cargarDatosPropuesta(tipo){
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data){	
 							if (JSON.parse(data)[0]["N"]>0) {	
+								$("#peval").removeClass("glyphicon glyphicon-unchecked blue bigger-260");								
+								$("#peval").addClass("fa fa-check green bigger-260");
 								// Abrimos las opciones para subir documentacion de residencia 	
 								elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVAL1'),'') AS EVAL1, "+
 										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVAL2'),'') AS EVAL2,"+
@@ -676,25 +685,20 @@ function cargarDatosPropuesta(tipo){
 										'ID',usuario,'REPORTE TÉCNICO','eadjresidencia','alta',usuario+"_"+elciclo+"_REPTEC",JSON.parse(data)[0]["REPTEC"],activaEliminar);							
 										
 									}
-								});
-									
-									
-											
+								});		
 								} //DEL SI ESTA ABIERO 
-								else {
-			
-									$("#servicio").append("<div class=\"row\">"+
-										"    <div class=\"col-sm-12\"> "+
-										"          <div class=\"alert alert-danger\">El proceso para subir Evaluaciones no esta abierto</div> "+
-										"    </div>");
+								else {		
+									$("#peval").removeClass("glyphicon glyphicon-unchecked blue bigger-260");	
+									$("#peval").addClass("fa  fa-times red bigger-260");							
 								}
 							}
 						}); //del ajax de busqueda de corte abierto 		
 					}
-					else {$("#servicio").append("<div class=\"row\">"+
-					"    <div class=\"col-sm-12\"> "+
-					"          <div class=\"alert alert-danger\">No se encuentra registrado como Residente</div> "+
-					"    </div>");}
+					else {
+						$("#preg").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
+						$("#preg").addClass("fa  fa-times red bigger-260");
+					
+					}
 			}
 		});
 
