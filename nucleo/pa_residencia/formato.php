@@ -326,12 +326,12 @@
 		$pdf->Cell(10,5,utf8_decode("No."),"LTR",0,'C',false);$pdf->Cell(125,5,utf8_decode("DOCUMENTO"),"LRT",0,'C',false);$pdf->Cell(40,5,utf8_decode("ENTREGADO"),1,1,'C',false);
 		$pdf->Cell(10,5,"","LRB",0,'L',false);$pdf->Cell(125,5,"","LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode("SI"),1,0,'C',false);$pdf->Cell(20,5,utf8_decode("NO"),1,1,'C',false);
 		$pdf->Cell(10,5,"1","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("CARTA DE PRESENTACIÓN FIRMADA POR LA EMPRESA"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
-		$pdf->Cell(10,5,"1","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("CARTA DE ACEPTACION"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
-		$pdf->Cell(10,5,"1","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("KARDEX CON PORCENTAJE DE AVANCE	"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
-		$pdf->Cell(10,5,"1","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("LIBERACION DEL SERVICIO SOCIAL (DOCTO. OFICIAL)"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
-		$pdf->Cell(10,5,"1","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("AFILIACION VIGENTE DE SERVICIO MEDICO"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
-		$pdf->Cell(10,5,"1","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("SOLICITUD DE RESIDENCIA PROFESIONAL	"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
-		$pdf->Cell(10,5,"1","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("ANTEPROYECTO COMPLETO, VALIDADO POR ACADEMIA"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
+		$pdf->Cell(10,5,"2","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("CARTA DE ACEPTACION"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
+		$pdf->Cell(10,5,"3","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("KARDEX CON PORCENTAJE DE AVANCE	"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
+		$pdf->Cell(10,5,"4","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("LIBERACION DEL SERVICIO SOCIAL (DOCTO. OFICIAL)"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
+		$pdf->Cell(10,5,"5","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("AFILIACION VIGENTE DE SERVICIO MEDICO"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
+		$pdf->Cell(10,5,"6","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("SOLICITUD DE RESIDENCIA PROFESIONAL	"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
+		$pdf->Cell(10,5,"7","LRB",0,'L',false);$pdf->Cell(125,5,utf8_decode("ANTEPROYECTO COMPLETO, VALIDADO POR ACADEMIA"),"LRB",0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,0,'L',false);$pdf->Cell(20,5,utf8_decode(""),1,1,'L',false);
 	
 		$pdf->Ln(5);
 		$pdf->SetFont('Times','',10);
@@ -349,8 +349,8 @@
 		
 		$pdf->Ln(5);		
 		$pdf->Cell(175,5,utf8_decode("Vo. Bo."),"",1,'C',false);
-		$pdf->Cell(50,5,"","",0,'C',false); $pdf->Cell(75,5,utf8_decode($subacad),"",0,'C',false);$pdf->Cell(50,5,"","",1,'C',false); 
-		$pdf->Cell(50,5,"","",0,'C',false); $pdf->Cell(75,5,utf8_decode("Nombre y Firma (Subdirector(a) Académico)"),"T",0,'C',false);$pdf->Cell(50,5,"","",1,'C',false); 
+		$pdf->Cell(50,5,"","",0,'C',false); $pdf->Cell(75,5,utf8_decode($subacad),"T",0,'C',false);$pdf->Cell(50,5,"","",1,'C',false); 
+		$pdf->Cell(50,5,"","",0,'C',false); $pdf->Cell(75,5,utf8_decode("Nombre y Firma (Subdirector(a) Académico)"),"",0,'C',false);$pdf->Cell(50,5,"","",1,'C',false); 
 
 
 		$pdf->Output();

@@ -256,13 +256,24 @@ function cargarDatosPropuesta(tipo){
 							success: function(data){ 
 								$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 								"    Tu Solicitud ya fue enviada"+
-								"</div>");						
+								"</div>");	
+								correoalJefe(usuario, "<html>El alumno <span style=\"color:green\"><b>"+usuario+" "+nombreuser+
+								"</b></span> ha capturado los datos de Carta de Presentaci&oacute;n para Residencia Profesional, "+
+								"Favor de Revisarlo para proceder a su autorizaci&oacute;n <BR>","ITSM: CAPTURA DE DATOS DE PRESENTACION DE "+usuario+" "+nombreuser);			
+
+								setNotificacionalJefe(usuario,"Sol. Carta Presentación RP."+usuario+" "+nombreuser,"nucleo/respropuestas/grid.php?modulo=respropuestas","P",lainstitucion,elcampus);
 								}
 							});
 						}
 		else {alert ("Todos los datos son necesarios, por favor llene todos los campos");}
 	
 	}
+
+
+
+
+
+
 
 
 

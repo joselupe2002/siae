@@ -2739,3 +2739,102 @@ function procEnvioCorreo(modulo,colcorreo,ec_elReg){
 	});
 
 }
+
+
+
+
+function correoalJefe( matricula, elmensaje, asunto){			
+	elsql="select CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE,ALUM_TELEFONO AS TELEFONO"+
+	", ALUM_CORREO AS CORREO, EMPL_CORREOINS AS CORREOJEFE from falumnos a, fures b, pempleados c "+
+		  " where ALUM_MATRICULA='"+matricula+"' AND ALUM_CARRERAREG=b.CARRERA and b.URES_JEFE=c.EMPL_NUMERO";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+	type: "POST",
+	data:parametros,
+	url:  "../base/getdatossqlSeg.php",
+	success: function(data){   
+
+			elcorreo=JSON.parse(data)[0]["CORREOJEFE"];
+			mensaje=elmensaje;
+
+			var parametros = {
+				"MENSAJE": mensaje+"<br>Datos de contacto: <br> correo: "+JSON.parse(data)[0]["CORREO"]+"<br> Tel&eacute;fono:"+JSON.parse(data)[0]["TELEFONO"],
+				"ADJSERVER": 'N',
+				"ASUNTO": asunto,
+				"CORREO" :  elcorreo,
+				"NOMBRE" :  JSON.parse(data)[0]["NOMBRE"],
+				"ADJUNTO":''
+			};
+		
+			$.ajax({
+				data:  parametros,
+				type: "POST",
+				url: "../base/enviaCorreo.php",
+				success: function(response)
+				{
+				   console.log("JEFE: "+response);
+				},
+				error : function(error) {
+					console.log(error);
+					alert ("Error en ajax "+error.toString()+"\n");
+				}
+			});
+
+			
+	},
+	error: function(data) {	                  
+			alert('ERROR: '+data);
+			$('#dlgproceso').modal("hide");  
+		}
+	}); 	    
+
+}
+
+/*===================CREACION DE NOTIFICACIONES ===========================================*/
+function setNotificacion(usuario,mensaje,enlace,tipo,institucion,campus){
+
+	lafecha=dameFecha("FECHAHORA");
+	lafechaNot=dameFecha("FECHA");
+	lafechaNotFin=dameFecha("FECHA",3);
+
+	parametros={tabla:"enotificaciones",
+	bd:"Mysql",
+	_INSTITUCION:institucion,
+	_CAMPUS:campus,
+	ENOT_DESCRIP:mensaje,
+	ENOT_USUARIO:usuario,
+	ENOT_INICIA:lafechaNot,							
+	ENOT_TERMINA:lafechaNotFin,
+	ENOT_ENLACE:enlace,
+	ENOT_TIPO:tipo,
+	ENOT_FECHA:lafecha,
+	ENOT_USER:usuario};     
+	$.ajax({
+	type: "POST",
+	url:"../base/inserta.php",
+	data: parametros,
+	success: function(data){ 
+
+	}
+	});
+}
+
+
+function setNotificacionalJefe(matricula,mensaje,enlace,tipo,institucion,campus){
+	elsql="select EMPL_NUMERO from falumnos a, fures b, pempleados c "+
+		  " where ALUM_MATRICULA='"+matricula+"' AND ALUM_CARRERAREG=b.CARRERA and b.URES_JEFE=c.EMPL_NUMERO";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){   
+				
+			eluser=JSON.parse(data)[0][0];
+			setNotificacion(eluser,mensaje,enlace,tipo,institucion,campus);
+	}
+  });
+}
+
