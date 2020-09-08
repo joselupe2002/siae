@@ -443,6 +443,7 @@
         $pdf->parseVar('{matcursadas}',$cursadas); // convertimos la variable de materias cursadas
 
 //=====================================================================================================
+if (count($data2)>0) {
         $pdf->Ln(5);
         $pdf->setX(30);
         $pdf->SetFont('Montserrat-Medium','',9);
@@ -487,7 +488,7 @@
         }
         $pdf->parseVar('{matcursando}',$n-1); // convertimos la variable de materias cursando
         $materiascursando=$n-1;
-        
+    }
       
        
       
