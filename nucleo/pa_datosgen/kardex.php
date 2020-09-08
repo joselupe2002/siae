@@ -435,7 +435,7 @@
                       );
             $n++;
             $matTotales++;
-            if (is_numeric($row["CAL"])) {$sumacursadas+=$row["CAL"]; $cursadas++; }            
+            if (is_numeric($row["CAL"]) && ($row["TIPOMAT"]!='SS')) {$sumacursadas+=$row["CAL"]; $cursadas++; }            
         }
 
         $pdf->parseVar('{matapr}',$materiasaprobadas); // convertimos la variable.
@@ -494,50 +494,52 @@
 //=====================================================================================================
 
         $data3 = $pdf->LoadDatosporCursar($elciclo); 
-        $pdf->Ln(5);
-        $pdf->setX(30);
-        $pdf->SetFont('Montserrat-Medium','',9);
-        $pdf->Cell(10,5,'MATERIAS POR CURSAR',0,0,'C');
-        $pdf->Ln(5);
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(255);  
-        $pdf->SetFont('Montserrat-ExtraBold','B',7);
-        $pdf->Cell(10,5,'NO.',1,0,'C',true);
-        $pdf->Cell(15,5,'CLAVE',1,0,'C',true);
-        $pdf->Cell(70,5,'NOMBRE',1,0,'C',true);
-        $pdf->Cell(10,5,'CR',1,0,'C',true);
-        $pdf->Cell(10,5,'CAL',1,0,'C',true);
-        $pdf->Cell(10,5,'TC',1,0,'C',true);
-        $pdf->Cell(30,5,'POR PRIMERA',1,0,'C',true);
-        $pdf->Cell(15,5,'SEGUNDA',1,0,'C',true);
-        $pdf->Cell(15,5,'ESPECIAL',1,0,'C',true);
-        $pdf->Cell(10,5,'AC',1,0,'C',true);
+        if (count($data3)>0) {
+                $pdf->Ln(5);
+                $pdf->setX(30);
+                $pdf->SetFont('Montserrat-Medium','',9);
+                $pdf->Cell(10,5,'MATERIAS POR CURSAR',0,0,'C');
+                $pdf->Ln(5);
+                $pdf->SetFillColor(172,31,6);
+                $pdf->SetTextColor(255);  
+                $pdf->SetFont('Montserrat-ExtraBold','B',7);
+                $pdf->Cell(10,5,'NO.',1,0,'C',true);
+                $pdf->Cell(15,5,'CLAVE',1,0,'C',true);
+                $pdf->Cell(70,5,'NOMBRE',1,0,'C',true);
+                $pdf->Cell(10,5,'CR',1,0,'C',true);
+                $pdf->Cell(10,5,'CAL',1,0,'C',true);
+                $pdf->Cell(10,5,'TC',1,0,'C',true);
+                $pdf->Cell(30,5,'POR PRIMERA',1,0,'C',true);
+                $pdf->Cell(15,5,'SEGUNDA',1,0,'C',true);
+                $pdf->Cell(15,5,'ESPECIAL',1,0,'C',true);
+                $pdf->Cell(10,5,'AC',1,0,'C',true);
 
-        $pdf->Ln();
-        $pdf->SetFont('Montserrat-Medium','',7);
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(0);
-        $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
-        $n=1;
-        foreach($data3 as $row) {
-    
-            $pdf->Row(array( str_pad($n,  3, "0",STR_PAD_LEFT),
-                             utf8_decode($row["MATERIA"]),
-                             utf8_decode($row["MATERIAD"]),
-                             utf8_decode($row["CREDITO"]),
-                             utf8_decode(""),
-                             utf8_decode(""),
-                             utf8_decode(""),
-                             utf8_decode(""),
-                             utf8_decode(""),
-                             "",
-                             )
-                      );
-            $n++;
-            $matTotales++;
-        }
-        $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
-        $pdf->parseVar('{mattotales}',$matTotales); // convertimos la variable de materias totales
+                $pdf->Ln();
+                $pdf->SetFont('Montserrat-Medium','',7);
+                $pdf->SetFillColor(172,31,6);
+                $pdf->SetTextColor(0);
+                $pdf->SetWidths(array(10,15,70, 10,10,10,30,15,15,10));
+                $n=1;
+                foreach($data3 as $row) {
+            
+                    $pdf->Row(array( str_pad($n,  3, "0",STR_PAD_LEFT),
+                                    utf8_decode($row["MATERIA"]),
+                                    utf8_decode($row["MATERIAD"]),
+                                    utf8_decode($row["CREDITO"]),
+                                    utf8_decode(""),
+                                    utf8_decode(""),
+                                    utf8_decode(""),
+                                    utf8_decode(""),
+                                    utf8_decode(""),
+                                    "",
+                                    )
+                            );
+                    $n++;
+                    $matTotales++;
+                }
+                $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
+                $pdf->parseVar('{mattotales}',$matTotales); // convertimos la variable de materias totales
+            }
 
         $pdf->SetFont('Montserrat-ExtraBold','B',7);
         $pdf->SetFillColor(255,255,255);
