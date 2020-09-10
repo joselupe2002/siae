@@ -2754,7 +2754,7 @@ function procEnvioCorreo(modulo,colcorreo,ec_elReg){
 
 function correoalProf( clave, elmensaje, asunto){			
 	elsql="select CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE,EMPL_TELEFONO AS TELEFONO"+
-	", EMPL_CORREOINS AS CORREO from pempleados c "+
+	", EMPL_CORREO AS CORREO from pempleados c "+
 		  " where EMPL_NUMERO='"+clave+"'";
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
