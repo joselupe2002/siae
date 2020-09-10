@@ -48,10 +48,11 @@ var miciclo="";
 		if ($("#atendidos").prop("checked")) {cadex="  ASES_STATUS='S'";} else {cadex+="  ASES_STATUS='N'";} 
 
 	
-		elsql="select ASES_ID,ASES_CICLO, ASES_PROFESOR, ASES_TEMA,ASES_FECHA, ASES_HORA, ASES_MATRICULA AS MATRICULA,ASES_STATUS, "+
+		elsql="select ASES_ID,ASES_CICLO, EMPL_LUGARAS, ASES_PROFESOR, ASES_TEMA,ASES_FECHA, ASES_HORA, ASES_MATRICULA AS MATRICULA,ASES_STATUS, "+
 		"CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, CARR_DESCRIP AS CARRERAD,"+
-		"ASES_ASIGNATURA AS MATERIA, MATE_DESCRIP AS MATERIAD from propasesorias, falumnos, cmaterias, ccarreras where ASES_MATRICULA=ALUM_MATRICULA "+
-		"and ASES_ASIGNATURA=MATE_CLAVE  and ALUM_CARRERAREG=CARR_CLAVE and ASES_PROFESOR='"+usuario+"' and "+cadex;			
+		"ASES_ASIGNATURA AS MATERIA, MATE_DESCRIP AS MATERIAD from propasesorias, falumnos, cmaterias, ccarreras, pempleados where ASES_MATRICULA=ALUM_MATRICULA "+
+		"and ASES_ASIGNATURA=MATE_CLAVE  and ALUM_CARRERAREG=CARR_CLAVE and ASES_PROFESOR='"+usuario+"' and "+cadex+
+		" and ASES_PROFESOR=EMPL_NUMERO";			
 	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
@@ -97,7 +98,8 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Asignatura</th>"+
 	"<th style=\"text-align: center;\">Tema</th>"+
 	"<th style=\"text-align: center;\">Fecha</th>"+
-	"<th style=\"text-align: center;\">Hora</th>"
+	"<th style=\"text-align: center;\">Hora</th>"+
+	"<th style=\"text-align: center;\">Lugar</th>"
 	); 
 
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
@@ -126,6 +128,7 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.ASES_ID).append("<td>"+valor.ASES_TEMA+"</td>");		 
 		 $("#row"+valor.ASES_ID).append("<td>"+valor.ASES_FECHA+"</td>");
 		 $("#row"+valor.ASES_ID).append("<td>"+valor.ASES_HORA+"</td>");	
+		 $("#row"+valor.ASES_ID).append("<td><a href=\""+valor.EMPL_LUGARAS+"\" target=\"_blank\">"+valor.EMPL_LUGARAS+"</a></td>");
 		 $("#row"+valor.ASES_ID).append("</tr>");
 		n++;
 	 });

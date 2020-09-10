@@ -70,3 +70,9 @@ function marcarEnviado(modulo,usuario,essuper){
 	}
 
 
+
+
+	
+function veradjprop  (modulo,usuario,institucion, campus,essuper){
+	residencia_mostrarAdjuntos(modulo,usuario,institucion, campus,essuper);
+}

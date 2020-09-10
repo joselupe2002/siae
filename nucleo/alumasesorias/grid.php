@@ -138,6 +138,7 @@
 													<th style="text-align: center;">Profesor</th> 	
 													<th style="text-align: center;" class="hidden-480">Asignatura</th> 		                          
 													<th style="text-align: center;" class="hidden-480">Tema</th> 
+													<th style="text-align: center;" class="hidden-480">Lugar</th> 
 													<th style="text-align: center;">Eliminar</th> 																	
 												</tr> 
 											</thead> 
@@ -485,7 +486,8 @@ function cargarAsesorias(){
 			$("#rowAge"+c).append("<td>"+valor.ASES_HORA+"</td>");
 		    $("#rowAge"+c).append("<td>"+valor.PROFESORD+"</td>");
 		    $("#rowAge"+c).append("<td>"+valor.MATERIAD+"</td>");
-		    $("#rowAge"+c).append("<td>"+valor.ASES_TEMA+"</td>");
+			$("#rowAge"+c).append("<td>"+valor.ASES_TEMA+"</td>");
+			$("#rowAge"+c).append("<td><a href=\""+valor.EMPL_LUGARAS+"\" target=\"_blank\">"+valor.EMPL_LUGARAS+"</a></td>");
 			$("#rowAge"+c).append("<td><button onclick=\"cancelar('"+valor.ASES_ID+"',"+c+",'"+valor.ASES_PROFESOR+"','"+valor.ASES_FECHA+"','"+valor.ASES_HORA+"');\" class=\"btn btn-xs btn-danger\"><i class=\"ace-icon fa fa-trash-o bigger-120\"></i></button></td>");
 			c++;
 		});
@@ -529,7 +531,7 @@ function cargarAsesorias(){
 
 function cargarAsesoriasAge(){
 		elsql="select ASES_ID, ASES_PROFESOR, ASES_TEMA,ASES_FECHA, ASES_HORA, CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,"+
-              "MATE_DESCRIP AS MATERIAD from propasesorias, pempleados, cmaterias where ASES_PROFESOR=EMPL_NUMERO "+
+              "EMPL_LUGARAS, MATE_DESCRIP AS MATERIAD from propasesorias, pempleados, cmaterias where ASES_PROFESOR=EMPL_NUMERO "+
 			  "and ASES_ASIGNATURA=MATE_CLAVE  and ASES_MATRICULA='"+usuario+"' and ASES_STATUS='N'";
 
        parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}

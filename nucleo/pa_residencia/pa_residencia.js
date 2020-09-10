@@ -281,6 +281,8 @@ function cargarDatosPropuesta(tipo){
 
 
 		elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARTAPRES'),'') AS RUTAPRES, "+
+			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SOLANTEP'),'') AS RUTASOLANTEP, "+
+			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_ANTEP'),'') AS RUTAANTEP, "+
 			  "       IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARTAACEP'),'') AS RUTAACEP FROM DUAL"; 
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -290,7 +292,12 @@ function cargarDatosPropuesta(tipo){
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){	
 
-				$("#documentos2").append("<div class=\"row\"><div id=\"cartaPres\" class=\"col-sm-6\"></div><div id=\"cartaAcep\" class=\"col-sm-6\"></div></div>");
+				$("#documentos2").append("<div class=\"row\"><div id=\"cartaPres\" class=\"col-sm-6\"></div>"+
+															"<div id=\"cartaAcep\" class=\"col-sm-6\"></div>"+
+										"</div>"+
+										"<div class=\"row\"><div id=\"solAntep\" class=\"col-sm-6\"></div>"+
+															"<div id=\"Antep\" class=\"col-sm-6\"></div>"+
+										"</div>");
 				activaEliminar="";
 				if (JSON.parse(data)[0]["RUTAPRES"]!='') {	activaEliminar='S';}					
 				dameSubirArchivoDrive("cartaPres","Carta Presenta. Sellada","cartapres",'ADJRESIDENCIA','pdf',
@@ -300,6 +307,18 @@ function cargarDatosPropuesta(tipo){
 				if (JSON.parse(data)[0]["RUTAACEP"]!='') {	activaEliminar='S';}					
 				dameSubirArchivoDrive("cartaAcep","Carta de Aceptación","cartaacep",'ADJRESIDENCIA','pdf',
 				'ID',usuario,'CARTA DE ACEPTACIÓN','eadjresidencia','alta',usuario+"_"+miciclo+"_CARTAACEP",JSON.parse(data)[0]["RUTAACEP"],activaEliminar);
+				
+
+				activaEliminar="";
+				if (JSON.parse(data)[0]["RUTASOLANTEP"]!='') {	activaEliminar='S';}					
+				dameSubirArchivoDrive("solAntep","Sol. Anteproyecto Sellada","solantep",'ADJRESIDENCIA','pdf',
+				'ID',usuario,'SOLICITUD DE ANTEPROYECTO FIRMADA Y SELLADA','eadjresidencia','alta',usuario+"_"+miciclo+"_SOLANTEP",JSON.parse(data)[0]["RUTASOLANTEP"],activaEliminar);
+				
+
+				activaEliminar="";
+				if (JSON.parse(data)[0]["RUTAANTEP"]!='') {	activaEliminar='S';}					
+				dameSubirArchivoDrive("Antep","Anteprotecto Autorizado","antep",'ADJRESIDENCIA','pdf',
+				'ID',usuario,'ANTEPROYECTO AUTORIZADO','eadjresidencia','alta',usuario+"_"+miciclo+"_ANTEP",JSON.parse(data)[0]["RUTAANTEP"],activaEliminar);
 				
 				
 				
