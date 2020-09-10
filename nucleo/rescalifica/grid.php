@@ -97,6 +97,7 @@
 		</div>
 
 		<select style="display:none;" id="base" style="width: 100%;">
+				  <option value="60">NA</option>	
 			              <?php for ($x=70;$x<=100;$x++) {?>
 			                  echo  <option value="<?php echo $x;?>"><?php echo $x;?></option>			            
 			              <?php } ?>		              
