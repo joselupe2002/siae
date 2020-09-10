@@ -752,6 +752,18 @@ function dameFecha(tipo,dias){
 
 }
 
+
+
+function fechaJava(fecha){
+
+	eldia=fecha.substr(0,2);
+	elmes=fecha.substr(3,2);
+	elanio=fecha.substr(6,4);
+	
+	return elanio+"-"+elmes+"-"+eldia;
+
+}
+
 function calcularEdad(fecha) {
 	var hoy = new Date();
 
@@ -2740,7 +2752,103 @@ function procEnvioCorreo(modulo,colcorreo,ec_elReg){
 
 }
 
+function correoalProf( clave, elmensaje, asunto){			
+	elsql="select CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE,EMPL_TELEFONO AS TELEFONO"+
+	", EMPL_CORREOINS AS CORREO from pempleados c "+
+		  " where EMPL_NUMERO='"+clave+"'";
 
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+	type: "POST",
+	data:parametros,
+	url:  "../base/getdatossqlSeg.php",
+	success: function(data){   
+
+			elcorreo=JSON.parse(data)[0]["CORREO"];
+			mensaje=elmensaje;
+
+			var parametros = {
+				"MENSAJE": mensaje,
+				"ADJSERVER": 'N',
+				"ASUNTO": asunto,
+				"CORREO" :  elcorreo,
+				"NOMBRE" :  JSON.parse(data)[0]["NOMBRE"],
+				"ADJUNTO":''
+			};
+		
+			$.ajax({
+				data:  parametros,
+				type: "POST",
+				url: "../base/enviaCorreo.php",
+				success: function(response)
+				{
+				   console.log("JEFE: "+response);
+				},
+				error : function(error) {
+					console.log(error);
+					alert ("Error en ajax "+error.toString()+"\n");
+				}
+			});
+
+			
+	},
+	error: function(data) {	                  
+			alert('ERROR: '+data);
+			$('#dlgproceso').modal("hide");  
+		}
+	}); 	    
+
+}
+
+
+
+function correoalAlum( clave, elmensaje, asunto){			
+	elsql="select CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE,ALUM_TELEFONO AS TELEFONO"+
+	", ALUM_CORREO AS CORREO from falumnos c "+
+		  " where ALUM_MATRICULA='"+clave+"'";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+	type: "POST",
+	data:parametros,
+	url:  "../base/getdatossqlSeg.php",
+	success: function(data){   
+
+			elcorreo=JSON.parse(data)[0]["CORREO"];
+			mensaje=elmensaje;
+
+			var parametros = {
+				"MENSAJE": mensaje,
+				"ADJSERVER": 'N',
+				"ASUNTO": asunto,
+				"CORREO" :  elcorreo,
+				"NOMBRE" :  JSON.parse(data)[0]["NOMBRE"],
+				"ADJUNTO":''
+			};
+		
+			$.ajax({
+				data:  parametros,
+				type: "POST",
+				url: "../base/enviaCorreo.php",
+				success: function(response)
+				{
+				   console.log("JEFE: "+response);
+				},
+				error : function(error) {
+					console.log(error);
+					alert ("Error en ajax "+error.toString()+"\n");
+				}
+			});
+
+			
+	},
+	error: function(data) {	                  
+			alert('ERROR: '+data);
+			$('#dlgproceso').modal("hide");  
+		}
+	}); 	    
+
+}
 
 
 function correoalJefe( matricula, elmensaje, asunto){			
@@ -2837,4 +2945,5 @@ function setNotificacionalJefe(matricula,mensaje,enlace,tipo,institucion,campus)
 	}
   });
 }
+
 

@@ -85,6 +85,14 @@
 														Formación													
 													</a>
 												</li>	
+
+												<li>
+													<a data-toggle="tab" href="#asesorias">
+													<i class="blue ace-icon blue fa fa-skype bigger-120"></i>
+														Asesorías													
+													</a>
+												</li>	
+
 										</ul>				    
 										<div class="tab-content">
 											<div id="generales" class="tab-pane fade in active">
@@ -173,6 +181,24 @@
 													</div>
 												</div>
 											</div> <!--  Del contenido del segundo  tab -->
+
+											<div id="asesorias" class="tab-pane fade">
+												<div class="profile-user-info profile-user-info-striped">
+													<div class="profile-info-row"><div class="profile-info-name">Lugar / Enlace </div>
+														<div class="profile-info-value"><i class="fa fa-globe light-orange bigger-110"></i>
+															<span class="editable" id="EMPL_LUGARAS">Sin Lugar</span>
+														</div>
+													</div>
+
+													<div class="profile-info-row"><div class="profile-info-name">Asignaturas Asesorar</div>
+														<div class="profile-info-value">
+															<span class="editable" id="EMPL_EXPASIG"></span>
+														</div>
+													</div>
+												</div>
+
+													
+											</div> <!--  Del contenido del tercer  tab -->
 										</div> <!--  Del Tab principal -->
 
 										 <div class="space-20"></div>
@@ -334,21 +360,30 @@
 
 
 		    	  	    elcorreo=valor.EMPL_CORREO;
-		    	  	    if (valor.EMPL_CORREO.length<=0) {elcorreo="999999999";}
+		    	  	    if (valor.EMPL_CORREO.length<=0) {elcorreo="@macuspana.tecnm.mx";}
 		    	  	    $('#EMPL_CORREO').editable({type: 'text',id: 'telefono_ed', value:elcorreo});
 					    $('#EMPL_CORREO').html(elcorreo);
 						  
 
 						laabrevia=valor.EMPL_ABREVIA;
-		    	  	    if (valor.EMPL_ABREVIA.length<=0) {laabrevia="Direccion...";}
-		    	  	    $('#EMPL_ABREVIA').editable({type: 'text',id: 'direccion_ed', value:laabrevia});
+		    	  	    if (valor.EMPL_ABREVIA.length<=0) {laabrevia="ING.";}
+		    	  	    $('#EMPL_ABREVIA').editable({type: 'text',id: 'abrevia_ed', value:laabrevia});
 						$('#EMPL_ABREVIA').html(laabrevia);
 						  
 
 						  $('#EMPL_FECING').html(valor.EMPL_FECING);
 
 
-		    	  	      $('#EMPL_NUMERO').html(valor.EMPL_NUMERO);
+						  $('#EMPL_NUMERO').html(valor.EMPL_NUMERO);
+
+						  lugar=valor.EMPL_LUGARAS;						  
+		    	  	    if ((valor.EMPL_LUGARAS=='') || (valor.EMPL_LUGARAS==null)) {lugar="Sin Lugar";}
+		    	  	    $('#EMPL_LUGARAS').editable({type: 'text',id: 'lugaras_ed', value:lugar});
+		    	  	    $('#EMPL_LUGARAS').html(lugar);
+
+
+
+				
 						  $('#EMPL_DEPTO').html(valor.EMPL_DEPTO+' '+valor.URES_DESCRIP);					
 						  $('#img_EMPL_FOTO').attr("src",valor.EMPL_FOTO);
 						  $('#EMPL_FOTO').val(valor.EMPL_FOTO);
@@ -364,7 +399,11 @@
 						  "from scatalogos WHERE CATA_TIPO='HABTEC' order by CATA_DESCRIP ", "","BUSQUEDA",valor.EMPL_HABTEC);  	
 						  
 						  addSELECTMULT_CONVALOR("selEMPL_HABPER","EMPL_HABPER","PROPIO", "select CATA_CLAVE, CATA_DESCRIP "+
-						  "from scatalogos WHERE CATA_TIPO='HABPER' order by CATA_DESCRIP ", "","BUSQUEDA",valor.EMPL_HABPER);  		
+						  "from scatalogos WHERE CATA_TIPO='HABPER' order by CATA_DESCRIP ", "","BUSQUEDA",valor.EMPL_HABPER);  
+						  
+						  addSELECTMULT_CONVALOR("selEMPL_EXPASIG","EMPL_EXPASIG","PROPIO", 
+						  "SELECT DISTINCT(CICL_MATERIA), CONCAT (CICL_MATERIA,' ',CICL_MATERIAD) FROM veciclmate  WHERE "+
+                                  " IFNULL(TIPOMAT,'0') NOT IN ('T','AC','OC','I','RP') ORDER BY CICL_MATERIAD ", "","BUSQUEDA",valor.EMPL_EXPASIG);  
 	
 						  
 
@@ -397,9 +436,11 @@ function guardar(){
 				EMPL_FORMACION:$("#selEMPL_FORMACION").val(),
 				EMPL_EGRESADODE:$("#selEMPL_EGRESADODE").val(), 
 				EMPL_ABREVIA:$("#EMPL_ABREVIA").html(), 
+				EMPL_LUGARAS:$("#EMPL_LUGARAS").html(), 
 				EMPL_ULTIGRA:$("#selEMPL_ULTIGRA").val(),
 				EMPL_HABTEC: $("#selEMPL_HABTEC").val()==null?' ':$("#selEMPL_HABTEC").val().toString(), 
-				EMPL_HABPER:$("#selEMPL_HABPER").val()==null?' ':$("#selEMPL_HABPER").val().toString(), 	    
+				EMPL_HABPER:$("#selEMPL_HABPER").val()==null?' ':$("#selEMPL_HABPER").val().toString(), 
+				EMPL_EXPASIG:$("#selEMPL_EXPASIG").val()==null?' ':$("#selEMPL_EXPASIG").val().toString(), 	    
 		      };
 		    		
        $('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
