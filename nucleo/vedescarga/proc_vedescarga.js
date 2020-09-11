@@ -23,6 +23,32 @@ function setAutorizado(id,valor,actualiza){
 }
 
 
+function setVisible(id,valor,actualiza){
+	$('#dlgproceso').modal({show:true, backdrop: 'static'});	 
+	   parametros={
+		   tabla:"edescarga",
+		   campollave:"DESC_ID",
+		   bd:"Mysql",
+		   valorllave:id,
+		   VISIBLE: valor
+	   };
+	   $.ajax({
+	   type: "POST",
+	   url:"actualiza.php",
+	   data: parametros,
+	   success: function(data){
+		   $('#dlgproceso').modal("hide"); 
+		   if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}
+		   //else {alert ("La actividad: "+table.rows('.selected').data()[0]["ACTIVIDAD"]+" ha sido autorizada")}	
+		   if (actualiza) {
+			   window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
+		   }
+	   }					     
+	   });    	                
+}
+
+
+
 function verPlan(modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
 	script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
@@ -249,7 +275,7 @@ function abrirTodo(modulo,usuario,institucion, campus,essuper){
 	    setAutorizado(node.find("td").eq(0).html(),'S',false);
 	    node.find("td").eq(1).html("S");
 	});
- window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
+ window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
 }
 
 function cerrarTodo(modulo,usuario,institucion, campus,essuper){
@@ -259,8 +285,56 @@ function cerrarTodo(modulo,usuario,institucion, campus,essuper){
 	    setAutorizado(node.find("td").eq(0).html(),'N',false);
 	    node.find("td").eq(1).html("N");
 	});
-	window.parent.document.getElementById('FRecomplementaria').contentWindow.location.reload();
+	window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
 }
 
 
 
+
+
+/*====================================VISIBLES O NO VISIBLES ==========================*/
+
+function mostrarocultar(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {		
+		
+		if (table.rows('.selected').data()[0]["VISIBLE"]=='N') {
+			if (confirm("Desea que la actividad de descarga sea visible al maestro: "+table.rows('.selected').data()[0]["ACTIVIDAD"])) {
+				setVisible(table.rows('.selected').data()[0][0],"S",true);
+			}
+		}
+		else {
+			if (confirm("La actividad: "+table.rows('.selected').data()[0]["ACTIVIDAD"]+" Esta visible ¿Desea ocultar la actividad de descarga?")) {
+				setVisible(table.rows('.selected').data()[0][0],"N",true);
+			}
+		} 
+	 
+	}
+	else {
+		alert ("Debe seleccionar una actividad de descarga");
+		return 0;
+
+		}
+	
+}
+
+
+function mostrarTodo(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();	
+	table.rows().iterator('row', function(context, index){		
+	    var node = $(this.row(index).node());
+	    setVisible(node.find("td").eq(0).html(),'S',false);
+	    node.find("td").eq(2).html("S");
+	});
+ window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
+}
+
+function ocultarTodo(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();	
+	table.rows().iterator('row', function(context, index){		
+	    var node = $(this.row(index).node());
+	    setVisible(node.find("td").eq(0).html(),'N',false);
+	    node.find("td").eq(2).html("N");
+	});
+	window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
+}

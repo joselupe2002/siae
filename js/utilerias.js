@@ -1070,18 +1070,14 @@ function actualizaSelectMarcar(nombre,elsql,tipoSelect,eltipo,eldato){
 
 
 
+function editarCeldaTabla(celda, tipo, renglon,id){           
+	loquetiene=$("#"+celda).html();  
 
-function aceptarEdicionCelda(celda){
-	 $("#"+celda).html($("#INP_"+celda).val());   
-}
-
-function editarCeldaTabla(celda, tipo){           
-    loquetiene=$("#"+celda).html();  
     if (!($("#INP_"+celda).length > 0)) {
     	  if (tipo=="INPUT") {
                      $("#"+celda).html("<div class=\"input-group editandotabla\">"+
                              "<input id=\"INP_"+celda+"\" class=\"form-control\" value=\""+loquetiene+"\"></input>"+
-                             "<span class=\"input-group-addon\" onclick=\"aceptarEdicionCelda('"+celda+"');\"><i class=\"ace-icon green fa fa-check\"></i></span>"+
+                             "<span class=\"input-group-addon\" onclick=\"aceptarEdicionCelda('"+celda+"','"+renglon+"','"+id+"');\"><i class=\"ace-icon green fa fa-check\"></i></span>"+
                       "</div>");                       
     	  }
     	  if (tipo=="FECHA") {
@@ -1089,7 +1085,7 @@ function editarCeldaTabla(celda, tipo){
     				            "     <input class=\"form-control editandotabla date-picker\" id=\"INP_"+celda+"\""+
 	                            "            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" /> "+
 	                            "     <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span>"+
-	                            "     <span class=\"input-group-addon\" onclick=\"aceptarEdicionCelda('"+celda+"');\"><i class=\"ace-icon green fa fa-check\"></i></span>"+
+	                            "     <span class=\"input-group-addon\" onclick=\"aceptarEdicionCelda('"+celda+"','"+renglon+"','"+id+"');\"><i class=\"ace-icon green fa fa-check\"></i></span>"+
 	                            "</div>");
     		  $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
     	  }

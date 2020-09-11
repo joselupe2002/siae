@@ -59,7 +59,8 @@
 		     <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 				   	<thead>  
 					    <tr>
-					        <th style="text-align: center;">ID</th> 							
+					        <th style="text-align: center;">ID</th> 	
+							<th style="text-align: center;">Ciclo</th> 						
 					        <th style="text-align: center;">Actividad</th> 
 					        <th style="text-align: center;">Horas</th> 
 					        <th style="text-align: center;">Lunes</th> 
@@ -142,7 +143,7 @@
 <script src="<?php echo $nivel; ?>assets/js/ace.min.js"></script>
 <script type="text/javascript" src="<?php echo $nivel; ?>assets/js/jquery.validate.min.js"></script>
 <script src="<?php echo $nivel; ?>js/subirArchivos.js"></script>
-<script src="<?php echo $nivel; ?>js/utilerias.js"></script>
+<script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 
@@ -180,7 +181,8 @@
     	    if (valor.DESC_ABIERTA=='S') {proceso="agregarActividad"; etiqueta="Capt. Actividades"; elcolor="btn-success";}
     	    
     	    $("#cuerpo").append("<tr id=\"row"+valor.DESC_ID+"\">");
-			$("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ID+"</td>");			
+			$("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ID+"</td>");	
+			$("#row"+valor.DESC_ID).append("<td><span class=\"badge badge-successs\">"+valor.DESC_CICLO+"<span></td>");		
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.DESC_ACTIVIDADD+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.DESC_HORAS+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.LUNES+"</td>");
@@ -188,7 +190,7 @@
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.MIERCOLES+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.JUEVES+"</td>");
     	    $("#row"+valor.DESC_ID).append("<td>"+valor.VIERNES+"</td>");
-    	    $("#row"+valor.DESC_ID).append("<td><button onclick=\""+proceso+"('"+valor.DESC_ID+"','"+valor.DESC_ACTIVIDADD+"','<?php echo $_GET["modulo"];?>');\" class=\"btn btn-white "+elcolor+" btn-bold\">"+
+    	    $("#row"+valor.DESC_ID).append("<td><button onclick=\""+proceso+"('"+valor.DESC_ID+"','"+valor.DESC_ACTIVIDADD+"','<?php echo $_GET["modulo"];?>','"+valor.DESC_CICLO+"');\" class=\"btn btn-white "+elcolor+" btn-bold\">"+
 					                                    "<i class=\"ace-icon fa  fa-cogs bigger-120 blue\"></i> "+
 					                                    etiqueta+
 				                                 "</button></td>");
@@ -221,7 +223,7 @@ function cargarMaterias() {
         });
 
 
-	elsql="SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and a.DESC_CICLO=getciclo()";
+	elsql="SELECT * from vedescarga a where a.DESC_PROFESOR='<?php echo $_SESSION['usuario']?>' and VISIBLE='S'";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	 $.ajax({
 		 type: "POST",
@@ -273,7 +275,7 @@ function guadarPortafolio(id,campo,materia){
 }
 
 
-function agregarActividad(id, descrip,modulo){
+function agregarActividad(id, descrip,modulo,elciclo){
 		script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
 	       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
 		   "      <div class=\"modal-content\">"+
@@ -316,7 +318,7 @@ function agregarActividad(id, descrip,modulo){
 		   "                  </div>"+   
 	       "                 <div class=\"col-sm-1\"> "+
 	       "                      <div style=\"padding-bottom:22px;\"> </div>"+   
-	       "                          <button title=\"Agregar un nuevo campo\" type=\"button\" class=\"btn btn-white btn-dark btn-bold\" onclick=\"insertaActividad();\">"+
+	       "                          <button title=\"Agregar un nuevo campo\" type=\"button\" class=\"btn btn-white btn-dark btn-bold\" onclick=\"insertaActividad('"+id+"','"+descrip+"','"+modulo+"','"+elciclo+"');\">"+
 		   "                          <i class=\"ace-icon fa fa-plus  bigger-120 blue\"></i></button>"+	   
 		   "                 </div>"+	   
 		   "             </div>"+		
@@ -347,14 +349,16 @@ function agregarActividad(id, descrip,modulo){
 		
 		
  		 
-		 $("#modalDocument").remove();
+		$("#modalDocument").remove();
 	    if (! ( $("#modalDocument").length )) {
 	        $("#grid_"+modulo).append(script);
 	    }
 
 	    $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
 	    
-	    $('#modalDocument').modal({show:true, backdrop: 'static'});
+		$('#modalDocument').modal({show:true, backdrop: 'static'});
+		
+		
 
 		elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -376,7 +380,7 @@ function agregarActividad(id, descrip,modulo){
 								  data:parametros,
 	        	   	              url:  "../base/getdatossqlSeg.php",
 	        	   	           success: function(data){ 	        	   	        	
-	        	   	        	     generaTablaActividad(JSON.parse(data),"CAPTURA");
+	        	   	        	     generaTablaActividad(JSON.parse(data),"CAPTURA",elciclo);
 	        	   	                 },
 	        	   	           error: function(data) {	                  
 	        	   	                      alert('ERROR: '+data);
@@ -397,7 +401,7 @@ function agregarActividad(id, descrip,modulo){
 
 
 
-	function verActividad(id, descrip,modulo){
+	function verActividad(id, descrip,modulo,elciclo){
 			script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
 		       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
 			   "      <div class=\"modal-content\">"+
@@ -464,7 +468,7 @@ function agregarActividad(id, descrip,modulo){
 									  data:parametros,
 		        	   	           url:  "../base/getdatossqlSeg.php",
 		        	   	           success: function(data){ 	        	   	        	
-		        	   	        	     generaTablaActividad(JSON.parse(data),"VER");
+		        	   	        	     generaTablaActividad(JSON.parse(data),"VER",elciclo);
 		        	   	                 },
 		        	   	           error: function(data) {	                  
 		        	   	                      alert('ERROR: '+data);
@@ -547,7 +551,7 @@ function agregarActividad(id, descrip,modulo){
 
 	   
 
-   function generaTablaActividad(grid_data, op){		
+   function generaTablaActividad(grid_data, op,elciclo){		
 	   	 $("#cuerpoActividad").empty();
 	   	 $("#tabActividad").append("<tbody id=\"cuerpoActividad\">");
 	       c=1;	
@@ -561,57 +565,55 @@ function agregarActividad(id, descrip,modulo){
 	   	    var f = new Date();
 			fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
 
-           //alert (valor.PLAN_FECHAENTREGA+" a�o:"+valor.PLAN_FECHAENTREGA.substring(6,10)+" mes:"+valor.PLAN_FECHAENTREGA.substring(3,5)+" dia:"+valor.PLAN_FECHAENTREGA.substring(0,2));
-			
+         	
 			var f1 = new Date(f.getFullYear(), f.getMonth() +1, f.getDate());
 			var f2 = new Date(valor.PLAN_FECHAENTREGA.substring(6,10), valor.PLAN_FECHAENTREGA.substring(3,5), valor.PLAN_FECHAENTREGA.substring(0,2));
 			
 			btnSubir="<td></td>";
 			
-			
-            if (f1<=f2) {
-               /* btnSubir="<button title=\"Subir archivo PDF comprobable de la actividad\" onclick=\"subirArchivo('"+valor.PLAN_ID+"','"+valor.PLAN_ACTIVIDAD+"');\" class=\"btn btn-xs btn-success\"> " +
-                         "    <i class=\"ace-icon fa fa-upload bigger-120\"></i>" +
-                          "</button>";*/
-
+            if (f1<=f2) {         
                   btnSubir="<td width=\"20%\">"+
 		                   "     <input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.PLAN_ID+"\" name=\"file_"+valor.PLAN_ID+"\""+
-	                       "            onchange=\"subirPDFDriveSave('file_"+valor.PLAN_ID+"','ACTDES_"+$("#elciclo").html()+"','pdf_"+valor.PLAN_ID+"','"+valor.PLAN_ID+"','pdf','S','PLAN_ID','"+valor.PLAN_ID+"','"+valor.PLAN_ACTIVIDAD+"','eplandescarga','edita','');\">"+	    	       
-	                       "      <input  type=\"hidden\" value=\""+valor.RUTA+"\"  name=\""+valor.PLAN_ID+"\" id=\""+valor.PLAN_ID+"\"  placeholder=\"\" />"+	                          	    	     
-	                       "</td>";
+	                       "            onchange=\"subirPDFDriveSave('file_"+valor.PLAN_ID+"','ACTDES_"+elciclo+"','pdf_"+valor.PLAN_ID+"','"+valor.PLAN_ID+"','pdf','S','PLAN_ID','"+valor.PLAN_ID+"','"+valor.PLAN_ACTIVIDAD+"','eplandescarga','edita','');\">"+	    	       	                      
+						   "</td>";										  
                 }
 			
 
+			 cad1="";cad2="";cad3="";cad4="";
+			 botonPDF="";
 		   	 if (op=='CAPTURA') { 
-		    	    boton="<td><button title=\"Borrar Actividad del Plan\" onclick=\"eliminarFila('row"+c+"');\" class=\"btn btn-xs btn-danger\"> " +
+		    	    boton="<td><button title=\"Borrar Actividad del Plan\" onclick=\"eliminarFila('row"+c+"','"+valor.PLAN_ID+"');\" class=\"btn btn-xs btn-danger\"> " +
 	                   "    <i class=\"ace-icon fa fa-trash-o bigger-120\"></i>" +
-	                   "</button></td>";
-	                botonPDF="";
+					   "</button></td>";
+					cad1="ondblclick=\"editarCeldaTabla('a_"+c+"_1','INPUT','1','"+valor.PLAN_ID+"');\"";
+			 		cad2="ondblclick=\"editarCeldaTabla('a_"+c+"_2','INPUT','2','"+valor.PLAN_ID+"');\"";
+			 		cad3="ondblclick=\"editarCeldaTabla('a_"+c+"_3','INPUT','3','"+valor.PLAN_ID+"');\"";
+			 		cad4="ondblclick=\"editarCeldaTabla('a_"+c+"_4','FECHA','4','"+valor.PLAN_ID+"');\"";	                
 			     }
 	
-		     else {
+		     else { boton=btnSubir;}
+				  
+			stElim="display:none; cursor:pointer;"
+			if (valor.RUTA.length>0) {stElim="cursor:pointer; display:block; ";}
 
-		    	 stElim="display:none; cursor:pointer;"
-			     if (valor.RUTA.length>0) {stElim="cursor:pointer; display:block; ";}
-			     
-		    	 boton=btnSubir;
-		    	 botonPDF="<a target=\"_blank\" id=\"enlace_"+valor.PLAN_ID+"\" href=\""+valor.RUTA+"\">"+
-			        "           <img width=\"40px\" height=\"40px\" id=\"pdf_"+valor.PLAN_ID+"\" name=\"pdf_"+valor.PLAN_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
-			        "      </a>"+
-			        "      <i style=\""+stElim+"\" id=\"btnEli_"+valor.PLAN_ID+"\" title=\"Eliminar el archivo que se subi&oacute; anteriormente\" "+
-                    "         onclick=\"eliminarEnlaceDrive('file_"+valor.PLAN_ID+"','ACTDES_"+$("#elciclo").html()+"','pdf_"+valor.PLAN_ID+"','"+valor.PLAN_ID+"','pdf','S','PLAN_ID','"+valor.PLAN_ID+"','"+valor.PLAN_ACTIVIDAD+"','eplandescarga','edita','');\" "+
-                    "         class=\"ace-icon fa red fa-trash-o bigger-120\"></i>";   	    		 
-                  }
-		   		   	
+			botonPDF="<a target=\"_blank\" id=\"enlace_"+valor.PLAN_ID+"\" href=\""+valor.RUTA+"\">"+
+							"           <img width=\"40px\" height=\"40px\" id=\"pdf_"+valor.PLAN_ID+"\" name=\"pdf_"+valor.PLAN_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+							"      </a>"+	
+							"<input  type=\"hidden\" value=\""+valor.RUTA+"\"  name=\""+valor.PLAN_ID+"\" id=\""+valor.PLAN_ID+"\"  placeholder=\"\" />";						
+							"      <i style=\""+stElim+"\" id=\"btnEli_"+valor.PLAN_ID+"\" title=\"Eliminar el archivo que se subi&oacute; anteriormente\" "+
+							"         onclick=\"eliminarEnlaceDrive('file_"+valor.PLAN_ID+"','ACTDES_"+elciclo+"','pdf_"+valor.PLAN_ID+"','"+valor.PLAN_ID+"','pdf','S','PLAN_ID','"+valor.PLAN_ID+"','"+valor.PLAN_ACTIVIDAD+"','eplandescarga','edita','');\" "+
+							"         class=\"ace-icon fa red fa-trash-o bigger-120\"></i>";   	  
+
 		   	 $("#cuerpoActividad").append("<tr id=\"row"+c+"\">");
 		   	 $("#row"+c).append(boton);
 		   	 $("#row"+c).append("<td>"+botonPDF+"</td>");
 		   	 $("#row"+c).append("<td>"+c+"</td>");
-		     $("#row"+c).append("<td>SC</td>");	
-		     $("#row"+c).append("<td id=\"a_"+c+"_1\" ondblclick=\"editarCeldaTabla('a_"+c+"_1','INPUT');\" >"+valor.PLAN_ORDEN+"</td>");		
-		   	 $("#row"+c).append("<td id=\"a_"+c+"_2\" ondblclick=\"editarCeldaTabla('a_"+c+"_2','INPUT');\" >"+valor.PLAN_ACTIVIDAD+"</td>");	
-		   	 $("#row"+c).append("<td id=\"a_"+c+"_3\" ondblclick=\"editarCeldaTabla('a_"+c+"_3','INPUT');\" >"+valor.PLAN_ENTREGABLE+"</td>");	
-		     $("#row"+c).append("<td id=\"a_"+c+"_4\" ondblclick=\"editarCeldaTabla('a_"+c+"_4','FECHA');\" >"+valor.PLAN_FECHAENTREGA+"</td>");	
+			 $("#row"+c).append("<td>"+valor.PLAN_ID+"</td>");	
+			 
+		     $("#row"+c).append("<td id=\"a_"+c+"_1\" "+cad1+" >"+valor.PLAN_ORDEN+"</td>");		
+		   	 $("#row"+c).append("<td id=\"a_"+c+"_2\" "+cad2+" >"+valor.PLAN_ACTIVIDAD+"</td>");	
+		   	 $("#row"+c).append("<td id=\"a_"+c+"_3\" "+cad3+" >"+valor.PLAN_ENTREGABLE+"</td>");	
+		     $("#row"+c).append("<td id=\"a_"+c+"_4\" "+cad4+" >"+valor.PLAN_FECHAENTREGA+"</td>");	
 
 		     if (valor.RUTA=='') { 
 	                $('#enlace_'+valor.PLAN_ID).attr('disabled', 'disabled');
@@ -641,31 +643,49 @@ function agregarActividad(id, descrip,modulo){
 	   }
 
 	    
-      function insertaActividad(){	
+      function insertaActividad(id,descrip,modulo,elciclo){	
+
+	
 
 	    if (($("#orden").val().length>0) && ($("#actividad").val().length>0) && ($("#entregable").val().length>0) && ($("#fecha").val().length>0) ) {
-
-			   	 if ($("#cuerpoActividad").length<=0) {global=1; $("#tabActividad").append("<tbody id=\"cuerpoActividad\">");}
-			   	 
-			   	 $("#cuerpoActividad").append("<tr id=\"row"+global+"\">");
-			   	 $("#row"+global).append("<td><button onclick=\"eliminarFila('row"+global+"');\" class=\"btn btn-xs btn-danger\"> " +
-			   	                 "    <i class=\"ace-icon fa fa-trash-o bigger-120\"></i>" +
-			   	                 "</button></td>");
-			     $("#row"+global).append("<td></td>"); //Por el PDF que aqui no debe tener nada		
-			   	 $("#row"+global).append("<td>"+global+"</td>");
-			     $("#row"+global).append("<td>SC</td>");			     
-			     $("#row"+global).append("<td ondblclick=\"editarCeldaTabla('a_"+global+"_1','INPUT');\" id=\"a_"+global+"_1\">"+$("#orden").val()+"</td>");		
-			   	 $("#row"+global).append("<td ondblclick=\"editarCeldaTabla('a_"+global+"_2','INPUT');\" id=\"a_"+global+"_2\">"+$("#actividad").val()+"</td>");	
-			   	 $("#row"+global).append("<td ondblclick=\"editarCeldaTabla('a_"+global+"_3','INPUT');\" id=\"a_"+global+"_3\">"+$("#entregable").val()+"</td>");	
-			     $("#row"+global).append("<td ondblclick=\"editarCeldaTabla('a_"+global+"_4','FECHA');\" id=\"a_"+global+"_4\">"+$("#fecha").val()+"</td>");	
-			     
-			     $("#orden").val("");
-			     $("#actividad").val("");
-			     $("#entregable").val("");
-			     $("#fecha").val("");
-			     $("#orden").focus();
-			     
-			   	 global++;
+					
+					var f = new Date();
+					fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
+					parametros={tabla:"eplandescarga",
+								bd:"Mysql",
+								_INSTITUCION:"ITSM",
+								_CAMPUS:"0",
+								PLAN_IDACT: $("#elid").val(),
+								PLAN_ORDEN:  $("#orden").val(),
+								PLAN_ACTIVIDAD: $("#actividad").val(),							
+								PLAN_ENTREGABLE: $("#entregable").val(),
+								PLAN_FECHAENTREGA: $("#fecha").val(),
+								PLAN_FECHA:fechacap,
+								PLAN_USER:"<?php echo $_SESSION["usuario"];?>",
+								_INSTITUCION:"<?php echo $_SESSION["INSTITUCION"];?>",
+								_CAMPUS:"<?php echo $_SESSION["CAMPUS"];?>"							
+								};     
+							$.ajax({
+									type: "POST",
+									url:"../base/inserta.php",
+									data: parametros,
+									success: function(data){ 																		
+										elsql="SELECT * FROM eplandescarga WHERE PLAN_IDACT='"+id+"' order by PLAN_ORDEN";
+										parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+										$.ajax({
+											type: "POST",
+											data:parametros,
+											url:  "../base/getdatossqlSeg.php",
+										success: function(data){ 	        	   	        	
+												generaTablaActividad(JSON.parse(data),"CAPTURA",elciclo);
+												},
+										error: function(data) {	                  
+													alert('ERROR: '+data);
+												}
+										});      	
+									}
+								});
+					
 	    }
 	    else
 	    { alert ("Todos los campos son necesarios");}
@@ -673,88 +693,56 @@ function agregarActividad(id, descrip,modulo){
 	   }
 
 
-	   
-	    
-
-	    function eliminarFila(nombre) {
+	    function eliminarFila(nombre,elid) {
 	    	var r = confirm("Seguro que desea eliminar esta actividad");
 	    	if (r == true) {
-	            $("#"+nombre).remove();
-	            }
-	    }
+				parametros={tabla:"eplandescarga",bd:"Mysql",campollave:"PLAN_ID",valorllave:elid} }
+
+				$.ajax({
+					type: "POST",
+					url:"../base/eliminar.php",
+					data: parametros,
+					success: function(data){   
+						$("#"+nombre).remove();
+					}
+				});
+		}
 
 
-	    function guardarActividades(){
-
-	 	    var losdatos=[];
-	        var i=1; 
-	        var j=0; var cad="";
-	        var c=-1;
-
-	        var f = new Date();
-			fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
-
-			if($(".editandotabla").length>0){
-				alert("Exsite elementos que se estan editando"); 
-				}
-			else {
-
-			        $('#tabActividad tr').each(function () {
-			            if (c>=0) {
-			            	        var i = $(this).find("td").eq(2).html();	            	
-			    		    		cad+= $("#elid").val()+"|"+ //id descarga
-			    		    		$("#a_"+i+"_1").html()+"|"+    //orden
-			    		    		$("#a_"+i+"_2").html()+"|"+    //actividad
-			    		    		$("#a_"+i+"_3").html()+"|"+    //enregable
-			    		            $("#a_"+i+"_4").html()+"|"+    //fecha
-			    		            fechacap+"|<?php echo $_SESSION["usuario"];?>|<?php echo $_SESSION["INSTITUCION"];?>|<?php echo $_SESSION["CAMPUS"];?>";    //fechaCaptura +
-			    		            losdatos[c]=cad;
-			    				    cad="";
-			    		           }
-			    				    c++;
-			    		  });
-			    		    	 
-			    		  var loscampos = ["PLAN_IDACT","PLAN_ORDEN","PLAN_ACTIVIDAD","PLAN_ENTREGABLE","PLAN_FECHAENTREGA",
-				    		                "PLAN_FECHA","PLAN_USER","_INSTITUCION","_CAMPUS"];
-			    		    	    
-			    		  parametros={
-			    		    	      tabla:"eplandescarga",
-			    		    	      campollave:"plan_idact",
-			    		    	      bd:"Mysql",
-			    		    	      valorllave:$("#elid").val(),
-			    		    	      eliminar: "S",
-			    		    	      separador:"|",
-			    		    	      campos: JSON.stringify(loscampos),
-			    		    	      datos: JSON.stringify(losdatos)
-			    		    	    };
-			    		  $.ajax({
-			    		    	  type: "POST",
-			    		    	  url:"../base/grabadetalle.php",
-			    		    	  data: parametros,
-			    		    	  success: function(data){
-			    		    	  if (data.length>0) {alert ("Ocurrio un error: "+data); console.log(data);}
-			    		    	  else {alert ("Registros guardados"); 
-			    		    	          $('#modalDocument').modal("hide");  
-			    		    	          $('#dlgproceso').modal("hide"); }		                                	                                        					          
-			    		    	      }					     
-			    		    });
-			      }
-			 
-	        }
+	    function guardarActividades(){cierraModal();}
 
 
 	    function cierraModal(){
-			var r = confirm("Seguro que desea cerrar la ventana no ha guardado los cambios");
-	    	if (r == true) {
-	    		 $('#modalDocument').modal("hide");  
-	            }
-		    }
+			if($(".editandotabla").length>0){
+				alert("Existen elementos que se estan editando y no se han guardado"); 
+				}
+			else {$('#modalDocument').modal("hide");}
+		}
 
 	    function imprimirPlan(){	
-
 	       window.open("plan.php?profesor=<?php echo $_SESSION["usuario"];?>"+"&ciclo="+$("#elciclo").html()+"&ciclod="+$("#elciclod").html(), '_blank');
-	    
-	    }
+		}
+		
+		/*======== Evento cuando se edita una celda =======================*/
+		function aceptarEdicionCelda(celda, renglon, id){
+			$("#"+celda).html($("#INP_"+celda).val()); 
+
+			if (renglon=="1") {parametros={tabla:"eplandescarga",bd:"Mysql",campollave:"PLAN_ID",valorllave:id,PLAN_ORDEN:$("#"+celda).html()} }
+			if (renglon=="2") {parametros={tabla:"eplandescarga",bd:"Mysql",campollave:"PLAN_ID",valorllave:id,PLAN_ACTIVIDAD:$("#"+celda).html()} }
+			if (renglon=="3") {parametros={tabla:"eplandescarga",bd:"Mysql",campollave:"PLAN_ID",valorllave:id,PLAN_ENTREGABLE:$("#"+celda).html()} }
+			if (renglon=="4") {parametros={tabla:"eplandescarga",bd:"Mysql",campollave:"PLAN_ID",valorllave:id,PLAN_FECHAENTREGA:$("#"+celda).html()} }
+
+    		$.ajax({
+				type: "POST",
+				url:"../base/actualiza.php",
+				data: parametros,
+				success: function(data){   
+		
+				}
+			});
+			
+		}
+
 		</script>
 
 
