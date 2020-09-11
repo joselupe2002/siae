@@ -276,6 +276,8 @@ function guadarPortafolio(id,campo,materia){
 
 
 function agregarActividad(id, descrip,modulo,elciclo){
+
+	alert ("entre");
 		script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
 	       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
 		   "      <div class=\"modal-content\">"+
