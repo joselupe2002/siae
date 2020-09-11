@@ -193,9 +193,11 @@
     	    $("#row"+valor.DESC_ID).append("<td><button onclick=\""+proceso+"('"+valor.DESC_ID+"','"+valor.DESC_ACTIVIDADD+"','<?php echo $_GET["modulo"];?>','"+valor.DESC_CICLO+"');\" class=\"btn btn-white "+elcolor+" btn-bold\">"+
 					                                    "<i class=\"ace-icon fa  fa-cogs bigger-120 blue\"></i> "+
 					                                    etiqueta+
-				                                 "</button></td>");
+												 "</button></td>");
+												
 
-        });
+		});
+		alert ($("#row1239").html());
 }		
 
 
@@ -277,7 +279,6 @@ function guadarPortafolio(id,campo,materia){
 
 function agregarActividad(id, descrip,modulo,elciclo){
 
-	alert ("entre");
 		script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
 	       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
 		   "      <div class=\"modal-content\">"+
@@ -348,8 +349,6 @@ function agregarActividad(id, descrip,modulo,elciclo){
 		   "   </div>"+ //div del modal-fade
 		   "</div>";
 	 
-		
-		alert ("pase");
  		 
 		$("#modalDocument").remove();
 	    if (! ( $("#modalDocument").length )) {
@@ -360,7 +359,6 @@ function agregarActividad(id, descrip,modulo,elciclo){
 	    
 		$('#modalDocument').modal({show:true, backdrop: 'static'});
 		
-		alert ("en prueba");
 
 		elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
