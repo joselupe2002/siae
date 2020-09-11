@@ -347,7 +347,7 @@ function agregarActividad(id, descrip,modulo,elciclo){
 		   "</div>";
 	 
 		
-		
+		alert ("pase");
  		 
 		$("#modalDocument").remove();
 	    if (! ( $("#modalDocument").length )) {
@@ -358,7 +358,7 @@ function agregarActividad(id, descrip,modulo,elciclo){
 	    
 		$('#modalDocument').modal({show:true, backdrop: 'static'});
 		
-		
+		alert ("en prueba");
 
 		elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
