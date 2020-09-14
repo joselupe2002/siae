@@ -410,7 +410,7 @@ function cargarAsesorias(){
 
 
 	function cargarAsesores(){
-	    elsql="select * from vedescarga i, pempleados where DESC_PROFESOR=EMPL_NUMERO AND i.DESC_CICLO=getciclo() AND i.DESC_ACTIVIDAD IN ('124','DC04') ORDER BY DESC_PROFESORD";
+	    elsql="select * from vedescarga i, pempleados where DESC_PROFESOR=EMPL_NUMERO AND i.DESC_CICLO=getciclo() AND i.DESC_ACTIVIDAD IN ('124','DC04','13') ORDER BY DESC_PROFESORD";
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
