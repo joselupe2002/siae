@@ -428,6 +428,8 @@ function cargarAsesorias(){
 
 
 		function guardarAsesorias (prof, profd, dia, horario,ciclo,lugar){
+
+			if (($("#asignatura").val()!='0') && ($("#tema").val()!='')) {
 			lafecha=dameFecha("FECHAHORA");
 
 			parametros={
@@ -468,7 +470,11 @@ function cargarAsesorias(){
 
 					cargarAsesoriasAge();
 				}					     
-			});      
+			}); 
+			}
+			else {
+				alert ("Debe elegir asignatura y tema");
+			}     
 		}
 
 
