@@ -204,7 +204,7 @@ function confirma(id,matricula,ciclo){
 
 function cargarAct(){
 	    elsql="select a.CICLO, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
-			  " a.AULA from vecomplementaria a where   AUTORIZADO='S' and ABIERTA='S' and RESPONSABLE='"+<?php  echo $_SESSION["usuario"];?>+"';";
+			  " a.AULA from vecomplementaria a where  ABIERTA='S' and RESPONSABLE='"+<?php  echo $_SESSION["usuario"];?>+"';";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
