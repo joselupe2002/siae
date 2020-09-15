@@ -275,7 +275,7 @@ function abrirTodo(modulo,usuario,institucion, campus,essuper){
 	    setAutorizado(node.find("td").eq(0).html(),'S',false);
 	    node.find("td").eq(1).html("S");
 	});
- window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
+ //window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
 }
 
 function cerrarTodo(modulo,usuario,institucion, campus,essuper){
@@ -285,7 +285,7 @@ function cerrarTodo(modulo,usuario,institucion, campus,essuper){
 	    setAutorizado(node.find("td").eq(0).html(),'N',false);
 	    node.find("td").eq(1).html("N");
 	});
-	window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
+	//window.parent.document.getElementById('FRvedescarga').contentWindow.location.reload();
 }
 
 
