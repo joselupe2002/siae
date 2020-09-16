@@ -209,7 +209,7 @@
 			{				
                 $data=[];	
                 $miConex = new Conexion();
-                $sql=" select * from ed_respuestasv2 b where b.CICLO='".$_GET["ciclo"]."' and b.PROFESOR='".$_GET["profesor"]."'";
+                $sql=" select * from ed_respuestasv2 b, cmaterias where MATERIA=MATE_CLAVE and ifnull(MATE_TIPO,'') NOT IN ('T')  AND  b.CICLO='".$_GET["ciclo"]."' and b.PROFESOR='".$_GET["profesor"]."'";
 
 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
