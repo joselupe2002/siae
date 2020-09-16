@@ -40,7 +40,7 @@ contMat=1;
 		   $("#informacion").append(script);
 
 				
-		elsql="select * from tem_ed2193 order by alumno  ";
+		elsql="select * from tem_ed2193 order by alumno limit "+$("#de").val()+", "+$("#a").val();
 	  
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		mostrarEspera("esperaInf","grid_zmigraEval","Cargando Datos...");

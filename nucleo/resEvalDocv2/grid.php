@@ -40,44 +40,47 @@
 	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
 	   
 	    
-	<div class="widget-box widget-color-green" id="principal">
+	<div class="widget-box widget-color-purple" id="principal">
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
-				     		 
-	
-
+				         <div id="losciclos" class="col-sm-1">
+						</div> 	
+						<div id="losciclossel" class="col-sm-3" >
+						</div>                    				
 						<div id="lascarreras" class="col-sm-3">
-							<label>De:</label>
-						    <input style="color:green;" class="formcontrol" id="de" value="1000">							
-						</div>  
-						<div id="lascarreras" class="col-sm-3">
-							<label>De:</label>						    
-							<input style="color:blue;" class="formcontrol" id="a">
-						</div>  
+						</div>       			 
 					
 						<div class="col-sm-5" style="padding-top:14px;">
-						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"> Procesar</span>            
+						    <button title="Ver todas las materias y profesores porcentaje de evaluaciones realizadas" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon green fa fa-book bigger-100"></i><span class="btn-small"> Materias</span>            
 							</button>
-
-							<button title="Buscar Registros" onclick="convertirDataTable('tabInformacion');" 
-							    class="btn btn-white btn-success btn-round" value="Agregar"> 
-								<i class="ace-icon blue fa fa-wrench bigger-140"></i><span class="btn-small"></span>            
+							<button title="Ver avance de evaluaciones por profesores, Imprimir reporte de evaluación" onclick="cargarInformacionP();" 
+							    class="btn btn-white btn-success btn-round"> 
+								<i class="ace-icon blue fa fa-user bigger-100"></i><span class="btn-small"> Profesores</span>            
 							</button>	
-																											 									
+							<button title="Ver avance de evaluación por Alumnos" onclick="cargarInformacionA();" 
+							    class="btn btn-white btn-success btn-round" > 
+								<i class="ace-icon red fa fa-group bigger-100"></i><span class="btn-small"> Alumnos</span>            
+							</button>	
+
+							<button title="Convertir a tabla para exportar" onclick="convertirDataTable('tabMaterias');" 
+							    class="btn btn-white btn-success btn-round"> 
+								<i class="ace-icon blue fa fa-wrench bigger-140"></i><span class="btn-small"></span>            
+							</button>
+																								 									
 						</div>
 		            </div> 
 		      </div>
 
               <div class="widget-body">
 				   <div class="widget-main">
-				       <div id="opcionestabInformacion" class="row hide" >
+				       <div id="opcionestabMaterias" class="row hide" >
 					        <div class="col-sm-1"></div>
 						    <div class="col-sm-3">
-								<div class="pull-left tableTools-container" id="botonestabInformacion"></div>
+								<div class="pull-left tableTools-container" id="botonestabMaterias"></div>
 							</div>
 							<div class="col-sm-3">
-								<input type="text" id="buscartabInformacion" placeholder="Filtrar...">	
+								<input type="text" id="buscartabMaterias" placeholder="Filtrar...">	
 							</div>
 				       </div>
 				       <div class="row">							   
@@ -143,7 +146,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="utilmigra.js?ve=<?php echo date('YmdHis'); ?>"></script>
+<script src="resEvalDocv2.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
  
 </script>
