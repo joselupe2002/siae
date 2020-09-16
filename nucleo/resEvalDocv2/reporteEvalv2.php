@@ -141,7 +141,7 @@
 			{		
                 $data=[];			
                 $miConex = new Conexion();
-                $sql="SELECT * FROM ciclosesc where CICL_CLAVE=getciclo() ";
+                $sql="SELECT * FROM ciclosesc where CICL_CLAVE='".$_GET["ciclo"]."'";
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
