@@ -128,7 +128,7 @@
                 "(SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestasv2 l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE) AS RES, ".
                 "(select count(*) from dlista where IDGRUPO=a.IDDETALLE AND BAJA='N') AS ALUM ".
                 " from vedgrupos a, cmaterias b  ".
-                " where MATERIA=MATE_CLAVE  and MATE_TIPO NOT IN ('T') and a.CICLO='".$_GET["ciclo"]."'  and PROFESOR='".$_GET["profesor"]."'". " ORDER BY SEMESTRE,MATERIAD";
+                " where MATERIA=MATE_CLAVE  and ifnull(MATE_TIPO,'') NOT IN ('T') and a.CICLO='".$_GET["ciclo"]."'  and PROFESOR='".$_GET["profesor"]."'". " ORDER BY SEMESTRE,MATERIAD";
 
                 //echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
