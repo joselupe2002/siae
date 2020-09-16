@@ -350,3 +350,77 @@ function verMateriasA(ciclo,alumno){
     });	  
    	      				
 }
+
+
+
+/*===============================ALUMNOS FALTANTES ======================================*/
+
+
+
+function cargarFaltantes(){
+	script="<table id=\"tabFaltan\" name=\"tabFaltan\" class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
+			">"+
+		  "        <thead >  "+
+	   "             <tr id=\"headMaterias\">"+
+	   "                <th>No.</th> "+
+	   "                <th>Ciclo</th> "+	
+	   "                <th>No. Control</th> "+	
+	   "                <th>Nombre Alumno</th> "+	
+	   "                <th>Carrera</th> "+
+	   "                <th>Materia</th> "+
+	   "                <th>Correo</th> "+
+	   "                <th>Correo Ins.</th> "+
+	   "                <th>Teléfono</th> "+	   
+	   "             </tr> "+
+	   "            </thead>" +
+	   "         </table>";
+	   $("#informacion").empty();
+	   $("#informacion").append(script);
+			
+	elsql="SELECT a.PDOCVE AS CICLO,ALUCTR AS MATRICULA, concat(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, "+
+	"CARR_CLAVE AS CARRREA, CARR_DESCRIP AS CARRERAD, MATE_CLAVE AS MATERIA, MATE_DESCRIP AS MATERIAD, "+
+	"ALUM_CORREO AS CORREO, ALUM_CORREOINS AS CORREOINS, ALUM_TELEFONO AS TELEFONO"+
+	" from dlista a, falumnos b, ccarreras, cmaterias where a.PDOCVE="+$("#selCiclos").val()+" and "+
+	"ALUCTR=ALUM_MATRICULA and CARR_CLAVE=ALUM_CARRERAREG AND "+
+	"MATCVE=MATE_CLAVE AND "+
+	" a.ID NOT in (select IFNULL(h.IDDETALLE,0) from ed_respuestasv2 h) order by ALUM_APEPAT, ALUM_APEMAT,ALUM_NOMBRE";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	mostrarEspera("esperahor","grid_resEvalDocv2","Cargando Datos...");
+	$.ajax({
+		   type: "POST",
+		   data:parametros,
+		   url:  "../base/getdatossqlSeg.php",
+		   success: function(data){  				      			      
+				generaTablaFaltan(JSON.parse(data));   													
+				ocultarEspera("esperahor");  																											
+		},
+		error: function(dataMat) {	                  
+				alert('ERROR: '+dataMat);
+							}
+});	      	      					  					  		
+}
+
+
+function generaTablaFaltan(grid_data){	
+	contAlum=1;
+	$("#cuerpoFaltan").empty();
+	$("#tabFaltan").append("<tbody id=\"cuerpoFaltan\">");
+	//$("#btnfiltrar").attr("disabled","disabled");
+	jQuery.each(grid_data, function(clave, valor) { 
+	
+			$("#cuerpoFaltan").append("<tr id=\"rowMF"+contAlum+"\">");
+			$("#rowMF"+contAlum).append("<td>"+contAlum+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.CICLO+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.MATRICULA+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.NOMBRE+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.CARRERAD+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.MATERIA+" "+valor.MATERIAD+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.CORREO+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.CORREOINS+"</td>");
+			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.TELEFONO+"</td>");
+	
+			contAlum++;      			
+	
+	});	
+	} 

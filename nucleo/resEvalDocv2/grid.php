@@ -26,6 +26,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
 
         
 
@@ -62,6 +63,10 @@
 							    class="btn btn-white btn-success btn-round" > 
 								<i class="ace-icon red fa fa-group bigger-100"></i><span class="btn-small"> Alumnos</span>            
 							</button>	
+
+							<button title="Cargar Lista de alumnos y materias sin evaluar" onclick="cargarFaltantes();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon red fa fa-book bigger-100"></i><span class="btn-small"> Faltan</span>            
+							</button>
 
 							<button title="Convertir a tabla para exportar" onclick="convertirDataTable('tabMaterias');" 
 							    class="btn btn-white btn-success btn-round"> 
