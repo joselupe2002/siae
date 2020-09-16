@@ -429,7 +429,7 @@ function guardar(){
 		    	valorllave:"<?php echo $_SESSION['usuario'];?>",
 		    	bd:"Mysql",
 		    	EMPL_DIRECCION:$("#EMPL_DIRECCION").html(),
-		    	EMPL_TELEFONO:$("#selEMPL_TELEFONO").val(),
+		    	EMPL_TELEFONO:$("#EMPL_TELEFONO").val(),
 		    	EMPL_CORREO:$("#EMPL_CORREO").html(),
 				EMPL_FOTO:$("#EMPL_FOTO").val(), 
 				EMPL_FORMACION:$("#selEMPL_FORMACION").val(),
