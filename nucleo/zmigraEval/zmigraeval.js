@@ -40,7 +40,7 @@ contMat=1;
 		   $("#informacion").append(script);
 
 				
-		elsql="select * from tem_ed2193 order by alumno limit 15 ";
+		elsql="select * from tem_ed2193 order by alumno  ";
 	  
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		mostrarEspera("esperaInf","grid_vstliscontacto","Cargando Datos...");
@@ -70,6 +70,7 @@ function generaTablaInformacion(grid_data){
 	$("#cuerpoInformacion").empty();
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 
+	mostrarEspera("esperaInf","grid_zmigraEval","Cargando Datos...");
 	cadCampo="INSERT INTO ed_respuestas "+
 	"(CICLO,MATRICULA,PROFESOR,MATERIA,GRUPO,RESPUESTA,FECHA,"+
 	"PUNTAJE,_INSTITUCION,_CAMPUS,IDDETALLE,TERMINADA,IDPREGUNTA,IDGRUPO)"+
@@ -100,6 +101,7 @@ function generaTablaInformacion(grid_data){
 
 	        			
 	});	
+	ocultarEspera("esperaInf");
 	
 } 
 
