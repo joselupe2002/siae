@@ -135,7 +135,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="zmigraEval.js?ve=<?php echo date('YmdHis'); ?>"></script>
+<script src="utilmigra.js?ve=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
  
 </script>
