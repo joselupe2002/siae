@@ -423,14 +423,14 @@
 
 function guardar(){
 
-	alert ($("#EMPL_TELEFONO").val());
+	alert ($("#EMPL_TELEFONO").html());
      parametros={
 		    	tabla:"pempleados",
 		    	campollave:"EMPL_NUMERO",
 		    	valorllave:"<?php echo $_SESSION['usuario'];?>",
 		    	bd:"Mysql",
 		    	EMPL_DIRECCION:$("#EMPL_DIRECCION").html(),
-		    	EMPL_TELEFONO:$("#EMPL_TELEFONO").val(),
+		    	EMPL_TELEFONO:$("#EMPL_TELEFONO").html(),
 		    	EMPL_CORREO:$("#EMPL_CORREO").html(),
 				EMPL_FOTO:$("#EMPL_FOTO").val(), 
 				EMPL_FORMACION:$("#selEMPL_FORMACION").val(),
