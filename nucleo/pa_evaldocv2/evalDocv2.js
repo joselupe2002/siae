@@ -185,9 +185,11 @@ function cargandoExamen(){
 						var caracter = lasres.charAt(i);			
 						numpreg=(parseInt(i)+1);
 						arr_respuestas[i]=caracter;
-						$("#opcion_"+numpreg+"_"+caracter).attr('checked', true);
-						$(".itemPreg[numPreg='"+numpreg+"']").addClass("badge-primary");
-						$(".itemPreg[numPreg='"+numpreg+"']").removeClass("badge-gray");
+						if (caracter>0) {
+							$("#opcion_"+numpreg+"_"+caracter).attr('checked', true);
+							$(".itemPreg[numPreg='"+numpreg+"']").addClass("badge-primary");
+							$(".itemPreg[numPreg='"+numpreg+"']").removeClass("badge-gray");
+						}
 					}									
 				}
 			});
