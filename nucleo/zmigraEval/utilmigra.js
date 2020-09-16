@@ -43,7 +43,7 @@ contMat=1;
 		elsql="select * from tem_ed2193 order by alumno  ";
 	  
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-		mostrarEspera("esperaInf","grid_zmigraeval","Cargando Datos...");
+		mostrarEspera("esperaInf","grid_zmigraEval","Cargando Datos...");
 	    $.ajax({
 			   type: "POST",
 			   data:parametros,
