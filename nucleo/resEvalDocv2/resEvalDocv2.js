@@ -358,7 +358,7 @@ function verMateriasA(ciclo,alumno){
 
 
 function cargarFaltantes(){
-	script="<table id=\"tabFaltan\" name=\"tabFaltan\" class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
+	script="<table id=\"tabMaterias\" name=\"tabMaterias\" class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
 			">"+
 		  "        <thead >  "+
 	   "             <tr id=\"headMaterias\">"+
@@ -404,12 +404,12 @@ function cargarFaltantes(){
 
 function generaTablaFaltan(grid_data){	
 	contAlum=1;
-	$("#cuerpoFaltan").empty();
-	$("#tabFaltan").append("<tbody id=\"cuerpoFaltan\">");
+	$("#cuerpoMaterias").empty();
+	$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
 	//$("#btnfiltrar").attr("disabled","disabled");
 	jQuery.each(grid_data, function(clave, valor) { 
 	
-			$("#cuerpoFaltan").append("<tr id=\"rowMF"+contAlum+"\">");
+			$("#cuerpoMaterias").append("<tr id=\"rowMF"+contAlum+"\">");
 			$("#rowMF"+contAlum).append("<td>"+contAlum+"</td>");
 			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.CICLO+"</td>");
 			$("#rowMF"+contAlum).append("<td style=\"font-size:14px;\">"+valor.MATRICULA+"</td>");
