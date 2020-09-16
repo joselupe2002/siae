@@ -423,6 +423,7 @@
 
 function guardar(){
 
+	alert ($("#EMPL_TELEFONO").val());
      parametros={
 		    	tabla:"pempleados",
 		    	campollave:"EMPL_NUMERO",
