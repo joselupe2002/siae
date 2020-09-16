@@ -127,7 +127,7 @@
                 $sql="select a.IDDETALLE, PROFESOR, PROFESORD, MATERIA, MATERIAD, SEMESTRE, SIE AS GRUPO, ".
                 "(SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestasv2 l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE) AS RES, ".
                 "(select count(*) from dlista where IDGRUPO=a.IDDETALLE AND BAJA='N') AS ALUM ".
-                " from vedgrupos a, cmaterias b  "+
+                " from vedgrupos a, cmaterias b  ".
                 " where MATERIA=MATE_CLAVE  and MATE_TIPO NOT IN ('T') and a.CICLO='".$_GET["ciclo"]."'  and PROFESOR='".$_GET["profesor"]."'". " ORDER BY SEMESTRE,MATERIAD";
 
                 //echo $sql;
