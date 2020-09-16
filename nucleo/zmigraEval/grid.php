@@ -44,6 +44,8 @@
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
 				     		 
+				  		<div id="lascarreras" class="col-sm-3">
+						</div>  
 					
 						<div class="col-sm-5" style="padding-top:14px;">
 						    <button title="Buscar Registros" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
