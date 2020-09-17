@@ -165,7 +165,15 @@ contMat=1;
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data){ 							
 							cadCampos="";
-							miscampos.forEach(element => cadCampos+="<th>"+element+"</th>");
+							numcol=1;
+							miscampos.forEach(function(element){ 
+								     
+									 cadCampos+="<th>"+element+
+									 "&nbsp;&nbsp;<span title=\"Sumar los elementos de la columna\" onclick=\"sumarCol('"+numcol+"');\""+
+									 " class=\"badge badge-success pull-right\" style=\"cursor:pointer\">&nbsp;<i class=\"fa fa-level-down\" /></th>";
+									 numcol++;
+						       }
+							);
 
 							script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover\">"+
 							    "        <thead>  "+
@@ -189,7 +197,18 @@ contMat=1;
 }
 
 
+function sumarCol(lacol){
+	suma=0;
+	linea=0;
+	$('#tabInformacion tr').each(function () {
+		var valor = $(this).find("td").eq(lacol).html();
+	    if (linea>0) {if (valor.includes(">")>0) {valor=valor.substring(valor.indexOf(">")+1,valor.indexOf("</"));}}
+		if (!(isNaN(valor))) {suma+=parseFloat(valor);}	
+		linea++;	
+	});
+	alert ("La suma es: "+suma);
 
+}
 
 
 function generaTablaInformacion(grid_data,miscampos,misclases,miseventos){
