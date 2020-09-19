@@ -401,11 +401,11 @@
         }
         $global=round(($suma/$i),2);
         $etval="";
-        if ($global>0 && $global<=1) {$etval="NO SUFICIENTE";} 
-        if ($global>1 && $global<=2) {$etval="SUFICIENTE";}  
-        if ($global>2 && $global<=3) {$etval="BIEN";}  
-        if ($global>3 && $global<=4) {$etval="MUY BIEN";} 
-        if ($global>3 && $global<=5) {$etval="EXCELENTE";}   
+        if ($global>0 && $global<=3.5) {$etval="INSUFICIENTE";} 
+        if ($global>3.5 && $global<=3.74) {$etval="SUFICIENTE";}  
+        if ($global>3.75 && $global<=4.24) {$etval="BUENO";}  
+        if ($global>4.25 && $global<=4.74) {$etval="NOTABLE";} 
+        if ($global>4.75 && $global<=5) {$etval="EXCELENTE";}   
       
         $pdf->SetFillColor(255,255,255);
         $pdf->SetTextColor(0);  

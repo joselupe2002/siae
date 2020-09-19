@@ -99,7 +99,7 @@ function generaTablaInformacion(grid_data){
 		cadFile="";	
 
 		 btnElim="";
-		 if (valor.COTEJADO=='N') {
+		 if ((valor.COTEJADO=='N') && ((valor.RUTARES==''))) {
 		     btnElim="<i onclick=\"eliminarReg('"+valor.IDDET+"');\" class=\"ace-icon red fa fa-trash-o bigger-200\" style=\"cursor:pointer;\"></i>";
 		 }
 		
@@ -143,7 +143,7 @@ function generaTablaInformacion(grid_data){
 
 		if (!(valor.RUTARES=='')) {
 			$("#respuesta"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
-			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a>");	
+			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:50px; height:50px;\"></a>");	
 		}
 
 
