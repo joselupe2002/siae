@@ -206,7 +206,7 @@ jQuery.each(grid_data, function(clave, valor) {
 
 
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+
-		                                "<button onclick=\"window.open('reporteEvalv2.php?ciclo="+valor.CICLO+"&profesor="+valor.PROFESOR+"&profesord="+valor.PROFESORD+"&deptod="+valor.DEPTOD+"');\""+
+		                                "<button onclick=\"window.open('reporte.php?ciclo="+valor.CICLO+"&profesor="+valor.PROFESOR+"&profesord="+valor.PROFESORD+"&deptod="+valor.DEPTOD+"');\""+
 		                                " class=\"btn btn-white btn-success btn-round\">"+
 		                                "<i class=\"/ace-icon blue fa fa-tachometer bigger-140\"></i> Reporte</button></td>");
 		contAlum++;      			
