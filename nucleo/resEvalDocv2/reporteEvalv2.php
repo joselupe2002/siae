@@ -353,7 +353,9 @@
             $i++;
         }
  
+
         $miscolores=substr($miscolores,0,strlen($miscolores)-1);
+        echo $miscolores;
         $ethorizontal=substr($ethorizontal,0,strlen($ethorizontal)-1);
         $valores=substr($valores,0,strlen($valores)-1);
 
