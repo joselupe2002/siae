@@ -343,7 +343,7 @@
            // echo "j:".$j." ".$contPuntos." / ".$misPuntos."=".$elpor."<br>";
 
            if ($elpor>0 && $elpor<=3.5) {$miscolores.="EC1C07|";} 
-           if ($elpor>3.5 && $elpor<=3.74) {$miscolores.="#834004|";}  //suficiente
+           if ($elpor>3.5 && $elpor<=3.74) {$miscolores.="834004|";}  //suficiente
            if ($elpor>3.75 && $elpor<=4.24) {$miscolores.="FBFF00|";}  
            if ($elpor>4.25 && $elpor<=4.74) {$miscolores.="0C9F02|";} 
            if ($elpor>4.75 && $elpor<=5) {$miscolores.="070EEC|";}   
@@ -355,7 +355,7 @@
  
 
         $miscolores=substr($miscolores,0,strlen($miscolores)-1);
-        echo $miscolores;
+        //echo $miscolores;
         $ethorizontal=substr($ethorizontal,0,strlen($ethorizontal)-1);
         $valores=substr($valores,0,strlen($valores)-1);
 
