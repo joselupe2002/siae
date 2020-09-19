@@ -309,7 +309,7 @@
         $pdf->Cell(20,5,'',1,0,'C',true);
         $pdf->Ln(8);
 
- 
+        $miscolores="";
         $ethorizontal="chl=";
         $valores="chd=t:";
         $dataSec=$pdf->LoadDatosSecciones();
@@ -342,11 +342,18 @@
            
            // echo "j:".$j." ".$contPuntos." / ".$misPuntos."=".$elpor."<br>";
 
+           if ($elpor>0 && $elpor<=3.5) {$miscolores.="FFC6A5|";} 
+           if ($elpor>3.5 && $elpor<=3.74) {$miscolores.="DEF3BD|";}  
+           if ($elpor>3.75 && $elpor<=4.24) {$miscolores.="00A5C6|";}  
+           if ($elpor>4.25 && $elpor<=4.74) {$miscolores.="DEBDDE|";} 
+           if ($elpor>4.75 && $elpor<=5) {$miscolores.="CA623B|";}   
+
+    
             $proceso[$i]=$rowSec["SECCION"]."|".$elpor."|";
             $i++;
         }
  
-        
+        $miscolores=substr($miscolores,0,strlen($miscolores)-1);
         $ethorizontal=substr($ethorizontal,0,strlen($ethorizontal)-1);
         $valores=substr($valores,0,strlen($valores)-1);
 
@@ -358,7 +365,8 @@
         $titulo="chtt=";
         //$valores="chd=t:1.32,4.33,4.54,5,5,3,4,4.9,5,3.62";
         $tamanio="chs=660x400";
-        $colores="chco=FFC6A5|FFFF42|DEF3BD|00A5C6|DEBDDE|2B43CC|2BCCC5|CA623B|CA3B9A|268D9E";
+        //$colores="chco=FFC6A5|FFFF42|DEF3BD|00A5C6|DEBDDE|2B43CC|2BCCC5|CA623B|CA3B9A|268D9E";
+        $colores="chco=".$miscolores;
         //$ethorizontal="chl=A|B|C|D|E|F|G|H|I|J";
         $verejes="chxt=x,y";
         $tambarra="chbh=60,2,20";
