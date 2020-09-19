@@ -386,11 +386,13 @@
         $suma=0;
         foreach($proceso as $valor) {  
             $porc=explode("|",$valor)[1];
-            if ($porc>0 && $porc<=1) {$etval="NO SUFICIENTE";} 
-            if ($porc>1 && $porc<=2) {$etval="SUFICIENTE";}  
-            if ($porc>2 && $porc<=3) {$etval="BIEN";}  
-            if ($porc>3 && $porc<=4) {$etval="MUY BIEN";} 
-            if ($porc>3 && $porc<=5) {$etval="EXCELENTE";}           
+            
+            if ($porc>0 && $porc<=3.5) {$etval="INSUFICIENTE";} 
+            if ($porc>3.5 && $porc<=3.74) {$etval="SUFICIENTE";}  
+            if ($porc>3.75 && $porc<=4.24) {$etval="BUENO";}  
+            if ($porc>4.25 && $porc<=4.74) {$etval="NOTABLE";} 
+            if ($porc>4.75 && $porc<=5) {$etval="EXCELENTE";}   
+
             $pdf->Row(array( utf8_decode(explode("|",$valor)[0]),
                              sprintf('%0.2f',$porc)." %",
                              utf8_decode($etval)
