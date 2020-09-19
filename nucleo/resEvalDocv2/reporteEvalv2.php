@@ -342,11 +342,11 @@
            
            // echo "j:".$j." ".$contPuntos." / ".$misPuntos."=".$elpor."<br>";
 
-           if ($elpor>0 && $elpor<=3.5) {$miscolores.="FFC6A5|";} 
-           if ($elpor>3.5 && $elpor<=3.74) {$miscolores.="DEF3BD|";}  
-           if ($elpor>3.75 && $elpor<=4.24) {$miscolores.="00A5C6|";}  
-           if ($elpor>4.25 && $elpor<=4.74) {$miscolores.="DEBDDE|";} 
-           if ($elpor>4.75 && $elpor<=5) {$miscolores.="CA623B|";}   
+           if ($elpor>0 && $elpor<=3.5) {$miscolores.="EC1C07|";} 
+           if ($elpor>3.5 && $elpor<=3.74) {$miscolores.="#974700|";}  
+           if ($elpor>3.75 && $elpor<=4.24) {$miscolores.="FBFF00|";}  
+           if ($elpor>4.25 && $elpor<=4.74) {$miscolores.="0C9F02|";} 
+           if ($elpor>4.75 && $elpor<=5) {$miscolores.="070EEC|";}   
 
     
             $proceso[$i]=$rowSec["SECCION"]."|".$elpor."|";
