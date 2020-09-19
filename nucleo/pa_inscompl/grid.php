@@ -297,7 +297,7 @@
 
 
 function confirma(id,matricula,ciclo,laactividad){
-if (numAct>=2) {alert ("Ya tiene "+numAct+" Actividades inscritas para este ciclo ya no se puede inscribir a mas"); return 0;}  
+if (numAct>=5) {alert ("Ya tiene "+numAct+" Actividades inscritas para este ciclo ya no se puede inscribir a mas"); return 0;}  
 if (confirm("Seguro que desea Inscribirse a la Actividad: "+laactividad)) {
 	 var losdatos=[];
 

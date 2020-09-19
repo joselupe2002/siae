@@ -455,7 +455,8 @@ function cargarAsesorias(){
 				type: "POST",
 				url:"../base/inserta.php",
 				data: parametros,
-				success: function(data){		                                	                      
+				success: function(data){		
+					console.log(data);                                	                      
 
 					$("#vagendar").modal("hide");
 					correoalProf(prof, "<html>El alumno <span style=\"color:green\"><b>"+usuario+" "+nombreuser+
