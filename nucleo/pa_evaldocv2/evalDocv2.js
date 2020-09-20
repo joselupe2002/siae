@@ -256,8 +256,9 @@ function cambioRespuesta(idpreg,num,opcion,puntaje,idexa){
 
 	var losdatos=[];
 	
-	losdatos[0]=iddetalle+"|"+ciclo+"|"+materia+"|"+profesor+"|"+usuario+"|"+grupo+"|"+dameCadena(arr_respuestas)+"|"+lafecha+"|"+idgrupo;
-    var loscampos = ["IDDETALLE","CICLO","MATERIA","PROFESOR","MATRICULA","GRUPO","RESPUESTAS","FECHA","IDGRUPO",];
+
+	losdatos[0]=iddetalle+"|"+ciclo+"|"+materia+"|"+profesor+"|"+usuario+"|"+grupo+"|"+dameCadena(arr_respuestas)+"|"+lafecha+"|"+idgrupo+"|"+ip;
+    var loscampos = ["IDDETALLE","CICLO","MATERIA","PROFESOR","MATRICULA","GRUPO","RESPUESTAS","FECHA","IDGRUPO","IP"];
 
 		   parametros={
 				tabla:"ed_respuestasv2",

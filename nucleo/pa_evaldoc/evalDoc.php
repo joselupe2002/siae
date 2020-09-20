@@ -95,7 +95,8 @@
 
 <script src="evalDoc.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
-       var usuario="<?php echo $_SESSION["usuario"] ;?>";
+	   var usuario="<?php echo $_SESSION["usuario"] ;?>";
+	   var ip="<?php echo $_SESSION["laip"] ;?>";
 	   var nombre="<?php echo $_SESSION["nombre"] ;?>";
 	   var iddetalle="<?php echo $_GET["id"] ;?>";
 	   var ciclo="<?php echo $_GET["ciclo"] ;?>";

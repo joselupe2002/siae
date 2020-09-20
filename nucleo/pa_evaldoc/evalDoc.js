@@ -242,8 +242,8 @@ $(document).ready(function(){
 function cambioRespuesta(idpreg,num,opcion,puntaje,idexa){
 	lafecha=dameFecha("FECHAHORA");
     var losdatos=[];
-	losdatos[0]=iddetalle+"|"+ciclo+"|"+materia+"|"+profesor+"|"+usuario+"|"+grupo+"|"+idpreg+"|"+opcion+"|"+puntaje+"|"+lafecha+"|"+idgrupo;
-    var loscampos = ["IDDETALLE","CICLO","MATERIA","PROFESOR","MATRICULA","GRUPO","IDPREGUNTA","RESPUESTA","PUNTAJE","FECHA","IDGRUPO",];
+	losdatos[0]=iddetalle+"|"+ciclo+"|"+materia+"|"+profesor+"|"+usuario+"|"+grupo+"|"+idpreg+"|"+opcion+"|"+puntaje+"|"+lafecha+"|"+idgrupo+"|"+ip;
+    var loscampos = ["IDDETALLE","CICLO","MATERIA","PROFESOR","MATRICULA","GRUPO","IDPREGUNTA","RESPUESTA","PUNTAJE","FECHA","IDGRUPO","IP"];
 
 		   parametros={
 				tabla:"ed_respuestas",
