@@ -23,9 +23,11 @@ if (count($res)>0) {
 		$_SESSION['carrera'] = $res[0]["usua_carrera"];
 		$_SESSION['depto'] = $res[0]["usua_depto"];
 		$_SESSION['idsesion'] =0;
+		$_SESSION['laip'] =$_POST['laip'];
 		$_SESSION['titApli'] = "Sistema Gesti&oacute;n Escolar - Administrativa";
 		$_SESSION['bd'] = "Mysql";
 		echo "1";	
+		
 	}
 	else {
 		echo "El password no es correcto";

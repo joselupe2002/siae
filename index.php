@@ -259,6 +259,10 @@
 <script src="assets/js/jquery-ui.min.js"></script>
 <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
 
+<script type="text/javascript"> var laip=""; function get_ip(obj){ laip=obj.ip;}</script>
+
+<script type="text/javascript" src="https://api.ipify.org/?format=jsonp&callback=get_ip"></script>
+
 
 		
 <script type="text/javascript">
@@ -267,14 +271,16 @@
 function ingresar() {
 	var parametros = {
             "login" : $('#login').val(),
-            "password" : $('#password').val()
+			"password" : $('#password').val(),
+			"laip":laip
     };
 	 $.ajax({
 		 data:  parametros,
          type: "POST",
          url: "acceso.php",
          success: function(response)
-         {							        
+         {		
+			 					        
 	         if (!(response==1)) {
 		        	 $("#dialogError").html(response);
 		        	 var dialog = $( "#dialogError" ).removeClass('hide').dialog({
@@ -293,16 +299,20 @@ function ingresar() {
 						});
 	         }
 	         else 
-	         {window.location.href = "principal.php";}
+			 {window.location.href = "principal.php";}
+			
 
          }
  }); 
 
 }
 
+	
+		
 			
 			jQuery(function($) {
 
+				
 				$("#password").keypress(function(e) {
 			        if(e.which == 13) {
 			        	ingresar();

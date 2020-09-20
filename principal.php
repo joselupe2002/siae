@@ -221,7 +221,10 @@
 
 
 <script type="text/javascript">
+
 		var usuario="<?php echo $_SESSION["usuario"]?>";
+		var laip="<?php echo $_SESSION["laip"]?>";
+
 		$(document).ready(function(){					
 			co=Math.round(Math.random() * (999999 - 111111) + 111111); 
 			parametros={cose:co}; $.ajax({type: "POST",url:  "nucleo/base/iniciaPincipal.php", data:parametros, 
@@ -328,6 +331,28 @@
 
 				}
 			});
+
+			//Grabamos el log 
+			var hoy= new Date();
+			lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
+
+    		parametros={tabla:"log",
+			    bd:"Mysql",
+			    _INSTITUCION:"<?php echo $_SESSION["INSTITUCION"];?>",
+			    _CAMPUS:"<?php echo $_SESSION["CAMPUS"];?>",
+			    USUARIO:usuario,
+				FECHA:lafecha,
+				IP:laip,
+				DISPOSITIVO:navigator.userAgent,
+				FECHA:lafecha
+			};
+			    $.ajax({
+			 		  type: "POST",
+			 		  url:"nucleo/base/inserta.php",
+			 	      data: parametros,
+			 	      success: function(data){ 
+					   }					
+					});
 
 		});
 	
