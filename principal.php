@@ -351,7 +351,7 @@
 			 		  url:"nucleo/base/inserta.php",
 			 	      data: parametros,
 			 	      success: function(data){ 
-						   alert (data);
+						
 					   }					
 					});
 
