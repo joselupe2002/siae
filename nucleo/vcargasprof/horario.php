@@ -186,6 +186,22 @@
 				else  return null;
 			}
 			
+
+			function dameHoras($lin){
+				$lashoras=0;
+				for ($i=3; $i<=9; $i++) {
+					if ($lin[$i]!='') {
+						$hor1=substr($lin[$i],0,2);
+						$min1=substr($lin[$i],3,2);
+
+						$hor2=substr($lin[$i],6,2);
+						$min2=substr($lin[$i],9,2);
+
+						$lashoras+=(($hor2*60)+$min2)-(($hor1*60)+$min1);
+					}
+				}
+				return ($lashoras/60);
+			}
 			
 			// Tabla coloreada
 			function imprimeCargaAcad($header, $data)
@@ -213,6 +229,7 @@
 					$suma=0;
 					foreach($data as $row)
 					{
+						$horasMat=$this->dameHoras($row);
 						$this->Cell($w[0],4,utf8_decode($row[0]),'LR',0,'J',$fill);
 						$this->Cell($w[1],4,$row[1],'LR',0,'L',$fill);
 						$this->Cell($w[2],4,$row[2],'LR',0,'L',$fill);
@@ -223,8 +240,8 @@
 					    $this->Cell($w[7],4,$row[7],'LR',0,'L',$fill);
 					    $this->Cell($w[8],4,$row[8],'LR',0,'L',$fill);
 					    $this->Cell($w[9],4,$row[9],'LR',0,'L',$fill);
-					    $this->Cell($w[10],4,$row[10],'LR',0,'C',$fill);
-					    $suma+=$row[10];
+					    $this->Cell($w[10],4,$horasMat,'LR',0,'C',$fill);
+						$suma+=$horasMat;					
 					
 						$this->Ln();
 						$fill = !$fill;
