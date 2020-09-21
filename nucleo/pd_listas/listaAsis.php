@@ -144,7 +144,8 @@
             }
 
             function LoadDatosCiclo()
-			{				
+			{			
+                $data=[];	
                 $miConex = new Conexion();
                 $sql="select * from ciclosesc a where a.CICL_CLAVE='".$_GET["ciclo"]."'";
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
@@ -156,7 +157,8 @@
 
     
             function LoadDatosProfesor($prof)
-			{				
+			{		
+                $data=[];			
                 $miConex = new Conexion();
                 $sql="select EMPL_NUMERO, CONCAT(EMPL_ABREVIA,' ',EMPL_NOMBRE, ' ',EMPL_APEPAT, ' ',EMPL_APEMAT) AS NOMBRE, ".
                 " EMPL_DEPTO from pempleados a where a.EMPL_NUMERO='".$prof."'";
@@ -169,6 +171,7 @@
 
 			function LoadDatosGen()
 			{
+                $data=[];	
 				$miConex = new Conexion();
 				$resultado=$miConex->getConsulta("SQLite","SELECT * from INSTITUCIONES where _INSTITUCION='".$_SESSION['INSTITUCION']."'");
 				foreach ($resultado as $row) {
@@ -233,7 +236,7 @@
         $pdf->Cell(0,0,'LISTA DE ASISTENCIA',0,1,'C');
         $pdf->Ln(5);
         $pdf->SetFont('Montserrat-ExtraBold','B',9);$pdf->Cell(0,0,'MATERIA: ',0,1,'L');
-        $pdf->SetFont('Montserrat-Medium','',9);$pdf->setX(50);$pdf->Cell(0,0,utf8_decode($dataGrupo[0]["MATERIA"]."-".$dataGrupo[0]["MATERIAD"]),0,1,'L');
+        $pdf->SetFont('Montserrat-Medium','',8);$pdf->setX(45);$pdf->Cell(0,0,utf8_decode($dataGrupo[0]["MATERIA"]."-".substr($dataGrupo[0]["MATERIAD"],0,48)),0,1,'L');
         $pdf->SetFont('Montserrat-ExtraBold','B',9); $pdf->setX(145);$pdf->Cell(0,0,"FOLIO:",0,1,'L');
         $pdf->SetFont('Montserrat-Medium','',9); $pdf->setX(195); $pdf->Cell(0,0,$_GET["id"],0,1,'R');
         $pdf->Ln(3);

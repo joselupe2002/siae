@@ -115,6 +115,17 @@
 				}
 				return $data;
 			}
+
+
+			function LoadCiclo()
+			{				
+				$miConex = new Conexion();
+				$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from ciclosesc  where CICL_CLAVE=".$_GET["ciclo"]);				
+				foreach ($resultado as $row) {
+					$data[] = $row;
+				}
+				return $data;
+			}
 			
 			function LoadDatosGen()
 			{
@@ -344,6 +355,8 @@
 		
 		
 		$dataEmpl = $pdf->getDatosPersona($_GET["ID"]);
+		$dataCiclo = $pdf->LoadCiclo();
+		
 
 	
 		$logo = file_get_contents($dataEmpl[0]["EMPL_FOTO"]);
@@ -364,7 +377,7 @@
 		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_ULTIGRAD"]),0,1,'L');
 		
 		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"PERIODO:",0,0,'L');
-		$pdf->setX(238); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($_GET["ciclod"]),0,1,'L');
+		$pdf->setX(238); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataCiclo[0]["CICL_DESCRIP"]),0,1,'L');
 		
 		
 		$pdf->Ln(4);
