@@ -376,21 +376,30 @@ class UtilUser {
 	public function  getPie($pdf,$orienta){	
 		$top1=257; $top2=253; $left1=20; $left2=190;
 		if ($orienta=='H') {$top1=192; $top2=188; $left1=20; $left2=250;}
+
+		$direccion=""; $telefonos=""; $pagina="";
+		$miConexU = new Conexion();
+		$res=$miConexU->getConsulta("SQLite","SELECT * FROM INSTITUCIONES A WHERE A.inst_clave='".$_SESSION["INSTITUCION"]."'");
+		foreach ($res as $row) {
+			$direccion=$row["inst_direccion"];
+			$telefonos=$row["inst_telefono"];
+			$pagina=$row["inst_pagina"];
+		}
 		
 		$pdf->Image('../../imagenes/empresa/pie1.png',$left1,$top1,20);
 		$pdf->Image('../../imagenes/empresa/pie2.png',$left2,$top2,15);
 		$pdf->SetFont('Montserrat-Medium','',8);
 		$pdf->SetY(-25);
-		$pdf->Cell(0,10,utf8_decode("Av. Tecnológico S/N, Lerdo de Tejada 1ra Secc. Macuspana, Tabasco, C.P. 86719"),0,0,'C');
+		$pdf->Cell(0,10,utf8_decode($direccion),0,0,'C');
 		$pdf->SetY(-22);
-		$pdf->Cell(0,10,"Tels. 9363623330 y 9363623323 Ext. 101, e-mail: direccion@macuspana.tecnm.mx",0,0,'C');
+		$pdf->Cell(0,10,utf8_decode($telefonos),0,0,'C');
 		$pdf->SetY(-19);
 		$pdf->SetFont('Montserrat-Medium','B',8);
-		$pdf->Cell(0,10,"www.tecnm.mx | https://macuspana.tecnm.mx",0,0,'C');		
+		$pdf->Cell(0,10,utf8_decode($pagina),0,0,'C');		
 	}
 	
 	public function  getEncabezado($pdf,$orienta){
-		$left2=120; $left3=170;
+		$left2=120; $left3=180;
 		if ($orienta=='H') {$left2=210; $left3=260;}
 		$pdf->Image('../../imagenes/empresa/enc1.png',20,8,85);
 		$pdf->Image('../../imagenes/empresa/enc2.png',$left2,6,40);
@@ -409,13 +418,22 @@ class UtilUser {
 		$pdf->AddFont('Montserrat-ExtraLight','I','Montserrat-ExtraLight.php');
 		$pdf->AddFont('Montserrat-ExtraLight','','Montserrat-ExtraLight.php');
 		
+		$miConexU = new Conexion();
+		$res=$miConexU->getConsulta("SQLite","SELECT * FROM INSTITUCIONES A WHERE A.inst_clave='".$_SESSION["INSTITUCION"]."'");
+		$lema=""; $nombreins="";
+		foreach ($res as $row) {
+			$lema=$row["inst_campo1"];	
+			$nombreins=$row["inst_razon"];	
+		}
+		
+
 		$pdf->SetFont('Montserrat-Black','B',9);
 		$pdf->Ln(6);
-		$pdf->Cell(0,0,utf8_decode('Instituto Tecnológico Superior de Macuspana'),0,0,'R');
+		$pdf->Cell(0,0,utf8_decode($nombreins),0,0,'R');
 		
 		$pdf->SetFont('Montserrat-Medium','B',8);
 		$pdf->Ln(6);
-		$pdf->Cell(0,0,utf8_decode('"2020, Año de Leona Vicario, Benemérita Madre de la Patria"'),0,0,'C');
+		$pdf->Cell(0,0,utf8_decode('"'.$lema.'"'),0,0,'C');
 		
 	}
 	
