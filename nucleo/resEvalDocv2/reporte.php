@@ -125,10 +125,13 @@
                 $data=[];		
                 $miConex = new Conexion();
                 $sql="select a.IDDETALLE, PROFESOR, PROFESORD, MATERIA, MATERIAD, SEMESTRE, SIE AS GRUPO, ".
-                "(SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestasv2 l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE) AS RES, ".
-                "(select count(*) from dlista where IDGRUPO=a.IDDETALLE AND BAJA='N') AS ALUM ".
+                "(SELECT COUNT(DISTINCT(l.MATRICULA)) FROM ed_respuestasv2 l where l.TERMINADA='S' and l.IDGRUPO=a.IDDETALLE ".
+                " or (l.IDGRUPO IN (SELECT DGRU_ID FROM edgrupos g where g.DGRU_BASE=a.IDDETALLE)) ".
+                ") AS RES, ".
+                " (select count(*) from dlista where (IDGRUPO=a.IDDETALLE)  ".
+                " or (IDGRUPO IN (SELECT g.DGRU_ID FROM edgrupos g where IFNULL(g.DGRU_BASE,0)=a.IDDETALLE)) AND BAJA='N') AS ALUM ".
                 " from vedgrupos a, cmaterias b  ".
-                " where MATERIA=MATE_CLAVE  and ifnull(MATE_TIPO,'') NOT IN ('T') and a.CICLO='".$_GET["ciclo"]."'  and PROFESOR='".$_GET["profesor"]."'". " ORDER BY SEMESTRE,MATERIAD";
+                " where MATERIA=MATE_CLAVE  and ifnull(MATE_TIPO,'') NOT IN ('T')  and a.BASE IS NULL and a.CICLO='".$_GET["ciclo"]."'  and PROFESOR='".$_GET["profesor"]."'". " ORDER BY SEMESTRE,MATERIAD";
 
                 //echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
@@ -242,7 +245,7 @@
 		header("Content-Type: text/html; charset=UTF-8");
 		
 		$pdf->SetFont('Arial','',10);
-		$pdf->SetMargins(25, 25 , 25);
+		$pdf->SetMargins(25, 15 , 15);
 		$pdf->SetAutoPageBreak(true,30); 
         $pdf->AddPage();
 
@@ -259,8 +262,7 @@
         $pdf->Ln(5);
         $pdf->Cell(0,0,utf8_decode($datagen[0]["inst_razon"]),0,1,'C');
         $pdf->Ln(5);
-        $pdf->Ln(5);
-        $pdf->Cell(0,0,utf8_decode("REPORTE POR PROFESO"),0,1,'C');
+        $pdf->Cell(0,0,utf8_decode("REPORTE POR PROFESOR"),0,1,'C');
         $pdf->SetFont('Arial','B',10);
         $pdf->Ln(5);
         $pdf->Cell(0,0,utf8_decode($_GET["deptod"]),0,1,'C');
@@ -296,7 +298,7 @@
             $pdf->Row(array( utf8_decode($row["MATERIA"]." ".$row["MATERIAD"]),
                              utf8_decode($row["RES"]),
                              utf8_decode($row["ALUM"]),
-                             round(($row["RES"]/$row["ALUM"])*100,2)." %"
+                             number_format(round(($row["RES"]/$row["ALUM"])*100,2),2)." %"
                              )
                       );
             $totalalum+=$row["ALUM"];
@@ -319,7 +321,7 @@
         $pdf->Ln();
         $pdf->SetTextColor(0); 
         $pdf->Cell(110,5,'PORCENTAJE',1,0,'R',false);
-        $pdf->Cell(20,5,sprintf('%0.2f',round(($evaluaron/$totalalum)*100,2)),1,0,'C',false);
+        $pdf->Cell(20,5,number_format(round(($evaluaron/$totalalum)*100,2),2),1,0,'C',false);
         $pdf->Cell(20,5,'',1,0,'C',false);
         $pdf->Cell(20,5,'',1,0,'C',false);
         $pdf->Ln(8);
@@ -390,7 +392,7 @@
 
         $pdf->Image('http://chart.googleapis.com/chart?'.$tipogra."&".$etBarra."&".$escalaVal."&".$etvertical."&".
         $titulo."&".$valores."&".$tamanio."&".$verejes."&".$tambarra."&".$colores."&".$ethorizontal
-        ,40, $pdf->getY(),130,70,'PNG');
+        ,40, $pdf->getY(),130,60,'PNG');
 
 
         $pdf->setY($pdf->getY()+75);
@@ -439,6 +441,7 @@
         $pdf->Cell(150,5,"RESULTADO GLOBAL ".$global." ".$etval,1,0,'C',false);
    
         $pdf->AddPage();
+        $pdf->ln(10);
         $pdf->SetFont('Arial','B',8);
         $pdf->SetTextColor(0);  
         $pdf->Cell(10,5,'NO.',1,0,'L',false);
