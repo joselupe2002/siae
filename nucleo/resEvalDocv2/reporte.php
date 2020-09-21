@@ -278,7 +278,7 @@
 
         $pdf->Cell(50,5,'',0,0,'L',false);        
         $pdf->Cell(15,5,utf8_decode('Nombre:'),1,0,'L',false);
-        $pdf->Cell(55,5,$_GET["profesord"],1,0,'L',false);
+        $pdf->Cell(55,5,utf8_decode($_GET["profesord"]),1,0,'L',false);
         $pdf->Cell(50,5,'',0,0,'L',false);  
         $pdf->Ln();
         $pdf->SetFont('Arial','B',8);
