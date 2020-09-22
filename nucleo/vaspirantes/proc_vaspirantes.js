@@ -616,7 +616,8 @@ function setInscrito(id,valor){
 									type: "POST",
 									url:"../base/ejecutasql.php",
 									data:parametros,
-									success: function(dataC){				
+									success: function(dataC){	
+										console.log(dataC);			
 										alert ("El aspirante "+id+" Ha quedado inscrito con la matricula "+mimat);
 										$('#dlgproceso').modal("hide"); 
 										if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}										
@@ -664,7 +665,7 @@ function inscribirAspirante(lafila,modulo,institucion, campus) {
 									url:"../base/ejecutasql.php",
 									data:parametros,
 									success: function(dataC){
-										alert (dataC);
+										
 										console.log(dataC);
 										
 										if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
