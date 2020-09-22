@@ -203,12 +203,13 @@
                 //$miutil->getEncabezado($this,'V');			
                 //Para que cuando se cambie a la otra pagina empiece a la derecha y la stablas no se descuadren
 
+                $datagen=$this->LoadDatosGen();
+
                 $this->Image('../../imagenes/empresa/seplogo.png',20,8,60);
-                $this->SetY(15);
-                $this->SetFont('Arial','',16);
-                $this->Cell(0,0,utf8_decode('INSTITUTO TECNOLÓGICO'),0,1,'R');
+                $this->SetY(20);
+                $this->SetFont('Arial','',12);
+                $this->Cell(0,0,utf8_decode($datagen[0]["inst_razon"]),0,1,'R');
                 $this->Ln(5);	
-                $this->Cell(0,0,utf8_decode('SUPERIOR DE MACUSPANA'),0,1,'R');
 
                 $this->SetX(10);
                 $this->Ln(5);	
