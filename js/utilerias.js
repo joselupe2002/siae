@@ -3070,3 +3070,27 @@ function residencia_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper
 		}
 	
 }
+/*===================================COMITE ACADEMICOS ===========================================*/
+function addStatusComite(idsol,elestatus,usuario,INSTITUCION,CAMPUS) {
+	var f = new Date();
+	fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear()+" "+ f.getHours()+":"+ f.getMinutes()+":"+ f.getSeconds();
+	parametros={
+		 tabla:"co_status",						    		    	      
+		 bd:"Mysql",
+		 IDSOL:idsol,
+		 FECHA:fechacap,
+		 SITUACION:elestatus,
+		 USUARIO:usuario,
+		 FECHAUS:fechacap,
+		 _INSTITUCION:INSTITUCION,
+		 _CAMPUS: CAMPUS};
+ 
+		$.ajax({
+					 type: "POST",
+					 url:"../base/inserta.php",
+					 data: parametros,
+					 success: function(data){
+							                              	                                        					          
+						 }					     
+			   });            
+}
