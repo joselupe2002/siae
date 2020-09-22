@@ -663,6 +663,8 @@ function inscribirAspirante(lafila,modulo,institucion, campus) {
 									url:"../base/ejecutasql.php",
 									data:parametros,
 									success: function(dataC){
+
+										console.log(dataC);
 										
 										if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
 											$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se inscribio el aspirante "+lafila[0][0]+". Matricula: "+mimat+"\n"); 

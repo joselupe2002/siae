@@ -118,14 +118,15 @@
 
 /*===================================================================================================================*/
    	        var $eljefe="";
-   	        var $eljefepsto="";
+               var $eljefepsto="";
+               var $nombre="";
   
       
             function LoadDatosAlumnos()
 			{				
                 $data=[];	
                 $miConex = new Conexion();
-                $sql="select * from vco_solicitud where  ID='".$_GET["id"]."'";
+                $sql="select n.*, getPeriodos(PERSONA,getciclo()) as PERIODO from vco_solicitud n where  ID='".$_GET["id"]."'";
                //echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -175,6 +176,17 @@
                 //$miutil = new UtilUser();
                 //$nombre=$miutil->getJefe('303');//Nombre del puesto de Recursos Humanos
                 //$miutil->getPie($this,'V');
+
+                $this->setY(-50);
+                $this->SetFont('Montserrat-ExtraBold','B',11);
+               
+                $this->Cell(0,5,"ATENTAMENTE",0,1,'C');
+                $this->setY(-40);
+                $this->Cell(0,15,utf8_decode($this->nombre),0,1,'C');
+
+                $this->SetFont('Montserrat-Medium','B',8);
+                $this->setY(-30);
+                $this->Cell(0,15,utf8_decode("c.c.p. Interesado"),0,1,'L');
 		
 			}
 
@@ -201,77 +213,50 @@
         $pdf->Ln(5);
         $pdf->SetFont('Montserrat-Medium','',10);
 
-        $pdf->Cell(0,5,utf8_decode('LUGAR Y FECHA:')." ".$dataGen[0]["inst_fechaof"].$dataAlum[0]["FECHACAP"],0,0,'R');
+        $fechadecof=$miutil->formatFecha($dataAlum[0]["FECHACAP"]);
+		$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
+    
+        $pdf->Ln(5);
+        $pdf->Cell(0,5,strtoupper(utf8_decode($dataGen[0]["inst_fechaof"]." ".$fechaof)),0,0,'R');
         $pdf->Ln(5);
 
-        strtoupper($fechaof)
-
-        $fechaof=$miutil->aletras(date("d"))." DÍAS DEL MES DE ".$miutil->getMesLetra(date("m"))." DEL AÑO ". $miutil->aletras(date("Y"));
-        /*
-        $pdf->SetFont('Montserrat-Medium','',11);
-        $pdf->MultiCell(0,5,utf8_decode("LA QUE SUSCRIBE, HACE CONSTAR, QUE SEGÚN EL ARCHIVO ESCOLAR, LA (EL) ".
-        $dataAlum[0]["NOMBRE"]." CON  MATRICULA ". $dataAlum[0]["ALUM_MATRICULA"].", ESTA CURSANDO EL SEMESTRE ".
-        $dataAlum[0]["SEMESTRE"]." DE ".$dataAlum[0]["CARRERAD"].", EN EL PERIODO COMPRENDIDO DE ".
-        $dataCiclo[0]["CICL_INICIOR"]." AL ". $dataCiclo[0]["CICL_FINR"]." CON UN PERÍODO VACACIONAL DE ".
-        $dataCiclo[0]["CICL_VACINI"]." AL ". $dataCiclo[0]["CICL_VACFIN"]." Y PROMEDIO DE ".
-        $dataAlum[0]["PROMEDIO_SR"]. " CON UN AVANCE DEL ".explode("|",$dataAlum[0]["AVANCE"])[2]."%."),0,'J',FALSE);
-
-
+        $pdf->setX(100);
+        $pdf->Multicell(91,5,strtoupper(utf8_decode("ASUNTO:".$dataAlum[0]["ASUNTOD"])),0,'R',false);
         $pdf->Ln(5);
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(255);  
-        $pdf->SetFont('Montserrat-ExtraBold','B',7);
-        
-        $pdf->Cell(20,5,'GRUPO',1,0,'C',true);
-        $pdf->Cell(35,5,'MATERIA.',1,0,'C',true);
-        $pdf->Cell(10,5,'CRED.',1,0,'C',true);
-        $pdf->Cell(15,5,'LUNES',1,0,'C',true);
-        $pdf->Cell(15,5,'MARTES',1,0,'C',true);
-        $pdf->Cell(15,5,'MIERCOLES',1,0,'C',true);
-        $pdf->Cell(15,5,'JUEVES',1,0,'C',true);
-        $pdf->Cell(15,5,'VIERNES',1,0,'C',true);
-        $pdf->Cell(15,5,'SABADO',1,0,'C',true);
-        $pdf->Cell(10,5,'REP.',1,0,'C',true);
 
-        $pdf->Ln();
-        $pdf->SetFont('Montserrat-Medium','',6);
-        $pdf->SetFillColor(172,31,6);
-        $pdf->SetTextColor(0);
-        $pdf->SetWidths(array(20,35,10,15,15,15,15,15,15,10));
-        $n=1;
-        foreach($data as $row) {
-            $pdf->Row(array( utf8_decode($row["MATCVE"].$row["GPOCVE"]),
-                             utf8_decode($row["MATERIAD"]),
-                             utf8_decode($row["CREDITOS"]),
-                             utf8_decode($row["LUNES"]),
-                             utf8_decode($row["MARTES"]),
-                             utf8_decode($row["MIERCOLES"]),
-                             utf8_decode($row["JUEVES"]),
-                             utf8_decode($row["VIERNES"]),
-                             utf8_decode($row["SABADO"]),
-                             utf8_decode($row["REP"])
-                             )
-                      );
-            $n++;
-        }
-
-
-        $pdf->SetFont('Montserrat-Medium','',11);
-		$fechaof=$miutil->aletras(date("d"))." DÍAS DEL MES DE ".$miutil->getMesLetra(date("m"))." DEL AÑO ". $miutil->aletras(date("Y"));
+        $pdf->SetFont('Montserrat-ExtraBold','B',10);
         $pdf->Ln(5);
-   
+        $pdf->Cell(0,5,strtoupper(utf8_decode($dataAlum[0]["JEFED"])),0,0,'L');
+        $pdf->Ln(5);
+        $pdf->Cell(0,5,strtoupper(utf8_decode($dataAlum[0]["FIRMAOF"])),0,0,'L');
+        $pdf->Ln(5);
+        $pdf->Cell(0,5,strtoupper(utf8_decode("PRESENTE")),0,0,'L');
+        $pdf->Ln(5);
+        $pdf->SetFont('Montserrat-Medium','B',10);
+        $pdf->Ln(5);
+        $pdf->MultiCell(0,5,utf8_decode("EL QUE SUSCRIBE C. ".
+        $dataAlum[0]["NOMBRE"]." ESTUDIANTE DEL ". $dataAlum[0]["PERIODO"]." SEMESTRE, DE LA CARRERA DE ".
+        $dataAlum[0]["CARRERAD"]." CON NÚMERO DE CONTROL ".$dataAlum[0]["PERSONA"].
+        "SOLICITO DE LA MANERA MAS ATENTA "),0,'J',FALSE);
+        $pdf->Ln(5);
+        $pdf->MultiCell(0,5,utf8_decode($dataAlum[0]["SOLICITUD"]),0,'J',FALSE);
+     
+        $pdf->Ln(5);
+        $pdf->MultiCell(0,5,utf8_decode("POR LOS SIGUIENTES MOTIVOS:"),0,'J',FALSE);
+        $pdf->Ln(5);
+        $pdf->SetFont('Montserrat-ExtraBold','B',10);
+        $pdf->MultiCell(0,5,utf8_decode("MOTIVOS ACADÉMICOS:"),0,'J',FALSE);
+        $pdf->Ln(5);
+        $pdf->SetFont('Montserrat-Medium','B',10);
+        $pdf->MultiCell(0,5,utf8_decode($dataAlum[0]["ACADEMICOS"]),0,'J',FALSE);
+        $pdf->Ln(5);
+        $pdf->SetFont('Montserrat-ExtraBold','B',10);
+        $pdf->MultiCell(0,5,utf8_decode("MOTIVOS PERSONALES:"),0,'J',FALSE);
+        $pdf->Ln(5);
+        $pdf->SetFont('Montserrat-Medium','B',10);
+        $pdf->MultiCell(0,5,utf8_decode($dataAlum[0]["PERSONALES"]),0,'J',FALSE);
 
-        $pdf->MultiCell(0,5,utf8_decode("SE EXTIENDE LA PRESENTE EN LA CIUDAD DE MACUSPANA, ESTADO DE TABASCO A LOS ".
-        strtoupper($fechaof).", PARA LOS FINES QUE CONVENGAN AL INTERESADO."),0,'J',FALSE);
-        
-        $pdf->Ln(15);
-
-        $nombre=$miutil->getJefe('303');//Nombre del puesto DECONTRL ESCOLAR
-        $pdf->SetFont('Montserrat-ExtraBold','B',11);
-        $pdf->Cell(0,15,utf8_decode($nombre),0,1,'C');
-        $pdf->Cell(0,5,"JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES",0,1,'C');
-            
-*/
+        $pdf->nombre=$dataAlum[0]["NOMBRE"];
          $pdf->Output(); 
 
 
