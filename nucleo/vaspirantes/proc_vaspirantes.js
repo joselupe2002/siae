@@ -649,7 +649,8 @@ function inscribirAspirante(lafila,modulo,institucion, campus) {
 						type: "POST",
 						url:"../base/getConsecutivo.php?tabla=econsoficial&campok=concat(TIPO,ANIO)&campocons=CONSECUTIVO&valork="+"MATRICULA"+elanio,
 						success: function(dataC){
-							micons=dataC;							
+							console.log(dataC);
+							micons=dataC;				
 							mimat=elaniomat+"E40"+pad(micons,3,'0');						
 							if (micons>0) {
 								parametros={
@@ -663,7 +664,7 @@ function inscribirAspirante(lafila,modulo,institucion, campus) {
 									url:"../base/ejecutasql.php",
 									data:parametros,
 									success: function(dataC){
-
+										alert (dataC);
 										console.log(dataC);
 										
 										if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
