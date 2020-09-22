@@ -73,7 +73,7 @@ var credM1=0;
 								"			where n.IDDETALLE=a.ID AND n.TERMINADA='S'),0))>0,'S','N')) AS EVAL "+
 								" from dlista a, cmaterias b where a.ALUCTR='"+usuario+"' and PDOCVE='"+micicloant+"'"+
 								" and MATCVE=MATE_CLAVE";
-							
+							alert (elsql3);
 							parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql"}
 							$.ajax({
 								type: "POST",
