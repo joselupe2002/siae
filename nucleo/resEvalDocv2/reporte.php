@@ -396,7 +396,7 @@
         ,40, $pdf->getY(),130,60,'PNG');
 
 
-        $pdf->setY($pdf->getY()+60);
+        $pdf->setY($pdf->getY()+65);
 
         $pdf->SetFont('Arial','B',8);
         $pdf->Cell(90,5,'ASPECTOS',1,0,'C',false);
