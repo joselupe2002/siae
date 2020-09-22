@@ -407,7 +407,7 @@
         $pdf->SetFillColor(172,31,6);
         $pdf->SetTextColor(0);
         $pdf->SetWidths(array(90,30,30));
-        $pdf->SetAligns(array('L','R','L'));
+        $pdf->SetAligns(array('L','C','C'));
 
         $i=0;
         $suma=0;
