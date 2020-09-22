@@ -69,7 +69,7 @@ var credM1=0;
 							matsineval=0;
 							cadmatsineval="";
 							elsql3="select MATE_DESCRIP AS MATERIAD, MATCVE AS MATERIA, "+
-								"(IF ((IFNULL((SELECT COUNT(*) from ed_respuestas n "+
+								"(IF ((IFNULL((SELECT COUNT(*) from ed_respuestasv2 n "+
 								"			where n.IDDETALLE=a.ID AND n.TERMINADA='S'),0))>0,'S','N')) AS EVAL "+
 								" from dlista a, cmaterias b where a.ALUCTR='"+usuario+"' and PDOCVE='"+micicloant+"'"+
 								" and MATCVE=MATE_CLAVE";
