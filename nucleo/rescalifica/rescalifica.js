@@ -51,6 +51,7 @@ contMat=1;
 		elsql="select VMAT_MATERIA,VMAT_MATERIAD from vmatciclo a  where a.VMAT_TIPOMAT IN('RP') and a.CARRERA "+
 			  " and a.CARRERA IN ('"+$("#selCarreras").val()+"')   AND a.VMAT_MAPA='"+$("#selMapas").val()+"'";
 
+
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    mostrarEspera("esperahor","grid_ecomplcal","Cargando Datos...");
 	    $.ajax({
@@ -69,10 +70,12 @@ contMat=1;
 /*===========================================================POR MATERIAS ==============================================*/
     function cargarInformacion(){
 		
-		elsql="select MATRICULA, NOMBRE, PROYECTO, ASESOR, CALIF, "+
+		elsql="select k.ID, MATRICULA, NOMBRE, PROYECTO, ASESOR, CALIF, "+
 		"IFNULL((select LISCAL FROM dlista where ALUCTR=MATRICULA AND MATCVE='"+$("#lamateria").html()+"' AND LISCAL>=70),'') CALASEN "+
-		" from vresidencias j where j.CICLO='"+$("#selCiclos").val()+
+		" from vresidencias j, dlista k  where j.MATRICULA=k.ALUCTR AND k.PDOCVE=j.CICLO AND k.MATCVE='"+$("#lamateria").html()+"'"+
+	    " AND j.CICLO='"+$("#selCiclos").val()+
 		"' and j.CARRERA='"+$("#selCarreras").val()+"'";
+	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
@@ -88,6 +91,7 @@ contMat=1;
 				"        <thead >  "+
 				"             <tr id=\"headMaterias\">"+
 				"                <th>No.</th> "+
+				"                <th>ID.</th> "+
 				"                <th>Matricula</th> "+
 				"                <th>Nombre</th> "+						
 				"                <th>Asesor</th> "+	
@@ -120,13 +124,14 @@ function generaTablaMaterias(grid_data){
 		//alert ($("#rowM"+contAlum).html()+" "+valor.PROFESOR);   			
 		$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
 		$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
+		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.ID+"</span></td>");
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.MATRICULA+"</span></td>");
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+valor.NOMBRE+"</span></td>");
 		
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.ASESOR+"</td>");
 		if (valor.CALASEN=='') {
 			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><SELECT id=\""+valor.MATRICULA+"_cal"+"\"></SELECT></td>");
-			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"guardarCal('"+valor.MATRICULA+"','"+valor.NOMBRE+"')\" "+
+			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"guardarCal('"+valor.ID+"','"+valor.MATRICULA+"','"+valor.NOMBRE+"','0')\" "+
 		                           "class=\"btn btn-white\"><i class=\"fa fa-save red bigger-160\"></i></span></td>");
 		}
 		else {
@@ -144,29 +149,27 @@ function generaTablaMaterias(grid_data){
 
 
 
-function guardarCal (matricula,nombre){
-	if (confirm("¿Seguro que desea agregar Cal: "+$("#"+matricula+"_cal").val()+" a la Asignatura: "+nombre+"?")) {
+function guardarCal (elid,matricula,nombre,lacal){
+	if (lacal==0) { c12="9"; calasig=$("#"+matricula+"_cal").val();} else {calasig='60'; c12="";}
+	if (confirm("¿Seguro que desea asignar Cal: "+calasig+" a la Asignatura: "+nombre+"?")) {
 		fecha=dameFecha("FECHAHORA");
-		parametros={tabla:"dlista",
+		parametros={tabla:"dlista",		       
 				bd:"Mysql",
-				PDOCVE:$("#selCiclos").val(),
-				ALUCTR:matricula,
-				MATCVE:$("#lamateria").html(), 
-				GPOCVE:"REV", 
-				LISCAL:$("#"+matricula+"_cal").val(),
+				campollave:"ID",
+				valorllave:elid,			
+				LISCAL:calasig,
 				CERRADO:"S",
 				TCACVE:"1",
-				LISTC15:"9999",
+				LISTC12:c12,
 				USUARIO: usuario,
 				FECHAINS:fecha,
 				_INSTITUCION: institucion, 
 				_CAMPUS: campus,
-				BAJA: "N",
 				TIPOCAL:"9999"};
 				$('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
 				$.ajax({
 						type: "POST",
-						url:"../base/inserta.php",
+						url:"../base/actualiza.php",
 						data: parametros,
 						success: function(data){ 
 								parametros={tabla:"wa_bitacora",
@@ -235,9 +238,9 @@ function verCalificaciones() {
 	  
     $('#modalDocument').modal({show:true, backdrop: 'static'});
 
-	elsql="select ID AS ID, MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, LISCAL AS CAL "+
+	elsql="select ALUCTR AS MATRICULA, ID AS ID, MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, LISCAL AS CAL "+
 	    " from dlista a, cmaterias b where MATCVE=MATE_CLAVE AND MATCVE='"+$("#lamateria").html()+"'"+
-		" and a.GPOCVE='REV' and a.PDOCVE='"+$("#selCiclos").val()+"' ORDER BY ID DESC";
+		" and LISTC12='9' AND a.PDOCVE='"+$("#selCiclos").val()+"' ORDER BY ID DESC";
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
@@ -267,7 +270,7 @@ function generaMateriasRev(grid_data){
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIA+"</td>");	
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIAD+"</td>");	
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+valor.CAL+"</span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"eliminarCal('"+valor.ID+"','"+valor.MATERIAD+"')\" "+
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"guardarCal('"+valor.ID+"','"+valor.MATRICULA+"','"+valor.MATERIAD+"','60')\" "+
 		                           "class=\"btn btn-white\"><i class=\"fa fa-times red bigger-160\"></i></span></td>");		
 		contAlum++;    		
 	});	

@@ -207,7 +207,12 @@
 
         $pdf->Ln(3);
         $pdf->SetFont('Montserrat-ExtraBold','B',11);
-        $pdf->Cell(0,5,utf8_decode('SOLICITUD DEL ESTUDIANTE PARA EL ANÁLISIS DEL COMITÉ ACADÉMICO:'),0,0,'C');
+
+        $cadAux="";$cadAux2="";$cadAux3="";
+        if ($dataAlum[0]["TIPO"]=='DOCENTES') {$cadAux=" DEL(LA) PROFESOR(A)"; $cadAux2="PROFESOR";$cadAux3="";}
+        if ($dataAlum[0]["TIPO"]=='ALUMNOS') {$cadAux="DEL ESTUDIANTE"; $cadAux2="ESTUDIANTE"; $cadAux3=" DEL ".$dataAlum[0]["PERIODO"]." SEMESTRE,";}
+       
+        $pdf->Cell(0,5,utf8_decode('SOLICITUD  '.$cadAux.' PARA EL ANÁLISIS DEL COMITÉ ACADÉMICO:'),0,0,'C');
         $pdf->Ln(5);
         $pdf->Cell(0,5,utf8_decode($dataGen[0]["inst_razon"]),0,0,'C');
         $pdf->Ln(5);
@@ -235,9 +240,9 @@
         $pdf->SetFont('Montserrat-Medium','B',10);
         $pdf->Ln(5);
         $pdf->MultiCell(0,5,utf8_decode("EL QUE SUSCRIBE C. ".
-        $dataAlum[0]["NOMBRE"]." ESTUDIANTE DEL ". $dataAlum[0]["PERIODO"]." SEMESTRE, DE LA CARRERA DE ".
+        $dataAlum[0]["NOMBRE"]." ".$cadAux2.$cadAux3." DE LA CARRERA DE ".
         $dataAlum[0]["CARRERAD"]." CON NÚMERO DE CONTROL ".$dataAlum[0]["PERSONA"].
-        "SOLICITO DE LA MANERA MAS ATENTA "),0,'J',FALSE);
+        " SOLICITO DE LA MANERA MAS ATENTA: "),0,'J',FALSE);
         $pdf->Ln(5);
         $pdf->MultiCell(0,5,utf8_decode($dataAlum[0]["SOLICITUD"]),0,'J',FALSE);
      
