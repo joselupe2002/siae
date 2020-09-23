@@ -61,6 +61,7 @@
 		     
 		     <div class="tab-content">
 			 		  <div id="act" class="tab-pane fade in active">
+					  		 <div style="height:360px; overflow-y: scroll;">
 					             <table id=tabInt class= "fontRoboto display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 				   	                 <thead>  
 					                      <tr>
@@ -69,17 +70,17 @@
 					                       </tr> 
 					                 </thead> 
 					              </table>	
-		   					            	
+		   					</div>          	
 					  </div>
+
 					  <div id="ins" class="tab-pane">
-							 <h3 class="header smaller lighter red">Casos de comité</Canvas></h3>
-			                 <div  class="table-responsive">
-							 		<div id="fichas" class="row"> </div>	
-				             </div>
-					  </div>
-					  
-			</div>			
-      </div>
+		
+							<div id="accordion" class="accordion-style1 panel-group" >
+							
+							</div> 		<!-- DEL ACORDION-->  
+
+					</div> 		<!-- DE LA PESTAÑA-->  
+      		</div><!-- DEL TABA PRINCIPAL  -->  
 
 
  
@@ -130,7 +131,7 @@
 <script src="<?php echo $nivel; ?>assets/js/bootstrap-tag.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
-
+<script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
 
 <!-- -------------------ultimos ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
@@ -159,16 +160,21 @@
 		$(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
 
 		$(document).ready(function($) { 
+
+			
+
 			$("#contComite").append("<span class=\"label label-danger\">Elija el Comité Académico</span>");
 			addSELECT("selComites","contComite","PROPIO", "SELECT ID, DESCRIP FROM co_comites where ABIERTO='S' order by ID DESC", "","");  	
 			});
 
 
-			function change_SELECT (){cargarIntegrantes(); }
+			function change_SELECT (){cargarIntegrantes(); cargarCasos();}
 
 			function cargarIntegrantes() {
 				elsql="SELECT a.*, (select count(*) from co_asistencia where COMITE='"+
-					  $("#selComites").val()+"' AND EMPL=a.EMPL) as ASISTENCIA from co_integrantes a order by ORDEN";		
+					  $("#selComites").val()+"' AND EMPL=a.EMPL) as ASISTENCIA, "+
+					 " (SELECT COUNT(*) FROM co_asistencia where COMITE='"+$("#selComites").val()+"') as ASISTENTES"+
+					  " from co_integrantes a order by ORDEN";		
  
 				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 				$.ajax({
@@ -178,7 +184,8 @@
 					success: function(data){
 						c=0;
        					$("#cuerpoInt").empty();
-	  					$("#tabInt").append("<tbody id=\"cuerpoInt\">");
+						$("#tabInt").append("<tbody id=\"cuerpoInt\">");
+						$("#numpar").html(JSON.parse(data)[0]["ASISTENTES"]);  
        					jQuery.each(JSON.parse(data), function(clave, valor) { 	
 							   
 							elbtn="<button onclick=\"confirma('"+valor.EMPL+"','"+$("#selComites").val()+"','S'); \" "+			
@@ -203,6 +210,7 @@ function confirma(empl,comite,op){
 	 var losdatos=[];
 	 lafecha=dameFecha("FECHA");
 	 lahora=dameFecha("HORA");
+	 
 	 if (op=='S') {
 		cad=comite+"|"+empl+"|"+lafecha+"|"+lahora+"|<?php echo $_SESSION["usuario"]?>|"+lafecha+"|<?php echo $_SESSION["INSTITUCION"]?>|<?php echo $_SESSION["CAMPUS"]?>";
 		losdatos[c]=cad;    
@@ -220,183 +228,206 @@ function confirma(empl,comite,op){
 			    });    		     	                                                  
                                        
 	 }
+
+	 if (op=='N') {
+		parametros={tabla:"co_asistencia", bd:"Mysql",campollave:"concat(COMITE,EMPL)",valorllave:comite+empl};
+		$.ajax({type: "POST", url:"../base/eliminar.php", data: parametros, success: function(data){  cargarIntegrantes();  } });
+	 }
 	
 }
 
 
-
-
-
-
-
-
-
- function generaTabla(grid_data){
-       c=0;
-       $("#cuerpo").empty();
-	   $("#tabHorarios").append("<tbody id=\"cuerpo\">");
-       jQuery.each(grid_data, function(clave, valor) { 	
-    	    
-    	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");
-    	    $("#row"+valor.ID).append("<td><button onclick=\"confirma('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+valor.CICLO+"','"+valor.ACTIVIDAD+"');\" "+			
-			        "class=\"btn btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i> Inscribirme</button></td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.ACTIVIDAD+"</td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.INICIA+"</td>");
-    	    $("#row"+valor.ID).append("<td>"+valor.TERMINA+"</td>");
-    	    
-    	    $("#row"+valor.ID).append("<td>"+valor.RESPONSABLED+"</td>");
-			$("#row"+valor.ID).append("<td>"+valor.AULA+"</td>");
-		    $("#row"+valor.ID).append("<td>"+valor.REQUERIMIENTO+"</td>");
-			$("#row"+valor.ID).append("<td>"+valor.CARRERAD+"</td>");
-		    $("#row"+valor.ID).append("<td>"+valor.LUNES+"</td>");
-		    $("#row"+valor.ID).append("<td>"+valor.MARTES+"</td>");
-		    $("#row"+valor.ID).append("<td>"+valor.MIERCOLES+"</td>");
-		    $("#row"+valor.ID).append("<td>"+valor.JUEVES+"</td>");
-		    $("#row"+valor.ID).append("<td>"+valor.VIERNES+"</td>");
-		    $("#row"+valor.ID).append("<td>"+valor.SABADO+"</td>");
-			
-        });
-}		
-
-
-
- function generaTablaIns(grid_data){
-       c=0;
-       $("#fichas").empty();
-     jQuery.each(grid_data, function(clave, valor) { 	
-         cadDias="";
-         cadDias="<div class=\"row\"><div class=\"col-sm-12\">"+             
-                 "<table id=tabHorarios class= \"display table-condensed table-striped table-sm table-bordered table-hover\" style=\"width:100%;\">"+
-                 "<thead>"+  
-                    "<tr>"+
-                         "<th style=\"text-align: center;\"><small class=\"text-success\">LUN</small></th>"+ 
-                         "<th style=\"text-align: center;\"><small class=\"text-success\">MAR</small></th>"+ 
-                         "<th style=\"text-align: center;\"><small class=\"text-success\">MIE</small></th>"+ 
-                         "<th style=\"text-align: center;\"><small class=\"text-success\">JUE</small></th>"+ 
-                         "<th style=\"text-align: center;\"><small class=\"text-success\">VIE</small></th>"+ 
-                         "<th style=\"text-align: center;\"><small class=\"text-success\">SAB</small></th>"+ 
-                    "</tr>"+
-                 "</thead>"+
-                 "<tbody>"+
-	                 "<tr>"+
-		                 "<td style=\"text-align: center;\"><small class=\"text-primary\">"+valor.LUNES+"</small></td>"+ 
-		                 "<td style=\"text-align: center;\"><small class=\"text-primary\">"+valor.MARTES+"</small></td>"+ 
-		                 "<td style=\"text-align: center;\"><small class=\"text-primary\">"+valor.MIERCOLES+"</small></td>"+ 
-		                 "<td style=\"text-align: center;\"><small class=\"text-primary\">"+valor.JUEVES+"</small></td>"+ 
-		                 "<td style=\"text-align: center;\"><small class=\"text-primary\">"+valor.VIERNES+"</small></td>"+ 
-		                 "<td style=\"text-align: center;\"><small class=\"text-primary\">"+valor.SABADO+"</small></td>"+ 
-	                 "</tr>"+
-                 "</tbody></div></div>";
-            
-
-    	 $("#fichas").append("<div class=\"col-md-6\">"+
-		                         "<div class=\"thumbnail search-thumbnail\">"+
-		       							//"<i class=\"pull-right  ace-icon red fa fa-trash-o bigger-80\" style=\"cursor: pointer;\"></i>"+
-			   							"<span class=\"search-promotion label label-success\">"+valor.TIPO+"</span> "+                                          
-			   							"<div class=\"space-12\"></div>"+
-			  							"<h5 class=\"text-primary\" style=\"text-align: center\"><strong>"+valor.NOMBREACT+"</strong></h5>"+
-			  							"<div class=\"row\">"+
-			  					             "<div class=\"col-sm-5\"><span class=\"label label-success label-white middle\">INICIA: "+valor.INICIA+"</span></div>"+
-											   "<div class=\"col-sm-5\" style=\"text-align:right\"><span class=\"label label-danger label-white middle\">TERMINA: "+valor.TERMINA+"</span></div>"+		  						        
-											   "<div class=\"col-sm-2\">"+
-											          "<a target=\"_blank\" id=\"enlace_"+valor.ACTIVIDAD+"\" href=\""+valor.RUTA+"\">"+
-                                                      "     <img width=\"40px\" height=\"40px\" id=\"pdf_"+valor.ACTIVIDAD+"\" name=\"pdf_\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
-                                                      "</a>"+
-											   "</div>"+		  						        
-											   
-			  					         "</div>"+
-              							cadDias+   
-              							"<div class=\"space-6\"></div>"+          
-              							"<div class=\"row\">"+
-                    						"<div class=\"col-sm-12\" style=\"text-align: right;\"> "+
-                          							"<span  title=\"N&uacute;mero de cr&eacute;ditos\" class=\"pull-left badge badge-success\">"+valor.CREDITOS+"</span>"+
-                          							"<i class=\"ace-icon blue fa fa-user bigger-80\" style=\"cursor: pointer;\"></i>"+
-                          							"<small class=\"text-warning\" title=\"Responsable de la Actividad\"><strong>"+valor.RESPONSABLED+"</strong></small>"+
-                    						"</div>"+
-              							"</div> "+ 
-              							"<div class=\"space-6\"></div>"+  
-              							"<div class=\"clearfix\">"+
-										    "<span class=\"pull-left\">Calificaci&oacute;n</span>"+
-										    "<span class=\"pull-right\">"+valor.PROM+"</span>"+
-									        "</div>"+
-
-									        "<div class=\"progress progress-mini\">"+
-										    "<div style=\"width:"+(valor.PROM*25)+"%\" class=\"progress-bar\"></div>"+
-									   "</div>"+                                  
-								"</div>"+
-							"</div>");  	   
-		    c++;	
-		$("#lisact").html(c);
-		if ((valor.RUTA=='') || (valor.RUTA==null)) { 								
-								 $('#enlace_'+valor.ACTIVIDAD).click(function(evt) {evt.preventDefault();});
-			                     $('#enlace_'+valor.ACTIVIDAD).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
-								 $('#pdf_'+valor.ACTIVIDAD).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
-		               	    }
-	    	
-      });
-
-     
-}		
-
-
-
-
-
-
-
-
-function cargarActIns() {
-	elsql="SELECT a.ACTIVIDAD, b.ACTIVIDADD AS TIPO, b.ACTIVIDAD as NOMBREACT,b.INICIA, b.TERMINA, b.RESPONSABLED, b.CREDITOS,"+ 
-        		 "c.PROM, b.LUNES, b.MARTES,b.MIERCOLES,b.JUEVES,b.VIERNES,b.SABADO,b.DOMINGO, c.COMP_LIBERACION as RUTA  FROM einscompl a "+
-        		 "left outer join ecalificagen c on (a.ACTIVIDAD=c.ACTIVIDAD and a.MATRICULA=c.MATRICULA)"+
-        		 ", vecomplementaria b "+
-				 "WHERE a.ACTIVIDAD=b.ID and a.MATRICULA='"+lamat+"';"				 
+function cargarCasos() {
+	elsql="SELECT ID, PERSONA, NOMBRE, ifnull(CARRERAD,'GENERALES') AS CARRERAD, SOLICITUD,  "+
+	"ACADEMICOS, PERSONALES, TIPO, OBSCOMITE, AUTCOMITE "+
+	"from vco_solicitud a where COMITE='"+$("#selComites").val()+"' order by IFNULL(CARRERAD,'GENERALES') DESC, NUMCOMITE";
+	
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	 $.ajax({
-		 type: "POST",
-		 data:parametros,
-         url:  "../base/getdatossqlSeg.php",
-         success: function(data){
-      	     generaTablaIns(JSON.parse(data));	        	     
-               },
-         error: function(data) {	                  
-                    alert('ERROR: '+data);
-                }
-        });
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){
+			c=0;		
+			jQuery.each(JSON.parse(data), function(clave, valor) { 	
+				ev="onchange=\"guardar('"+valor.ID+"');\"";
+				$("#accordion").append(
+					"<div class=\"panel panel-default\">"+
+				    "    <div class=\"panel-heading\"> "+
+					"         <h4 class=\"panel-title\">"+
+					"             <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#tab"+valor.ID+"\">"+
+					"		          <i class=\"ace-icon fa fa-angle-down bigger-110\" data-icon-hide=\"ace-icon fa fa-angle-down\" data-icon-show=\"ace-icon fa fa-angle-right\"></i>"+
+					"                    &nbsp;"+valor.PERSONA+" <span class=\"text-success\">"+valor.NOMBRE+"</span> <span class=\"text-danger\">"+valor.CARRERAD+"</span>"+
+					"              </a>"+
+					"         </h4> "+
+					"    </div>"+
+                    "    <div class=\"panel-collapse collapse\" id=\"tab"+valor.ID+"\">"+
+					"        <div class=\"panel-body fontRoboto bigger-120\"> "+
+					"           <div class=\"row\">"+
+					"                 <div class=\"col-sm-3\" id=\"pan1_"+valor.ID+"\" ></div>"+
+					"                 <div class=\"col-sm-6\" id=\"pan2_"+valor.ID+"\">"+
+										  valor.SOLICITUD+"<br><br>"+
+					"                     <span class=\"badge badge-warning bigger-120\">Motivos Personales</span><br>"+
+					                       valor.PERSONALES+"<br><br>"+
+					"                     <span class=\"badge badge-danger bigger-120\">Motivos Académicos</span><br>"+
+					                       valor.ACADEMICOS+"<br>"+
+					"                 </div>"+
+					"                 <div class=\"col-sm-3\" id=\"pan3_"+valor.ID+"\">"+
+					"					 <span class=\"label label-danger\">Dictamén</span>"+
+					"					 <select "+ev+" style=\"width:100%;\" id=\"seldic_"+valor.ID+"\"><option value='P'>Elija Opción</option><option value='S'>SI SE RECOMIENDA</option><option value='N'>NO SE RECOMIENDA</option></select>"+
+					"					 <textarea "+ev+"  style=\"width:100%; height:200px;\" id=\"dic_"+valor.ID+"\">"+valor.OBSCOMITE+"</textarea>"+
+					" 				  </div>"+
+					"	        </div> "+				
+					"	 </div> "+
+					"</div>"
+					);	
+					$("#seldic_"+valor.ID+" option[value="+valor.AUTCOMITE+"]").attr("selected",true);
+				
+				if (valor.TIPO=='ALUMNOS') {
+					elsql="SELECT ALUM_ESPECIALIDAD, ALUM_MAPA, ifnull(ALUM_FOTO,'../../imagenes/menu/default.png') as ALUM_FOTO,"+
+					" getavanceCred(ALUM_MATRICULA) AS AVANCE, "+
+					" getPeriodos(ALUM_MATRICULA,getciclo()) as PERIODO from falumnos  where ALUM_MATRICULA='"+valor.PERSONA+"'";							
+					parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+					$.ajax({
+						type: "POST",
+						data:parametros2,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(data2){
+							datAlum=JSON.parse(data2);
+							$("#pan1_"+valor.ID).append(
+								"<div class=\"row\">  "+
+							    "     <div class=\"col-sm-6\">  "+
+								"			<span class=\"profile-picture\" style=\"text-align:center;\">"+
+								"				<img id=\"foto_"+valor.ID+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
+								"			</span>"+	
+								"	  </div>"+
+								"	  <div class=\"col-sm-6\">  "+	
+								"			<div class=\"infobox-progress\" title=\"Total de Créditos que tiene aprobados\">"+
+								"				<div id=\"elavance\" id=\"porcavance\" class=\"easy-pie-chart percentage\" data-color=\"green\" data-percent=\""+datAlum[0]["AVANCE"]+"\" data-size=\"100\">"+
+								"					<span id=\"etelavance\"  class=\"percent\">"+datAlum[0]["AVANCE"]+"</span>%"+
+								"	  			</div>"+
+								"			</div>"+
+								"	   </div>"+
+								"</div>"+
+								"<div class=\"row\">  "+
+								"     <span class=\"badge badge-success\">"+datAlum[0]["PERIODO"]+" Semestres </span>"+
+								"  			<div class=\"tools action-buttons\">"+
+								"						<a title=\"Ver Avance Curricular\" onclick=\"verAvanceAlum('"+valor.PERSONA+"','"+valor.CARRERA+"');\" style=\"cursor:pointer;\">"+
+								"                            <i class=\"ace-icon fa fa-bar-chart-o blue bigger-150\"></i>"+
+								"                       </a>"+
+								"						<a title=\"Ver Kardex\" onclick=\"verKardex('"+valor.PERSONA+"');\" style=\"cursor:pointer;\">"+
+								"                            <i class=\"ace-icon fa fa-file-text-o green bigger-150\"></i>"+
+								"                       </a>"+
+								"						<a title=\"Ver Calificaciones del ciclo actual\" onclick=\"verCalifCiclo('"+valor.PERSONA+"','"+valor.NOMBRE+"');\" style=\"cursor:pointer;\">"+
+								"                            <i class=\"ace-icon fa fa-list-alt pink bigger-150\"></i>"+
+								"                       </a>"+
+								"						<a title=\"Horario de clases\" onclick=\"verHorario('"+valor.PERSONA+"','"+valor.NOMBRE+"');\" style=\"cursor:pointer;\">"+
+								"                            <i class=\"ace-icon fa fa-calendar red bigger-150\"></i>"+
+								"                       </a>"+
+								"						<a title=\"Actividades Complementarias\" onclick=\"verActCom('"+valor.PERSONA+"','"+valor.NOMBRE+"');\" style=\"cursor:pointer;\">"+
+								"                            <i class=\"ace-icon fa fa-thumb-tack yellow bigger-150\"></i>"+
+								"                       </a>"+
+								"			</div>"+
+								"</div>"
+							);
+							
+							
+								$("#foto_"+valor.ID).attr("src",datAlum[0]["ALUM_FOTO"]);
+								$('.easy-pie-chart.percentage').each(function(){
+								    var barColor = $(this).data('color') || '#2979FF';var trackColor = '#E2E2E2'; var size = parseInt($(this).data('size')) || 72;
+									$(this).easyPieChart({barColor: barColor,trackColor: trackColor,scaleColor: false,lineCap: 'butt',lineWidth: parseInt(size/5),animate:false,size: size}).css('color', barColor);
+								});							
+						}
+					});
+
+					
+				}	
+				if (valor.TIPO=='DOCENTES') {
+
+					elsql="SELECT EMPL_FOTO from pempleados  where EMPL_NUMERO='"+valor.PERSONA+"'";							
+					parametros2={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+					$.ajax({
+						type: "POST",
+						data:parametros2,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(data2){
+							datAlum=JSON.parse(data2);
+							$("#pan1_"+valor.ID).append(
+								"<div class=\"row\">  "+
+							    "     <div class=\"col-sm-6\">  "+
+								"			<span class=\"profile-picture\" style=\"text-align:center;\">"+
+								"				<img id=\"foto_"+valor.ID+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
+								"			</span>"+	
+								"	  </div>"+
+								"</div>"
+							);
+							
+							$("#foto_"+valor.ID).attr("src",datAlum[0]["EMPL_FOTO"]);
+											
+						}
+					});
+
+				}	
+				
+
+				}); 
+				c++;	     
+			},
+	});
+}
+
+function guardar (elid){
+	parametros={
+		   tabla:"co_solicitud",
+		   campollave:"ID",
+		   bd:"Mysql",
+		   valorllave:elid,
+		   AUTCOMITE: $("#seldic_"+elid).val(),
+		   OBSCOMITE: $("#dic_"+elid).val()
+	   };
+	   $.ajax({
+	   type: "POST",
+	   url:"../base/actualiza.php",
+	   data: parametros,
+	   success: function(data){ console.log(data);}					     
+	   });    	  
 }
 
 
-function cargarAct(){
-	    elsql="select a.CICLO, a.CARRERAD, a.INICIA, a.TERMINA, a.ID, a.ACTIVIDAD, a.ACTIVIDADD, a.RESPONSABLED, a.REQUERIMIENTO, a.LUNES, a.MARTES, a.MIERCOLES, a.JUEVES, a.VIERNES, a.SABADO, "+
-		      "(select count(*) from einscompl where MATRICULA='"+lamat+"' and CICLO=getciclo()) as NUMINS,"+
-	          " a.AULA from vecomplementaria a where a.CUPO>a.INS AND a.CICLO=getciclo() and AUTORIZADO='S' "+			  
-			 " and a.ID NOT IN (SELECT ACTIVIDAD FROM einscompl WHERE MATRICULA='"+lamat+"');"
 
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	    $.ajax({
-			   type: "POST",
-			   data:parametros,
-	           url:  "../base/getdatossqlSeg.php",
-	           success: function(data){
-				     numAct=JSON.parse(data)[0]["NUMINS"];
-	        	     generaTabla(JSON.parse(data));	        	     
-	                 },
-	           error: function(data) {	                  
-	                      alert('ERROR: '+data);
-	                  }
-	          });
+function verKardex(matricula){
+	enlace="nucleo/avancecurri/kardex.php?matricula="+matricula;
+	abrirPesta(enlace,"Kardex");
+}
+
+function verAvanceAlum(matricula,carrera){
+   enlace="nucleo/avancecurri/grid.php?matricula="+matricula+"&carrera="+carrera;
+   abrirPesta(enlace,"06) Avance Curricular");
 }
 
 
+function verCalifCiclo(matricula,nombre){
+	enlace="nucleo/tu_caltutorados/grid.php?matricula="+matricula+"&nombre="+nombre;
+	abrirPesta(enlace,"Calif. Ciclo");
+ }
+
+ function verHorario(matricula,nombre){
+	enlace="nucleo/pa_mihorario/grid.php?matricula="+matricula+"&nombre="+nombre+"&ciclo="+$("#selCiclos").val();
+	abrirPesta(enlace,"Horario");
+ }
 
 
-	
+ function verActCom(matricula,nombre){
+	enlace="nucleo/pa_inscompl/grid.php?matricula="+matricula+"&nombre="+nombre+"&ciclo="+$("#selCiclos").val();
+	abrirPesta(enlace,"Complementarias");
+ }
 
 
-		</script>
+
+</script>
 
 
-	</body>
+</body>
 <?php } else {header("Location: index.php");}?>
 </html>
+
