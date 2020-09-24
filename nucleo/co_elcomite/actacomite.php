@@ -358,11 +358,14 @@
                             $pre="EL DOCENTE ".$row2["NOMBRE"]." CON NÚMERO DE EMPLEADO ".$row2["PERSONA"].
                             " ADSCRITO A LA CARRERA DE ".$row2["CARRERAD"]." ";
                         }
+                        $cadaut="";
+                        if ($row2["AUTCOMITE"]=='S') {$cadaut="SI SE RECOMIENDA\n\n";}
+                        if ($row2["AUTCOMITE"]=='N') {$cadaut="NO SE RECOMIENDA\n\n";}
 
                         $pdf->Row(array( utf8_decode($row2["NUMCOMITE"]),
                                          utf8_decode($pre." ".$row2["SOLICITUD"]."\n\n"."PROBLEMÁTICA PERSONAL: \n".
                                                      $row2["PERSONALES"]."\n\nPROBLEMÁTICA ACADÉMICA: \n".$row2["ACADEMICOS"]),
-                                         utf8_decode($row2["OBSCOMITE"])
+                                         utf8_decode($cadaut.$row2["OBSCOMITE"])
                                          )
                                   );
                         $n++;
@@ -386,10 +389,14 @@
                    $pdf->SetWidths(array(25,105,60));
                    $pdf->SetAligns(array('C','J','J'));
                    $n=1;
+                   $cataut="";
+                   
                    foreach($dataAlum as $row3) {
+                             if ($row3["AUTCOMITE"]=='S') {$cadaut="SI SE RECOMIENDA\n\n";}
+                             if ($row3["AUTCOMITE"]=='N') {$cadaut="NO SE RECOMIENDA\n\n";}
                             $pdf->Row(array(utf8_decode($row3["NUMCOMITE"]),
                                             utf8_decode($row3["SOLICITUD"]),
-                                            utf8_decode($row3["OBSCOMITE"])
+                                            utf8_decode($cadaut.$row3["OBSCOMITE"])
                                         )
                                     );
                             $n++;

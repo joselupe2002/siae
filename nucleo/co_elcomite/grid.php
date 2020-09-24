@@ -46,7 +46,12 @@
 
 		<div class="row" style="width:80%">
 			<div class="col-sm-6"></div>
-		    <div class="col-sm-6" id="contComite"></div>
+		    <div class="col-sm-3" id="contComite"></div>
+			<div class="col-sm-3" style="padding-top:19px;">
+					<button onclick="actaComite();" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-book blue"></i>Acta de Comité
+					</button>
+			</div>
 		</div> 
              
          <div class="tabbable fontRoboto">
@@ -148,6 +153,9 @@
 		var elnombre="";
 		var miciclo="";
 		var numAct=0;
+		var usuario="<?php echo $_SESSION["usuario"];?>";
+		var institucion="<?php echo $_SESSION["INSTITUCION"];?>";
+		var campus="<?php echo $_SESSION["CAMPUS"];?>";
 
 		<?php if ( isset($_GET["matricula"])) { 
 			echo "lamat='".$_GET["matricula"]."';";
@@ -164,7 +172,7 @@
 			
 
 			$("#contComite").append("<span class=\"label label-danger\">Elija el Comité Académico</span>");
-			addSELECT("selComites","contComite","PROPIO", "SELECT ID, DESCRIP FROM co_comites where ABIERTO='S' order by ID DESC", "","");  	
+			     addSELECT("selComites","contComite","PROPIO", "SELECT ID, DESCRIP FROM co_comites where ABIERTO='S' order by ID DESC", "","");  	
 			});
 
 
@@ -377,6 +385,7 @@ function cargarCasos() {
 }
 
 function guardar (elid){
+	lafecha=dameFecha("FECHAHORA");
 	parametros={
 		   tabla:"co_solicitud",
 		   campollave:"ID",
@@ -389,8 +398,18 @@ function guardar (elid){
 	   type: "POST",
 	   url:"../base/actualiza.php",
 	   data: parametros,
-	   success: function(data){ console.log(data);}					     
-	   });    	  
+	   success: function(data){ 
+		   console.log(data);
+		   if ($("#seldic_"+elid).val()=='S') {
+			   addStatusComite(elid,"TU CASO HA SIDO RECOMENDADO PARA AUTORIZACIÓN "+lafecha,usuario,institucion,campus); 
+		   }
+		   if ($("#seldic_"+elid).val()=='N') {
+			   addStatusComite(elid,"TU CASO NO HA SIDO RECOMENDADO PARA AUTORIZACIÓN "+lafecha,usuario,institucion,campus); 
+		   }
+		}					     
+	   });    
+	   
+
 }
 
 
@@ -421,6 +440,21 @@ function verCalifCiclo(matricula,nombre){
 	enlace="nucleo/pa_inscompl/grid.php?matricula="+matricula+"&nombre="+nombre+"&ciclo="+$("#selCiclos").val();
 	abrirPesta(enlace,"Complementarias");
  }
+
+
+ function actaComite(){
+
+	if ($("#selComites").val()>0) {
+		enlace="nucleo/co_elcomite/actacomite.php?id="+$("#selComites").val();
+		abrirPesta(enlace, "Acta."+$("#selComites").val());
+	
+	}
+	else {
+		alert ("Debe seleccionar primero un comite");
+		return 0;
+
+		}
+}
 
 
 

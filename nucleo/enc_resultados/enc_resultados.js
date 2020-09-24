@@ -157,6 +157,7 @@ function verTablas(){
 
 	sql="SELECT "+$("#selPreguntas").val()+" as x,count(*) AS y "+
 	" FROM encrespuestas s, falumnos t where s.IDRESPONDE=t.ALUM_MATRICULA "+
+	" and IDENC= '"+$("#selEncuestas").val()+"'"+
 	" and t.ALUM_CARRERAREG like '"+$("#selCarreras").val()+"' GROUP BY "+$("#selPreguntas").val();
 
 	parametros={sql:sql,dato:sessionStorage.co,bd:"Mysql"}
