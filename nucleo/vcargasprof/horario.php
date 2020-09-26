@@ -200,17 +200,17 @@
 
 			function dameHoras($lin){
 				$lashoras=0;
-				for ($i=3; $i<=9; $i++) {
-					if ($lin[$i]!='') {
-						$hor1=substr($lin[$i],0,2);
-						$min1=substr($lin[$i],3,2);
+					for ($i=3; $i<=9; $i++) {
+						if (($lin[$i]!='') && (strlen($lin[$i])>10)) {
+							$hor1=substr($lin[$i],0,2);
+							$min1=substr($lin[$i],3,2);
 
-						$hor2=substr($lin[$i],6,2);
-						$min2=substr($lin[$i],9,2);
+							$hor2=substr($lin[$i],6,2);
+							$min2=substr($lin[$i],9,2);
 
-						$lashoras+=(($hor2*60)+$min2)-(($hor1*60)+$min1);
+							$lashoras+=(($hor2*60)+$min2)-(($hor1*60)+$min1);
+						}
 					}
-				}
 				return ($lashoras/60);
 			}
 			

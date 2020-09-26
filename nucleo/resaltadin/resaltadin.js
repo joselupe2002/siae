@@ -3,6 +3,8 @@ var estaseriando=false;
 var matser="";
 contAlum=1;
 contMat=1;
+var arrEmpresas = [];
+var arrProyectos= [];
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -54,6 +56,7 @@ contMat=1;
 				"             <tr id=\"headMaterias\">"+
 				"                <th>Buscar</th> "+
 				"                <th>Empresa</th> "+
+				"                <th>Buscar</th> "+
 				"                <th>Proyecto</th> "+
 				"                <th>IDEMPRESA</th> "+
 				"                <th>IDPROY</th> "+
@@ -86,29 +89,41 @@ contMat=1;
 
 function generaTablaEmpresas(grid_data){	
 	contAlum=1;
+	lafecha=dameFecha("FECHAHORA");
 
 	$("#cuerpoMaterias").empty();
 	$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
 	//$("#btnfiltrar").attr("disabled","disabled");
+	i=0;
 	jQuery.each(grid_data, function(clave, valor) { 
 		//alert ($("#rowM"+contAlum).html()+" "+valor.PROFESOR);   	
 		
-		arreglo=[valor.EMPRESA]
+		arrEmpresas[i]=[valor.RFC, valor.EMPRESA,valor.EMPRESA.substring(0,30),valor.GIRO,valor.SECTOR,valor.TITULAR,valor.MISION,
+				 '',valor.DOMICILIO,'','','','',valor.CP,usuario,lafecha,institucion,campus,valor.TELEFONO,'',valor.ID];
+
+		arrProyectos[i]=[valor.CICLO,valor.ALUM_CARRERAREG,'1',valor.IDEMPRESA,'0',valor.ASESOREX, valor.PSTOASESOREX,'0','','','',
+						 valor.IDASESOR,'','','','','',valor.INICIA,valor.TERMINA,valor.PROYECTO,
+						valor.PROYECTO.substring(0,30),'',valor.HORARIO,'AUTOMATICO',institucion,campus,valor.CORREOASESOREX,usuario,lafecha,'0',valor.ID];
+				 
 		$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
 
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"buscar('"+valor.ID+"','"+valor.RFC+"','"+valor.EMPRESA+"')\" "+
 								   "class=\"btn btn-white\"><i class=\"fa fa-search red bigger-160\"></i></span></td>");
 
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"agregarEmpresa('"+valor.ID+"','"+valor.RFC+"','"+valor.EMPRESA+"','"++"')\" "+
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"agregarEmpresa('"+valor.ID+"','"+valor.RFC+"','"+valor.EMPRESA+"',"+i+")\" "+
 								   "class=\"btn btn-white\"><i class=\"fa fa-home blue bigger-160\"></i></span></td>");
 
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"agregarProyecto('"+valor.ID+"','"+valor.MATRICULA+"','"+valor.NOMBRE+"','0')\" "+
+		$("#rowM"+contAlum).append("<td title=\"Buscar un proyecto dado de alta\" style=\"font-size:12px;\"><span onclick=\"buscarProyecto('"+valor.ID+"')\" "+
+								   "class=\"btn btn-white\"><i class=\"fa fa-search red bigger-160\"></i></span></td>");
+					
+
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"agregarProyecto('"+valor.ID+"',"+i+",arrProyectos)\" "+
 		                           "class=\"btn btn-white\"><i class=\"fa fa-tags green bigger-160\"></i></span></td>");
 		
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.IDEMPRESA+"</span></td>");
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.IDPROYECTO+"</span></td>");
 
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><SELECT id=\"prof_"+valor.ID+"_cal"+"\"></SELECT></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><SELECT onchange=\"asignaAsesor('"+valor.ID+"');\" id=\"asesor_"+valor.ID+"\"></SELECT></td>");
 
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.ID+"</span></td>");
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.RFC+"</span></td>");
@@ -120,10 +135,11 @@ function generaTablaEmpresas(grid_data){
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.DOMICILIO+"</td>");
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.ASESOREX+"</td>");
 
-		$("#prof_"+valor.ID+"_cal").html($("#base").html());
-		$("#prof_"+valor.ID+"_cal option[value='"+ valor.IDASESOR +"']").attr("selected",true);
+		$("#asesor_"+valor.ID).html($("#base").html());
+		$("#asesor_"+valor.ID+" option[value='"+ valor.IDASESOR +"']").attr("selected",true);
 
-	    contAlum++;      			
+		contAlum++; 
+		i++;     			
 	});	
 } 
 
@@ -157,6 +173,30 @@ function buscar(elid, elrfc, laempresa) {
 }
 
 
+
+function buscarProyecto(elid) {
+
+
+	elhtml="<div id=\"losproyectos\" class=\"alert alert-primary\" style=\"text-align:justify;\">"+
+	"<span onclick=\"asignarelproy('"+elid+"');\" class=\"btn btn-white\"><i class=\"fa fa-search red bigger-160\"></i> Asignar Proyecto</span>"+
+	"</div>";
+
+	mostrarIfo("infoProy","grid_resaltadin","Proyectos registrados",elhtml,"modal-lg");
+		
+	addSELECT("selProyectos","losproyectos","PROPIO", "SELECT IDPROY,concat (IDPROY,' ',NOMBRE) FROM resproyectos order by CICLO DESC, NOMBRE", "","BUSQUEDA");  	
+		  	      					    					  		
+}
+
+
+function asignarelproy(elid) {
+
+	if ($("#selProyectos").val()>0) {
+	  asignarProyecto(elid,$("#selProyectos").val());
+	  $("#infoProy").modal("hide");
+	}
+	else {alert ("Debe seleccionar un proyecto");}
+}
+
 function asignarEmpresa (elid,idempresa){
 	parametros={tabla:"rescapproy",		       
 	bd:"Mysql",
@@ -174,138 +214,148 @@ function asignarEmpresa (elid,idempresa){
 			});			
 }
 
-
-function agregarEmpresa() {
-
-}
-
-
-
-
-
-/*==============================================//////////////////////////////////////////========================*/
-	function cargaMateriaRes (){
-		elsql="select VMAT_MATERIA,VMAT_MATERIAD from vmatciclo a  where a.VMAT_TIPOMAT IN('RP') and a.CARRERA "+
-			  " and a.CARRERA IN ('"+$("#selCarreras").val()+"')   AND a.VMAT_MAPA='"+$("#selMapas").val()+"'";
-
-
-	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	    mostrarEspera("esperahor","grid_ecomplcal","Cargando Datos...");
-	    $.ajax({
+function asignaAsesor (elid){
+	parametros={tabla:"rescapproy",		       
+	bd:"Mysql",
+	campollave:"ID",
+	valorllave:elid,			
+	IDASESOR:$("#asesor_"+elid).val()};  
+	$.ajax({
 			type: "POST",
-			data:parametros,
-			url:  "../base/getdatossqlSeg.php",
-			success: function(data){  
-				$("#lamateria").html(JSON.parse(data)[0][0]);
-				$("#lamateriad").html(JSON.parse(data)[0][1]);
-				ocultarEspera("esperahor");
-		   }
-		});
-	}
+			url:"../base/actualiza.php",
+			data: parametros,
+			success: function(data){ 
+				$("#info").modal("hide");
 
+				parametros={
+					bd:"mysql",
+					sql:"update resproyectos set ASESORINT1='"+$("#asesor_"+elid).val()+"' WHERE IDPROP="+elid,
+					dato:sessionStorage.co				
+				};
 
-/*===========================================================POR MATERIAS ==============================================*/
-    
-
-
-
-function guardarCal (elid,matricula,nombre,lacal){
-	if (lacal==0) { c12="9"; calasig=$("#"+matricula+"_cal").val();} else {calasig='60'; c12="";}
-	if (confirm("¿Seguro que desea asignar Cal: "+calasig+" a la Asignatura: "+nombre+"?")) {
-		fecha=dameFecha("FECHAHORA");
-		parametros={tabla:"dlista",		       
-				bd:"Mysql",
-				campollave:"ID",
-				valorllave:elid,			
-				LISCAL:calasig,
-				CERRADO:"S",
-				TCACVE:"1",
-				LISTC12:c12,
-				USUARIO: usuario,
-				FECHAINS:fecha,
-				_INSTITUCION: institucion, 
-				_CAMPUS: campus,
-				TIPOCAL:"9999"};
-				$('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
 				$.ajax({
-						type: "POST",
-						url:"../base/actualiza.php",
-						data: parametros,
-						success: function(data){ 
-								parametros={tabla:"wa_bitacora",
-								bd:"Mysql",
-								CICLO:$("#selCiclos").val(),
-								USUARIO:usuario,
-								MATERIA:$("#lamateria").html(), 
-								GRUPO:"REV", 
-								PROFESOR:"9999",
-								MATRICULA: matricula,
-								CALIFICACION:$("#"+matricula+"_cal").val(),						
-								FECHA_REG: fecha,
-								_INSTITUCION: institucion, 
-								_CAMPUS: campus};	
-							$.ajax({
-									type: "POST",
-									url:"../base/inserta.php",
-									data: parametros,
-									success: function(data){ 	
-									cargarInformacion();        		        	 
-								}
-							});
-							}
-						});			
-		}		
+					type: "POST",
+					url:"../base/ejecutasql.php",
+					data:parametros,
+					success: function(dataC){ cargarInformacion();}
+				});
+				
+				}
+			});			
+}
+
+function asignarProyecto (elid,idproy){
+	parametros={tabla:"rescapproy",		       
+	bd:"Mysql",
+	campollave:"ID",
+	valorllave:elid,			
+	IDPROYECTO:idproy};  
+	$.ajax({
+			type: "POST",
+			url:"../base/actualiza.php",
+			data: parametros,
+			success: function(data){ 
+				$("#info").modal("hide");
+				cargarInformacion();
+				}
+			});			
 }
 
 
 
+function agregarEmpresa(elid,rfc,empresa,i) {
+	elsql="select count(*) from resempresas where IDPROP="+elid;
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){  
+			if (JSON.parse(data)[0][0]<=0) {
+				//Abrimos una notificación para el alumno
+				parametros={tabla:"resempresas",RFC:arrEmpresas[i][0],NOMBRE:arrEmpresas[i][1],NOMBRECORTO:arrEmpresas[i][2],GIRO:arrEmpresas[i][3],
+				SECTOR:arrEmpresas[i][4],REPRESENTANTE:arrEmpresas[i][5],MISION:arrEmpresas[i][6],VISION:arrEmpresas[i][7],DIRECCION:arrEmpresas[i][8],
+				CORREO:arrEmpresas[i][9],ESTADO:arrEmpresas[i][10],MUNICIPIO:arrEmpresas[i][11],COLONIA:arrEmpresas[i][12],CP:arrEmpresas[i][13],
+				USUARIO:arrEmpresas[i][14],FECHAUS:arrEmpresas[i][15],_INSTITUCION:arrEmpresas[i][16],_CAMPUS:arrEmpresas[i][17],TELEFONO:arrEmpresas[i][18],
+				REGIMEN:arrEmpresas[i][19],IDPROP:arrEmpresas[i][20],	bd:"Mysql",
+				};     
+				$.ajax({
+					type: "POST",
+					url:"../base/inserta.php",
+					data: parametros,
+					success: function(data){
+						elsql="select IDEMP from resempresas where IDPROP="+elid;
+						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+						$.ajax({
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data){  
+								asignarEmpresa(elid, JSON.parse(data)[0][0]);
+							}
+						});
+					 }
+				});
 
-function generaMateriasRev(grid_data){	
-	contAlum=1;
-	$("#cuerpoMaterias").empty();
-	$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
-	//$("#btnfiltrar").attr("disabled","disabled");
-	jQuery.each(grid_data, function(clave, valor) { 
-		//alert ($("#rowM"+contAlum).html()+" "+valor.PROFESOR);   			
-		$("#tabActividad").append("<tr id=\"rowM"+contAlum+"\">");
-		$("#rowM"+contAlum).append("<td>"+contAlum+"</td>");
-		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.ID+"</span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIA+"</td>");	
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.MATERIAD+"</td>");	
-		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+valor.CAL+"</span></td>");
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"guardarCal('"+valor.ID+"','"+valor.MATRICULA+"','"+valor.MATERIAD+"','60')\" "+
-		                           "class=\"btn btn-white\"><i class=\"fa fa-times red bigger-160\"></i></span></td>");		
-		contAlum++;    		
-	});	
-} 
-
-
-function eliminarCal(id, materiad){
-	if(confirm("Seguro que desea eliminar la Calificación de la Materia: "+materiad)) 
-		 {
-				 var parametros = {
-							tabla : "dlista",
-							bd:"Mysql",
-	    	                campollave : "ID",
-	    	                valorllave : id
-	    	        };
-	    	        $.ajax({
-	    	            data:  parametros,
-	    	            url:   '../base/eliminar.php',
-	    	            type:  'post',          
-	    	            success:  function (response) {  
-							$("#modalDocument").modal("hide");		        
-							cargarInformacion();
-	    	            }
-	    	    });
+			}	
+			else {
+				alert ("La empresa de este registro ya fue dada de alta")
+			}
 		}
+	});
 
-    }
+}
 
 
 
-	function verOficio(matricula){
+function agregarProyecto(elid,i,arrProyectos){
 
-	    window.open("oficioLib.php?matricula="+matricula+"&ciclo="+$("#selCiclos").val(),"_blank");
-			
-	}	
+	elsql="select count(*) from resproyectos where IDPROP="+elid;
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){  
+			if (JSON.parse(data)[0][0]<=0) {
+				//Abrimos una notificación para el alumno
+				parametros={tabla:"resproyectos",CICLO:arrProyectos[i][0],CARRERA:arrProyectos[i][1],NUMPROY:arrProyectos[i][2],IDEMPRESA:arrProyectos[i][3],
+				IDDEPTO:arrProyectos[i][4],ASESOREX:arrProyectos[i][5],PUESTOASEX:arrProyectos[i][6],REVISOR:arrProyectos[i][7],PROREVA:arrProyectos[i][8],
+				PRODIC:arrProyectos[i][9],PROASIA:arrProyectos[i][10],ASESORINT1:arrProyectos[i][11],ASESORINT2:arrProyectos[i][12],ASESORINT3:arrProyectos[i][13],
+				REVISOR1:arrProyectos[i][14],REVISOR2:arrProyectos[i][15],PROREVFA:arrProyectos[i][16],INICIA:arrProyectos[i][17],TERMINA:arrProyectos[i][18],
+				NOMBRE:arrProyectos[i][19],NOMBRECORTO:arrProyectos[i][20],PRONRES:arrProyectos[i][21],HORARIO:arrProyectos[i][22],OBS:arrProyectos[i][23],
+				_INSTITUCION:arrProyectos[i][24],_CAMPUS:arrProyectos[i][25],CORREOASEX:arrProyectos[i][26],USUARIO:arrProyectos[i][27],
+				FECHAUS:arrProyectos[i][28],IDPROYSIE:arrProyectos[i][29],IDPROP:arrProyectos[i][30],						
+				bd:"Mysql"
+				};     
+   
+				$.ajax({
+					type: "POST",
+					url:"../base/inserta.php",
+					data: parametros,
+					success: function(data){
+	
+						elsql="select IDPROY from resproyectos where IDPROP="+elid;
+						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+						$.ajax({
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data){  
+								asignarProyecto(elid, JSON.parse(data)[0][0]);
+							}
+						});
+					 }
+				});
+
+			}	
+			else {
+				alert ("El proyecto de este registro ya fue dada de alta")
+			}
+		}
+	});
+
+}
+
+
+
