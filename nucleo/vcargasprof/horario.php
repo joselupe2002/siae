@@ -313,6 +313,7 @@
 					{
 										       
 						if (count($rowdes)) {
+							$horasDes=$this->dameHoras($rowdes);
 							$this->Cell($w[0],4,utf8_decode($rowdes[0]),'LR',0,'J',$fill);
 							$this->Cell($w[1],4,$rowdes[1],'LR',0,'L',$fill);
 							$this->Cell($w[2],4,utf8_decode($rowdes[2]),'LR',0,'L',$fill);
@@ -323,8 +324,8 @@
 							$this->Cell($w[7],4,$rowdes[7],'LR',0,'L',$fill);
 							$this->Cell($w[8],4,$rowdes[8],'LR',0,'L',$fill);
 							$this->Cell($w[9],4,$rowdes[9],'LR',0,'L',$fill);
-							$this->Cell($w[10],4,$rowdes[10],'LR',0,'C',$fill);
-							$suma+=$rowdes[10];
+							$this->Cell($w[10],4,$horasDes,'LR',0,'C',$fill);
+							$suma+=$horasDes;
 							
 							$this->Ln();
 							$fill = !$fill;
