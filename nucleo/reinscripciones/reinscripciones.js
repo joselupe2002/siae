@@ -889,13 +889,15 @@ function validarCondiciones(mensaje) {
 	}
 	
 	res+=validarcrucesReins();
+
+
 	return (res);
 }
 
 
 
 
-function guardarRegistros(){
+function guardarRegistros(cadeliminar){
 	j=0;
 	var f = new Date();
 	fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
@@ -925,7 +927,7 @@ function guardarRegistros(){
 		campollave:"concat(PDOCVE,ALUCTR,LISTC13)",
 		bd:"Mysql",
 		valorllave:$("#elciclo").html().split("|")[0]+$("#selAlumnos").val()+$("#selCarreras").val(),
-		eliminar: "S",
+		eliminar: cadeliminar,
 		separador:"|",
 		campos: JSON.stringify(loscampos),
 		datos: JSON.stringify(losdatos)
@@ -966,8 +968,6 @@ function guardarRegistros(){
 	   }		
 	}); 
 
-
-
 }
 
 
@@ -978,20 +978,36 @@ function limpiarVentana(){
 }
 
 function guardarTodos(){
+	//checamos que el alumno no tenga materias ya aprobadas 
+	elsql="select count(*) from dlista where PDOCVE='"+$("#elciclo").html().split("|")[0]+"'"+
+	" AND ALUCTR='"+$("#selAlumnos").val()+"' AND IFNULL(LISPA1,0)>=70 and GPOCVE<>'E99REV'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){  
+			 res="";
+			 if (JSON.parse(data)[0][0]>0) { res+="<span class=\"badge badge-danger\"> ERROR CRITICO: El alumno cuenta con UNIDADES aprobadas en este ciclo se borrarán sus CALIFICACIONES<br/>"+
+			 "Si desea agregar una asignatura desmarque todas y solo marque la que desee agregar</span><br/>"; }  
+			 mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
+			res+=validarCondiciones(false);
+
+			if (res.length>0) {
+				mostrarConfirm2("confirmFinalizar", "grid_reinscripciones", "ERRORES EN LA REINSCRIPCIÓN",			  
+					"         <div  id=\"miserrores\"  style=\"width:100%; text-align:justify; height:150px; overflow-y: scroll;\">"+res+"</div>",
+					"Grabar de todos modos", "guardarRegistros('S');","modal-lg");
+					ocultarEspera("guardandoReins");	
+					}	
+			else {
+				guardarRegistros('S');   //en caso de que no haya errores			
+			}
+
+		}
+	});
 
 
-	mostrarEspera("guardandoReins","grid_reinscripciones","Guardando...");
-	res=validarCondiciones(false);
-
-	if (res.length>0) {
-		mostrarConfirm2("confirmFinalizar", "grid_reinscripciones", "ERRORES EN LA REINSCRIPCIÓN",			  
-			  "         <div  id=\"miserrores\"  style=\"width:100%; text-align:justify; height:150px; overflow-y: scroll;\">"+res+"</div>",
-			  "Grabar de todos modos", "guardarRegistros();","modal-lg");
-			  ocultarEspera("guardandoReins");	
-			}	
-	else {
-		guardarRegistros();   //en caso de que no haya errores
-	}
+	
 }
 
 
@@ -1008,8 +1024,15 @@ function verMateriasEvalDoc(){
 	"<div style=\"text-align:justify;\">"+cadmatsineval+"</div>","modal-lg");
 }
 
-
 function verNotaAlum(){
 	mostrarIfo("infoEval","grid_reinscripciones","Observación de la propuesta Alumno",
 	"<div style=\"text-align:justify;\">"+mensajeAlumno+"</div>","modal-lg");
+}
+
+
+function agregarAsignaturas(){
+	if (confirm("Este proceso agrega asignaturas al Horario del Alumnos para no afectar las que tienen calificaciones ¿Se aseguro de solo marcar la asignatura a agregar para evitar repeticiones?")) {
+		guardarRegistros('N');
+	}
+	  
 }

@@ -120,6 +120,10 @@
 										<button title="Ver kardex del alumno" id="btnfiltrar" onclick="verKardex();" class="btn btn-white btn-success btn-round" value="Agregar"> 
 											<i class="ace-icon pink fa fa-file-text bigger-140"></i> <span class="btn-small"></span>            
 										</button>
+
+										<button title="Agregar asignaturas seleccionadas a horario" onclick="agregarAsignaturas();" class="btn btn-white btn-danger btn-round" value="Agregar"> 
+											<i class="ace-icon red fa fa-save bigger-140"></i> Agregar<span class="btn-small"></span>            
+										</button>	
 								
 							  </di>					  
 						</div>
