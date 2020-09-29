@@ -140,7 +140,7 @@
 			{				
                 $data=[];	
                 $miConex = new Conexion();
-                $sql="select  o.DESCRIP AS COMITED,o.FECHA AS FECHACOMITE, o.HORAINI, O.HORAFIN, O.LUGAR from co_comites o  where  o.ID='".$_GET["id"]."'";
+                $sql="select  o.DESCRIP AS COMITED,o.FECHA AS FECHACOMITE, o.HORAINI, o.HORAFIN, o.LUGAR from co_comites o  where  o.ID='".$_GET["id"]."'";
                //echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -199,8 +199,8 @@
 			
 			function Header()
 			{
-				//$miutil = new UtilUser();
-               // $miutil->getEncabezado($this,'V');			
+				$miutil = new UtilUser();
+                $miutil->getEncabezado($this,'V');			
                 //Para que cuando se cambie a la otra pagina empiece a la derecha y la stablas no se descuadren
                 $this->SetX(10);
                 $this->Ln(5);	
@@ -224,9 +224,8 @@
 			function Footer()
 			{	
                 
-                //$miutil = new UtilUser();
-                //$nombre=$miutil->getJefe('303');//Nombre del puesto de Recursos Humanos
-                //$miutil->getPie($this,'V');
+                $miutil = new UtilUser();
+                $miutil->getPie($this,'V');
 
                 $this->setY(-50);
                 $this->SetFont('Montserrat-ExtraBold','B',11);
@@ -240,7 +239,7 @@
 		header("Content-Type: text/html; charset=UTF-8");
 		
 		$pdf->SetFont('Arial','',10);
-		$pdf->SetMargins(15, 10 , 15);
+		$pdf->SetMargins(15, 30 , 15);
 		$pdf->SetAutoPageBreak(true,30); 
         $pdf->AddPage();
 
