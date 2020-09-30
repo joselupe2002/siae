@@ -228,9 +228,9 @@ function cargaGrupos(contenedor, ciclo,carrera){
 			cad="<ol>";
 			jQuery.each(JSON.parse(data), function(clave, valor) {
 				elcolor='success';
-			   cad+="<li style=\"text-align:justify;\">"+valor.SEMESTRE+" "+valor.GRUPO+
-					"<span title=\"Número de alumnos promedio en el grupo\" badge badge-danger>"+valor.ALUMNOS+"</span>"+
-					"<span title=\"Número de asignaturas en ese grupo\" badge badge-warning>"+valor.MATERIAS+"</span>"+			        			           				
+			   cad+="<li style=\"text-align:justify;\">"+valor.SEMESTRES+" "+valor.GRUPO+
+					"<span title=\"Número de alumnos promedio en el grupo\" class=\"badge badge-danger\">"+valor.ALUMNOS+"</span>"+
+					"<span title=\"Número de asignaturas en ese grupo\" class=\"badge badge-warning\">"+valor.MATERIAS+"</span>"+			        			           				
 			        "</li>"; 
 			});	
 			cad+="</ol>";
