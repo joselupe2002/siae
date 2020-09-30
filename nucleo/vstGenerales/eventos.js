@@ -210,3 +210,36 @@ function cargaAlumnosRep(contenedor, ciclo,carrera,genero,numrep){
     });	  
 
 }
+
+
+
+function cargaGrupos(contenedor, ciclo,carrera){
+
+
+	elsqlMa="SELECT * FROM vstalumxsemgrupo x where x.CICLO='"+ciclo+"' and x.CARRERA='"+carrera+"' order by SEMESTRES, GRUPO";
+    //alert (elsqlMa);
+	parametros={sql:elsqlMa,dato:sessionStorage.co,bd:"Mysql"}
+
+	$.ajax({
+		type: "POST",
+		data:parametros,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data){  						      			      
+			cad="<ol>";
+			jQuery.each(JSON.parse(data), function(clave, valor) {
+				elcolor='success';
+			   cad+="<li style=\"text-align:justify;\">"+valor.SEMESTRE+" "+valor.GRUPO+
+					"<span title=\"Número de alumnos promedio en el grupo\" badge badge-danger>"+valor.ALUMNOS+"</span>"+
+					"<span title=\"Número de asignaturas en ese grupo\" badge badge-warning>"+valor.MATERIAS+"</span>"+			        			           				
+			        "</li>"; 
+			});	
+			cad+="</ol>";
+			
+			mostrarIfo("infoMaterias",contenedor,"Grupos de la carrera "+carrera+" Ciclo "+ciclo,cad,"modal-lg"); 
+	 },
+	 error: function(dataMat) {	                  
+			 alert('ERROR: '+dataMat);
+						 }
+    });	  
+
+}
