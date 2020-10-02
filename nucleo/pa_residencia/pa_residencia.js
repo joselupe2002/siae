@@ -283,6 +283,9 @@ function cargarDatosPropuesta(tipo){
 		elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARTAPRES'),'') AS RUTAPRES, "+
 			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SOLANTEP'),'') AS RUTASOLANTEP, "+
 			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_ANTEP'),'') AS RUTAANTEP, "+
+			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_LIBSER'),'') AS RUTALIBSER, "+
+			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_IMSS'),'') AS RUTAIMSS, "+
+			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARDEX'),'') AS RUTACARDEX, "+
 			  "       IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARTAACEP'),'') AS RUTAACEP FROM DUAL"; 
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -294,6 +297,12 @@ function cargarDatosPropuesta(tipo){
 
 				$("#documentos2").append("<div class=\"row\"><div id=\"cartaPres\" class=\"col-sm-6\"></div>"+
 															"<div id=\"cartaAcep\" class=\"col-sm-6\"></div>"+
+										"</div>"+
+										"<div class=\"row\"><div id=\"Libser\" class=\"col-sm-6\"></div>"+
+															"<div id=\"Imss\" class=\"col-sm-6\"></div>"+
+										"</div>"+
+										"<div class=\"row\"><div id=\"Cardex\" class=\"col-sm-6\"></div>"+
+															"<div id=\"Otro\" class=\"col-sm-6\"></div>"+
 										"</div>"+
 										"<div class=\"row\"><div id=\"solAntep\" class=\"col-sm-6\"></div>"+
 															"<div id=\"Antep\" class=\"col-sm-6\"></div>"+
@@ -320,6 +329,20 @@ function cargarDatosPropuesta(tipo){
 				dameSubirArchivoDrive("Antep","Anteprotecto Autorizado","antep",'ADJRESIDENCIA','pdf',
 				'ID',usuario,'ANTEPROYECTO AUTORIZADO','eadjresidencia','alta',usuario+"_"+miciclo+"_ANTEP",JSON.parse(data)[0]["RUTAANTEP"],activaEliminar);
 				
+				activaEliminar="";
+				if (JSON.parse(data)[0]["RUTALIBSER"]!='') {	activaEliminar='S';}					
+				dameSubirArchivoDrive("Libser","Liberación Servicio Social","libser",'ADJRESIDENCIA','pdf',
+				'ID',usuario,'LIBERACIÓN DE SERVICIO SOCIAL','eadjresidencia','alta',usuario+"_"+miciclo+"_LIBSER",JSON.parse(data)[0]["RUTALIBSER"],activaEliminar);
+				
+				activaEliminar="";
+				if (JSON.parse(data)[0]["RUTAIMSS"]!='') {	activaEliminar='S';}					
+				dameSubirArchivoDrive("Imss","Carta Vigencia IMSS","imss",'ADJRESIDENCIA','pdf',
+				'ID',usuario,'ANTEPROYECTO AUTORIZADO','eadjresidencia','alta',usuario+"_"+miciclo+"_IMSS",JSON.parse(data)[0]["RUTAIMSS"],activaEliminar);
+				
+				activaEliminar="";
+				if (JSON.parse(data)[0]["RUTACARDEX"]!='') {	activaEliminar='S';}					
+				dameSubirArchivoDrive("Cardex","Kardex de estudios","cardex",'ADJRESIDENCIA','pdf',
+				'ID',usuario,'KARDEX DE ESTUDIOS','eadjresidencia','alta',usuario+"_"+miciclo+"_CARDEX",JSON.parse(data)[0]["RUTACARDEX"],activaEliminar);
 				
 				
 			}
@@ -334,6 +357,8 @@ function cargarDatosPropuesta(tipo){
 		" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CAPTPROYRES' "+
 		" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
 
+
+
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
@@ -341,6 +366,7 @@ function cargarDatosPropuesta(tipo){
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){	
 
+				
 				if (JSON.parse(data)[0]["N"]>0) {						
 					//Si esta abierto aparecemos la opción de capturar Proyecto.
 					$("#pcapt").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
@@ -491,11 +517,18 @@ function cargarDatosPropuesta(tipo){
 						"</div>"+			
 					"</div>"+
 
+					"<div class=\"row\">"+
+						"<div class=\"col-sm-6\">"+
+							"<label class=\"fontRobotoB\">Asesor Interno</label><select class=\"form-control captProy\"  id=\"asesor\"></select>"+
+						"</div>"+		
+					"</div>"+
+
 				"</div>"
 				,"Grabar Datos",proceso,"modal-lg");
 
 				actualizaSelectMarcar("giro", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='GIROEMPRESAS'", "","",misdatos[0]["GIRO"]); 
 				actualizaSelectMarcar("sector", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='REGIMENEMPRESAS'", "","",misdatos[0]["SECTOR"]); 
+				actualizaSelectMarcar("asesor", "SELECT EMPL_NUMERO, CONCAT(EMPL_NOMBRE, ' ',EMPL_APEPAT,' ', EMPL_APEMAT) FROM pempleados where EMPL_ACTIVO='S' ORDER BY EMPL_NOMBRE, EMPL_APEPAT", "","",misdatos[0]["ASESOR"]); 
 				$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
 				
 			
@@ -528,6 +561,7 @@ function cargarDatosPropuesta(tipo){
 					CICLO:miciclo,
 					INICIA:$("#inicia").val(),
 					TERMINA:$("#termina").val(),
+					ASESOR:$("#asesor").val(),
 					PROYECTO:$("#proyecto").val().toUpperCase(),
 					EMPRESA:$("#empresa").val().toUpperCase(),
 					DEPARTAMENTO:$("#departamento").val().toUpperCase(),
@@ -606,6 +640,7 @@ function cargarDatosPropuesta(tipo){
 					PSTOFIRMA:$("#pstofirma").val().toUpperCase(),
 					CORREOFIRMA:$("#correofirma").val().toLowerCase(),
 					HORARIO:$("#horario").val().toUpperCase(),
+					ASESOR:$("#asesor").val(),
 					USUARIO:usuario,
 					FECHAUS:fecha,
 					_INSTITUCION: lainstitucion, 

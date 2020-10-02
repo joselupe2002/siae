@@ -134,7 +134,8 @@
 			{				
 				
 				$miConex = new Conexion();
-				$resultado=$miConex->getConsulta($_SESSION['bd'],"select * from rescapproy a where  ID=".$_GET["id"]);				
+				$resultado=$miConex->getConsulta($_SESSION['bd'],"select a.*, concat(b.EMPL_ABREVIA,' ',b.EMPL_NOMBRE,' ',b.EMPL_APEPAT,' ',b.EMPL_APEMAT) AS ASESORD".
+				" from rescapproy a left outer join pempleados b on (ASESOR=EMPL_NUMERO) where  ID=".$_GET["id"]);				
 				foreach ($resultado as $row) {
 					$data[] = $row;
 				}
@@ -341,7 +342,7 @@
 		$pdf->Ln(5);
 		$elJefe=$dataAlum[0]["EMPL_ABREVIA"]." ".$dataAlum[0]["EMPL_NOMBRE"]." ".$dataAlum[0]["EMPL_APEPAT"]." ".$dataAlum[0]["EMPL_APEMAT"];
 		$pdf->Cell(85,5,"Autoriza","",0,'C',false); $pdf->Cell(15,5,"","",0,'C',false);$pdf->Cell(85,5,"Valida","",1,'C',false); 
-		$pdf->Cell(85,5,$elJefe,"T","0",'C',false); $pdf->Cell(15,5,"","",0,'C',false);$pdf->Cell(85,5,"Nombre y Firma (Docente)","T",1,'C',false); 
+		$pdf->Cell(85,5,$elJefe,"T","0",'C',false); $pdf->Cell(15,5,"","",0,'C',false);$pdf->Cell(85,5,utf8_decode($data[0]["ASESORD"]),"T",1,'C',false); 
 
 		$miutil = new UtilUser();
         $subacad=$miutil->getJefe('304');//Nombre del puesto de Recursos Humanos

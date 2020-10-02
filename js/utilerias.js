@@ -2993,6 +2993,12 @@ function residencia_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper
 					"UNION "+
 					"SELECT 'CARTA DE ACEPTACIÓN' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_CARTAACEP'),'') AS RUTA FROM DUAL  "+
 					"UNION "+
+					"SELECT 'CARDEX ACADÉMICO' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_CARDEX'),'') AS RUTA FROM DUAL  "+
+					"UNION "+
+					"SELECT 'LIBERACIÓN DE SERVICIO SOCIAL' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_LIBSER'),'') AS RUTA FROM DUAL  "+
+					"UNION "+
+					"SELECT 'CARTA VIGENCIA IMSS' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_IMSS'),'') AS RUTA FROM DUAL  "+
+					"UNION "+
 					"SELECT 'SOLICITUD DE ANTEPROYECTO' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_SOLANTEP'),'') AS RUTA FROM DUAL  "+
 					"UNION "+
 					"SELECT 'ANTEPROYECTO' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_ANTEP'),'') AS RUTA FROM DUAL  "+
