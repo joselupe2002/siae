@@ -242,10 +242,10 @@
 		$pdf->SetWidths(array(30,95,15,35));
 
 		$ind=" "; $ser=" "; $ot="X"; if ($data[0]["GIRO"]=="1") {$ind="X"; $ot=" ";}  if ($data[0]["GIRO"]=="2") {$ser="X"; $ot=" ";} 
-		$pub=" "; $pri=" "; if ($data[0]["SECTOR"]=="1") {$pub="X"; }  if ($data[0]["SECTOR"]=="2") {$priv="X"; } 
+		$pub=" "; $priv=" "; if ($data[0]["SECTOR"]=="1") {$pub="X"; }  if ($data[0]["SECTOR"]=="2") {$priv="X"; } 
 		$pdf->Row(array(utf8_decode("Giro Ramo o Sector:"),
 						utf8_decode("Industrial (".$ind.")      Servicio (".$ser.")      Otro (".$ot.")\n".
-					                "Público    (".$pub.")      Privado  (".$pri.")"),
+					                "Público    (".$pub.")      Privado  (".$priv.")"),
 		"R.F.C.",utf8_decode($data[0]["RFC"])));
 
 		$pdf->SetWidths(array(30,145));
