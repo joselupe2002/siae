@@ -193,16 +193,27 @@ function buscar(elid, elrfc, laempresa) {
 			data:parametros,
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){  	
-				cad="";			  
+				cad="<div id=\"lasempresas\" class=\"alert alert-primary\" style=\"text-align:justify;\">"+
+				"<span onclick=\"asignarEmpresa2('"+elid+"');\" class=\"btn btn-white\"><i class=\"fa fa-search red bigger-160\"></i> Asignar Empresa de Catálogo</span>"+
+				"</div>";	
+						  
 				jQuery.each(JSON.parse(data), function(clave, valor) { 
 					btn="<span title=\"Asignar empresa ya creada al residente \"onclick=\"asignarEmpresa('"+elid+"','"+valor.IDEMP+"')\" class=\"btn btn-white\"><i class=\"fa fa-home blue bigger-160\"></i></span>";
 					cad+=btn+"|"+valor.IDEMP+"|"+valor.RFC+"|"+valor.NOMBRE+"|"+valor.REPRESENTANTE+"|"+valor.DIRECCION+"<br>";
 				});
+
 				mostrarIfo("info","grid_resaltadin","Empresas con coincidencia",
-				"<div class=\"alert alert-primary\" style=\"text-align:justify; height:200px; overflow-y: scroll; \">"+cad+"</div>","modal-lg");
-																																	
+				"<div id=\"datosEmp\" style=\"text-align:justify; height:300px; overflow-y: scroll; \">"+cad+"</div>","modal-lg");
+
+				
+				addSELECT("selEmpresas2","lasempresas","PROPIO", "select IDEMP, CONCAT(IDEMP,' ',RFC,' ',NOMBRE) from resempresas order by NOMBRE", "","BUSQUEDA");  
+		
 			},
-		});	      	      					    					  		
+		});	   
+		
+
+	
+
 }
 
 
@@ -241,6 +252,24 @@ function asignarEmpresa (elid,idempresa){
 			url:"../base/actualiza.php",
 			data: parametros,
 			success: function(data){ 
+				$("#info").modal("hide");
+				cargarInformacion();
+				}
+			});			
+}
+//asigna empresa del catalogo 
+function asignarEmpresa2 (elid){
+	parametros={tabla:"rescapproy",		       
+	bd:"Mysql",
+	campollave:"ID",
+	valorllave:elid,			
+	IDEMPRESA:$("#selEmpresas2").val()};  
+	$.ajax({
+			type: "POST",
+			url:"../base/actualiza.php",
+			data: parametros,
+			success: function(data){ 
+		
 				$("#info").modal("hide");
 				cargarInformacion();
 				}
