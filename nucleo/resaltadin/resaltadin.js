@@ -255,7 +255,6 @@ function asignaAsesor (elid){
 			url:"../base/actualiza.php",
 			data: parametros,
 			success: function(data){ 
-				alert (data);
 				$("#info").modal("hide");
 
 				parametros={
@@ -268,7 +267,7 @@ function asignaAsesor (elid){
 					type: "POST",
 					url:"../base/ejecutasql.php",
 					data:parametros,
-					success: function(dataC){ cargarInformacion();}
+					success: function(dataC){ alert (sql+" "+dataC); cargarInformacion();}
 				});
 				
 				}
