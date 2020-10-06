@@ -54,7 +54,7 @@ var arrResidente= [];
 		
 		elsql="select * from rescapproy a, falumnos b where a.MATRICULA=ALUM_MATRICULA "+
 		" and ALUM_CARRERAREG='"+$("#selCarreras").val()+"'"+
-		" AND a.CICLO='"+$("#selCiclos").val()+"'";
+		" AND a.CICLO='"+$("#selCiclos").val()+"' ORDER BY PROYECTO";
 	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
