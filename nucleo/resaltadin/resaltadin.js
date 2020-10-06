@@ -257,9 +257,10 @@ function asignaAsesor (elid){
 			success: function(data){ 
 				$("#info").modal("hide");
 
+				sqAse="update resproyectos set ASESORINT1='"+$("#asesor_"+elid).val()+"' WHERE IDPROP="+elid;
 				parametros={
 					bd:"mysql",
-					sql:"update resproyectos set ASESORINT1='"+$("#asesor_"+elid).val()+"' WHERE IDPROP="+elid,
+					sql:sqAse,
 					dato:sessionStorage.co				
 				};
 
@@ -267,7 +268,7 @@ function asignaAsesor (elid){
 					type: "POST",
 					url:"../base/ejecutasql.php",
 					data:parametros,
-					success: function(dataC){ alert (sql+" "+dataC); cargarInformacion();}
+					success: function(dataC){ alert (sqAse+" "+dataC); cargarInformacion();}
 				});
 				
 				}
