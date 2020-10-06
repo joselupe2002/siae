@@ -74,8 +74,8 @@ var arrResidente= [];
 				"                <th>Sector</th> "+						
 				"                <th>Giro</th> "+	
 				"                <th>Representante</th> "+	
-				"                <th>Representante</th> "+	            
-				"                <th>Domicilio</th> "+							   
+				"                <th>Domicilio</th> "+	            
+				"                <th>Asesor_Externo</th> "+							   
 				"             </tr> "+
 				"            </thead>" +
 				"         </table>";
