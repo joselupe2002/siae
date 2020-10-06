@@ -115,6 +115,8 @@ function verCita(calEvent, jsEvent, view) {
 						<div class=\"row\">\
 							<div class="col-sm-12">\
 								<h4  class="fontRobotoB">Cita: <span class="text-success">'+losdatos[0]["ID"]+'</span></h4>\
+								<h4  class="fontRobotoB">Cita: <span class="text-success">'+losdatos[0]["SOLICITANTE"]+'</span></h4>\
+								<h4  class="fontRobotoB">Cita: <span class="text-success">'+losdatos[0]["NOMBRE"]+'</span></h4>\
 								<h4  class="fontRobotoB">Fecha: <span class="text-success">'+losdatos[0]["FECHA"]+'</span></h4>\
 								<h4  class="fontRobotoB">Hora: <span class="text-success">'+losdatos[0]["HORA"]+'</span></h4>\
 								<h4  class="fontRobotoB">Minutos para atender: <span class="text-success">'+losdatos[0]["MINUTOS"]+'</span></h4>\
