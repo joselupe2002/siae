@@ -100,6 +100,31 @@ function dameMesLetra(nummes) {
 		}
 
 /*=====================================FUNCIONES PARA DECODIFICAR LAS HORAS HH:MM-HH:MM ============================*/
+
+
+function validarHora(hora){
+    cad="";
+	if (hora.indexOf(":")>0){ 
+	    lahora=hora.split(":")[0].trim();
+		elmin=hora.split(":")[1].trim();	
+
+		if ((lahora>23) || (lahora<1)) { cad+="La hora debe estar entre 01 y 23\n";}
+		if ((elmin>60) || (lahora<1)) { cad+="Los minutos deben estar entre 01 y 59\n";}
+	}
+	else {cad+="No se ha capturado una hora correcta\n";}
+	return (cad);
+}
+
+function dameMinutos(hora){
+    min=0;
+	if (hora.indexOf(":")>0){ 
+	    lahora=hora.split(":")[0].trim();
+		elmin=hora.split(":")[1].trim();
+		min=(parseInt(lahora)*60)+parseInt(elmin);	
+	}
+	return min;
+}
+
 function decodificaHora(horario) {
 	var datos=[];
 	if (horario.indexOf("-")>0){ 
@@ -119,6 +144,7 @@ function decodificaHora(horario) {
 	datos[0]=hora1;datos[1]=min1;datos[2]=hora2;datos[3]=min2;datos[4]=mintot1;datos[5]=mintot2;
 	return datos;
 }
+
 
 function obtenerHorarios(id,elciclo,linea){
 	var cadFin="";
@@ -729,6 +755,12 @@ function pad(n, width, z) {
 	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
   }
 
+function convierteHHHMM(minutos){
+	horas=Math.trunc(parseInt(minutos)/60);
+	minutos=parseInt(minutos)%60;
+	return pad(horas,2,'0')+":"+pad(minutos,2,'0');
+ 
+}
 
 function dameFecha(tipo,dias){
 	dias=dias||0;
@@ -2748,6 +2780,9 @@ function procEnvioCorreo(modulo,colcorreo,ec_elReg){
 
 }
 
+
+
+
 function correoalProf( clave, elmensaje, asunto){			
 	elsql="select CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE,EMPL_TELEFONO AS TELEFONO"+
 	", EMPL_CORREO AS CORREO from pempleados c "+
@@ -2795,6 +2830,57 @@ function correoalProf( clave, elmensaje, asunto){
 	}); 	    
 
 }
+
+
+function correoPersona( clave, elmensaje, asunto){			
+	elsql="select CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE,EMPL_TELEFONO AS TELEFONO"+
+	", EMPL_CORREO AS CORREO from pempleados c "+
+		  " where EMPL_NUMERO='"+clave+"'"+
+	" UNION select CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE,ALUM_TELEFONO AS TELEFONO"+
+		  ", ALUM_CORREO AS CORREO from falumnos c "+
+				" where ALUM_MATRICULA='"+clave+"'";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+	type: "POST",
+	data:parametros,
+	url:  "../base/getdatossqlSeg.php",
+	success: function(data){   
+			
+			elcorreo=JSON.parse(data)[0]["CORREO"];
+			mensaje=elmensaje;
+
+			var parametros = {
+				"MENSAJE": mensaje,
+				"ADJSERVER": 'N',
+				"ASUNTO": asunto,
+				"CORREO" :  elcorreo,
+				"NOMBRE" :  JSON.parse(data)[0]["NOMBRE"],
+				"ADJUNTO":''
+			};
+		
+			$.ajax({
+				data:  parametros,
+				type: "POST",
+				url: "../base/enviaCorreo.php",
+				success: function(response)
+				{
+				   console.log("JEFE: "+response);
+				},
+				error : function(error) {
+					console.log(error);
+					alert ("Error en ajax "+error.toString()+"\n");
+				}
+			});
+	},
+	error: function(data) {	                  
+			alert('ERROR: '+data);
+			$('#dlgproceso').modal("hide");  
+		}
+	}); 	    
+
+}
+
 
 
 
@@ -2923,6 +3009,34 @@ function setNotificacion(usuario,mensaje,enlace,tipo,institucion,campus){
 	}
 	});
 }
+
+
+function setNotificacionFecha(usuario,mensaje,fechaIni,fechaFin,enlace,tipo,institucion,campus){
+
+	lafecha=dameFecha("FECHAHORA");
+
+	parametros={tabla:"enotificaciones",
+	bd:"Mysql",
+	_INSTITUCION:institucion,
+	_CAMPUS:campus,
+	ENOT_DESCRIP:mensaje,
+	ENOT_USUARIO:usuario,
+	ENOT_INICIA:fechaIni,							
+	ENOT_TERMINA:fechaFin,
+	ENOT_ENLACE:enlace,
+	ENOT_TIPO:tipo,
+	ENOT_FECHA:lafecha,
+	ENOT_USER:usuario};     
+	$.ajax({
+	type: "POST",
+	url:"../base/inserta.php",
+	data: parametros,
+	success: function(data){ 
+
+	}
+	});
+}
+
 
 
 function setNotificacionalJefe(matricula,mensaje,enlace,tipo,institucion,campus){
@@ -3099,4 +3213,138 @@ function addStatusComite(idsol,elestatus,usuario,INSTITUCION,CAMPUS) {
 							                              	                                        					          
 						 }					     
 			   });            
+}
+
+/*===========================CITAS ========================================*/
+
+function ventanaConf(contenedor,eluser,lainst,elcam,valorMarcar,tipo) {
+	cad="";
+	dias=["Dom","Lun","Mar","Mie","Jue","Vie","Sab"];
+	for (i=0; i<7; i++) {
+      cad+=
+	 	   "           <div class=\"checkbox\" style=\"padding:0px; margin: 0px;\">"+
+	       "                 <label><input id=\"d"+i+"\" type=\"checkbox\" class=\"ace ace-switch ace-switch-6\"/><span class=\"lbl\">"+dias[i]+"</span></label> "+
+	       "           </div> ";
+	}
+	mostrarConfirm2("verCitas",contenedor,"Apertura de Citas",
+		"<div class=\"row fontRoboto\" style=\"text-align:justify; height:200px; overflow-y: scroll; \">"+
+		"     <div class=\"col-sm-8\">"+
+		"        <div class=\"row\">"+
+		"             <div class=\"col-sm-12\">"+
+		"                 <label class=\"fontRobotoB\">Tipo de Trámite</label><select class=\"form-control captProy\"  id=\"tramite\"></select>"+
+		"             </div>"+
+		"        </div>"+
+		"        <div class=\"row\">"+
+		"             <div class=\"col-sm-6\">"+
+		"                  <label  class=\"fontRobotoB\">Fecha de Inicio</label>"+
+		"                  <div class=\"input-group\"><input  class=\"form-control  captProy date-picker\" id=\"fini\" "+
+		"                  type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
+		"                  <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
+		"             </div>"+
+		"             <div class=\"col-sm-6\">"+
+		"                  <label  class=\"fontRobotoB\">Fecha Termina</label>"+
+		"                  <div class=\"input-group\"><input  class=\"form-control  captProy date-picker\" id=\"ffin\" "+
+		"                   type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
+		"                  <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
+		"             </div>"+
+		"        </div>"+
+		"        <div class=\"row\">"+
+		"             <div class=\"col-sm-4\">"+
+		"                  <label  class=\"fontRobotoB\">Hora de Inicio</label>"+
+		"                  <input  id=\"hini\" autocomplete=\"off\" class= \" small form-control input-mask-hora\" </input>"+
+		"             </div>"+
+		"             <div class=\"col-sm-4\">"+
+		"                  <label  class=\"fontRobotoB\">Hora Termina</label>"+
+		"                  <input id=\"hfin\"  autocomplete=\"off\" class= \" small form-control input-mask-hora\" </input>"+
+		"             </div>"+
+		"             <div class=\"col-sm-4\">"+
+		"                  <label  class=\"fontRobotoB\">Minutos Cita</label>"+
+		"                  <input id=\"min\"  autocomplete=\"off\" class= \" small form-control\" </input>"+
+		"             </div>"+
+		"        </div>"+
+		"     </div>"+
+		"     <div class=\"col-sm-4\">"+cad+"</div>"+
+		"</div>","Generar Citas","ci_generarCitas('"+eluser+"','"+lainst+"','"+elcam+"','"+tipo+"');","modal-lg");
+
+		actualizaSelectMarcar("tramite", "SELECT ID, TRAMITE FROM ci_tramites order by TRAMITE", "","",valorMarcar); 
+		$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+		$(".input-mask-hora").mask("99:99");
+			
+      return false;
+}
+
+function ci_generarCitas(eluser,lainst,elcam,tipo){
+	
+	var vfini=$("#fini").val();
+	var vffin=$("#ffin").val();
+	var vhini=$("#hini").val();
+	var vhfin=$("#hfin").val();
+	var vtram=$("#tramite").val();
+	var vmin=$("#min").val();
+	var desde = moment(fechaJava(vfini));
+	var hasta = moment(fechaJava(vffin));
+	
+	if (vtram<=0) {alert ("Se debe elegir el tipo de tramite"); return 0;}
+	if (vfini=="") {alert ("Se debe capturar fecha de inicio"); return 0;}
+	if (vffin=="") {alert ("Se debe capturar fecha de termino o final"); return 0;}
+	cad=validarHora(vhini);if (cad.length>0) {alert ("Error en Hora de inicio: "+cad); return 0;}
+	cad=validarHora(vhfin);if (cad.length>0) {alert ("Error en Hora de Termino: "+cad); return 0;}
+	if (vhini=="") {alert ("Se debe capturar Hora de inicio"); return 0;}
+	if (vhfin=="") {alert ("Se debe capturar Hora de termino o final "); return 0;}
+	if (desde>hasta) { alert ("La fecha de Inicio debe ser menor a la fecha Final"); return 0;}
+
+	//creamos arreglo de los check 
+	c=0;
+	var misdias=[];
+	for (i=0; i<7; i++) {if ($("#d"+i).prop('checked')) { misdias[c]=i; c++;}}
+
+	ci_diasEntreFechas(desde, hasta, dameMinutos(vhini),dameMinutos(vhfin),vmin, misdias,vtram,eluser,lainst,elcam,tipo);
+}
+
+function ci_diasEntreFechas (desde, hasta, minini, minfin,minutos, misdias,vtram,eluser,lainst,elcam,tipo) {
+    var losdatosGuardar=[];
+	var dia_actual = desde;
+	fechaus=dameFecha("FECHAHORA");
+	elday = new Date();
+	mitag=pad(elday.getDate(),2,'0')+pad(elday.getMonth()+1,2,'0')+elday.getFullYear()+elday.getHours()+elday.getMinutes()+elday.getSeconds();
+	c=0;
+	while (dia_actual.isSameOrBefore(hasta)) {
+		  d = new Date(dia_actual);
+		  var day = d.getDay();
+		  mifecha= pad(d.getDate(),2,'0')+"/"+pad(d.getMonth()+1,2,'0')+"/"+d.getFullYear();
+	
+		  if (misdias.includes(day)) {
+			  llevo=minini;
+			  while (llevo<minfin) {			 
+				 lahora=convierteHHHMM(llevo);
+				 losdatosGuardar[c]=vtram+"||"+mifecha+"|"+lahora+"|"+llevo+"|"+minutos+"|N||"+mitag+"|"+eluser+"|"+fechaus+"|"+lainst+"|"+elcam;
+				 llevo+=parseInt(minutos);
+				 c++;		
+			  }
+		  }
+		  dia_actual.add(1, 'days');
+	}	
+
+	var loscampos = ["TRAMITE","SOLICITANTE","FECHA","HORA","HORA2","MINUTOS","ATENDIDO","OBS","TAG","USUARIO","FECHAUS","_INSTITUCION","_CAMPUS"];
+	parametros={
+			tabla:"ci_citas",
+			campollave:"TAG",
+			bd:"Mysql",
+			valorllave:mitag,
+			eliminar: "S",
+			separador:"|",
+			campos: JSON.stringify(loscampos),
+			datos: JSON.stringify(losdatosGuardar)
+	};
+	$.ajax({
+		type: "POST",
+		url:"../base/grabadetalle.php",
+		data: parametros,
+		success: function(data){
+			$("#verCitas").modal("hide");	
+			if (tipo==1) {window.parent.document.getElementById('FRci_citas').contentWindow.location.reload();  }
+			if (tipo==2) {cargamosCitas(); }                         					          
+		}					     
+	});  
+    
 }

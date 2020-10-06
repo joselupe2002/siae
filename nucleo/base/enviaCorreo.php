@@ -6,12 +6,12 @@
 	$miUtil= new UtilUser();
 
      if ($_POST["ADJSERVER"]=='S') {
-          $resCorreo=$miUtil->enviarCorreoAdj($_POST["CORREO"],utf8_decode($_POST["ASUNTO"]),
-          utf8_decode($_POST["MENSAJE"]),$_POST["ADJUNTO"]);
+          $resCorreo=$miUtil->enviarCorreoAdj($_POST["CORREO"],$_POST["ASUNTO"],
+          $_POST["MENSAJE"],$_POST["ADJUNTO"]);
      }
      else {
-          $resCorreo=$miUtil->enviarCorreo($_POST["CORREO"],utf8_decode($_POST["ASUNTO"]),
-          utf8_decode($_POST["MENSAJE"]),$_POST["ADJUNTO"]);
+          $resCorreo=$miUtil->enviarCorreo($_POST["CORREO"],$_POST["ASUNTO"],
+          $_POST["MENSAJE"],$_POST["ADJUNTO"]);
      }
   
      echo "Se envió correo a ".$_POST["NOMBRE"]." CORREO: ".$_POST["CORREO"];						
