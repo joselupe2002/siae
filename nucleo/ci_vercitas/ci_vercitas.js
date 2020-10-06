@@ -96,7 +96,7 @@ function verCita(calEvent, jsEvent, view) {
 		//display a modal
 		dato=calEvent.title.split("|");
 		bteli="";
-		elsql="SELECT * from ci_citas where ID='"+calEvent.id+"'";
+		elsql="SELECT * from vci_citas where ID='"+calEvent.id+"'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}		
 		$.ajax({
 			type: "POST",
@@ -115,8 +115,8 @@ function verCita(calEvent, jsEvent, view) {
 						<div class=\"row\">\
 							<div class="col-sm-12">\
 								<h4  class="fontRobotoB">Cita: <span class="text-success">'+losdatos[0]["ID"]+'</span></h4>\
-								<h4  class="fontRobotoB">Cita: <span class="text-success">'+losdatos[0]["SOLICITANTE"]+'</span></h4>\
-								<h4  class="fontRobotoB">Cita: <span class="text-success">'+losdatos[0]["NOMBRE"]+'</span></h4>\
+								<h4  class="fontRobotoB">Solicitante: <span class="text-success">'+losdatos[0]["SOLICITANTE"]+'</span></h4>\
+								<h4  class="fontRobotoB">Nombre: <span class="text-success">'+losdatos[0]["NOMBRE"]+'</span></h4>\
 								<h4  class="fontRobotoB">Fecha: <span class="text-success">'+losdatos[0]["FECHA"]+'</span></h4>\
 								<h4  class="fontRobotoB">Hora: <span class="text-success">'+losdatos[0]["HORA"]+'</span></h4>\
 								<h4  class="fontRobotoB">Minutos para atender: <span class="text-success">'+losdatos[0]["MINUTOS"]+'</span></h4>\
