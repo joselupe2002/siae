@@ -433,6 +433,7 @@ function agregarResidente(elid,i,arrResidentes){
 					url:"../base/inserta.php",
 					data: parametros,
 					success: function(data){
+						alert (data);
 						elsql="select IDRES from residencias where IDPROP="+elid;
 						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
