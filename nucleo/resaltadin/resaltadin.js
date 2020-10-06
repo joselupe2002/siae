@@ -25,7 +25,18 @@ var arrResidente= [];
 		addSELECT("selCiclos","losciclossel","PROPIO", "SELECT CICL_CLAVE, concat(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc order by cicl_clave desc", "","");  			      
 	
 		$("#lascarreras").append("<span class=\"label label-warning\">Carrera</span>");
-		addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CONCAT(CARR_CLAVE,' ',CARR_DESCRIP) from ccarreras order by CARR_CLAVE", "","");  			      
+		addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CONCAT(CARR_CLAVE,' ',CARR_DESCRIP) from ccarreras  WHERE CARR_CLAVE=0 order by CARR_CLAVE", "","");  			      
+
+		$.ajax({
+			type: "GET",
+			url:  "../base/getSesion.php?bd=Mysql&campo=carrera",
+			success: function(data){  
+				actualizaSelect("selCarreras", "(SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
+				" and CARR_CLAVE IN ("+data+"))", "",""); 				
+				miscarreras=data;
+				}
+		   });
+
 			      
 		addSELECT("base","losmaestros","PROPIO", "SELECT EMPL_NUMERO, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT,' ',EMPL_NUMERO) FROM pempleados order by EMPL_NOMBRE, EMPL_APEPAT, EMPL_APEMAT desc", "","");  			      
 
