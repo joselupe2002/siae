@@ -95,7 +95,7 @@
 function verCita(calEvent, jsEvent, view) {
 		//display a modal
 		dato=calEvent.title.split("|");
-		bteli="";
+		
 		elsql="SELECT * from vci_citas where ID='"+calEvent.id+"'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}		
 		$.ajax({
@@ -103,8 +103,11 @@ function verCita(calEvent, jsEvent, view) {
 			data:parametros,
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){  
+					bteli="";
+					btcan="";
 					losdatos=JSON.parse(data);
 					if (dato[0]==''){bteli='<button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="ace-icon fa fa-trash-o"></i> Borrar Cita</button>'; }
+					if (dato[0]!=''){btcan='<button type="button" class="btn btn-sm btn-warning" data-action="cancelar"><i class="ace-icon fa fa-trash-o"></i> Cancelar Cita</button>'; }
 
 					var modal = 
 					'<div class="modal fade">\
@@ -123,8 +126,7 @@ function verCita(calEvent, jsEvent, view) {
 							</div>\
 						</div>\
 						</div>\
-						<div class="modal-footer">'+bteli+'\
-							<button type="button" class="btn btn-sm btn-warning" data-action="cancelar"><i class="ace-icon fa fa-trash-o"></i> Cancelar Cita</button>\
+						<div class="modal-footer">'+bteli+btcan+'\
 							<button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cerrar</button>\
 						</div>\
 					</div>\
@@ -347,10 +349,11 @@ function cancelarCita(elid) {
 					url:"../base/actualiza.php",
 					data: parametros,
 					success: function(data){
+						cargamosCitas();
 					}					     
 				});  
 
-				cargamosCitas();			
+							
 			}// DEL SUCCESS
 		});// DEL AJAX DE LA CARGA DE LA CITA NUEVAMENTE 		
 	}
