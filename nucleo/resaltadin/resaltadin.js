@@ -63,7 +63,7 @@ var arrResidente= [];
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){  				      			      
 				
-				 script="<table id=\"tabMaterias\" name=\"tabMaterias\" class= \"table table-condensed table-bordered table-hover\" "+
+				 script="<table id=\"tabMaterias\" name=\"tabMaterias\" class= \" fontRoboto table table-condensed table-bordered table-hover\" "+
 		        ">"+
 				"        <thead >  "+
 				"             <tr id=\"headMaterias\">"+
@@ -72,9 +72,9 @@ var arrResidente= [];
 				"                <th>Buscar</th> "+
 				"                <th>Proyecto</th> "+
 				"                <th>Residente</th> "+
-				"                <th>IDEMPRESA</th> "+
+				"                <th>IDEMP</th> "+
 				"                <th>IDPROY</th> "+		
-				"                <th>IDRESIDENCIA</th> "+		
+				"                <th>IDRES</th> "+		
 				"                <th>IDASESOR</th> "+				
 				"                <th>ID</th> "+
 				"                <th>RFC</th> "+
@@ -149,16 +149,16 @@ function generaTablaEmpresas(grid_data){
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.IDPROYECTO+"</span></td>");
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.IDRESIDENCIA+"</span></td>");
 
-		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><SELECT onchange=\"asignaAsesor('"+valor.ID+"');\" id=\"asesor_"+valor.ID+"\"></SELECT></td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><SELECT onchange=\"asignaAsesor('"+valor.ID+"');\" id=\"asesor_"+valor.ID+"\" style=\"width:140px;\" ></SELECT></td>");
 
 		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-info\">"+valor.ID+"</span></td>");
 		$("#rowM"+contAlum).append("<td>"+valor.RFC+"</td>");
 		$("#rowM"+contAlum).append("<td>"+valor.EMPRESA+"</td>");
 		$("#rowM"+contAlum).append("<td>"+ valor.ALUM_MATRICULA+' '+valor.ALUM_NOMBRE+' '+valor.ALUM_APEPAT+' '+valor.ALUM_APEMAT+"</td>");
-		$("#rowM"+contAlum).append("<td>"+valor.PROYECTO+"</td>");
+		$("#rowM"+contAlum).append("<td style=\"font-size:10px;\" class=\"fontRobotoB\">"+valor.PROYECTO+"</td>");
 		
 
-		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+valor.DEPARTAMENTO+"</span></td>");
+		$("#rowM"+contAlum).append("<td>"+valor.DEPARTAMENTO+"</td>");
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.SECTOR+"</td>");
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.GIRO+"</td>");
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.TITULAR+"</td>");
