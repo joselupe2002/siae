@@ -421,7 +421,7 @@ function agregarResidente(elid,i,arrResidentes){
 				//Abrimos una notificación para el alumno
 				parametros={tabla:"residencias",CICLO:arrResidentes[i][0],MATRICULA:arrResidentes[i][1],CARRERA:arrResidentes[i][2],RESOPC:arrResidentes[i][3],
 				CARRERA2:arrResidentes[i][4],IDPROY:arrResidentes[i][5],RESFECS:arrResidentes[i][6],RESSOLR:arrResidentes[i][7],RESFECP:arrResidentes[i][8],
-				REPORTE1:arrResidentes[i][9],REPORTE2:arrResidentes[i][10],RESPORTEF:arrResidentes[i][11],CALIF:arrResidentes[i][12],LIBERADO:arrResidentes[i][13],
+				REPORTE1:arrResidentes[i][9],REPORTE2:arrResidentes[i][10],RESPORTEF:arrResidentes[i][11],CALIF:'0',LIBERADO:arrResidentes[i][13],
 				USUARIO:arrResidentes[i][14],FECHAUS:arrResidentes[i][15],_INSTITUCION:arrResidentes[i][16],_CAMPUS:arrResidentes[i][17],IDPROYECTO:arrResidentes[i][18],
 				IDPROYSIE:arrResidentes[i][19],IDPROP:arrResidentes[i][20],						
 				bd:"Mysql"
