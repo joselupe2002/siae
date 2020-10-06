@@ -67,6 +67,7 @@ var arrResidente= [];
 		        ">"+
 				"        <thead >  "+
 				"             <tr id=\"headMaterias\">"+
+				"                <th>No.</th> "+
 				"                <th>Buscar</th> "+
 				"                <th>Empresa</th> "+
 				"                <th>Buscar</th> "+
@@ -111,7 +112,7 @@ function generaTablaEmpresas(grid_data){
 	$("#cuerpoMaterias").empty();
 	$("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
 	//$("#btnfiltrar").attr("disabled","disabled");
-	i=0;
+	i=1;
 	jQuery.each(grid_data, function(clave, valor) { 
 		//alert ($("#rowM"+contAlum).html()+" "+valor.PROFESOR);   	
 		
@@ -128,6 +129,8 @@ function generaTablaEmpresas(grid_data){
 
 							
 		$("#cuerpoMaterias").append("<tr id=\"rowM"+contAlum+"\">");
+
+		$("#rowM"+contAlum).append("<td> <span class=\"badge  badge-success\">"+i+"</span></td>");
 
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"buscar('"+valor.ID+"','"+valor.RFC+"','"+valor.EMPRESA+"')\" "+
 								   "class=\"btn btn-white\"><i class=\"fa fa-search red bigger-160\"></i></span></td>");
