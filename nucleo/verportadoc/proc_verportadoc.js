@@ -8,8 +8,8 @@ function verPortafolioD(modulo,usuario,essuper){
 			   "      <div class=\"modal-content\">"+
 			   "          <div class=\"modal-header widget-header  widget-color-green\">"+
 			   "             <span class=\"label label-lg label-primary arrowed arrowed-right\"> Portafolio de Evidencia </span>"+
-			   "             <span class=\"label label-lg label-success arrowed arrowed-right\">"+table.rows('.selected').data()[0]["MATERIAD"]+"</span>"+			   
-			   "             <input type=\"hidden\" id=\"elid\" value=\""+table.rows('.selected').data()[0]["ID"]+"\"></input>"+
+			   "             <span class=\"label label-lg label-success arrowed arrowed-right\">"+table.rows('.selected').data()[0]["MATERIA"]+"</span>"+			   
+			   "             <input type=\"hidden\" id=\"elid\" value=\""+table.rows('.selected').data()[0]["IDDET"]+"\"></input>"+
 			   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
 			   "                  <span aria-hidden=\"true\">&times;</span>"+
 			   "             </button>"+
@@ -59,8 +59,8 @@ function verPortafolioD(modulo,usuario,essuper){
 			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='ENCUADRE'),'') AS RUTAENCU, "+
 			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
 			"  FROM eunidades j "+
-			" join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+table.rows('.selected').data()[0]["ID"]+")"+
-			" where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["MATERIA"]+"' and j.UNID_PRED=''  order by UNID_NUMERO";
+			" join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+table.rows('.selected').data()[0]["IDDET"]+")"+
+			" where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["CVE_MATERIA"]+"' and j.UNID_PRED=''  order by UNID_NUMERO";
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 		    $.ajax({
