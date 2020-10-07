@@ -121,6 +121,23 @@
                var $eljefepsto="";
                var $nombre="";
   
+
+            function LoadInvitados($inv)
+			{				
+                $data=[];	
+                if (strpos($inv, ",")){ $inv=str_replace(",","','",$inv);  }
+
+                $miConex = new Conexion();
+                $sql="select concat(EMPL_ABREVIA,' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE, EMPL_FIRMAOF".
+                " from pempleados where EMPL_NUMERO IN ('".$inv."') ORDER BY EMPL_NOMBRE,EMPL_APEPAT, EMPL_APEMAT";
+
+				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
+				foreach ($resultado as $row) {
+					$data[] = $row;
+				}
+				return $data;
+            }
+
       
             function LoadDatosAlumnos($carrera)
 			{				
@@ -140,7 +157,7 @@
 			{				
                 $data=[];	
                 $miConex = new Conexion();
-                $sql="select  o.DESCRIP AS COMITED,o.FECHA AS FECHACOMITE, o.HORAINI, o.HORAFIN, o.LUGAR from co_comites o  where  o.ID='".$_GET["id"]."'";
+                $sql="select  o.DESCRIP AS COMITED,o.FECHA AS FECHACOMITE, o.HORAINI, o.HORAFIN, o.LUGAR, o.INVITADOS from co_comites o  where  o.ID='".$_GET["id"]."'";
                //echo $sql;
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
@@ -275,6 +292,10 @@
         foreach($dataPRE as $row) { $cad.=utf8_decode($row["NOMBRE"]." ".$row["PUESTO"].", "); }
         foreach($dataDIR as $row) { $cad.=utf8_decode($row["NOMBRE"]." ".$row["PUESTO"].", "); }
         foreach($dataVYV as $row) { $cad.=utf8_decode($row["NOMBRE"]." ".$row["PUESTO"].", "); }
+
+        //HABLAMOS al personal invitado 
+        $dataInv = $pdf-> loadInvitados($dataCom[0]["INVITADOS"]);
+        foreach($dataInv as $row) { $cad.=utf8_decode($row["NOMBRE"]." ".$row["EMPL_FIRMAOF"].", "); }
 
         $cad.=utf8_decode("QUIENES FIRMARÁN DE CONFORMIDAD AL MARGEN Y AL CALCE DE LA PRESENTE PARA MAYOR CONSTANCIA.");
         $pdf->Ln(5);
@@ -422,6 +443,9 @@
          foreach($dataDIR as $row) {$pdf->Row(array(utf8_decode($pdf->quitainicio($row["NOMBRE"]))."\n".utf8_decode($row["PUESTO"]),""));}
          foreach($dataVYV as $row) {$pdf->Row(array(utf8_decode($pdf->quitainicio($row["NOMBRE"]))."\n".utf8_decode($row["PUESTO"]),""));}
    
+        //FIRMA DEL  al personal invitado 
+        foreach($dataInv as $row) {$pdf->Row(array(utf8_decode($pdf->quitainicio($row["NOMBRE"]))."\n".utf8_decode($row["EMPL_FIRMAOF"]),""));}
+     
          $pdf->Ln(5);
          $pdf->SetFont('Montserrat-Medium','',10);
          $pdf->Multicell(0,5,utf8_decode("LAS FIRMAS ARRIBA PLASMADAS CORRESPONDEN AL ACTA DE LA ".$dataCom[0]["COMITED"].

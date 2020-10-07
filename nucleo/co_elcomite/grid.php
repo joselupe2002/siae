@@ -179,36 +179,55 @@
 			function change_SELECT (){cargarIntegrantes(); cargarCasos();}
 
 			function cargarIntegrantes() {
-				elsql="SELECT a.*, (select count(*) from co_asistencia where COMITE='"+
-					  $("#selComites").val()+"' AND EMPL=a.EMPL) as ASISTENCIA, "+
-					 " (SELECT COUNT(*) FROM co_asistencia where COMITE='"+$("#selComites").val()+"') as ASISTENTES"+
-					  " from co_integrantes a order by ORDEN";		
- 
+				elsql="SELECT INVITADOS from co_comites where ID='"+$("#selComites").val()+"'";		
 				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 				$.ajax({
 					type: "POST",
 					data:parametros,
 					url:  "../base/getdatossqlSeg.php",
 					success: function(data){
-						c=0;
-       					$("#cuerpoInt").empty();
-						$("#tabInt").append("<tbody id=\"cuerpoInt\">");
-						$("#numpar").html(JSON.parse(data)[0]["ASISTENTES"]);  
-       					jQuery.each(JSON.parse(data), function(clave, valor) { 	
-							   
-							elbtn="<button onclick=\"confirma('"+valor.EMPL+"','"+$("#selComites").val()+"','S'); \" "+			
-								  "class=\"btn btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i> Asistencia</button>";
-								
-							if (valor.ASISTENCIA>0) { 
-								elbtn="<span onclick=\"confirma('"+valor.EMPL+"','"+$("#selComites").val()+"','N'); \" >"+			
-								  "<i class=\"ace-icon fa green fa-thumbs-up bigger-240\"></i> </span>";
-							}
-								
-    	    				$("#cuerpoInt").append("<tr id=\"row"+valor.ID+"\">");
-    	    				$("#row"+valor.ID).append("<td>"+elbtn+"</td>");
-    	   					$("#row"+valor.ID).append("<td>"+valor.NOMBRE+"<br>"+valor.PUESTO+"</td>");    	   			
-        					}); 	     
-						},
+							inv=JSON.parse(data)[0]["INVITADOS"];
+							if (inv.indexOf(",")>=0){ inv=inv.replace(/,/gi,"','");  }
+							
+							
+							elsql="SELECT ID, EMPL,NOMBRE,PUESTO, (select count(*) from co_asistencia where COMITE='"+
+								$("#selComites").val()+"' AND EMPL=a.EMPL) as ASISTENCIA, "+
+								" (SELECT COUNT(*) FROM co_asistencia where COMITE='"+$("#selComites").val()+"') as ASISTENTES, ORDEN"+
+								" from co_integrantes a"+
+								" UNION "+
+								"select EMPL_NUMERO,EMPL_NUMERO AS EMPL, concat(EMPL_ABREVIA,' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE, EMPL_FIRMAOF AS PUESTO, "+
+								"(select count(*) from co_asistencia where COMITE='"+$("#selComites").val()+"' AND EMPL=EMPL_NUMERO) as ASISTENCIA, "+
+								"(SELECT COUNT(*) FROM co_asistencia where COMITE='"+$("#selComites").val()+"') as ASISTENTES, '999' AS ORDEN"+
+                                " from pempleados where EMPL_NUMERO IN ('"+inv+"') ORDER BY ORDEN";		
+						
+							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data){
+									c=1;
+									$("#cuerpoInt").empty();
+									$("#tabInt").append("<tbody id=\"cuerpoInt\">");
+									$("#numpar").html(JSON.parse(data)[0]["ASISTENTES"]);  
+									jQuery.each(JSON.parse(data), function(clave, valor) { 	
+										
+										elbtn="<button onclick=\"confirma('"+valor.EMPL+"','"+$("#selComites").val()+"','S'); \" "+			
+											"class=\"btn btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i> Asistencia</button>";
+											
+										if (valor.ASISTENCIA>0) { 
+											elbtn="<span onclick=\"confirma('"+valor.EMPL+"','"+$("#selComites").val()+"','N'); \" >"+			
+											"<i class=\"ace-icon fa green fa-thumbs-up bigger-240\"></i> </span>";
+										}
+											
+										$("#cuerpoInt").append("<tr id=\"row"+c+"\">");
+										$("#row"+c).append("<td>"+elbtn+"</td>");
+										$("#row"+c).append("<td>"+valor.NOMBRE+"<br>"+valor.PUESTO+"</td>");   
+										c++; 	   			
+										}); 	     
+									},
+							});
+						}
 				});
 			}
 
@@ -258,38 +277,38 @@ function cargarCasos() {
 		success: function(data){
 			c=0;		
 			jQuery.each(JSON.parse(data), function(clave, valor) { 	
-				ev="onchange=\"guardar('"+valor.ID+"');\"";
+				ev="onchange=\"guardar('"+c+"');\"";
 				$("#accordion").append(
 					"<div class=\"panel panel-default\">"+
 				    "    <div class=\"panel-heading\"> "+
 					"         <h4 class=\"panel-title\">"+
-					"             <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#tab"+valor.ID+"\">"+
+					"             <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#tab"+c+"\">"+
 					"		          <i class=\"ace-icon fa fa-angle-down bigger-110\" data-icon-hide=\"ace-icon fa fa-angle-down\" data-icon-show=\"ace-icon fa fa-angle-right\"></i>"+
 					"                    &nbsp;"+valor.PERSONA+" <span class=\"text-success\">"+valor.NOMBRE+"</span> <span class=\"text-danger\">"+valor.CARRERAD+"</span>"+
 					"              </a>"+
 					"         </h4> "+
 					"    </div>"+
-                    "    <div class=\"panel-collapse collapse\" id=\"tab"+valor.ID+"\">"+
+                    "    <div class=\"panel-collapse collapse\" id=\"tab"+c+"\">"+
 					"        <div class=\"panel-body fontRoboto bigger-120\"> "+
 					"           <div class=\"row\">"+
-					"                 <div class=\"col-sm-3\" id=\"pan1_"+valor.ID+"\" ></div>"+
-					"                 <div class=\"col-sm-6\" id=\"pan2_"+valor.ID+"\">"+
+					"                 <div class=\"col-sm-3\" id=\"pan1_"+c+"\" ></div>"+
+					"                 <div class=\"col-sm-6\" id=\"pan2_"+c+"\">"+
 										  valor.SOLICITUD+"<br><br>"+
 					"                     <span class=\"badge badge-warning bigger-120\">Motivos Personales</span><br>"+
 					                       valor.PERSONALES+"<br><br>"+
 					"                     <span class=\"badge badge-danger bigger-120\">Motivos Académicos</span><br>"+
 					                       valor.ACADEMICOS+"<br>"+
 					"                 </div>"+
-					"                 <div class=\"col-sm-3\" id=\"pan3_"+valor.ID+"\">"+
+					"                 <div class=\"col-sm-3\" id=\"pan3_"+c+"\">"+
 					"					 <span class=\"label label-danger\">Dictamén</span>"+
-					"					 <select "+ev+" style=\"width:100%;\" id=\"seldic_"+valor.ID+"\"><option value='P'>Elija Opción</option><option value='S'>SI SE RECOMIENDA</option><option value='N'>NO SE RECOMIENDA</option></select>"+
-					"					 <textarea "+ev+"  style=\"width:100%; height:200px;\" id=\"dic_"+valor.ID+"\">"+valor.OBSCOMITE+"</textarea>"+
+					"					 <select "+ev+" style=\"width:100%;\" id=\"seldic_"+c+"\"><option value='P'>Elija Opción</option><option value='S'>SI SE RECOMIENDA</option><option value='N'>NO SE RECOMIENDA</option></select>"+
+					"					 <textarea "+ev+"  style=\"width:100%; height:200px;\" id=\"dic_"+c+"\">"+valor.OBSCOMITE+"</textarea>"+
 					" 				  </div>"+
 					"	        </div> "+				
 					"	 </div> "+
 					"</div>"
 					);	
-					$("#seldic_"+valor.ID+" option[value="+valor.AUTCOMITE+"]").attr("selected",true);
+					$("#seldic_"+c+" option[value="+valor.AUTCOMITE+"]").attr("selected",true);
 				
 				if (valor.TIPO=='ALUMNOS') {
 					elsql="SELECT ALUM_ESPECIALIDAD, ALUM_MAPA, ifnull(ALUM_FOTO,'../../imagenes/menu/default.png') as ALUM_FOTO,"+
@@ -302,11 +321,11 @@ function cargarCasos() {
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data2){
 							datAlum=JSON.parse(data2);
-							$("#pan1_"+valor.ID).append(
+							$("#pan1_"+c).append(
 								"<div class=\"row\">  "+
 							    "     <div class=\"col-sm-6\">  "+
 								"			<span class=\"profile-picture\" style=\"text-align:center;\">"+
-								"				<img id=\"foto_"+valor.ID+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
+								"				<img id=\"foto_"+c+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
 								"			</span>"+	
 								"	  </div>"+
 								"	  <div class=\"col-sm-6\">  "+	
@@ -340,7 +359,7 @@ function cargarCasos() {
 							);
 							
 							
-								$("#foto_"+valor.ID).attr("src",datAlum[0]["ALUM_FOTO"]);
+								$("#foto_"+c).attr("src",datAlum[0]["ALUM_FOTO"]);
 								$('.easy-pie-chart.percentage').each(function(){
 								    var barColor = $(this).data('color') || '#2979FF';var trackColor = '#E2E2E2'; var size = parseInt($(this).data('size')) || 72;
 									$(this).easyPieChart({barColor: barColor,trackColor: trackColor,scaleColor: false,lineCap: 'butt',lineWidth: parseInt(size/5),animate:false,size: size}).css('color', barColor);
@@ -360,17 +379,17 @@ function cargarCasos() {
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data2){
 							datAlum=JSON.parse(data2);
-							$("#pan1_"+valor.ID).append(
+							$("#pan1_"+c).append(
 								"<div class=\"row\">  "+
 							    "     <div class=\"col-sm-6\">  "+
 								"			<span class=\"profile-picture\" style=\"text-align:center;\">"+
-								"				<img id=\"foto_"+valor.ID+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
+								"				<img id=\"foto_"+c+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
 								"			</span>"+	
 								"	  </div>"+
 								"</div>"
 							);
 							
-							$("#foto_"+valor.ID).attr("src",datAlum[0]["EMPL_FOTO"]);
+							$("#foto_"+c).attr("src",datAlum[0]["EMPL_FOTO"]);
 											
 						}
 					});
