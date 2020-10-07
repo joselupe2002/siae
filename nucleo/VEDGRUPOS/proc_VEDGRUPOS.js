@@ -257,3 +257,126 @@ function verPortaGrupo(modulo,usuario,essuper){
 		}
 	
 }
+
+
+
+function generaTablaSubir(grid_data, op){		
+	ladefault="..\\..\\imagenes\\menu\\pdf.png";
+    $("#cuerpoUnidades").empty();
+	   $("#tabUnidades").append("<tbody id=\"cuerpoUnidades\">");
+       c=0;	
+	   globalUni=1; 
+	   entre=false;
+	   jQuery.each(grid_data, function(clave, valor) { c++;});
+	   
+       jQuery.each(grid_data, function(clave, valor) { 	
+          
+          var f = new Date();
+		     fechacap=pad(f.getDate(),2) + "/" + pad((f.getMonth() +1),2) + "/" + f.getFullYear();
+             $("#cuerpoUnidades").append("<tr id=\"rowUni"+c+"\">");
+             
+             cadEnc="";
+			 cadDiag="";
+             if (!(entre)) {
+				 cadEnc="<a title=\"Ver Archivo de Encuadre\" target=\"_blank\" id=\"enlace_"+valor.ENCU_ID+"A_"+c+"\" href=\""+valor.RUTAENCU+"\">"+
+				                " <img width=\"40px\" height=\"40px\" id=\"pdfA_"+c+"_"+valor.ENCU_ID+"\" name=\"pdfA_"+c+"_"+valor.ENCU_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+				                " </a>";
+				 cadDiag="<a title=\"Ver Archivo de Evidencia Diagn&oacute;stica\" target=\"_blank\" id=\"enlace_"+valor.ENCU_ID+"B_"+c+"\" href=\""+valor.RUTADIAG+"\">"+
+	                " <img width=\"40px\" height=\"40px\" id=\"pdfB_"+c+"_"+valor.ENCU_ID+"\" name=\"pdfB_"+c+"_"+valor.ENCU_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+	                " </a>";
+				 
+				  $("#rowUni"+c).append("<td style=\"text-align: center; vertical-align: middle;\" rowspan=\""+c+"\">"+cadEnc+"</td>");					
+			      $("#rowUni"+c).append("<td style=\"text-align: center; vertical-align: middle;\"  rowspan=\""+c+"\">"+cadDiag+"</td>");
+				 
+			      if (valor.RUTAENCU=='') { 
+			        $('#enlace_'+valor.ENCU_ID+"A_"+c).attr('disabled', 'disabled');
+	                $('#enlace_'+valor.ENCU_ID+"A_"+c).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+	                $('#pdfA_'+c+'_'+valor.ENCU_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+			      }
+			      if (valor.RUTADIAG=='') { 
+			    
+	                $('#enlace_'+valor.ENCU_ID+"B_"+c).attr('disabled', 'disabled');
+	                $('#enlace_'+valor.ENCU_ID+"B_"+c).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+	                $('#pdfB_'+c+'_'+valor.ENCU_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+			      }
+				 entre=true;
+			      }
+             
+			 $("#rowUni"+c).append("<td>"+valor.UNID_NUMERO+"</td>");
+			 $("#rowUni"+c).append("<td title=\""+valor.UNID_DESCRIP+"\">"+valor.UNID_DESCRIP.substring(0,30)+"</td>");	
+			
+
+			 $("#rowUni"+c).append("<td> <a title=\"Ver Archivo de Evidencia de Producto\" target=\"_blank\" id=\"enlace_"+valor.ENCU_ID+"1_"+c+"\" href=\""+valor.RUTAEP+"\">"+
+	     	  		                " <img width=\"40px\" height=\"40px\" id=\"pdf1_"+c+"_"+valor.ENCU_ID+"\" name=\"pdf1_"+c+"_"+valor.ENCU_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+	     	 		                " </a>"+
+	  	    	                  "</td>");
+
+
+			 
+            $("#rowUni"+c).append("<td> <a title=\"Ver Archivo de Evidencia de Desempe&ntilde;o\" target=\"_blank\" id=\"enlace_"+valor.ENCU_ID+"2_"+c+"\" href=\""+valor.RUTAED+"\">"+
+		                " <img width=\"40px\" height=\"40px\" id=\"pdf2_"+c+"_"+valor.ENCU_ID+"\" name=\"pdf2_"+c+"_"+valor.ENCU_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+		                " </a>"+
+	                  "</td>");
+
+           
+            $("#rowUni"+c).append("<td> <a title=\"Ver Archivo de Evidencia de Conocimiento\" target=\"_blank\" id=\"enlace_"+valor.ENCU_ID+"3_"+c+"\" href=\""+valor.RUTAEC+"\">"+
+		                " <img width=\"40px\" height=\"40px\" id=\"pdf3_"+c+"_"+valor.ENCU_ID+"\" name=\"pdf3_"+c+"_"+valor.ENCU_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+		                " </a>"+
+	                  "</td>");
+
+
+          
+            $("#rowUni"+c).append("<td> <a title=\"Ver Archivo de Evidencia de Actitud\" target=\"_blank\" id=\"enlace_"+valor.ENCU_ID+"4_"+c+"\" href=\""+valor.RUTAEA+"\">"+
+		                " <img width=\"40px\" height=\"40px\" id=\"pdf4_"+c+"_"+valor.ENCU_ID+"\" name=\"pdf4_"+c+"_"+valor.ENCU_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+		                " </a>"+
+	                  "</td>");
+	           
+
+
+			 if (valor.RUTAEP=='') { 
+	                $('#enlace_'+valor.ENCU_ID+"1_"+c).attr('disabled', 'disabled');
+	                $('#enlace_'+valor.ENCU_ID+"1_"+c).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+	                $('#pdf1_'+c+'_'+valor.ENCU_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+	       	    }
+			 if (valor.RUTAED=='') { 
+				    $('#enlace_'+valor.ENCU_ID+"2_"+c).attr('disabled', 'disabled');
+	                $('#enlace_'+valor.ENCU_ID+"2_"+c).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+	                $('#pdf2_'+c+'_'+valor.ENCU_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+	       	    }
+			 if (valor.RUTAEC=='') { 
+				    $('#enlace_'+valor.ENCU_ID+"3_"+c).attr('disabled', 'disabled');
+	                $('#enlace_'+valor.ENCU_ID+"3_"+c).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+	                $('#pdf3_'+c+'_'+valor.ENCU_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+	       	    }
+			 if (valor.RUTAEA=='') { 
+				    $('#enlace_'+valor.ENCU_ID+"4_"+c).attr('disabled', 'disabled');
+	                $('#enlace_'+valor.ENCU_ID+"4_"+c).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+	                $('#pdf4_'+c+'_'+valor.ENCU_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+	       	    }
+		
+	       	 
+	       	 
+			    c++;
+		   		globalUni=c;
+
+		   		
+		   	});
+
+    $('.fileSigea').ace_file_input({
+		no_file:'Sin archivo ...',
+		btn_choose:'Buscar',
+		btn_change:'Cambiar',
+		droppable:false,
+		onchange:null,
+		thumbnail:false, //| true | large
+		whitelist:'pdf',
+		blacklist:'exe|php'
+		//onchange:''
+		//
+	});
+		
+		   }
+
+
+
+
