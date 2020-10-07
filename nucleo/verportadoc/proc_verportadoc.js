@@ -60,7 +60,7 @@ function verPortafolioD(modulo,usuario,essuper){
 			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
 			"  FROM eunidades j "+
 			" join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+table.rows('.selected').data()[0]["IDDET"]+")"+
-			" where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["CVE_MATERIA"]+"' and j.UNID_PRED=''  order by UNID_NUMERO";
+			" where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["CVE_MAT"]+"' and j.UNID_PRED=''  order by UNID_NUMERO";
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 
 		    $.ajax({
