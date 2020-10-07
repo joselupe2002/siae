@@ -171,3 +171,89 @@ function asignarbase(){
 
 
 
+function verPortaGrupo(modulo,usuario,essuper){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+			script="<div class=\"modal fade\" id=\"modalDocumentUni\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
+		       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
+			   "      <div class=\"modal-content\">"+
+			   "          <div class=\"modal-header widget-header  widget-color-green\">"+
+			   "             <span class=\"label label-lg label-primary arrowed arrowed-right\"> Portafolio de Evidencia </span>"+
+			   "             <span class=\"label label-lg label-success arrowed arrowed-right\">"+table.rows('.selected').data()[0]["MATERIA"]+"</span>"+			   
+			   "             <input type=\"hidden\" id=\"elid\" value=\""+table.rows('.selected').data()[0]["IDDET"]+"\"></input>"+
+			   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
+			   "                  <span aria-hidden=\"true\">&times;</span>"+
+			   "             </button>"+
+			   "          </div>"+  
+			   "          <div id=\"frmdescarga\" class=\"modal-body\" >"+					 
+			   "             <div class=\"row\" style=\"overflow-x: auto; overflow-y: auto; height:100%;\"> "+		
+		       "                  <table id=\"tabUnidades\" class= \"table table-condensed table-bordered table-hover\">"+
+		   	   "                         <thead>  "+
+			   "                               <tr>"+	
+			   "                                   <th colspan=\"1\">Encuadre</th> "+
+			   "                                   <th colspan=\"1\">Diagn&oacute;stica</th> "+
+			   "                             	   <th>NO.</th> "+ 
+			   "                                   <th>Unidad</th> "+
+			   "                                   <th>Producto</th> "+
+			   "                                   <th>Desempe&ntilde;o</th> "+
+			   "                                   <th>Conocimiento</th> "+
+			   "                                   <th>Actitud</th> "+
+			   "                               </tr> "+
+			   "                         </thead>" +
+			   "                   </table>"+	
+			   "             </div> "+ //div del row
+			   "             <div class=\"space-10\"></div>"+		   
+			   "          </div>"+ //div del modal-body		 
+		       "          </div>"+ //div del modal content		  
+			   "      </div>"+ //div del modal dialog
+			   "   </div>"+ //div del modal-fade
+			   "</div>";
+		 
+			
+			
+	 		 
+			 $("#modalDocumentUni").remove();
+		    if (! ( $("#modalDocumentUni").length )) {
+		        $("#grid_"+modulo).append(script);
+		    }
+
+		    $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+		    
+		    $('#modalDocumentUni').modal({show:true, backdrop: 'static'});
+
+		    
+	        elsql="SELECT ENCU_ID, UNID_NUMERO, UNID_DESCRIP, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EP'),'') AS RUTAEP, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='ED'),'') AS RUTAED, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EC'),'') AS RUTAEC, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_ID and b.AUX='EA'),'') AS RUTAEA, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='ENCUADRE'),'') AS RUTAENCU, "+
+			"IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=k.ENCU_IDDETGRUPO and b.AUX='DIAGNOSTICA'),'') AS RUTADIAG "+
+			"  FROM eunidades j "+
+			" join encuadres k on (j.UNID_ID=k.`ENCU_IDTEMA` and k.`ENCU_IDDETGRUPO`="+table.rows('.selected').data()[0]["IDDET"]+")"+
+			" where j.`UNID_MATERIA`='"+table.rows('.selected').data()[0]["CVE_MAT"]+"' and j.UNID_PRED=''  order by UNID_NUMERO";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+
+		    $.ajax({
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
+		           success: function(data){  
+		        	      losdatos=JSON.parse(data);  
+		        	      generaTablaSubir(JSON.parse(data),"CAPTURA");
+		        	        		        	    
+		                 },
+		           error: function(data) {	                  
+		                      alert('ERROR: '+data);
+		                  }
+		   });
+			   
+		    
+	}
+	else {
+		alert ("Debe seleccionar un Mapa Curricular");
+		return 0;
+
+		}
+	
+}
