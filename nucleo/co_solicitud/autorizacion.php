@@ -136,10 +136,16 @@
 		$pdf->Cell(0,0,utf8_decode("PRESIDENTE DEL COMITÉ ACADÉMICO"),0,1,'L');
 		$pdf->Ln(10);
 		$pdf->SetFont('Montserrat-SemiBold','',10);
+
+		$tipoper="";
+		if ($data[0]["TIPO"]=='ALUMNOS') {$tipoper="estudiante";}
+		if ($data[0]["TIPO"]=='DOCENTES') {$tipoper="docente";}
+		$eladd=utf8_decode(' a el(la) '.$tipoper.' '.$data[0]["NOMBRE"].' de la carrera de '.$data[0]["CARRERAD"].
+		' con número de control '.$data[0]["PERSONA"].".");
+		if ($data[0]["TIPO"]=='GENERAL') {$eladd="";}
+
 		$pdf->MultiCell(0,8,utf8_decode('Por este conducto y atediendo la recomendación de Comité Académico comunicó a usted, ').
-		utf8_decode('que SI, SE AUTORIZA, el No. de recomendación: '.$data[0]["NUMCOMITE"]).
-		utf8_decode(' a la estudiante '.$data[0]["NOMBRE"].' de la carrera de '.$data[0]["NOMBRE"].
-		' con número de control '.$data[0]["PERSONA"]),0,'J', false);
+		utf8_decode('que SI, SE AUTORIZA, el No. de recomendación: '.$data[0]["NUMCOMITE"]).$eladd,0,'J', false);
 		$pdf->Ln(10);
 		$pdf->MultiCell(0,8,utf8_decode('Sin otro particular le envió un cordial saludo.'),0,'J', false);
 		
