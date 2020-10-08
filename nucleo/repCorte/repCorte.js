@@ -56,7 +56,7 @@ contMat=1;
 	
 		cadUniTit="";
 		for (i=1;i<=10;i++){cadUniTit+=" <th>APR_U"+i+"</th> ";}
-		script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover\" "+
+		script="<table id=\"tabInformacion\" name=\"fontRoboto tabInformacion\" class= \"table table-condensed table-bordered table-hover\" "+
 		        ">"+
 	   	   "        <thead >  "+
 		   "             <tr id=\"headMaterias\">"+
