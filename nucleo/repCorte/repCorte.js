@@ -127,10 +127,13 @@ contMat=1;
 									$("#rowM"+contR).append("<td>"+valor.SIE+"</td>");
 									$("#rowM"+contR).append("<td id=\"nu_"+valor.IDDETALLE+"\"></td>");
 									$("#rowM"+contR).append("<td id=\"nu2_"+valor.IDDETALLE+"\"></td>");
-									$("#rowM"+contR).append("<td><span id=\"ta_"+valor.IDDETALLE+"\" class=\"badge badge-info\">"+valor.ALUMNOS+"</span></td>");		
+									verboleta=" onclick=\"window.open('../pd_captcal/repUni.php?grupo="+valor.SIE+"&ciclo="+valor.CICLO+"&profesor="+valor.PROFESOR+"&materia="+
+									valor.MATERIA+"&materiad="+valor.MATERIAD+"&id="+valor.IDDETALLE+"&semestre="+valor.SEMESTRE+"','_blank');\"";
+
+									$("#rowM"+contR).append("<td><span "+verboleta+" id=\"ta_"+valor.IDDETALLE+"\" class=\"badge badge-info\" style=\"cursor:pointer;\">"+valor.ALUMNOS+"</span></td>");		
 									$("#rowM"+contR).append("<td><span id=\"pa_"+valor.IDDETALLE+"\" class=\"badge badge-success\">0</span></td>");						
 									$("#rowM"+contR).append("<td><span id=\"pr_"+valor.IDDETALLE+"\" class=\"badge badge-danger\">0</span></td>");																											
-									for (i=1;i<=10;i++){$("#rowM"+contR).append("<td id=\"u"+i+"_"+valor.IDDETALLE+"\"></td>");	}
+									for (i=1;i<=10;i++){$("#rowM"+contR).append("<td><span id=\"u"+i+"_"+valor.IDDETALLE+"\" class=\"badge badge-warning\"></span></td>");	}
 									contR++; 
 									elsql="SELECT GROUP_CONCAT(NUMUNIDAD) as UNIDADES, count(*) as NUNIDADES from eplaneacion where STR_TO_DATE(FECHA,'%d/%m/%Y') BETWEEN "+
 									" STR_TO_DATE('"+inicia+"','%d/%m/%Y') AND "+
@@ -198,8 +201,8 @@ function calcularPorcentajes(){
 			var iddet = $(this).find("td").eq(1).html();
 		
 			suma=0;
-			for (i=17; i<=26; i++) {
-				valor=parseInt($(this).find("td").eq(i).html())
+			for (i=1; i<=10; i++) {
+				valor=parseInt($("#u"+i+"_"+iddet).html());
 				if (!isNaN(valor)) {suma+=valor;}
 			}
 			if ((parseInt($("#nu2_"+iddet).html())>0) && (parseInt($("#ta_"+iddet).html())>0)) {		
