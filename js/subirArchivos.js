@@ -348,7 +348,7 @@ function subirPDFDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, exte
 	           url:  "../base/getdatossqlSeg.php",
 	           success: function(datosr){
 	        	       
-	        	        var data = new FormData();
+	        	    var data = new FormData();
 	   	        	jQuery.each($('#'+nombreComponente)[0].files, function(i, file) {
 	   				    data.append('archivo', file);
 	   				    var fileName = file.name;
@@ -385,7 +385,7 @@ function subirPDFDriveSave(nombreComponente,carpeta,nombreImg, nombreInput, exte
 	   	    				    type: 'POST'})
 	   	    				    .done(function(res){ 	
 	   	    				    	
-	   	    				 
+								
 	   	    				    	laimagen=res.split("|")[1];	   	    				    				   	    				    	
 			   	    				 if (!(res.substring(0,2)=="0|")){
 			   	    					      //eliminamos archivo anterior en caso de existir
@@ -591,7 +591,8 @@ function eliminarEnlaceDrive(nombreComponente,carpeta,nombreImg, nombreInput, ex
 	     $("#"+nombreImg).attr("src","../../imagenes/menu/esperar.gif");
 	     $("#"+nombreImg+"_2").attr("src","../../imagenes/menu/esperar.gif");
 	     preruta="";
-	     if (fuera=='S') {preruta="..\\base\\";}
+		 if (fuera=='S') {preruta="..\\base\\";}
+		 
 	     jQuery.ajax({
 	   	    		  url: preruta+'eliminarArchivoDrive.php?idfile='+elid,
 	   	    	      cache: false,
@@ -600,6 +601,7 @@ function eliminarEnlaceDrive(nombreComponente,carpeta,nombreImg, nombreInput, ex
 	   	    		  processData: false,
 	   	    		  type: 'POST'})
 	   	    		  .done(function(res){ 	
+							       
 	   	    				        laimagen=res.split("|")[1];	   	
 	   	    				        $("#"+nombreImg).attr("src","../../imagenes/menu/pdfno.png");
 	   	    				        $("#btnEli_"+nombreInput).css("display","none");

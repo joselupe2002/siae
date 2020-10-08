@@ -1,5 +1,6 @@
 <?php
 include_once '../../includes/google-api-php-client-2.2.4/vendor/autoload.php';
+include("../../includes/Conexion.php");
 
 putenv('GOOGLE_APPLICATION_CREDENTIALS=../../credencialesAsp.json');
 $client = new Google_Client();
@@ -42,6 +43,13 @@ if ($_SESSION['inicio']==1) {
 					$modo="export=download";
 					if (isset($_GET['imganterior'])) {$modo="";}
 					echo "1|https://drive.google.com//uc?id=".$result->id."&".$modo;
+					
+						//guardamos nombre de la imagen y tura
+						$miConex = new Conexion();
+						$elsql="insert into rutas (IDDRIVE,ARCHIVO,USUARIO,FECHAUS,_INSTITUCION,_CAMPUS) ".
+						" values ('".$result->id."','".$name."','".$_SESSION['usuario']."',now(),'".$_SESSION['INSTITUCION']."','".$_SESSION['CAMPUS']."')";
+						$res=$miConex->afectaSQL($_SESSION['bd'],$elsql);
+
 				}catch (Google_Service_Exception $gs) {
 					$m=json_decode($gs->getMessage());
 					echo "0|Google_Service_Exception ".$gs->getMessage();
