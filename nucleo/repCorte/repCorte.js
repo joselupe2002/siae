@@ -234,7 +234,7 @@ function grabarPorcentajes(){
 			 profesord = $(this).find("td").eq(7).html();
 			 materia = $(this).find("td").eq(8).html();
 			 materiad = $(this).find("td").eq(9).html();
-			 semestre = $(this).find("td").eq(9).html();
+			 semestre = $(this).find("td").eq(10).html();
 			 grupo = $(this).find("td").eq(11).html();
 			 alumtot = $("#ta_"+iddet).html();
 			 apr =$("#pa_"+iddet).html();
