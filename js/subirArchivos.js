@@ -261,6 +261,50 @@ function subirPDFDrive(nombreComponente,carpeta,nombreImg, nombreInput, extensio
 }
 
 
+function eliminarEnlace(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera,campoid,id,descrip){
+    op=confirm("¿Seguro que desea eliminar el archivo?");
+    if (op == true) {   
+    	 laruta=$("#"+nombreInput).attr("value"); 
+    	 elid=laruta.substring(laruta.indexOf('id=')+3,laruta.length);
+    	 
+	     $("#"+nombreImg).attr("src","../../imagenes/menu/esperar.gif");
+	     $("#"+nombreImg+"_2").attr("src","../../imagenes/menu/esperar.gif");
+	     preruta="";
+		 if (fuera=='S') {preruta="..\\base\\";}
+		 
+	     jQuery.ajax({
+	   	    		  url: preruta+'eliminarArchivoDrive.php?idfile='+elid,
+	   	    	      cache: false,
+	   	    		  timeout: 600000, 
+	   	    		  contentType: false,
+	   	    		  processData: false,
+	   	    		  type: 'POST'})
+	   	    		  .done(function(res){ 	
+							       
+	   	    				        laimagen=res.split("|")[1];	   	
+	   	    				        $("#"+nombreImg).attr("src","../../imagenes/menu/pdfno.png");
+	   	    				        $("#btnEli_"+nombreInput).css("display","none");
+	    				    		$("#"+nombreImg+"_2").attr("src","../../imagenes/menu/pdfno.png");
+									
+									
+	    				    		$("#enlace_"+nombreInput).attr("href",'..\\..\\imagenes\\menu\\pdfno.png');	
+	    				    		$("#enlace_"+nombreInput+"_2").attr("href",'..\\..\\imagenes\\menu\\pdfno.png');
+	    				    		
+	    				        	$("#"+nombreInput).attr("value","");
+
+	    				        	
+	   	    				    	if ((res.substring(0,2)=="0|")){	   	    				    			   	    				    
+	   	    				    		$("#"+nombreImg).attr("src","../../imagenes/menu/pdfno.png");
+	   	    				        	$("#"+nombreInput).attr("value","");
+	   	    				        	alert ("Ocurrio un error al eliminar el archivo al Drive: "+laimagen+res); 				    		
+	   	    				    	}				    						    		   	    				    	   	    		    	    
+                         }); // del .done del ajax  
+    }
+}
+
+
+
+
 function pad (str, max) {
 	  str = str.toString();
 	  return str.length < max ? pad("0" + str, max) : str;

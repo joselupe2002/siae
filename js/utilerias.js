@@ -1888,13 +1888,21 @@ if (tipo=="SELECT_MULTIPLE") {
 	
 	if (tipo=="IMAGEN_DRIVE") {
 		dominio=document.domain;
+		rutaimg=dato;
+		if ((dato==null)||(dato=="")) {rutaimg="../../imagenes/menu/default.png"; }
 
-		if ((dato==null)||(dato=="")) {dato="../../imagenes/menu/default.png";}
+		stElim="display:none; cursor:pointer;";
+    	if (dato.length>0) {stElim="cursor:pointer; display:block; ";}
+    	btnEliminar="<i style=\""+stElim+"\"  id=\"btnEli_"+nombre+"\"  title=\"Eliminar la Imagen que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+        	                            
+        "onclick=\"eliminarEnlace('file_"+nombre+"','"+nombre+"','img_"+nombre+"','"+nombre+"','pdf','S','"+nombre+"','"+
+										dato+"','"+nombre+"');\"></i> "; 
+										
 	
 		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
 		     "  <div class=\"row align-items-end\"> "+
 		     "      <div class=\"col-sm-2\">"+
-		     "           <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+dato+"\" width=\"50px\" height=\"50px\">"+
+			 "           <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+rutaimg+"\" width=\"50px\" height=\"50px\">"+
+			 "           <div class=\"col-sm-1\">"+btnEliminar+"</div>"+
 		     "      </div>"+
 		     "      <div class=\"col-sm-10\">"+
 		     "          <input type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
@@ -1910,15 +1918,21 @@ if (tipo=="SELECT_MULTIPLE") {
 	if (tipo=="PDF_DRIVE") {
 		dominio=document.domain;
         rutaimg="../../imagenes/menu/pdf.png";
-		if ((dato==null)||(dato=="")) {dato="../../imagenes/menu/default.png"; rutaimg="../../imagenes/menu/pdfno.png";}
+		if ((dato==null)||(dato=="")) {rutaimg="../../imagenes/menu/pdfno.png";}
 
+		stElim="display:none; cursor:pointer;";
+    	if (dato.length>0) {stElim="cursor:pointer; display:block; ";}
+    	btnEliminar="<i style=\""+stElim+"\"  id=\"btnEli_"+nombre+"\"  title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+        	                            
+        "onclick=\"eliminarEnlace('file_"+nombre+"','"+nombre+"','img_"+nombre+"','"+nombre+"','pdf','S','"+nombre+"','"+
+                                        dato+"','"+nombre+"');\"></i> "; 
 
 		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
 		     "  <div class=\"row align-items-end\"> "+
 		     "      <div class=\"col-sm-2\">"+
 		     "           <a target=\"_blank\" id=\"enlace_"+nombre+"\" href=\""+dato+"\">"+
 		     "                <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+rutaimg+"\" width=\"50px\" height=\"50px\">"+
-		     "           </a>"+
+			 "           </a>"+
+			 "           <div class=\"col-sm-1\">"+btnEliminar+"</div>"+
 		     "      </div>"+
 		     "      <div class=\"col-sm-10\">"+
 		     "          <input type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
