@@ -101,7 +101,7 @@ contMat=1;
 					elcorte=datCorte[0]["TIPO"].substr(3,1);
 					
 					elsql="SELECT a.*, (SELECT COUNT(*) from dlista n where n.IDGRUPO=a.IDDETALLE and n.BAJA='N') as ALUMNOS"+
-					" FROM vedgrupos a where CICLO='"+$("#selCiclos").val()+"' and DEPTO='"+$("#selDeptos").val()+"'";
+					" FROM vedgrupos a where CICLO='"+$("#selCiclos").val()+"' and DEPTO='"+$("#selDeptos").val()+"' order by PROFESOR";
 					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 					$.ajax({
 						type: "POST",
