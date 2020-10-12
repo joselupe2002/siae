@@ -3072,7 +3072,7 @@ function setNotificacionalJefe(matricula,mensaje,enlace,tipo,institucion,campus)
 
 
 /*=========================SOLO PARA EL MODULO DE RESIDENCIAS ===============================*/
-function residencia_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper){
+function residencia_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper,miciclo){
 	table = $("#G_"+modulo).DataTable();
 	miciclo=table.rows('.selected').data()[0]["CICLO"];
 	matricula=table.rows('.selected').data()[0]["MATRICULA"];

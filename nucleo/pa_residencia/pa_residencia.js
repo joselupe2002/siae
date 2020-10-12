@@ -341,8 +341,8 @@ function cargarDatosPropuesta(tipo){
 				
 				activaEliminar="";
 				if (JSON.parse(data)[0]["RUTACARDEX"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("Cardex","Kardex de estudios","cardex",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'KARDEX DE ESTUDIOS','eadjresidencia','alta',usuario+"_"+miciclo+"_CARDEX",JSON.parse(data)[0]["RUTACARDEX"],activaEliminar);
+				dameSubirArchivoDrive("Cardex","Cardex de estudios","cardex",'ADJRESIDENCIA','pdf',
+				'ID',usuario,'CARDEX DE ESTUDIOS','eadjresidencia','alta',usuario+"_"+miciclo+"_CARDEX",JSON.parse(data)[0]["RUTACARDEX"],activaEliminar);
 				
 				
 			}

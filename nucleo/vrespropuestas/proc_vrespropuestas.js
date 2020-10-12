@@ -74,5 +74,15 @@ function marcarEnviado(modulo,usuario,essuper){
 
 	
 function veradjprop  (modulo,usuario,institucion, campus,essuper){
-	residencia_mostrarAdjuntos(modulo,usuario,institucion, campus,essuper);
+
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+		residencia_mostrarAdjuntos(modulo,usuario,institucion, campus,essuper,table.rows('.selected').data()[0]["CICLO"]);
+	}
+	else {
+		alert ("Debe seleccionar un Registro");
+		return 0;
+
+		}
+
 }
