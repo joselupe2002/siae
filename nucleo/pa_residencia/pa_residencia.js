@@ -33,18 +33,21 @@ var miciclo="";
 			}).css('color', barColor);
 			});
 
-		elsql="select CICL_CLAVE, CICL_DESCRIP from ciclosesc where CICL_CLAVE=getciclo()";	
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-		$.ajax({
-				type: "POST",
-				data:parametros,
-				url:  "../base/getdatossqlSeg.php",
-				success: function(data){ 
-					losdatos=JSON.parse(data); 
-					miciclo=losdatos[0][0];
-					$("#elciclo").html(losdatos[0][0]+" "+losdatos[0][1]);
-				}
-			});
+	
+
+			elsql="select ifnull(CICLO,getciclo()), COUNT(*) from residencias where MATRICULA=usuario";	
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data){ 
+						losdatos=JSON.parse(data); 
+						miciclo=losdatos[0][0];
+						$("#elciclo").html(losdatos[0][0]+" "+losdatos[0][1]);
+					}
+				});
+
 
 			
 		cargarAvance();
