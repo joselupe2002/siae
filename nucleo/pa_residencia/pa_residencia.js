@@ -35,14 +35,15 @@ var miciclo="";
 
 	
 
-			elsql="select ifnull(CICLO,getciclo()), COUNT(*) from residencias where MATRICULA=usuario";	
-			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			elsqlc="select ifnull(CICLO,getciclo()), COUNT(*) from residencias where MATRICULA=usuario";	
+			alert (elsqlc);
+			parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 					type: "POST",
 					data:parametros,
 					url:  "../base/getdatossqlSeg.php",
 					success: function(data){ 
-						alert (elsql);
+						
 						losdatos=JSON.parse(data); 
 						miciclo=losdatos[0][0];
 						$("#elciclo").html(losdatos[0][0]);
