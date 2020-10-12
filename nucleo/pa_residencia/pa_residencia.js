@@ -35,8 +35,8 @@ var miciclo="";
 
 	
 
-			elsqlc="select ifnull(CICLO,getciclo()), COUNT(*) from residencias where MATRICULA=usuario";	
-			alert (elsqlc);
+			elsqlc="select ifnull(CICLO,getciclo()), COUNT(*) from residencias where MATRICULA='"+usuario+"'";	
+		
 			parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 					type: "POST",
