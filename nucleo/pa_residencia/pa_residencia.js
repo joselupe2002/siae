@@ -42,9 +42,10 @@ var miciclo="";
 					data:parametros,
 					url:  "../base/getdatossqlSeg.php",
 					success: function(data){ 
+						alert (data);
 						losdatos=JSON.parse(data); 
 						miciclo=losdatos[0][0];
-						$("#elciclo").html(losdatos[0][0]+" "+losdatos[0][1]);
+						$("#elciclo").html(losdatos[0][0]);
 					}
 				});
 
