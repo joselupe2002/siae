@@ -42,7 +42,7 @@ var miciclo="";
 					data:parametros,
 					url:  "../base/getdatossqlSeg.php",
 					success: function(data){ 
-						alert (data);
+						alert (elsql);
 						losdatos=JSON.parse(data); 
 						miciclo=losdatos[0][0];
 						$("#elciclo").html(losdatos[0][0]);
