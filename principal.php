@@ -334,7 +334,7 @@
 
 			//Grabamos el log 
 			var hoy= new Date();
-			lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
+			lafecha=dameFecha("FECHAHORA");
 
     		parametros={tabla:"log",
 			    bd:"Mysql",

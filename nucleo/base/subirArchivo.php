@@ -13,7 +13,8 @@ if ($_SESSION['inicio']==1) {
 				$name.= date("YmdHis");
 				$name.= substr(md5(rand(0, PHP_INT_MAX)), 10);
 				$name.=".".end(explode(".",$_FILES[$_GET['inputFile']]['name']));
-				
+				$paso=explode(".",$_FILES[$_GET['inputFile']]['name']);
+				$name.=".".end($paso);
 						
 				if (!(move_uploaded_file($_FILES[$_GET['inputFile']]['tmp_name'],
 						"../../imagenes/".$_GET['carpeta']."/" . $name)))

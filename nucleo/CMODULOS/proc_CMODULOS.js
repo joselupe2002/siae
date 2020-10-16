@@ -333,7 +333,7 @@ function addComentarios(modulo,usuario,essuper){
 	                  }
 	   });
 	    
-	    elsql="SELECT COLUMN_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sigea' AND TABLE_NAME = '"+table.rows('.selected').data()[0][6]+"'";
+	    elsql="SELECT COLUMN_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA in ('sigea','itsm') AND TABLE_NAME = '"+table.rows('.selected').data()[0][6]+"'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:'Mysql',sel:'0'}
 		
 	    $.ajax({

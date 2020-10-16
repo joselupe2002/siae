@@ -441,7 +441,8 @@ class UtilUser {
 	
 	public function getConfInputFile($datos) {
 		foreach ($datos as $row) {
-			if (($row['tipo']=='IMAGEN')||($row['tipo']=='IMAGEN_DRIVE')||($row['tipo']=='PDF')||($row['tipo']=='PDF_DRIVE')){
+			if (($row['tipo']=='IMAGEN')||($row['tipo']=='IMAGEN_DRIVE')||($row['tipo']=='PDF')||
+			    ($row['tipo']=='PDF_DRIVE')||($row['tipo']=='ARCHIVO_CARPETA')) {
 		 	echo "$('#file_".$row['colum_name']."').ace_file_input({
 		                 no_file:'Sin selección ...',
 		                 btn_choose:'Elegir',

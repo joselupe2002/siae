@@ -36,8 +36,7 @@ function comprueba_extension(nombreComponente,ext_permitidas) {
 			   return 0; 
 			}
 
-	
-	
+
 
 function subirArchivoDrive(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera){		
 	var haymayor=false;	
@@ -301,6 +300,10 @@ function eliminarEnlace(nombreComponente,carpeta,nombreImg, nombreInput, extensi
                          }); // del .done del ajax  
     }
 }
+
+
+
+
 
 
 
@@ -906,3 +909,98 @@ function subirArchivo(nombreComponente,carpeta,nombreImg, nombreInput, extension
 
 
 
+//========================para la subida de archivos en carpetas del sistemas =============================*/
+
+function subirPDFCarpeta(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,ruta,eltipoarchivo){		
+	var haymayor=false;
+	elid=$("#"+nombreInput).val().substring($("#"+nombreInput).val().indexOf('id=')+3,$("#"+nombreInput).val().length);
+
+	var data = new FormData();
+	jQuery.each($('#'+nombreComponente)[0].files, function(i, file) {
+	   				    data.append('archivo', file);
+	   				    var fileName = file.name;
+	   				    var fileSize = file.size;
+	   				    if(fileSize > 4000000){
+	   					    alert('El archivo no debe superar los 4MB');
+	   					    file.value = '';
+	   					    haymayor=true;
+	   				    }
+	   				});
+	   	        	
+	if (haymayor) {return 0;}
+	if (comprueba_extension(nombreComponente,extensiones)==1) {
+		 $("#"+nombreImg).attr("src","../../imagenes/menu/esperar.gif");	
+	     jQuery.ajax({
+	   	    		 url: 'subirArchivoCarpeta.php?carpeta='+ruta+'&inputFile=archivo&imganterior='+$("#"+nombreInput).attr("value")+"&modo=pdf",
+	   	    		data: data,
+	   	    		cache: false,
+	   	    		timeout: 600000, 
+	   	    		contentType: false,
+	   	    		processData: false,
+	   	    		type: 'POST'}).done(function(res){ 	
+									laimagen=res.split("|")[1];	 
+									if (eltipoarchivo=='IMG') {elsrc=ruta+laimagen; elsrc2="../../imagenes/menu/default.png"} 
+									else {elsrc="../../imagenes/menu/pdf.png"; elsrc2="../../imagenes/menu/pdfno.png"}
+										
+	   	    				    	  	  	   	    				    
+	   	    				    	if (!(res.substring(0,2)=="0|")){	   	    				    	 		  	   		    				
+	   	    				    		$("#"+nombreImg).attr("src",elsrc);
+	   	    				    		$("#enlace_"+nombreInput).attr("href",ruta+laimagen);	   	    				    		
+	   	    				        	$("#"+nombreInput).attr("value",laimagen);
+	   	    				    	}
+	   	    				    	else {
+	   	    				    		$("#"+nombreImg).attr("src",elsrc2);
+	   	    				        	$("#"+nombreInput).attr("value","");
+	   	    				        	alert ("Ocurrio un error al subir el archivo al Drive: "+res); 				    		
+	   	    				    	}				    						    		   	    			
+									}); // del .done del ajax							
+	} ///del si cumple con las extensiones
+	              
+}
+
+
+function eliminarEnlaceCarpeta(nombreComponente,carpeta,nombreImg, nombreInput, extensiones,fuera,campoid,id,descrip,ruta,eltipoarchivo){
+
+    op=confirm("¿Seguro que desea eliminar el archivo?");
+    if (op == true) {   
+    	 laruta=$("#"+nombreInput).attr("value"); 
+		 elid=ruta+laruta;
+
+    	 
+	     $("#"+nombreImg).attr("src","../../imagenes/menu/esperar.gif");
+	     $("#"+nombreImg+"_2").attr("src","../../imagenes/menu/esperar.gif");
+	     preruta="";
+		 if (fuera=='S') {preruta="..\\base\\";}
+		 
+	     jQuery.ajax({
+	   	    		  url: preruta+'eliminarArchivo.php?imgborrar='+elid,
+	   	    	      cache: false,
+	   	    		  timeout: 600000, 
+	   	    		  contentType: false,
+	   	    		  processData: false,
+	   	    		  type: 'POST'})
+	   	    		  .done(function(res){ 									
+									   laimagen=res.split("|")[1];	
+
+									   if (eltipoarchivo=='IMG') {elsrc="../../imagenes/menu/default.png";}else { elsrc="../../imagenes/menu/pdfno.png"} 
+					
+							
+	   	    				        $("#"+nombreImg).attr("src",elsrc);
+	   	    				        $("#btnEli_"+nombreInput).css("display","none");
+	    				    		$("#"+nombreImg+"_2").attr("src","../../imagenes/menu/pdfno.png");
+									
+									
+	    				    		$("#enlace_"+nombreInput).attr("href",'..\\..\\imagenes\\menu\\pdfno.png');	
+	    				    		$("#enlace_"+nombreInput+"_2").attr("href",'..\\..\\imagenes\\menu\\pdfno.png');
+	    				    		
+	    				        	$("#"+nombreInput).attr("value","");
+
+	    				        	
+	   	    				    	if ((res.substring(0,2)=="0|")){	   	    				    			   	    				    
+	   	    				    		$("#"+nombreImg).attr("src",elsrc);
+	   	    				        	$("#"+nombreInput).attr("value","");
+	   	    				        	alert ("Ocurrio un error al eliminar el archivo al Drive: "+laimagen+res); 				    		
+	   	    				    	}				    						    		   	    				    	   	    		    	    
+                         }); // del .done del ajax  
+    }
+}
