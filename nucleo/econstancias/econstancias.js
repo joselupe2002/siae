@@ -137,17 +137,26 @@ function creaEncabezado(consec,anio,clave){
 	"</table>");
 }
 
+
+function dameCardinal(num){
+	arr=["SINPERIODO","1ER","2DO","3ER","4TO","5TO","6TO","7MO","8VO","9NO","10MO"];
+	if (parseInt(num)>=11) {res=num+"VO";}
+	else res=arr[num];
+	return res;
+}
+
 function creaCuerpo (MATRICULA,NOMBRE,SEMESTRE,CARRERAD,CICL_INICIOR,CICL_FINR,CICL_VACINI, 
 	                 CICL_VACFIN,PROMEDIO_SR, AVANCE, PERIODOS,STATUS,CRETOT,CREPLAN, ADD){
     loscre=CRETOT;
 	if (parseInt(CRETOT)>parseInt(CREPLAN)) {loscre=CREPLAN;}
 	$("#cuerpoCons").append("<br/><div style=\"text-align:justify\">LA QUE SUSCRIBE, HACE CONSTAR, QUE SEGÚN EL ARCHIVO ESCOLAR, LA (EL) <strong>C."+
-	NOMBRE+"</strong> CON  MATRICULA <strong>"+MATRICULA+"</strong>, ES  "+STATUS+" EN EL SEMESTRE "+
-	PERIODOS+" DE "+CARRERAD+", EN EL PERIODO COMPRENDIDO DE "+
+	NOMBRE+"</strong> CON  MATRICULA <strong>"+MATRICULA+"</strong>, ES  "+STATUS+" EN EL "+dameCardinal(PERIODOS)+" SEMESTRE "+
+	" DE "+CARRERAD+", EN EL PERIODO COMPRENDIDO DE "+
 	CICL_INICIOR+" AL "+CICL_FINR+" CON UN PERÍODO VACACIONAL DE "+
 	CICL_VACINI+" AL "+CICL_VACFIN+", CUBRIENDO "+loscre+" DE UN TOTAL DE "+CREPLAN+" CRÉDITOS DEL PLAN DE ESTUDIOS, UN PROMEDIO DE "+
 	PROMEDIO_SR+" Y CON UN AVANCE DEL "+AVANCE+"%."+ADD+"</div>");
 }
+
 
 function dameSQLGen(matricula,elciclo) {
 	cad= "select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+

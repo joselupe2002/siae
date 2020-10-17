@@ -177,6 +177,15 @@ class UtilUser {
 		return $data;
 	}
 	
+
+	function dameCardinal($num){
+		$arr=["SINPERIODO","1ER","2DO","3ER","4TO","5TO","6TO","7MO","8VO","9NO","10MO"];
+		if (intval($num)>=11) {$res=$num."VO";}
+		else $res=$arr[$num];
+		return $res;
+	}
+
+
 	
 	function getConsecutivoDocumento($tipo,$elidControl){
 		$fecha_actual=date("d/m/Y");
