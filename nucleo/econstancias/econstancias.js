@@ -137,13 +137,37 @@ function creaEncabezado(consec,anio,clave){
 	"</table>");
 }
 
-function creaCuerpo (MATRICULA,NOMBRE,SEMESTRE,CARRERAD,CICL_INICIOR,CICL_FINR,CICL_VACINI, CICL_VACFIN,PROMEDIO_SR, AVANCE, PERIODOS,ADD){
+function creaCuerpo (MATRICULA,NOMBRE,SEMESTRE,CARRERAD,CICL_INICIOR,CICL_FINR,CICL_VACINI, 
+	                 CICL_VACFIN,PROMEDIO_SR, AVANCE, PERIODOS,STATUS,CRETOT,CREPLAN, ADD){
+    loscre=CRETOT;
+	if (parseInt(CRETOT)>parseInt(CREPLAN)) {loscre=CREPLAN;}
 	$("#cuerpoCons").append("<br/><div style=\"text-align:justify\">LA QUE SUSCRIBE, HACE CONSTAR, QUE SEGÚN EL ARCHIVO ESCOLAR, LA (EL) <strong>C."+
-	NOMBRE+"</strong> CON  MATRICULA <strong>"+MATRICULA+"</strong>, ESTA CURSANDO EL SEMESTRE "+
+	NOMBRE+"</strong> CON  MATRICULA <strong>"+MATRICULA+"</strong>, ES  "+STATUS+" EN EL SEMESTRE "+
 	PERIODOS+" DE "+CARRERAD+", EN EL PERIODO COMPRENDIDO DE "+
 	CICL_INICIOR+" AL "+CICL_FINR+" CON UN PERÍODO VACACIONAL DE "+
-	CICL_VACINI+" AL "+CICL_VACFIN+" Y PROMEDIO DE "+
-	PROMEDIO_SR+" CON UN AVANCE DEL "+AVANCE+"%."+ADD+"</div>");
+	CICL_VACINI+" AL "+CICL_VACFIN+", CUBRIENDO "+loscre+" DE UN TOTAL DE "+CREPLAN+" CRÉDITOS DEL PLAN DE ESTUDIOS, UN PROMEDIO DE "+
+	PROMEDIO_SR+" Y CON UN AVANCE DEL "+AVANCE+"%."+ADD+"</div>");
+}
+
+function dameSQLGen(matricula,elciclo) {
+	cad= "select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
+	" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
+	" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
+	" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
+	" round(getavanceCred('"+matricula+"'),0)  as AVANCE, "+
+	" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
+	" getPeriodos('"+matricula+"',(select MAX(ifnull(PDOCVE,0)) from dlista where ALUCTR='"+matricula+"')) AS PERIODOS,"+
+	" (SELECT CATA_DESCRIP FROM scatalogos where CATA_TIPO='STALUM' AND CATA_CLAVE=ALUM_ACTIVO) AS STATUS,"+
+	" (select SUM(a.CREDITO) from kardexcursadas a where a.MATRICULA='"+matricula+"') AS CRETOT, "+
+	" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
+	" (select SUM(a.CREDITO) from kardexcursadas a where a.MATRICULA='"+matricula+"' AND CERRADO='S' AND CAL>=70) AS CRETOT, "+
+	" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"' AND CERRADO='S' AND CAL>=70) AS CRECUR "+
+	" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
+	" CARR_CLAVE=ALUM_CARRERAREG"+
+	" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+
+	return (cad);
+	
 }
 
 
@@ -191,7 +215,7 @@ function creaConsCal (elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=(select MAX(ifnull(PDOCVE,0)) from dlista where ALUCTR='"+matricula+"');";
 			
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -200,33 +224,21 @@ function creaConsCal (elciclo,matricula,consec,anio){
 			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
-				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
-						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
-						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
-						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" round(getavanceCred('"+matricula+"'),0) as AVANCE, "+
-						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
-						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
-						" CARR_CLAVE=ALUM_CARRERAREG"+
-						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+				        elsqlAlu=dameSQLGen(matricula,elciclo);
 						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
 							type: "POST",
 							data:parametros3,
 							url:  "../base/getdatossqlSeg.php",
 							success: function(dataAlu){ 
-
-								
-
+						
 								jQuery.each(JSON.parse(dataAlu), function(claveAlu, valorAlu) { 
 					
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
 											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
-											   valorAlu.AVANCE,valorAlu.PERIODOS," CON LAS CALIFICACIONES QUE A CONTINUACION SE ENLISTAN:" );
+											   valorAlu.AVANCE,valorAlu.PERIODOS,
+											   valorAlu.STATUS,valorAlu.CRETOT,valorAlu.PLACRED, " CON LAS CALIFICACIONES QUE A CONTINUACION SE ENLISTAN:" );
 									
 									elsqlCal="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,"+ 
 									         "(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,"+
@@ -302,7 +314,8 @@ function creaConsHor(elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=(select MAX(ifnull(PDOCVE,0)) from dlista where ALUCTR='"+matricula+"');";
+
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
@@ -310,18 +323,7 @@ function creaConsHor(elciclo,matricula,consec,anio){
 			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
-				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
-						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
-						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
-						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" round(getavanceCred('"+matricula+"'),0)  as AVANCE, "+
-						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
-						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
-						" CARR_CLAVE=ALUM_CARRERAREG"+
-						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+				        elsqlAlu=dameSQLGen(matricula,elciclo);
 						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
 							type: "POST",
@@ -332,13 +334,15 @@ function creaConsHor(elciclo,matricula,consec,anio){
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
 											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
-											   valorAlu.AVANCE,valorAlu.PERIODOS," CON EL HORARIO QUE A CONTINUACION SE ENLISTAN:" );
+											   valorAlu.AVANCE,valorAlu.PERIODOS,
+											   valorAlu.STATUS,valorAlu.CRETOT,valorAlu.PLACRED," CON EL HORARIO QUE A CONTINUACION SE ENLISTAN:" );
 									
+											   alert (valorCic.CICL_CLAVE);
 									elsqlCal="select MATCVE,MATERIAD, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) as PROFESORD, GPOCVE, PDOCVE,CREDITOS, LUNES, MARTES, MIERCOLES,"+
 									"JUEVES, VIERNES, SABADO, (CASE WHEN REP = 1 THEN 'R' WHEN REP>1 THEN 'E' ELSE '' END )"+
 									" AS REP from vhorarioscons a "+
 									"left outer join pempleados i on (i.EMPL_NUMERO=LISTC15) "+
-									" where a.ALUCTR='"+matricula+"' AND a.PDOCVE='"+elciclo+"'";
+									" where a.ALUCTR='"+matricula+"' AND a.PDOCVE='"+valorCic.CICL_CLAVE+"'";
 									parametros4={sql:elsqlCal,dato:sessionStorage.co,bd:"Mysql"}
 									$.ajax({
 										type: "POST",
@@ -431,7 +435,7 @@ function creaConsPer(elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=(select MAX(ifnull(PDOCVE,0)) from dlista where ALUCTR='"+matricula+"');";
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}			
 			$.ajax({
 				type: "POST",
@@ -439,18 +443,7 @@ function creaConsPer(elciclo,matricula,consec,anio){
 			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
-				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
-						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
-						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
-						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" round(getavanceCred('"+matricula+"'),0)  as AVANCE, "+
-						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
-						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
-						" CARR_CLAVE=ALUM_CARRERAREG"+
-						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+				        elsqlAlu= elsqlAlu=dameSQLGen(matricula,elciclo);
 						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
 							type: "POST",
@@ -461,7 +454,8 @@ function creaConsPer(elciclo,matricula,consec,anio){
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
 											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
-											   valorAlu.AVANCE,valorAlu.PERIODOS," CON LAS CALIFICACIONES QUE A CONTINUACION SE ENLISTAN:" );
+											   valorAlu.AVANCE,valorAlu.PERIODOS,
+											   valorAlu.STATUS,valorAlu.CRETOT,valorAlu.PLACRED," CON LAS CALIFICACIONES QUE A CONTINUACION SE ENLISTAN:" );
 									
 									elsqlCal="SELECT MATRICULA, NOMBRE,MATERIA, MATERIAD, SEMESTRE,"+ 
 									"(CASE WHEN TIPOMAT='AC' THEN 'AC' WHEN TIPOMAT='SS' THEN 'AC' ELSE CAL END) AS CAL,"+
@@ -505,7 +499,7 @@ function creaConsIns(elciclo,matricula,consec,anio){
 		success: function(dataGen){ 
 			jQuery.each(JSON.parse(dataGen), function(claveGen, valorGen) { clave=valorGen.inst_claveof;});
 			creaEncabezado(consec,anio,clave);
-			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE='"+elciclo+"';";
+			elsqlCic="SELECT * FROM ciclosesc where CICL_CLAVE=(select MAX(ifnull(PDOCVE,0)) from dlista where ALUCTR='"+matricula+"');";
 			parametros2={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 				type: "POST",
@@ -513,18 +507,7 @@ function creaConsIns(elciclo,matricula,consec,anio){
 			    url:  "../base/getdatossqlSeg.php",
 			    success: function(dataCic){ 
 			        jQuery.each(JSON.parse(dataCic), function(claveCic, valorCic) { 
-				        elsqlAlu="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, "+
-						" ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, "+
-						" ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, "+
-						" PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,"+
-						" round(getavanceCred('"+matricula+"'),0)  as AVANCE, "+
-						" getPromedio('"+matricula+"','N') as PROMEDIO_SR,"+
-						" getPeriodos('"+matricula+"','"+elciclo+"') AS PERIODOS,"+
-						" getcuatrialum('"+matricula+"','"+elciclo+"') as SEMESTRE,"+
-						" (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO='"+elciclo+"' and a.MATRICULA='"+matricula+"') AS CRECUR "+
-						" from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where "+
-						" CARR_CLAVE=ALUM_CARRERAREG"+
-						" and ALUM_MAPA=d.MAPA_CLAVE and a.ALUM_MATRICULA='"+matricula+"'";
+				        elsqlAlu=dameSQLGen(matricula,elciclo);
 						parametros3={sql:elsqlAlu,dato:sessionStorage.co,bd:"Mysql"}
 			    		$.ajax({
 							type: "post",
@@ -535,7 +518,8 @@ function creaConsIns(elciclo,matricula,consec,anio){
 									creaCuerpo(valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.SEMESTRE,
 											   valorAlu.CARRERAD,valorCic.CICL_INICIOR,valorCic.CICL_FINR,
 											   valorCic.CICL_VACINI,valorCic.CICL_VACFIN,valorAlu.PROMEDIO_SR,
-											   valorAlu.AVANCE,valorAlu.PERIODOS,"" );
+											   valorAlu.AVANCE,valorAlu.PERIODOS,
+											   valorAlu.STATUS,valorAlu.CRETOT,valorAlu.PLACRED,"" );
 											   colocaPie(consec,valorAlu.ALUM_MATRICULA,valorAlu.NOMBRE,valorAlu.CARRERAD);
 											   exportHTML("htmlConst","CINS_"+valorAlu.ALUM_MATRICULA+".doc");	
 											   ocultarEspera("esperacons")	;
