@@ -58,9 +58,7 @@
 								<i class="ace-icon green fa fa-calendar-o bigger-100"></i><span class="btn-small"> Ver Calendario</span>            
 							</button>	
 
-							 <button title="Ver mi calendario de citas" onclick="generaCitas();" class="btn btn-white btn-info btn-round"> 
-								<i class="ace-icon blue fa fa-calendar bigger-100"></i><span class="btn-small"> Generar Citas</span>            
-							</button>								
+											
 																								 									
 						</div>
 		            </div> 
