@@ -285,38 +285,45 @@
                                  ));
 
 
-                $this->Ln(40);
-                $this->SetFont('Montserrat-Black','',10);   
+                $this->Ln(8);
+                $this->SetFont('Montserrat-Black','',8);   
                 $this->SetFillColor(172,31,8);
                 $this->SetTextColor(255);                     
-                $this->Cell(50,5,utf8_decode("Fecha Cita:"),1,0,'L',true);
+                $this->Cell(40,5,utf8_decode("Fecha Cita:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(120,5,utf8_decode($dataCita[0]["FECHA"]),1,0,'L',false);
+                $this->Cell(95,5,utf8_decode($dataCita[0]["FECHA"]),1,0,'L',false);
                 $this->Ln(5);
 
                 $this->SetTextColor(255);                     
-                $this->Cell(50,5,utf8_decode("Hora de Cita:"),1,0,'L',true);
+                $this->Cell(40,5,utf8_decode("Hora de Cita:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(120,5,utf8_decode($dataCita[0]["HORA"]),1,0,'L',false);
+                $this->Cell(95,5,utf8_decode($dataCita[0]["HORA"]),1,0,'L',false);
                 $this->Ln(5);
 
                 $this->SetTextColor(255);                     
-                $this->Cell(50,5,utf8_decode("Tiempo Atención:"),1,0,'L',true);
+                $this->Cell(40,5,utf8_decode("Tiempo Atención:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(120,5,utf8_decode($dataCita[0]["MINUTOS"]." Minutos"),1,0,'L',false);
+                $this->Cell(95,5,utf8_decode($dataCita[0]["MINUTOS"]." Minutos"),1,0,'L',false);
                 $this->Ln(5);
 
                 $this->SetTextColor(255);                     
-                $this->Cell(50,5,utf8_decode("Solicitante:"),1,0,'L',true);
+                $this->Cell(40,5,utf8_decode("Solicitante:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(120,5,utf8_decode($dataCita[0]["SOLICITANTE"]." ".$dataCita[0]["NOMBRE"]),1,0,'L',false);
+                $this->Cell(95,5,utf8_decode($dataCita[0]["SOLICITANTE"]." ".$dataCita[0]["NOMBRE"]),1,0,'L',false);
                 $this->Ln(5);
 
                 $this->SetTextColor(255);                     
-                $this->Cell(50,5,utf8_decode("Lugar:"),1,0,'L',true);
+                $this->Cell(40,5,utf8_decode("Lugar:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(120,5,utf8_decode($dataCita[0]["LUGAR"]),1,0,'L',false);
+                $this->Cell(95,5,utf8_decode($dataCita[0]["LUGAR"]),1,0,'L',false);
                 $this->Ln(5);
+
+                $this->SetTextColor(255);                     
+                $this->Cell(40,5,utf8_decode("Nota:"),1,0,'L',true);
+                $this->SetTextColor(0);  
+                $this->Cell(95,5,utf8_decode($dataCita[0]["OBS"]),1,0,'L',false);
+                $this->Ln(10);
+
 
                 $this->SetTextColor(255);                     
                 $this->Cell(170,5,utf8_decode("REQUISITOS:"),1,0,'C',true);
@@ -330,11 +337,24 @@
                 $this->Row(array( utf8_decode($dataCita[0]["REQUISITOS"])                                          
                                  ));
 
+                $this->SetTextColor(255);                     
+                $this->Cell(170,5,utf8_decode("NOTA / OBSERVACIONES:"),1,0,'C',true);
+                $this->SetTextColor(0);  
+                $this->Ln(5);
+               
+                             
+                $this->SetFont('Montserrat-Medium','',10);       
+                $this->SetFillColor(172,31,6);
+                $this->SetTextColor(0);
+                $this->SetWidths(array(170));
+                $this->Row(array( utf8_decode($dataCita[0]["NOTA"])                                          
+                                ));
+
                 $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataCita[0]["ID"]).
                 str_replace(" ","|",$dataCita[0]["SOLICITANTE"])."|".str_replace(" ","|",$dataCita[0]["NOMBRE"]);
          
          
-                $this->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,63,35,35);         
+                $this->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,62,35,35);         
 
 
             }
