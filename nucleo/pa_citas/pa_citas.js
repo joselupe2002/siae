@@ -137,7 +137,7 @@ function cargamosCitas() {
 
 function agendarCita(calEvent,jsEvent,view){
 	elid=calEvent.id;
-	elsql="SELECT * from ci_citas where ID='"+elid+"'";
+	elsql="SELECT * from vci_citas where ID='"+elid+"'";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	mostrarEspera("esperahor","grid_pa_citas","Cargando Datos...");
 	$.ajax({
@@ -146,6 +146,8 @@ function agendarCita(calEvent,jsEvent,view){
 		url:  "../base/getdatossqlSeg.php",
 		success: function(data){  
 			losdatos=JSON.parse(data);
+		 	elas=losdatos[0]["PREGADD"];
+			if (losdatos[0]["PREGADD"]=="") {elas="Asunto a Tratar:"}
 			termina=convierteHHHMM(parseInt(losdatos[0]["HORA2"])+parseInt(losdatos[0]["MINUTOS"]));
 			var modal = 
 			'<div class="modal fade">\
@@ -157,7 +159,7 @@ function agendarCita(calEvent,jsEvent,view){
 				<div class=\"row\">\
 							<div class="col-sm-12">\
 								<h4  class="fontRobotoB">Cita: <span class="text-success">'+losdatos[0]["FECHA"]+'</span> DE: <span class="text-primary">'+losdatos[0]["HORA"]+'</span> A: <span class="text-danger">'+termina+'</span> </h4>\
-								<br><label  class="fontRobotoB">Asunto a tratar</label>\
+								<br><label  class="fontRobotoB">'+elas+'</label>\
 								<textarea  id="obs"   style="width:100%; height:50px;"></textarea>\
 							</div>\
 						</div>\
