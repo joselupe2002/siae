@@ -218,6 +218,7 @@ function guardarCita(elid){
 					url:"../base/actualiza.php",
 					data: parametros,
 					success: function(data){	
+						alert (data+"|"+$("#obs").val());
 						elsql="SELECT a.*, count(*) AS hay from vci_citas  a where ID='"+elid+"'";
 						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 						mostrarEspera("esperahor","grid_pa_citas","Cargando Datos...");
