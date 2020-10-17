@@ -319,6 +319,12 @@
                 $this->Ln(5);
 
                 $this->SetTextColor(255);                     
+                $this->Cell(40,5,utf8_decode("Atiende:"),1,0,'L',true);
+                $this->SetTextColor(0);  
+                $this->Cell(130,5,utf8_decode($dataCita[0]["RESPONSABLED"]),1,0,'L',false);
+                $this->Ln(5);
+
+                $this->SetTextColor(255);                     
                 $this->Cell(40,5,utf8_decode("Nota:"),1,0,'L',true);
                 $this->SetTextColor(0);  
                 $this->Cell(130,5,utf8_decode($dataCita[0]["OBS"]),1,0,'L',false);
