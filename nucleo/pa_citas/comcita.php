@@ -268,17 +268,17 @@
                 $this->SetFont('Montserrat-Black','',8);   
                 $this->SetFillColor(172,31,8);
                 $this->SetTextColor(255);     
-                $this->SetX(60);                   
-                $this->Cell(30,5,utf8_decode("No. de Cita"),1,0,'C',true);
+                $this->SetX(45);                   
+                $this->Cell(10,5,utf8_decode("#Cita"),1,0,'C',true);
                 $this->Cell(70,5,utf8_decode("COMPROBANTE DE CITA"),'TLR',0,'C',true);
                 $this->Cell(30,5,utf8_decode("Fecha Impresión:"),1,0,'C',true);
                 $this->Ln(5);
 
-                $this->SetFont('Montserrat-Medium','',10);       
+                $this->SetFont('Montserrat-Medium','',8);       
                 $this->SetFillColor(172,31,6);
                 $this->SetTextColor(0);
-                $this->setX(60);
-                $this->SetWidths(array(30,70,30));
+                $this->setX(45);
+                $this->SetWidths(array(10,70,30));
                 $this->Row(array( utf8_decode($dataCita[0]["ID"]), 
                                   utf8_decode($dataCita[0]["TRAMITED"]),
                                   utf8_decode($fecha)                     
@@ -309,19 +309,19 @@
                 $this->SetTextColor(255);                     
                 $this->Cell(40,5,utf8_decode("Solicitante:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(95,5,utf8_decode($dataCita[0]["SOLICITANTE"]." ".$dataCita[0]["NOMBRE"]),1,0,'L',false);
+                $this->Cell(130,5,utf8_decode($dataCita[0]["SOLICITANTE"]." ".$dataCita[0]["NOMBRE"]),1,0,'L',false);
                 $this->Ln(5);
 
                 $this->SetTextColor(255);                     
                 $this->Cell(40,5,utf8_decode("Lugar:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(95,5,utf8_decode($dataCita[0]["LUGAR"]),1,0,'L',false);
+                $this->Cell(130,5,utf8_decode($dataCita[0]["LUGAR"]),1,0,'L',false);
                 $this->Ln(5);
 
                 $this->SetTextColor(255);                     
                 $this->Cell(40,5,utf8_decode("Nota:"),1,0,'L',true);
                 $this->SetTextColor(0);  
-                $this->Cell(95,5,utf8_decode($dataCita[0]["OBS"]),1,0,'L',false);
+                $this->Cell(130,5,utf8_decode($dataCita[0]["OBS"]),1,0,'L',false);
                 $this->Ln(10);
 
 
@@ -354,7 +354,7 @@
                 str_replace(" ","|",$dataCita[0]["SOLICITANTE"])."|".str_replace(" ","|",$dataCita[0]["NOMBRE"]);
          
          
-                $this->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,62,35,35);         
+                $this->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,40,35,35);         
 
 
             }
