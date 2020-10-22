@@ -5,7 +5,6 @@ function ALUM_MATRICULAclicadd(DATO, usuario, institucion, campus){
 	var elanio=hoy.getFullYear();
 	elaniomat=elanio.toString().substring(2,4)
    if (confirm("¿Seguro que desea consumir un consecutivo del año "+elanio+"?")) {
-
 		$.ajax({
 					type: "POST",
 					url:"../base/getConsecutivo.php?tabla=econsoficial&campok=concat(TIPO,ANIO)&campocons=CONSECUTIVO&valork=MATRICULA"+elanio,

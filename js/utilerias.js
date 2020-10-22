@@ -4,6 +4,9 @@ function dameMesLetra(nummes) {
 		var meses=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
         return meses[nummes-1];
 	}
+
+
+
 	
 	function utf8Encode(unicodeString) {
 		    if (typeof unicodeString != 'string') throw new TypeError('parameter ‘unicodeString’ is not a string');
@@ -784,6 +787,14 @@ function dameFecha(tipo,dias){
 
 }
 
+
+function fechaLetra(fecha){
+	eldia=fecha.substr(0,2);
+	elmes=fecha.substr(3,2);
+	elanio=fecha.substr(6,4);
+	return eldia+ " de " +dameMesLetra(elmes).toLowerCase()+" del "+elanio;
+
+}
 
 
 function fechaJava(fecha){
