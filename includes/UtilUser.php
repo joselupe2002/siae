@@ -410,10 +410,11 @@ class UtilUser {
 	public function  getEncabezado($pdf,$orienta){
 		$left2=120; $left3=180;
 		if ($orienta=='H') {$left2=210; $left3=260;}
+		$pdf->Image('../../imagenes/empresa/fondo.png',0,0,187,275);
 		$pdf->Image('../../imagenes/empresa/enc1.png',20,8,85);
 		$pdf->Image('../../imagenes/empresa/enc2.png',$left2,6,40);
 		$pdf->Image('../../imagenes/empresa/enc3.png',$left3,8,10);
-		$pdf->Image('../../imagenes/empresa/fondo.png',0,0,187,275);
+		
 		
 		$pdf->AddFont('Montserrat-Black','B','Montserrat-Black.php');
 		$pdf->AddFont('Montserrat-Black','','Montserrat-Black.php');
