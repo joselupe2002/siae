@@ -85,7 +85,8 @@ function inscribir(id){
 				 bd:"Mysql",	
 				 PERSONA:usuario,
 				 EVENTO:id,
-				 FECHAUS:lafecha,			
+				 FECHAUS:lafecha,	
+				 TIPO:"ASISTENTE",	
 				 USUARIO:usuario,
 				 _INSTITUCION:institucion,
 				 _CAMPUS:campus	 			 
