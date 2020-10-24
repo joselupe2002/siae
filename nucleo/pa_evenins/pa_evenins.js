@@ -20,7 +20,7 @@ contMat=1;
 function cargarInformacion(){
 
 	mostrarEspera("esperaInf","grid_avisos","Cargando Datos...");
-	cadSql="select x.ID, X.FOTOACTIVIDAD, x.ENLACE, x.DESCRIPCION, x.FECHA, x.HORA, (select count(*) from eventos_ins where EVENTO=x.ID and PERSONA='"+usuario+"') as INSCRITO "+
+	cadSql="select x.ID, x.FOTOACTIVIDAD, x.ENLACE, x.DESCRIPCION, x.FECHA, x.HORA, (select count(*) from eventos_ins where EVENTO=x.ID and PERSONA='"+usuario+"') as INSCRITO "+
 	" from eeventos x, eeventosprin y, vepersonas z where "+
 	" x.EVENTO=y.ID AND STR_TO_DATE(x.FECHA,'%d/%m/%Y')>now() and x.TITULAR=z.ID";
 	
@@ -56,7 +56,7 @@ function generaTabla(grid_data){
 		$("#principal").append("<div  class=\"profile-activity clearfix\"> "+
 							   "      <div class=\"row\">"+
 							   "        <div class=\"fontRobotoB col-sm-1\">"+
-							   "                  <img style=\"width:300px;\" src=\""+valor.FOTOACTIVIDAD+"\"/> "+							   
+							   "                  <img  src=\""+valor.FOTOACTIVIDAD+"\"/>"+							   
 							   "         </div>"+
 							   "         <div class=\"fontRobotoB col-sm-8 bigger-80 text-success\">"+
 							   "             <span class=\"fontRoboto bigger-150 text-primary\">"+valor.DESCRIPCION+"</span>"+"<br>"+
