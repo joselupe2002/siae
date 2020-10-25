@@ -6,12 +6,11 @@
 function verconstancia(modulo,id,tipo){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {		
-		if (table.rows('.selected').data()[0]["FOLIO"]!="") {
+		
 			elid=table.rows('.selected').data()[0][0];
 			window.open("../eventos_ins/constancia.php?id="+id+"&tipo="+tipo, '_blank');
 			return false;
-		}
-		else {alert ("Debe asignar consecutivo para poder ver la Constancia");}
+	
 	}
 	else {
 		alert ("Debe seleccionar un registro");
