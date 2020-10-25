@@ -197,7 +197,6 @@
 		$pdf->SetFont('Montserrat-Medium','',11);
 		$pdf->MultiCell(170,5,utf8_decode(strtoupper($data[0]["LEYENDA"])),0,'C', false);
 
-		
 
 		$miutil = new UtilUser();
 		$fechadec=$miutil->formatFecha($data[0]["FECHAEXP"]);
@@ -225,7 +224,7 @@
 		$pdf->Image('../../imagenes/empresa/logo3.png',160,255,35);
 
 		
-		if ($_GET["tipo"]=="1") {
+		if (($_GET["tipo"]=='1') || ($_GET["tipo"]=='2'))  {
 			if (!empty($data[0]["IMGFIRMA"])) { $lafirma = file_get_contents($data[0]["IMGFIRMA"]); $pdf->MemImage($lafirma,95,210,50);}
 			if (!empty($data[0]["IMGSELLO"])) { $lafirma = file_get_contents($data[0]["IMGSELLO"]); $pdf->MemImage($lafirma,170,205,40);}
 		}
