@@ -183,6 +183,9 @@
 		$pdf->Cell(0,0,"CONSTANCIA",0,1,'C');
 		$pdf->ln(20);
 		
+		$pdf->Output();
+		/*
+		
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('Montserrat-ExtraBold','B',20);
 		$pdf->Cell(0,0,"AL ",0,0,'C');
@@ -203,8 +206,7 @@
 		$pdf->Cell(0,0,$lafecha,0,1,'R', false);
 
 
-		$pdf->Output();
-		/*
+		
 
 
 		//Logo del Evento 
