@@ -161,6 +161,8 @@ function DesAutorizarTodos(modulo,usuario,institucion, campus,essuper){
 function autorizarReg(lafila,modulo,institucion, campus, valor,usuario) {
 	res="";
 	lafecha=dameFecha("FECHAHORA");
+	if (valor=='N'){lafecha="";}
+
 	var table = $("#G_"+modulo).DataTable();	
 	parametros={
 		tabla:"eventos_ins",
@@ -181,7 +183,7 @@ function autorizarReg(lafila,modulo,institucion, campus, valor,usuario) {
 			    else {$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
         			        	
         		elReg++;
-				if (nreg>elReg) {autorizarReg(table.rows(elReg).data(),modulo,institucion,campus, valor);}
+				if (nreg>elReg) {autorizarReg(table.rows(elReg).data(),modulo,institucion,campus, valor,usuario);}
 				if (nreg==elReg) { window.parent.document.getElementById('FReventos_ins').contentWindow.location.reload();}
 			 }					     
           });    	            
