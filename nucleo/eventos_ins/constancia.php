@@ -189,8 +189,8 @@
 		$pdf->SetFont('Montserrat-ExtraBold','B',20);
 		$pdf->Cell(0,0,"AL ",0,0,'C');
 		$pdf->ln(10);
-		$pdf->SetFont('Montserrat-ExtraBold','B',24);
-		$pdf->Cell(0,1,utf8_decode($data[0]["GRADO"]." ".$data[0]["NOMBRE"]),0,1,'C');
+		$pdf->SetFont('Montserrat-ExtraBold','B',22);
+		$pdf->MultiCell(170,1,utf8_decode($data[0]["GRADO"]." ".$data[0]["NOMBRE"]),0,'C');
 	
 
 		$pdf->ln(15);
