@@ -153,12 +153,12 @@ function DesAutorizarTodos(modulo,usuario,institucion, campus,essuper){
 	table.rows().iterator('row', function(context, index){
 		 nreg++;		    
 	});
-		autorizarReg(table.rows(elReg).data(), modulo,institucion,campus,'N');
+		autorizarReg(table.rows(elReg).data(), modulo,institucion,campus,'N',usuario);
 }
 
 
 
-function autorizarReg(lafila,modulo,institucion, campus, valor) {
+function autorizarReg(lafila,modulo,institucion, campus, valor,usuario) {
 	res="";
 	lafecha=dameFecha("FECHAHORA");
 	var table = $("#G_"+modulo).DataTable();	
