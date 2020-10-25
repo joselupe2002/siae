@@ -161,7 +161,8 @@ function DesAutorizarTodos(modulo,usuario,institucion, campus,essuper){
 function autorizarReg(lafila,modulo,institucion, campus, valor,usuario) {
 	res="";
 	lafecha=dameFecha("FECHAHORA");
-	if (valor=='N'){lafecha="";}
+	eluser=usuario;
+	if (valor=='N'){lafecha=""; eluser="";}
 
 	var table = $("#G_"+modulo).DataTable();	
 	parametros={
@@ -171,7 +172,7 @@ function autorizarReg(lafila,modulo,institucion, campus, valor,usuario) {
 		valorllave:lafila[0][0],
 		AUTORIZADO: valor,
 		FECHAAUT:lafecha,
-		USERAUTORIZO:usuario
+		USERAUTORIZO:eluser
 	};
     $.ajax({type: "POST",
         	url:"actualiza.php",
