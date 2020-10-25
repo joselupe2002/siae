@@ -193,7 +193,7 @@
 		$pdf->MultiCell(170,10,utf8_decode(strtoupper($data[0]["GRADO"])." ".strtoupper($data[0]["NOMBRE"])),0,'C');
 	
 
-		$pdf->ln(15);
+		$pdf->ln(10);
 		$pdf->SetFont('Montserrat-Medium','',11);
 		$pdf->MultiCell(170,5,utf8_decode(strtoupper($data[0]["LEYENDA"])),0,'C', false);
 
