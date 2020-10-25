@@ -183,9 +183,8 @@
 		$pdf->Cell(0,0,"CONSTANCIA",0,1,'C');
 		$pdf->ln(20);
 		
-		$pdf->Output();
-		/*
 		
+
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('Montserrat-ExtraBold','B',20);
 		$pdf->Cell(0,0,"AL ",0,0,'C');
@@ -197,6 +196,9 @@
 		$pdf->SetFont('Montserrat-Medium','',11);
 		$pdf->MultiCell(170,5,utf8_decode(mb_strtoupper($data[0]["LEYENDA"])),0,'C', false);
 
+		$pdf->Output();
+		/*
+		
 		$miutil = new UtilUser();
 		$fechadec=$miutil->formatFecha($data[0]["FECHAEXP"]);
 		$lafecha="MACUSPANA, TABASCO A ".date("d", strtotime($fechadec))." DE ".strtoupper($miutil->getFecha($fechadec,'MES')). " DEL ".date("Y", strtotime($fechadec));
