@@ -167,7 +167,7 @@
 		$pdf->AddFont('Montserrat-ExtraLight','I','Montserrat-ExtraLight.php');
 		$pdf->AddFont('Montserrat-ExtraLight','','Montserrat-ExtraLight.php');
 		$pdf->Output();
-		/*
+		
 		$pdf->SetFont('Montserrat-ExtraBold','B',18);
 		$pdf->setY(50);
 		$pdf->Cell(0,0,utf8_decode("EL TECNOLÓGICO NACIONAL DE MÉXICO"),0,1,'C');
@@ -202,6 +202,7 @@
 		$pdf->SetFont('Montserrat-ExtraLight','',10);
 		$pdf->Cell(0,0,$lafecha,0,1,'R', false);
 
+		/*
 
 
 		//Logo del Evento 
