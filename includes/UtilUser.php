@@ -42,7 +42,7 @@ class UtilUser {
 		$mail->CharSet = 'UTF-8';
 		
 		if (!($adj1=="")) {
-			 $mail->AddStringAttachment($adj1, 'oficio.pdf', 'base64', 'application/pdf');
+			 $mail->AddStringAttachment($adj1, 'documento.pdf', 'base64', 'application/pdf');
 		}
 		
 //		$mail->AddAttachment($adj1,$adj1);

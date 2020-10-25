@@ -400,6 +400,35 @@ function mostrarConfirm2 (nombre,contenedor, titulo, mensajeInfo,mensajebtn, eve
 }
 
 
+function mostrarVentanaCierre (nombre,contenedor, titulo, mensajeInfo,mensajebtn, eventoConfirm,tam){
+	$("#"+nombre).remove();
+	tamMsj="110";
+	if (tam="modal-lg") {tamMsj="160";} 
+	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog "+tam+"\" role=\"dialog\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-info\" >"+
+			   "                  <span><i class=\"menu-icon green fa-2x fa fa-info\"></i>"+
+			   "                        <span class=\"text-success lead \"> <strong>"+titulo+"</strong></span>"+
+			   "                  </span>"+
+			   "                  <button type=\"button\" class=\"close\" onclick=\"cierraModal();\"  data-dismiss=\"modal\" aria-label=\"Close\"> "+
+               "                        <span aria-hidden=\"true\">&times;</span> "+
+               "                  </button> "+
+    		   "             </div>"+
+			   "             <div class=\"modal-body\">"+
+			                        mensajeInfo+
+			   "             </div>"+     
+			   "             <div class=\"modal-footer\"> "+               
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-danger btn-round\"onclick=\"cierraModal();\" >Cancelar</button>"+
+			   "                  <button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" onclick=\""+eventoConfirm+"\"><strong>"+mensajebtn+"</strong></button>"+
+               "             </div>"+
+               "         </div>"+
+               "   </div>"+
+               "</div>";
+	$("#"+contenedor).append(script);
+	$('#'+nombre).modal({show:true, backdrop: 'static'});
+}
+
 function mostrarIfo(nombre,contenedor, titulo, mensajeInfo,tam){
 	tamMsj="110";
 	$("#"+nombre).remove();
@@ -463,6 +492,32 @@ function ocultarEspera (nombre){
 	$('#'+nombre).modal("hide");  
 }
 
+function agregarDialogResultado(modulo){
+	script="<div id=\"dlg-resultados\" class=\"hide\">"+
+               "<textarea id=\"resul\" style=\"width: 100%; height: 100%; font-size: 10px;\"> </textarea>"+
+           "</div>";
+	if (! ( $("#dlg-resultados").length )) {
+	    $("#grid_"+modulo).append(script);
+	    }
+	var dialog = $( "#dlg-resultados" ).removeClass('hide').dialog({
+        modal: true,
+        title: "Resultados...",
+        width: 400,
+        height: 400,
+		title_html: true,
+        buttons: [
+            {
+                text: "OK",
+                "class" : "btn btn-primary btn-minier",
+                click: function() {
+					window.parent.document.getElementById('FR'+modulo).contentWindow.location.reload();
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+	$('#resul').val("");
+}
 
 
 /*================================================FUNCION PAR AGENERA TABLA CON BUSQUEDA=================================================*/

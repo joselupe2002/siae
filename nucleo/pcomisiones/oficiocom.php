@@ -113,10 +113,7 @@
 		
 		$depto=$miUtil->getDatoEmpl($data[0]["COMI_AUTORIZO"],"EMPL_DEPTO");
 		$elpsto=$miUtil->getDatoEmpl($data[0]["COMI_PROFESOR"],"EMPL_FIRMAOF");
-		
-		
-		
-		
+	
 		
 		$dataof=$miutil->verificaOficio($depto,"COMISION",$_GET["ID"]);
 		
