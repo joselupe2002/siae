@@ -166,7 +166,8 @@
 		$pdf->AddFont('Montserrat-ExtraBold','I','Montserrat-ExtraBold.php');
 		$pdf->AddFont('Montserrat-ExtraLight','I','Montserrat-ExtraLight.php');
 		$pdf->AddFont('Montserrat-ExtraLight','','Montserrat-ExtraLight.php');
-
+		$pdf->Output();
+		/*
 		$pdf->SetFont('Montserrat-ExtraBold','B',18);
 		$pdf->setY(50);
 		$pdf->Cell(0,0,utf8_decode("EL TECNOLÓGICO NACIONAL DE MÉXICO"),0,1,'C');
@@ -235,7 +236,7 @@
 		$pdf->Cell(0,0,utf8_decode($data[0]["FOLIO"]),0,1,'R', false);
 
 
-		if (($_GET["tipo"]=='0') ||($_GET["tipo"]=='1'))  { $pdf->Output(); }
+		if (($_GET["tipo"]=='0') || ($_GET["tipo"]=='1'))  { $pdf->Output(); }
 		if ($_GET["tipo"]=='2') {
 			$doc = $pdf->Output('', 'S');
 			?>
@@ -267,9 +268,7 @@
 						$miConex = new Conexion();
 						$res=$miConex->afectaSQL($_SESSION['bd'],"UPDATE eventos_ins set ENVIADA='S' where ID='".$_GET["id"]."'");
 						echo "resultado:".$res;
-			
-
 				
-		}
+		}*/
  
  ?>
