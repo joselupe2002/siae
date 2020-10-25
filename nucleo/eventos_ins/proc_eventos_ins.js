@@ -31,7 +31,11 @@ function constancia(modulo,usuario,institucion, campus,essuper){
 			"</i><span class=\"btn-small\"></span> Constancia</button><br/>"+
 			"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','1');\" "+
 			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon blue glyphicon glyphicon-qrcode bigger-140\">"+
-			"</i><span class=\"btn-small\"></span> Constancia firmada</button><br/>"+
+			"</i><span class=\"btn-small\"></span> Constancia firmada</button><br/>"+				
+		"</div>"+
+		"<div class=\"col-sm-4\">"+	
+		"</div>"+
+		"<div class=\"col-sm-4\">"+		
 			"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','2');\" "+
 			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon pink glyphicon glyphicon-envelope bigger-140\">"+
 			"</i><span class=\"btn-small\"></span> Enviar Constancia</button><br/>"+		

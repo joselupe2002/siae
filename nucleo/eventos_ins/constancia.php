@@ -242,6 +242,13 @@
 		$pdf->Cell(0,0,utf8_decode($data[0]["FOLIO"]),0,1,'R', false);
 
 
+		 //CODIGO QR
+		 $cadena= "CONS:".$data[0]["FOLIO"]."|".$data[0]["TIPO"]."|".str_replace(" ","|",$data[0]["NOMBRE"])."|".
+		 str_replace(" ","|",$data[0]["FECHAEXP"]);   
+		 $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',20,200,30,30);     
+
+		 
+
 		if (($_GET["tipo"]=='0') || ($_GET["tipo"]=='1'))  { $pdf->Output(); }
 		if ($_GET["tipo"]=='2') {
 			$doc = $pdf->Output('', 'S');
