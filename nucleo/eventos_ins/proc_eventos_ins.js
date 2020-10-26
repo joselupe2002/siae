@@ -7,10 +7,25 @@ function verconstancia(modulo,id,tipo){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {		
 		
-			elid=table.rows('.selected').data()[0][0];
-			window.open("../eventos_ins/constancia.php?id="+id+"&tipo="+tipo, '_blank');
-			return false;
-	
+				elid=table.rows('.selected').data()[0][0];
+				window.open("../eventos_ins/constancia.php?id="+id+"&tipo="+tipo, '_blank');
+				return false;	
+		
+	}
+	else {
+		alert ("Debe seleccionar un registro");
+		return 0;
+		}
+}
+
+
+function previewConstancia(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {		
+		
+				elid=table.rows('.selected').data()[0][0];
+				window.open("../eventos_ins/constancia.php?id="+elid+"&tipo=1", '_blank');
+				return false;			
 	}
 	else {
 		alert ("Debe seleccionar un registro");
@@ -22,25 +37,29 @@ function verconstancia(modulo,id,tipo){
 
 function constancia(modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
-	mostrarIfo("lasconst", "grid_"+modulo,  "Constancias",
-	"<div class=\"row\" style=\"text-align:left;\">"+
-		"<div class=\"col-sm-4\">"+
-			"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','0');\" "+
-			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon  blue glyphicon glyphicon-hand-right bigger-140\">"+
-			"</i><span class=\"btn-small\"></span> Constancia</button><br/>"+
-			"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','1');\" "+
-			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon blue glyphicon glyphicon-qrcode bigger-140\">"+
-			"</i><span class=\"btn-small\"></span> Constancia firmada</button><br/>"+				
-		"</div>"+
-		"<div class=\"col-sm-4\">"+	
-		"</div>"+
-		"<div class=\"col-sm-4\">"+		
-			"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','2');\" "+
-			" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon pink glyphicon glyphicon-envelope bigger-140\">"+
-			"</i><span class=\"btn-small\"></span> Enviar Constancia</button><br/>"+		
-		"</div>"+
-	"</div>"
-	,"modal-sm");
+	if (table.rows('.selected').data()[0]["AUTORIZADO"]=='S') {
+			mostrarIfo("lasconst", "grid_"+modulo,  "Constancias",
+			"<div class=\"row\" style=\"text-align:left;\">"+
+				"<div class=\"col-sm-4\">"+
+					"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','0');\" "+
+					" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon  blue glyphicon glyphicon-hand-right bigger-140\">"+
+					"</i><span class=\"btn-small\"></span> Constancia</button><br/>"+
+					"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','1');\" "+
+					" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon blue glyphicon glyphicon-qrcode bigger-140\">"+
+					"</i><span class=\"btn-small\"></span> Constancia firmada</button><br/>"+				
+				"</div>"+
+				"<div class=\"col-sm-4\">"+	
+				"</div>"+
+				"<div class=\"col-sm-4\">"+		
+					"<button style=\"width:100%; text-align:left;\" onclick=\"verconstancia('"+modulo+"','"+table.rows('.selected').data()[0]["ID"]+"','2');\" "+
+					" class=\"btn btn-white btn-info btn-round\"><i class=\"ace-icon pink glyphicon glyphicon-envelope bigger-140\">"+
+					"</i><span class=\"btn-small\"></span> Enviar Constancia</button><br/>"+		
+				"</div>"+
+			"</div>"
+			,"modal-sm");}
+	else {
+		alert ("Para poder generar una constancia se necesita que este autorizada");
+	}
 }
 
 
@@ -49,25 +68,34 @@ function constancia(modulo,usuario,institucion, campus,essuper){
 function generarConstancia(lafila,modulo,institucion, campus, valor) {
 	res="";
 	var table = $("#G_"+modulo).DataTable();	
+	
 	parametros={
 		bd:"Mysql",
 		id:lafila[0][0],
 		tipo: 2
 	};
-    $.ajax({type: "GET",
-        	url:"../eventos_ins/constancia.php",
-        	data: parametros,
-        	success: function(data){        			        	
-                if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
-			        $('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se envio constancia "+lafila[0]["ID"]+" "+lafila[0]["NOMBRE"]+" correctamente \n"); 
-				    }	
-			    else {$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
-        			        	
-        		elReg++;
-				if (nreg>elReg) {generarConstancia(table.rows(elReg).data(),modulo,institucion,campus, valor);}
-				if (nreg==elReg) { window.parent.document.getElementById('FReventos_ins').contentWindow.location.reload();}
-			 }					     
-          });    	            
+	if (lafila[0]["AUTORIZADO"]=='S') {
+			$.ajax({type: "GET",
+					url:"../eventos_ins/constancia.php",
+					data: parametros,
+					success: function(data){        			        	
+						if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
+							$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se envio constancia "+lafila[0]["ID"]+" "+lafila[0]["NOMBRE"]+" correctamente \n"); 
+							}	
+						else {$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
+										
+						elReg++;
+						if (nreg>elReg) {generarConstancia(table.rows(elReg).data(),modulo,institucion,campus, valor);}
+						if (nreg==elReg) { window.parent.document.getElementById('FReventos_ins').contentWindow.location.reload();}
+					}					     
+				}); 
+			}
+	else {
+		$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" ERROR "+lafila[0]["ID"]+" "+lafila[0]["NOMBRE"]+" NO SE ENCUENTRA AUTORIZADO \n"); 
+		elReg++;
+		if (nreg>elReg) {generarConstancia(table.rows(elReg).data(),modulo,institucion,campus, valor);}
+		if (nreg==elReg) { window.parent.document.getElementById('FReventos_ins').contentWindow.location.reload();}
+	}   	            
 }
 
 
