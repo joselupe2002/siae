@@ -175,12 +175,14 @@
 		$pdf->SetFont('Montserrat-ExtraBold','B',14);
 		$pdf->Cell(0,0,utf8_decode("A TRAVÉS DEL INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA"),0,1,'C');
 		//$pdf->SetTextColor(5,27,149);
+
+		if ($data[0]["TIPO"]=='TITULAR') {$ot="OTORGA EL PRESENTE"; $ti="RECONOCIMIENTO"; } else {$ot="OTORGA LA PRESENTE"; $ti="CONSTANCIA";}
 		$pdf->ln(15);
-		$pdf->Cell(0,0,"ORTORGA LA PRESENTE:",0,1,'C');
+		$pdf->Cell(0,0,$ot,0,1,'C');
 		$pdf->SetFont('Montserrat-Medium','B',14);
 		$pdf->ln(30);
 		$pdf->SetFont('Montserrat-ExtraBold','B',30);
-		$pdf->Cell(0,0,"CONSTANCIA",0,1,'C');
+		$pdf->Cell(0,0,$ti,0,1,'C');
 		$pdf->ln(20);
 		
 		
@@ -193,7 +195,7 @@
 		$pdf->MultiCell(170,10,utf8_decode(strtoupper($data[0]["GRADO"])." ".strtoupper($data[0]["NOMBRE"])),0,'C');
 	
 
-		$pdf->ln(10);
+		$pdf->ln(5);
 		$pdf->SetFont('Montserrat-Medium','',11);
 		$pdf->MultiCell(170,5,utf8_decode(strtoupper($data[0]["LEYENDA"])),0,'C', false);
 
@@ -225,7 +227,7 @@
 
 		
 		if (($_GET["tipo"]=='1') || ($_GET["tipo"]=='2'))  {
-			if (!empty($data[0]["IMGFIRMA"])) { $lafirma = file_get_contents($data[0]["IMGFIRMA"]); $pdf->MemImage($lafirma,95,210,50);}
+			if (!empty($data[0]["IMGFIRMA"])) { $lafirma = file_get_contents($data[0]["IMGFIRMA"]); $pdf->MemImage($lafirma,80,210,70);}
 			if (!empty($data[0]["IMGSELLO"])) { $lafirma = file_get_contents($data[0]["IMGSELLO"]); $pdf->MemImage($lafirma,170,205,40);}
 		}
 
