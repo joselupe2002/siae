@@ -5,12 +5,11 @@
 
 function verconstancia(modulo,id,tipo){
 	table = $("#G_"+modulo).DataTable();
-	if (table.rows('.selected').data().length>0) {		
-		
-				elid=table.rows('.selected').data()[0][0];
-				window.open("../eventos_ins/constancia.php?id="+id+"&tipo="+tipo, '_blank');
-				return false;	
-		
+	if (table.rows('.selected').data().length>0) {				
+				elid=table.rows('.selected').data()[0][0];				
+				enlace=("nucleo/eventos_ins/constancia.php?id="+id+"&tipo="+tipo);
+				abrirPesta(enlace,"Constancia");
+				return false;			
 	}
 	else {
 		alert ("Debe seleccionar un registro");
@@ -24,7 +23,8 @@ function previewConstancia(modulo,usuario,institucion, campus,essuper){
 	if (table.rows('.selected').data().length>0) {		
 		
 				elid=table.rows('.selected').data()[0][0];
-				window.open("../eventos_ins/constancia.php?id="+elid+"&tipo=1", '_blank');
+				enlace=("nucleo/eventos_ins/constancia.php?id="+elid+"&tipo=1");
+				abrirPesta(enlace,"Constancia");
 				return false;			
 	}
 	else {

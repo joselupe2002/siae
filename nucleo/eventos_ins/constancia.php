@@ -167,7 +167,14 @@
 		$pdf->AddFont('Montserrat-ExtraLight','I','Montserrat-ExtraLight.php');
 		$pdf->AddFont('Montserrat-ExtraLight','','Montserrat-ExtraLight.php');
 	
-		
+		if ($data[0]["AUTORIZADO"]=='N') {
+			$pdf->SetTextColor(255, 74, 1 );
+			$pdf->SetFont('Montserrat-Medium','B',14);
+			$pdf->setY(10);
+			$pdf->Cell(0,0,"CONSTANCIA NO AUTORIZADA",0,1,'C', false);
+		}
+
+		$pdf->SetTextColor(0);
 		$pdf->SetFont('Montserrat-ExtraBold','B',18);
 		$pdf->setY(50);
 		$pdf->Cell(0,0,utf8_decode("EL TECNOLÓGICO NACIONAL DE MÉXICO"),0,1,'C');
