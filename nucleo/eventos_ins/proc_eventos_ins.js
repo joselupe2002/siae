@@ -168,7 +168,7 @@ function AutorizarTodos(modulo,usuario,institucion, campus,essuper){
 	table.rows().iterator('row', function(context, index){
 		 nreg++;		    
 	});
-		autorizarReg(table.rows(elReg).data(), modulo,institucion,campus,'S');
+		autorizarReg(table.rows(elReg).data(), modulo,institucion,campus,'S',usuario);
 }
 
 
