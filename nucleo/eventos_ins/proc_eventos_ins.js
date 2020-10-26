@@ -262,7 +262,7 @@ function colocaConsecutivo(lafila,modulo) {
 	res="";
 	var table = $("#G_"+modulo).DataTable();
 	elarea=$("#selAreas").val();
-	elsqlCic="select CONSECUTIVO from econsoficial where TIPO='"+elarea+"'";
+	elsqlCic="select CONSECUTIVO from econsoficial where TIPO='CONSEC_CONSTANCIAS'";
 	parametros={sql:elsqlCic,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
@@ -275,7 +275,7 @@ function colocaConsecutivo(lafila,modulo) {
 				tabla:"econsoficial",
 				campollave:"TIPO",
 				bd:"Mysql",
-				valorllave:elarea,
+				valorllave:"CONSEC_CONSTANCIAS",
 				CONSECUTIVO: parseInt(JSON.parse(data)[0][0])+1
 			};
 			$.ajax({type: "POST",
@@ -291,7 +291,7 @@ function colocaConsecutivo(lafila,modulo) {
 				campollave:"ID",
 				bd:"Mysql",
 				valorllave:lafila[0]["ID"],
-				FOLIO: "ITSM"+"-"+elarea+"-"+JSON.parse(data)[0][0],
+				FOLIO: "ITSM"+"-"+elarea+"-"+JSON.parse(data)[0][0]+"-D",
 				FECHAEXP:$("#fechafol").val()
 			};
 			
