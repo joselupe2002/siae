@@ -227,7 +227,7 @@
 
 		
 		if (($_GET["tipo"]=='1') || ($_GET["tipo"]=='2'))  {
-			if (!empty($data[0]["IMGFIRMA"])) { $lafirma = file_get_contents($data[0]["IMGFIRMA"]); $pdf->MemImage($lafirma,80,210,70);}
+			if (!empty($data[0]["IMGFIRMA"])) { $lafirma = file_get_contents($data[0]["IMGFIRMA"]); $pdf->MemImage($lafirma,70,200,85);}
 			if (!empty($data[0]["IMGSELLO"])) { $lafirma = file_get_contents($data[0]["IMGSELLO"]); $pdf->MemImage($lafirma,170,205,40);}
 		}
 
