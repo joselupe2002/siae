@@ -316,3 +316,9 @@ function colocaConsecutivo(lafila,modulo) {
 		
 	           
 }
+
+
+function envioCorreoEv(modulo,usuario,institucion, campus,essuper) {
+	getVentanaCorreo("eventos_ins","CORREO");
+	
+}
