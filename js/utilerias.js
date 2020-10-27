@@ -2893,7 +2893,7 @@ function procEnvioCorreo(modulo,colcorreo,ec_elReg){
 		"MENSAJE": mensaje,
 		"ADJSERVER": 'S',
 		"ASUNTO": $("#elasunto").val(),
-		"CORREO" :  elcorreo,
+		"CORREO" : elcorreo,
 		"NOMBRE":"",
 		"ADJUNTO":''
     };
