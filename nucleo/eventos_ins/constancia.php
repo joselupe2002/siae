@@ -217,10 +217,10 @@
 		$pdf->SetFont('Montserrat-ExtraLight','',10);
 		$pdf->Cell(0,0,$lafecha,0,1,'R', false);
 
-		$pdf->Output(); 
+	
 
 		/*
-		
+
 		//Logo del Evento 
 		$dataFoto=$data[0]["EVENTOSLOGO"];
 		  //  echo $dataFoto[0][0];
@@ -230,7 +230,8 @@
 			$pdf->MemImage($logo,15,67,40);
 		}
 
-		
+		*/
+
 		$pdf->Image('../../imagenes/empresa/enc3.png',20,255,10);
 		$pdf->Image('../../imagenes/empresa/logo3.png',160,255,35);
 
@@ -294,5 +295,5 @@
 						echo "resultado:".$res;
 				
 		}
- */
+ 
  ?>
