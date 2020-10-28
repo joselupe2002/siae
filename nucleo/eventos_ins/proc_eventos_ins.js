@@ -280,35 +280,35 @@ function colocaConsecutivo(lafila,modulo) {
 			};
 			$.ajax({type: "POST",
 					url:"actualiza.php",
-					data: parametros,
-				
-						success: function(data){        			        	
+					data: parametros,				
+						success: function(data){    
+							parametros={
+								tabla:"eventos_ins",
+								campollave:"ID",
+								bd:"Mysql",
+								valorllave:lafila[0]["ID"],
+								FOLIO: "ITSM"+"-"+elarea+"-"+JSON.parse(data)[0][0]+"-D",
+								FECHAEXP:$("#fechafol").val()
+							};
+							
+							$.ajax({type: "POST",
+									url:"actualiza.php",
+									data: parametros,
+									success: function(data){        			        	
+										if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
+											$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se Autorizo el resgistro "+lafila[0]["ID"]+" "+lafila[0]["NOMBRE"]+" correctamente \n"); 
+											}	
+										else {$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
+														
+										elReg++;
+										if (nreg>elReg) {colocaConsecutivo(table.rows(elReg).data(),modulo);}
+										if (nreg==elReg) { window.parent.document.getElementById('FReventos_ins').contentWindow.location.reload();}
+									}					     
+								});									
 					}					     
 				}); 
 				
-			parametros={
-				tabla:"eventos_ins",
-				campollave:"ID",
-				bd:"Mysql",
-				valorllave:lafila[0]["ID"],
-				FOLIO: "ITSM"+"-"+elarea+"-"+JSON.parse(data)[0][0]+"-D",
-				FECHAEXP:$("#fechafol").val()
-			};
-			
-			$.ajax({type: "POST",
-					url:"actualiza.php",
-					data: parametros,
-					success: function(data){        			        	
-						if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
-							$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se Autorizo el resgistro "+lafila[0]["ID"]+" "+lafila[0]["NOMBRE"]+" correctamente \n"); 
-							}	
-						else {$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
-										
-						elReg++;
-						if (nreg>elReg) {colocaConsecutivo(table.rows(elReg).data(),modulo);}
-						if (nreg==elReg) { window.parent.document.getElementById('FReventos_ins').contentWindow.location.reload();}
-					}					     
-				});			
+				
 		}
 	});
 
