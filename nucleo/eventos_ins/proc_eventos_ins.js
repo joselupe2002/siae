@@ -281,7 +281,7 @@ function colocaConsecutivo(lafila,modulo) {
 			$.ajax({type: "POST",
 					url:"actualiza.php",
 					data: parametros,				
-						success: function(data){    
+						success: function(dataActCon){    
 							parametros={
 								tabla:"eventos_ins",
 								campollave:"ID",
@@ -294,8 +294,8 @@ function colocaConsecutivo(lafila,modulo) {
 							$.ajax({type: "POST",
 									url:"actualiza.php",
 									data: parametros,
-									success: function(data){        			        	
-										if (!(data.substring(0,1)=="0"))	{ 					                	 			                   
+									success: function(dataAct){        			        	
+										if (!(dataAct.substring(0,1)=="0"))	{ 					                	 			                   
 											$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" Se Autorizo el resgistro "+lafila[0]["ID"]+" "+lafila[0]["NOMBRE"]+" correctamente \n"); 
 											}	
 										else {$('#resul').val($('#resul').val()+(elReg+1)+" de "+(nreg)+" OCURRIO EL SIGUIENTE ERROR: "+data+"\n");}
