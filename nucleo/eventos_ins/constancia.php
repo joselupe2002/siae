@@ -181,8 +181,10 @@
 		$pdf->ln(10);
 		$pdf->SetFont('Montserrat-ExtraBold','B',14);
 		$pdf->Cell(0,0,utf8_decode("A TRAVÉS DEL INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA"),0,1,'C');
-		//$pdf->SetTextColor(5,27,149);
 
+		$pdf->Output(); 
+		//$pdf->SetTextColor(5,27,149);
+/*
 		if ($data[0]["TIPO"]=='TITULAR') {$ot="OTORGA EL PRESENTE"; $ti="RECONOCIMIENTO"; } else {$ot="OTORGA LA PRESENTE"; $ti="CONSTANCIA";}
 		$pdf->ln(15);
 		$pdf->Cell(0,0,$ot,0,1,'C');
@@ -225,7 +227,7 @@
 		}
 
 
-		$pdf->Image('../../imagenes/empresa/enc3.png',25,255,10);
+		$pdf->Image('../../imagenes/empresa/enc3.png',20,255,10);
 		$pdf->Image('../../imagenes/empresa/logo3.png',160,255,35);
 
 		
@@ -288,5 +290,5 @@
 						echo "resultado:".$res;
 				
 		}
- 
+ */
  ?>
