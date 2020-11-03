@@ -126,7 +126,7 @@ function generaTablaAvances(grid_data){
 
 	
 	for (i=1; i<=10; i++) {
-		elsqlMat=" SELECT ALUCTR, concat('LISPA',"+i+") UNI, group_concat(concat(MATE_DESCRIP,'|',LISPA"+i+",'|<br>')) as STATUS"+
+		elsqlMat=" SELECT ALUCTR, concat('LISPA',"+i+") UNI, ifnull(group_concat(concat(MATE_DESCRIP,'|',LISPA"+i+",'|<br>')),'') as STATUS"+
 		"  FROM dlista a, cmaterias, falumnos  "+
 		"    where ALUCTR=ALUM_MATRICULA AND a.PDOCVE='"+$("#selCiclos").val()+"'"+
 		"    and a.MATCVE=MATE_CLAVE AND ifnull(MATE_TIPO,'') NOT IN ('T','OC')"+
@@ -141,6 +141,7 @@ function generaTablaAvances(grid_data){
 			url:  "../base/getdatossqlSeg.php",
 			success: function(dataMat){ 			
 				jQuery.each(JSON.parse(dataMat), function(clave, valorMat) { 
+					
 					arreglo=valorMat.STATUS.split(",");	
 					cadEstilo=setEstilo(arreglo);	
 																	      
