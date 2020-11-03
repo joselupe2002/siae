@@ -141,12 +141,11 @@ function generaTablaAvances(grid_data){
 			url:  "../base/getdatossqlSeg.php",
 			success: function(dataMat){ 			
 				jQuery.each(JSON.parse(dataMat), function(clave, valorMat) { 
-					
-					arreglo=valorMat.STATUS.split(",");	
-					cadEstilo=setEstilo(arreglo);	
-																	      
-					$("#"+valorMat.UNI+"_"+valorMat.ALUCTR).html(cadEstilo);
-					//console.log($("#"+valorMat.UNI+"_"+valorMat.ALUCTR).html());	
+					if (valorMat.STATUS!='') {
+						arreglo=valorMat.STATUS.split(",");	
+						cadEstilo=setEstilo(arreglo);																				
+						$("#"+valorMat.UNI+"_"+valorMat.ALUCTR).html(cadEstilo);
+					}
 				});
 			}
 		});
