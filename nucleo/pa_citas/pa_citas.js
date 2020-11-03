@@ -12,7 +12,7 @@
 		$(".input-mask-numero").mask("99");
 
 		$("#lostramites").append("<span class=\"label label-warning\">Trámites</span>");
-		sql="SELECT ID, TRAMITE FROM ci_tramites order by TRAMITE";
+		sql="SELECT ID, TRAMITE FROM ci_tramites WHERE VISIBLE='S' order by TRAMITE";
 		addSELECT("selTramites","lostramites","PROPIO", sql, "","BUSQUEDA"); 		
 	});
 	
