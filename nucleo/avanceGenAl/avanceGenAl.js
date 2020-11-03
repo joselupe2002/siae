@@ -49,7 +49,7 @@ contMat=1;
 	function change_SELECT(elemento) {
         
 		if (elemento=='selCarreras') {	
-			$("#loshorarios").empty();	
+			$("#losAvances").empty();	
 		}  
     }
 
@@ -58,11 +58,13 @@ contMat=1;
 	}
 
     function cargarAvances(){
-
+		$("#tabAvances").empty();
 		$("#opcionestabAvances").addClass("hide");
 		$("#botonestabAvances").empty();
 
+		cad="";
 		for (i=1; i<=10; i++) { cad+="<th>Unidad"+i+"</th> "; }
+
 
 		
 		script="<table id=\"tabAvances\" class= \"table table-condensed table-bordered table-hover\" "+
@@ -124,11 +126,13 @@ function generaTablaAvances(grid_data){
 
 	
 	for (i=1; i<=10; i++) {
-		elsqlMat=" SELECT ALUCTR, concat('LISPA',"+i+") UNI, group_concat(concat(MATE_DESCRIP,'|',LISPA"+i+",'|<br>')) as STATUS FROM dlista a, cmaterias  "+
-		"    where a.PDOCVE='"+$("#selCiclos").val()+"'"+
+		elsqlMat=" SELECT ALUCTR, concat('LISPA',"+i+") UNI, group_concat(concat(MATE_DESCRIP,'|',LISPA"+i+",'|<br>')) as STATUS"+
+		"  FROM dlista a, cmaterias, falumnos  "+
+		"    where ALUCTR=ALUM_MATRICULA AND a.PDOCVE='"+$("#selCiclos").val()+"'"+
 		"    and a.MATCVE=MATE_CLAVE AND ifnull(MATE_TIPO,'') NOT IN ('T','OC')"+
-		"    and GPOCVE<>'REV'"+
+		"    and GPOCVE<>'REV' AND ALUM_CARRERAREG='"+$("#selCarreras").val()+"'"+
 		"    GROUP BY ALUCTR";
+		
 		
 		parametros2={sql:elsqlMat,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({

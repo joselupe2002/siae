@@ -57,9 +57,7 @@
 								<i class="ace-icon orange fa fa-wrench bigger-120"></i><span class="btn-small"></span>            
 							</button>	
 
-							<button title="Exportar a Excel" onclick="setEstilo();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon orange fa fa-wrench bigger-120"></i><span class="btn-small"></span>            
-							</button>	
+				
 
 						</div>
 		            </div> 
