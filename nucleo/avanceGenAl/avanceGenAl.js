@@ -163,5 +163,5 @@ function setEstilo(arreglo) {
 
 return cadFin+"<br>"+"<span class=\"badge badge-danger\">"+rep+"</span>"+
 					 "<span  class=\"badge badge-success\">"+apr+"</span>"+
-					 "<span  class=\"badge badge-primary\">"+Math.round(apr/(i+1),0)+"%</span>";
+					 "<span  class=\"badge badge-primary\">"+Math.round(apr/(i+1)*100,0)+"%</span>";
 }
