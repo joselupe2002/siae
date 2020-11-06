@@ -381,9 +381,12 @@ function cargarAsesorias(){
 						"    </div>"+						
 						"</div>"+
 						"<div class=\"row fontRoboto\"> "+
-						"    <div class=\"col-sm-12\">"+
+						"    <div class=\"col-sm-6\">"+
+						"		<label>¿Que te motivo a buscar asesoria?</label><select class=\"form-control\" id=\"motivo\"></select>"+
+						"    </div>"+	
+						"    <div class=\"col-sm-6\">"+
 						"		<label>Tema a tratar</label><input class=\"form-control\" id=\"tema\"></input>"+
-						"    </div>"+					
+						"    </div>"+				
 						"</div><br>"+
 						"<div class=\"row fontRoboto\"> "+
 						"    <div class=\"col-sm-4\"></div>"+
@@ -403,7 +406,10 @@ function cargarAsesorias(){
 					"where ALUM_MATRICULA='"+usuario+"' AND CICL_MAPA=ALUM_MAPA AND IFNULL(TIPOMAT,'0') NOT IN "+
 					"('T','AC','OC','I','RP') order by CICL_MATERIAD";
 		
-					actualizaSelect("asignatura",sqas, "","");  
+					actualizaSelect("asignatura",sqas, "",""); 
+					
+					sqas2="SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='MOTIVASESORIA' ORDER BY CATA_DESCRIP";
+					actualizaSelect("motivo",sqas2, "","");  
 	        	}
 			});			
 	}
@@ -429,7 +435,7 @@ function cargarAsesorias(){
 
 		function guardarAsesorias (prof, profd, dia, horario,ciclo,lugar){
 
-			if (($("#asignatura").val()!='0') && ($("#tema").val()!='')) {
+			if (($("#asignatura").val()!='0') && ($("#tema").val()!='') && ($("#motivo").val()!='') ) {
 			lafecha=dameFecha("FECHAHORA");
 
 			parametros={
@@ -441,6 +447,7 @@ function cargarAsesorias(){
 					ASES_HORA:horario.substr(0,5),
 					ASES_TIPO:"AA",
 					ASES_ASIGNATURA:$("#asignatura").val(),
+					ASES_MOTIVO:$("#motivo").val(),
 					ASES_TEMA:$("#tema").val(),
 					ASES_CICLO:ciclo,
 					ASES_FECHAUS:lafecha,
