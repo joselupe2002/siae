@@ -232,7 +232,9 @@
 
 		*/
 		
-		$pdf->Image($data[0]["EVENTOSLOGO"],15,67,40);
+		if ($data[0]["EVENTOSLOGO"]!='../../imagenes/menu/default.png') {
+		   $pdf->Image($data[0]["EVENTOSLOGO"],15,67,40);
+		}
 
 		$pdf->Image('../../imagenes/empresa/enc3.png',20,255,10);
 		$pdf->Image('../../imagenes/empresa/logo3.png',160,255,35);
