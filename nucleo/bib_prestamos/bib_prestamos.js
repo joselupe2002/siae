@@ -5,6 +5,8 @@ contR=1;
 contMat=1;
 var laCarrera="";
 var elalumno="";
+var laconfig=[];
+var losdias=[];
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -13,13 +15,6 @@ var elalumno="";
 
     jQuery(function($) { 
 
-
-		
-		$(".input-mask-hora").mask("99:99");
-		$(".input-mask-horario").mask("99:99-99:99");
-		$(".input-mask-numero").mask("99");
-
-
 		$("#losalumnos").append("<span class=\"label label-primary\">No. de Control</span>");
 		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
 		" FROM falumnos WHERE ALUM_ACTIVO IN (1) ORDER BY ALUM_MATRICULA", "","BUSQUEDA");  	
@@ -27,6 +22,34 @@ var elalumno="";
 		$("#loslibros").append("<span class=\"label label-primary\">No. de Ejemplar</span>");
 		addSELECT("selLibros","loslibros","PROPIO", "SELECT ID, CONCAT(ID,' ',TITULO) FROM vbib_ejemplares where ACCESIBLE=3", "","BUSQUEDA");  			
 		
+		colocarCiclo("elciclo","CLAVE");
+
+		elsql="SELECT * FROM bib_config where TIPO='LIBROS'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){   
+				laconfig=JSON.parse(data);
+			}
+		});
+
+		elsql="select DIAS_FECHA from ediasnoha a where  STR_TO_DATE(DIAS_FECHA,'%d/%m/%Y')>=now()";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){   
+				arrt=JSON.parse(data);
+				jQuery.each(arrt, function(clave, valor) { 
+					losdias[clave]=valor.DIAS_FECHA;					
+				});
+			}
+		});
+
+
 	});
 	
 	
@@ -34,7 +57,7 @@ var elalumno="";
 	function change_SELECT(elemento) {
 		if (elemento=='selAlumnos') {
 			$("#contAlumno").empty();
-			elsql="SELECT ALUM_MATRICULA,CARR_DESCRIP, ALUM_CORREOINS, ALUM_TELEFONO, "+
+			elsql="SELECT ALUM_MATRICULA,CARR_DESCRIP, ALUM_CORREOINS, ALUM_TELEFONO, ifnull(ALUM_FOTO,'') as ALUM_FOTO,"+
 			" (SELECT COUNT(*) from dlista where PDOCVE=getciclo() and ALUCTR='"+$('#selAlumnos').val()+"') AS INSCRITO"+
 			"  FROM falumnos a, ccarreras b where ALUM_CARRERAREG=CARR_CLAVE AND ALUM_MATRICULA='"+$('#selAlumnos').val()+"'";
 		
@@ -44,15 +67,17 @@ var elalumno="";
 			data:parametros,
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){   
+
 				arr=JSON.parse(data);
 				elcolor="red";
 				if (arr[0]["INSCRITO"]>0) {elcolor="green";}
 				lafoto=arr[0]["ALUM_FOTO"];
+				if (lafoto=='') {lafoto="../../imagenes/menu/default.png";}
 				$("#contAlumno").append(
 										"<div class=\"row\">"+
 										"     <div class=\"fontRobotoB col-sm-4\">"+
-										"         <span class=\"profile-picture\">"+
-										"             <img id=\"img_ALUM_FOTO\"  style=\"width: 120px; height: 150px;\" "+
+										"         <span class=\"profile-picture\" >"+
+										"             <img id=\"img_ALUM_FOTO\"  style=\"width: 100%; height: 100%;\" "+
 										"                  class=\"editable img-responsive\" src=\""+lafoto+"\"/>"+
 										"  	      </span>"+
 			 							"     </div>"+
@@ -88,12 +113,12 @@ var elalumno="";
 			success: function(data){   
 				arr=JSON.parse(data);
 				lafoto=arr[0]["FOTO_LIBRO"];
-				lafechae=dameFecha("FECHA",2);
+				lafechae=dameFechaHabil(laconfig[0]["DIAS"],losdias);
 				$("#contLibro").append(
 										"<div class=\"row\">"+
 										"     <div class=\"fontRobotoB col-sm-4\">"+
 										"         <span class=\"profile-picture\">"+
-										"             <img id=\"img_ALUM_FOTO\"  style=\"width: 120px; height: 150px;\" "+
+										"             <img id=\"img_ALUM_FOTO\"  style=\"width: 100%; height: 100%;\"  "+
 										"                  class=\"editable img-responsive\" src=\""+lafoto+"\"/>"+
 										"  	      </span>"+
 			 							"     </div>"+
@@ -152,6 +177,7 @@ var elalumno="";
 							HORASALIDA:hora, 
 							FECHAENTREGA:$("#laentrega").val(),
 							HORAENTREGA:hora,
+							CICLO:$("#elciclo").html(),
 							ENTREGADO:"N",
 							TIPO:"LIBROS",
 							USUARIOSAL: usuario,
@@ -261,11 +287,4 @@ function eliminar(id){
 			}					     
 		});    	 
 	}        
-}
-
-
-
-function ImprimirReporte(){
-	enlace="nucleo/reinscripciones/boletaMat.php?carrera=TODAS&matricula="+usuario+"&ciclod=&ciclo="+$('#elciclo').html();
-	abrirPesta(enlace,"Horario");
 }

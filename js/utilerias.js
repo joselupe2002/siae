@@ -843,6 +843,24 @@ function dameFecha(tipo,dias){
 }
 
 
+function dameFechaHabil(dias,losdias){
+	var hoy = new Date();
+	var dia_actual = moment(hoy);
+	c=0;
+  	while (c<dias) {						
+			dia_actual.add(1, 'days');			   
+			if (losdias.indexOf(dia_actual.format("DD/MM/YYYY"))<0) {				
+				c++;
+			}
+				  
+		  }	
+		
+    return dia_actual.format("DD/MM/YYYY");
+	}
+
+
+
+
 function fechaLetra(fecha){
 	eldia=fecha.substr(0,2);
 	elmes=fecha.substr(3,2);

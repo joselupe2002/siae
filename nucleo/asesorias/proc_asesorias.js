@@ -21,7 +21,7 @@ function reporteAsesorias(modulo,usuario,institucion, campus,essuper){
     	   	        	     claveProf=data.split("|")[0];
     	   	        	     nombreProf=data.split("|")[1];
     	   	        	     
-    	   	        	  script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+    	   	    script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
     	   		       "   <div class=\"modal-dialog modal-lg \" role=\"document\">"+
     	   		       "      <div class=\"modal-content\">"+
     	   			   "          <div class=\"modal-header\" >"+
