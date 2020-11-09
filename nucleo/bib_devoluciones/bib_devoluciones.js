@@ -5,6 +5,7 @@ contR=1;
 contMat=1;
 var laCarrera="";
 var elalumno="";
+var laconfig=[];
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -21,13 +22,27 @@ var elalumno="";
 
 
 		$("#losalumnos").append("<span class=\"label label-primary\">No. de Control</span>");
-		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
-		" FROM falumnos WHERE ALUM_ACTIVO IN (1) ORDER BY ALUM_MATRICULA", "","BUSQUEDA");  	
+		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT NUMERO, CONCAT(NUMERO,' ',NOMBRE) "+
+		" FROM VPERSONAS WHERE STATUS IN ('1','S') ORDER BY NOMBRE", "","BUSQUEDA");  		
 
 		$("#loslibros").append("<span class=\"label label-primary\">No. de Ejemplar</span>");
 		addSELECT("selLibros","loslibros","PROPIO", "SELECT ID, CONCAT(ID,' ',TITULO) FROM vbib_ejemplares where ACCESIBLE=3", "","BUSQUEDA");  			
 		
 		colocarCiclo("elciclo","CLAVE");
+
+		elsql="SELECT * FROM bib_config where TIPO='LIBROS'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){   
+				laconfig=JSON.parse(data);
+			}
+		});
+
+
+
 	});
 	
 	
@@ -36,9 +51,9 @@ var elalumno="";
 		if (elemento=='selAlumnos') {
 			$("#lacarrera").empty();
 			$("#lafoto").empty();
-			elsql="SELECT ALUM_MATRICULA,CARR_DESCRIP, ALUM_CORREOINS, ALUM_TELEFONO, ifnull(ALUM_FOTO,'') as ALUM_FOTO, "+
+			elsql="SELECT NUMERO,CARRERAD, CORREO, TELEFONO, FOTO as FOTO,"+
 			" (SELECT COUNT(*) from dlista where PDOCVE=getciclo() and ALUCTR='"+$('#selAlumnos').val()+"') AS INSCRITO"+
-			"  FROM falumnos a, ccarreras b where ALUM_CARRERAREG=CARR_CLAVE AND ALUM_MATRICULA='"+$('#selAlumnos').val()+"'";
+			"  FROM vpersonas a where NUMERO='"+$('#selAlumnos').val()+"'";
 		
 
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -50,13 +65,13 @@ var elalumno="";
 				arr=JSON.parse(data);
 				elcolor="red";
 				if (arr[0]["INSCRITO"]>0) {elcolor="green";}
-				lafoto=arr[0]["ALUM_FOTO"];
+				lafoto=arr[0]["FOTO"];
 				if (lafoto=='') {lafoto="../../imagenes/menu/default.png";}
 				
 
-				$("#lacarrera").append("<span class=\"label label-primary\">CARRERA </span><br><span>"+arr[0]["CARR_DESCRIP"]+"</span>");
+				$("#lacarrera").append("<span class=\"label label-primary\">CARRERA </span><br><span>"+arr[0]["CARRERAD"]+"</span>");
 				$("#lafoto").append("<span class=\"profile-picture\">"+
-									"    <img id=\"img_ALUM_FOTO\"  style=\"width:50px; height:50px;\"  "+
+									"    <img id=\"img_FOTO\"  style=\"width:50px; height:50px;\"  "+
 									"          class=\"editable img-responsive\" src=\""+lafoto+"\"/>"+
 									"</span>");
 				}
@@ -68,61 +83,30 @@ var elalumno="";
 
 
 
-	function prestaLibro(){
-		if (($("#selAlumnos").val()>0) && ($("#selLibros").val()>0)) {
-			fecha=dameFecha("FECHAHORA");
-			fechaent=dameFecha("FECHAHORA",2);
-			fechasola=dameFecha("FECHA");
-			hora=dameFecha("HORA");
-			parametros={tabla:"bib_prestamos",
-							bd:"Mysql",
-							MATRICULA:$("#selAlumnos").val(),
-							IDARTICULO:$("#selLibros").val(),
-							FECHASALIDA:fechasola, 
-							HORASALIDA:hora, 
-							FECHAENTREGA:$("#laentrega").val(),
-							HORAENTREGA:hora,
-							ENTREGADO:"N",
-							TIPO:"LIBROS",
-							USUARIOSAL: usuario,
-							FECHAUSSAL:fecha,
-							_INSTITUCION: institucion, 
-							_CAMPUS: campus	};
-				$.ajax({
-						type: "POST",
-						url:"../base/inserta.php",
-						data: parametros,
-						success: function(data){ 
-								cargarInformacion();
-								$("#contLibro").empty();
-								$("#selLibros").val("0");
-								
-							}
-						});			
-		}
-		else {alert ("Debe seleccionar Alumno y Libro");}
-				
-	}
-
-
-
     function cargarInformacion(){
 		$("#informacion").empty();
 		mostrarEspera("esperaInf","grid_bib_devoluciones","Cargando Datos...");
-		elsql="SELECT * from vbib_prestamos where MATRICULA='"+$("#selAlumnos").val()+"' AND ENTREGADO='N' AND TIPO='LIBROS'"+
+		elsql="SELECT * from vbib_prestamos a where MATRICULA='"+$("#selAlumnos").val()+"' AND ENTREGADO='N' AND TIPO='LIBROS'"+
 		"  ORDER BY ID";
+
 	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
-		success: function(data){      
-			  	if (JSON.parse(data).length>0) {			
-					generaTablaInformacion(JSON.parse(data));   
-					ocultarEspera("esperaInf");     
-				  }
-				else {ocultarEspera("esperaInf");  }	     		   
+		success: function(data){  
+				if (JSON.parse(data).length>0) {
+					if (JSON.parse(data).length>0) {			
+						generaTablaInformacion(JSON.parse(data));   
+						ocultarEspera("esperaInf");     
+					}
+					else {ocultarEspera("esperaInf");  }	     	
+				}
+				else {
+					$("#informacion").html("<div class=\"alert alert-danger\">No existen prestamos de este usuario</div>");
+					ocultarEspera("esperaInf");
+				}	   
 		}
 		}); 					  		
 }
@@ -173,22 +157,41 @@ function generaTablaInformacion(grid_data){
 }	
 
 
-function devolver(id){
-	if (confirm("¿Seguro que desea cancelar el prestamos de libro") ){
-		parametros={
-			tabla:"bib_prestamos",
-			campollave:"ID",
-			bd:"Mysql",
-			valorllave:id
-		};
+function grabaDevolver(id,lamulta){
+	fecha=dameFecha("FECHAHORA");
+	fechaent=dameFecha("FECHAHORA",2);
+	fechasola=dameFecha("FECHA");
+	hora=dameFecha("HORA");
+	parametros={tabla:"bib_prestamos",
+					bd:"Mysql",
+					campollave:"ID",
+					valorllave:id,
+					ENTREGADO:'S',
+					FECHAENTREGO:fechasola,
+					HORAENTREGO:hora,
+					MULTA:lamulta,
+					USUARIOENT: usuario,
+					FECHAUSENT:fecha};
 		$.ajax({
-			type: "POST",
-			url:"../base/eliminar.php",
-			data: parametros,
-			success: function(data){
-				cargarInformacion();
-				
-			}					     
-		});    	 
-	}        
+				type: "POST",
+				url:"../base/actualiza.php",
+				data: parametros,
+				success: function(data){ 					 	
+						cargarInformacion();
+					}
+				});		
+}
+
+function devolver(id,diasdif){
+	lamulta=0;
+	if (diasdif<0) {
+		lamulta=Math.abs(diasdif)*laconfig[0]["MULTA"];
+		if (confirm("El usuario debe pagar "+lamulta+" de multa ¿Ya lo pago?")) {
+			grabaDevolver(id,lamulta);
+		}
+	}
+	else {
+		grabaDevolver(id,lamulta);
+	}
+		  
 }

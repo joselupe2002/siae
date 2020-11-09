@@ -16,8 +16,8 @@ var losdias=[];
     jQuery(function($) { 
 
 		$("#losalumnos").append("<span class=\"label label-primary\">No. de Control</span>");
-		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
-		" FROM falumnos WHERE ALUM_ACTIVO IN (1) ORDER BY ALUM_MATRICULA", "","BUSQUEDA");  	
+		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT NUMERO, CONCAT(NUMERO,' ',NOMBRE) "+
+		" FROM VPERSONAS WHERE STATUS IN ('1','S') ORDER BY NOMBRE", "","BUSQUEDA");  	
 
 		$("#loslibros").append("<span class=\"label label-primary\">No. de Ejemplar</span>");
 		addSELECT("selLibros","loslibros","PROPIO", "SELECT ID, CONCAT(ID,' ',TITULO) FROM vbib_ejemplares where ACCESIBLE=3", "","BUSQUEDA");  			
@@ -57,9 +57,9 @@ var losdias=[];
 	function change_SELECT(elemento) {
 		if (elemento=='selAlumnos') {
 			$("#contAlumno").empty();
-			elsql="SELECT ALUM_MATRICULA,CARR_DESCRIP, ALUM_CORREOINS, ALUM_TELEFONO, ifnull(ALUM_FOTO,'') as ALUM_FOTO,"+
+			elsql="SELECT NUMERO,CARRERAD, CORREO, TELEFONO, FOTO as FOTO,"+
 			" (SELECT COUNT(*) from dlista where PDOCVE=getciclo() and ALUCTR='"+$('#selAlumnos').val()+"') AS INSCRITO"+
-			"  FROM falumnos a, ccarreras b where ALUM_CARRERAREG=CARR_CLAVE AND ALUM_MATRICULA='"+$('#selAlumnos').val()+"'";
+			"  FROM vpersonas a where NUMERO='"+$('#selAlumnos').val()+"'";
 		
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -71,27 +71,27 @@ var losdias=[];
 				arr=JSON.parse(data);
 				elcolor="red";
 				if (arr[0]["INSCRITO"]>0) {elcolor="green";}
-				lafoto=arr[0]["ALUM_FOTO"];
+				lafoto=arr[0]["FOTO"];
 				if (lafoto=='') {lafoto="../../imagenes/menu/default.png";}
 				$("#contAlumno").append(
 										"<div class=\"row\">"+
 										"     <div class=\"fontRobotoB col-sm-4\">"+
 										"         <span class=\"profile-picture\" >"+
-										"             <img id=\"img_ALUM_FOTO\"  style=\"width: 100%; height: 100%;\" "+
+										"             <img id=\"img_FOTO\"  style=\"width: 100%; height: 100%;\" "+
 										"                  class=\"editable img-responsive\" src=\""+lafoto+"\"/>"+
 										"  	      </span>"+
 			 							"     </div>"+
 										"     <div class=\"fontRobotoB col-sm-8\">"+
 										"          <div class=\"row\">"+
-										"               <span class=\"text-success\">CARRERA </span><br><span>"+arr[0]["CARR_DESCRIP"]+"</span>"+
+										"               <span class=\"text-success\">CARRERA </span><br><span>"+arr[0]["CARRERAD"]+"</span>"+
 										"          </div><br>"+
 										"          <div class=\"row\">"+
-										"               <span class=\"text-success\">CORREO </span><br><span>"+arr[0]["ALUM_CORREOINS"]+"</span>"+
+										"               <span class=\"text-success\">CORREO </span><br><span>"+arr[0]["CORREO"]+"</span>"+
 										"          </div><br>"+
 										"          <div class=\"row\">"+
 										"               <span class=\"text-success\">CELULAR</span>"+
 										"               <i class=\"fa fa-user "+elcolor+" pull-right bigger-260\" style=\"padding-right:30px;\"></i>"+
-										"               <br><span>"+arr[0]["ALUM_TELEFONO"]+"</span>"+
+										"               <br><span>"+arr[0]["TELEFONO"]+"</span>"+
 										"          </div><br>"+
 										"      </div>"+
 										"</div>"
