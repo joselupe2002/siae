@@ -139,6 +139,7 @@ function generaTablaInformacion(grid_data){
 	 jQuery.each(grid_data, function(clave, valor) { 
 		icon="<i class=\"fa fa-times red\"></i>";
 		 if (valor.DIASDIF>0) {icon="<i class=\"fa fa-check green\"></i>";}	
+		 if (valor.DIASDIF==0) {icon="<i class=\"fa fa-retweet blue\"></i>";}	
 			 
 		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">"); 
 		 $("#row"+valor.ID).append("<i title=\"Devolver el Libro\" onclick=\"devolver('"+valor.ID+"','"+valor.DIASDIF+"');\" class=\"ace-icon blue fa fa-retweet bigger-200\" style=\"cursor:pointer;\"></i>");

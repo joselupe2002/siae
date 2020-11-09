@@ -249,8 +249,9 @@ function generaTablaInformacion(grid_data){
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 	
 	 jQuery.each(grid_data, function(clave, valor) { 
-		icon="<i class=\"fa fa-times red\"></i>";
+		 icon="<i class=\"fa fa-times red\"></i>";
 		 if (valor.DIASDIF>0) {icon="<i class=\"fa fa-check green\"></i>";}	
+		 if (valor.DIASDIF==0) {icon="<i class=\"fa fa-retweet blue\"></i>";}	
 			 
 		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">"); 
 		 $("#row"+valor.ID).append("<i title=\"Eliminar el prestamos\" onclick=\"eliminar('"+valor.ID+"');\" class=\"ace-icon red fa fa-trash-o bigger-200\" style=\"cursor:pointer;\"></i>");
