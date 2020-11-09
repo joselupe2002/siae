@@ -17,7 +17,7 @@ var losdias=[];
 
 		$("#losalumnos").append("<span class=\"label label-primary\">No. de Control</span>");
 		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT NUMERO, CONCAT(NUMERO,' ',NOMBRE) "+
-		" FROM VPERSONAS WHERE STATUS IN ('1','S') ORDER BY NOMBRE", "","BUSQUEDA");  	
+		" FROM vpersonas WHERE STATUS IN ('1','S') ORDER BY NOMBRE", "","BUSQUEDA");  	
 
 		$("#loslibros").append("<span class=\"label label-primary\">No. de Ejemplar</span>");
 		addSELECT("selLibros","loslibros","PROPIO", "SELECT ID, CONCAT(ID,' ',TITULO) FROM vbib_ejemplares where ACCESIBLE=3", "","BUSQUEDA");  			
