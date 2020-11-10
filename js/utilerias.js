@@ -924,6 +924,8 @@ function getSQLTipo(tipo,otrascondiciones){
 
 function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
 
+	$("#"+contenedor).append("<img id=\"laespera1\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:50px;height:50px;\">");
+
 	elsql=getSQLTipo(tipo,otrascondiciones);
 	if (tipo=='PROPIO') {elsql=sql;}
 
@@ -946,8 +948,12 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
 			     	   $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
 			     	   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
 			  		   $("#"+nombre).trigger("chosen:updated");		}
-               
-	  		   $("#"+nombre).change(function(){change_SELECT(nombre);});                   	   
+			   
+			
+				 $("#"+nombre).change(function(){change_SELECT(nombre);
+				
+				});
+				$("#laespera1").remove();                   	   
               },
         error: function(data) {	                  
                    alert('ERROR: '+data);

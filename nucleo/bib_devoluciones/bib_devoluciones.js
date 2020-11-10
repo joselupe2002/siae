@@ -86,7 +86,7 @@ var laconfig=[];
     function cargarInformacion(){
 		$("#informacion").empty();
 		mostrarEspera("esperaInf","grid_bib_devoluciones","Cargando Datos...");
-		elsql="SELECT * from vbib_prestamos a where MATRICULA='"+$("#selAlumnos").val()+"' AND ENTREGADO='N' AND TIPO='LIBROS'"+
+		elsql="SELECT * from vbib_prestamos a where MATRICULA='"+$("#selAlumnos").val()+"' AND ENTREGADO='N'"+
 		"  ORDER BY ID";
 
 	
@@ -128,8 +128,10 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">ID</th>"+ 
 	"<th style=\"text-align: center;\">TITULO</th>"+ 
 	"<th style=\"text-align: center;\">AUTOR</th>"+
-	"<th style=\"text-align: center;\">FECHA_SALIDA</th>"+
-	"<th style=\"text-align: center;\">FECHA_ENTREGA</th>"+
+	"<th style=\"text-align: center;\">SALIDA</th>"+
+	"<th style=\"text-align: center;\">H_SALIDA</th>"+
+	"<th style=\"text-align: center;\">ENTREGA</th>"+
+	"<th style=\"text-align: center;\">H_ENTREGA</th>"+
 	"<th style=\"text-align: center;\">DIAS_RETRASO</th>"+
 	"<th style=\"text-align: center;\">RENOVACIONES</th>"
 	); 
@@ -137,17 +139,27 @@ function generaTablaInformacion(grid_data){
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 	
 	 jQuery.each(grid_data, function(clave, valor) { 
-		icon="<i class=\"fa fa-times red\"></i>";
+		 icon="<i class=\"fa fa-times red\"></i>";
 		 if (valor.DIASDIF>0) {icon="<i class=\"fa fa-check green\"></i>";}	
-		 if (valor.DIASDIF==0) {icon="<i class=\"fa fa-retweet blue\"></i>";}	
+		 if (valor.DIASDIF==0) {icon="<i class=\"fa fa-retweet blue\"></i>";}
+		 
+		 icon2="<i class=\"fa fa-book green\"></i>";
+		 if (valor.TIPO=='COMPUTADORA') {icon2="<i class=\"fa fa-desktop purple\"></i>";}	
+		 if (valor.TIPO=='JUEGO') {icon2="<i class=\"glyphicon glyphicon-knight blue\"></i>";}	
+		 if (valor.TIPO=='SALA') {icon2="<i class=\"fa fa-columns red\"></i>";}	
 			 
 		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">"); 
 		 $("#row"+valor.ID).append("<i title=\"Devolver el Libro\" onclick=\"devolver('"+valor.ID+"','"+valor.DIASDIF+"');\" class=\"ace-icon blue fa fa-retweet bigger-200\" style=\"cursor:pointer;\"></i>");
 		 $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");   	
-		 $("#row"+valor.ID).append("<td>"+valor.TITULO+"</td>");    
+		 $("#row"+valor.ID).append("<td>"+icon2+valor.TITULO+"</td>");    
 		 $("#row"+valor.ID).append("<td>"+valor.AUTOR+"</td>");         	    
-		 $("#row"+valor.ID).append("<td>"+valor.FECHASALIDA+"</td>");
-		 $("#row"+valor.ID).append("<td>"+valor.FECHAENTREGA+"</td>");
+		 
+		$("#row"+valor.ID).append("<td><span class=\"badge badge-success\">"+valor.FECHASALIDA+"</span></td>");
+		$("#row"+valor.ID).append("<td><span class=\"badge badge-success\">"+valor.HORASALIDA+"</span></td>");   
+
+		$("#row"+valor.ID).append("<td><span class=\"badge badge-warning\">"+valor.FECHAENTREGA+"</span></td>");
+		$("#row"+valor.ID).append("<td><span class=\"badge badge-warning\">"+valor.HORAENTREGA+"</span></td>");
+
 
 		 $("#row"+valor.ID).append("<td>"+valor.DIASDIF+icon+"</td>");
 		 $("#row"+valor.ID).append("<td>"+valor.RENOVACIONES+"</td>");

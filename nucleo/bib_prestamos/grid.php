@@ -65,7 +65,14 @@
 		<div class="col-sm-6">
 			<div class="widget-box widget-color-purple" id="principal">
 			  	<div class="widget-header widget-header-small" style="padding:3px;">
-				  	<i class="fa fa-book bigger-200"> <span class="fontRobotoB" style="font-size:18px;"> Datos del libro</span> </i>
+				    <div class="row">
+						<div class="col-sm-6">
+				  			<i class="fa fa-book bigger-200"> <span class="fontRobotoB" style="font-size:18px;"> Datos del libro</span> </i>
+						</div>
+						<div class="col-sm-6">
+							<span class="label label-primary">Tipo Prestamo</span>
+							<div id="lostipos"></div>
+						</div>
 		      	</div>
 
              	<div class="widget-body">
@@ -83,21 +90,12 @@
 		</div>		
 	</div>
 
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="widget-box widget-color-red" id="principal">
-             	<div class="widget-body">
-				   	<div class="widget-main">
-					   <div class="row">							   
+
+					   <div class="row" style="padding-left:10px;padding-right:10px;">							   
 					       <div id="informacion" class="col-sm-12" style="overflow-x: auto;" >    
 						   </div>
                        </div>
-					</div>
-			   	</div>
-			</div>
-		</div>
-	</div>
-	
+					
 	
 <!-- ============================================================================================================-->			
 		 							

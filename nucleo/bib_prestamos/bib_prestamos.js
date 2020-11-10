@@ -19,45 +19,53 @@ var losdias=[];
 		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT NUMERO, CONCAT(NUMERO,' ',NOMBRE) "+
 		" FROM vpersonas WHERE STATUS IN ('1','S') ORDER BY NOMBRE", "","BUSQUEDA");  	
 
-		$("#loslibros").append("<span class=\"label label-primary\">No. de Ejemplar</span>");
-		addSELECT("selLibros","loslibros","PROPIO", "SELECT ID, CONCAT(ID,' ',TITULO) FROM vbib_ejemplares where ACCESIBLE=3", "","BUSQUEDA");  			
 		
 		colocarCiclo("elciclo","CLAVE");
 
-		elsql="SELECT * FROM bib_config where TIPO='LIBROS'";
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-		$.ajax({
-			type: "POST",
-			data:parametros,
-			url:  "../base/getdatossqlSeg.php",
-			success: function(data){   
-				laconfig=JSON.parse(data);
-			}
-		});
-
-		elsql="select DIAS_FECHA from ediasnoha a where  STR_TO_DATE(DIAS_FECHA,'%d/%m/%Y')>=now()";
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-		$.ajax({
-			type: "POST",
-			data:parametros,
-			url:  "../base/getdatossqlSeg.php",
-			success: function(data){   
-				arrt=JSON.parse(data);
-				jQuery.each(arrt, function(clave, valor) { 
-					losdias[clave]=valor.DIAS_FECHA;					
-				});
-			}
-		});
-
-
+		addSELECT("selTipos","lostipos","PROPIO", "SELECT CATA_CLAVE,CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOMATBIB'", "","");  			
+		
 	});
 	
 	
 		 
 	function change_SELECT(elemento) {
+
+		if (elemento=="selTipos") {
+			elsql="SELECT * FROM bib_config where TIPO='LIBROS'";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){   
+					laconfig=JSON.parse(data);
+				}
+			});
+
+			elsql="select DIAS_FECHA from ediasnoha a where  STR_TO_DATE(DIAS_FECHA,'%d/%m/%Y')>=now()";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){   
+					arrt=JSON.parse(data);
+					jQuery.each(arrt, function(clave, valor) { 
+						losdias[clave]=valor.DIAS_FECHA;					
+					});
+				}
+			});
+
+			$("#loslibros").html("<span class=\"label label-primary\">No. de Ejemplar</span>");
+			addSELECT("selLibros","loslibros","PROPIO", "SELECT ID, CONCAT(ID,' ',TITULO) FROM vbib_ejemplares where ACCESIBLE=3 and TIPO='"+$("#selTipos").val()+"'", "","BUSQUEDA");  			
+		
+			cargarInformacion();
+		}
+
+
 		if (elemento=='selAlumnos') {
 			$("#contAlumno").empty();
-			elsql="SELECT NUMERO,CARRERAD, CORREO, TELEFONO, FOTO as FOTO,"+
+			elsql="SELECT NUMERO,CARRERAD, CORREO, TELEFONO, IFNULL(FOTO,'') as FOTO,"+
 			" (SELECT COUNT(*) from dlista where PDOCVE=getciclo() and ALUCTR='"+$('#selAlumnos').val()+"') AS INSCRITO"+
 			"  FROM vpersonas a where NUMERO='"+$('#selAlumnos').val()+"'";
 		
@@ -98,60 +106,65 @@ var losdias=[];
 										);						   
 				}
 			});	
-			cargarInformacion();		
+			//cargarInformacion();		
 		  }
 
 		  if (elemento=='selLibros') {
 			$("#contLibro").empty();
 			elsql="SELECT * from vbib_ejemplares where ID='"+$('#selLibros').val()+"' order by TITULO";
-		
+			lahora=dameFecha("HORA");
 			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 			type: "POST",
 			data:parametros,
 			url:  "../base/getdatossqlSeg.php",
-			success: function(data){   
+			success: function(data){  
 				arr=JSON.parse(data);
 				lafoto=arr[0]["FOTO_LIBRO"];
+				if (lafoto=='') {lafoto="../../imagenes/menu/default.png";}
 				lafechae=dameFechaHabil(laconfig[0]["DIAS"],losdias);
 				$("#contLibro").append(
 										"<div class=\"row\">"+
-										"     <div class=\"fontRobotoB col-sm-4\">"+
+										"     <div class=\"fontRobotoB col-sm-2\">"+
 										"         <span class=\"profile-picture\">"+
-										"             <img id=\"img_ALUM_FOTO\"  style=\"width: 100%; height: 100%;\"  "+
+										"             <img id=\"img_ALUM_FOTO\"  style=\"width: 60px; height: 60px;\"  "+
 										"                  class=\"editable img-responsive\" src=\""+lafoto+"\"/>"+
 										"  	      </span>"+
 			 							"     </div>"+
-										"     <div class=\"fontRobotoB col-sm-8\">"+
+										"     <div class=\"fontRobotoB col-sm-10\">"+
 										"          <div class=\"row\">"+
 										"               <div class=\"col-sm-6\">"+
-										"              		<span class=\"text-success\">AUTOR </span><br><span>"+arr[0]["AUTOR"]+"</span>"+
+										"              		<span class=\"text-success\">AUTOR </span><br><span class=\"text-danger\">"+arr[0]["AUTOR"]+"</span>"+
 										"          		</div>"+
 										"          </div>"+
 										"          <div class=\"row\">"+
 										"          		<div class=\"col-sm-6\">"+
-										"               	<span class=\"text-success\">CLAS: </span><span>"+arr[0]["CLASIFICACION"]+"</span>"+
+										"               	<span class=\"text-success\">CLAS: </span><span class=\"text-danger\">"+arr[0]["CLASIFICACION"]+"</span>"+
 										"          		</div>"+										
 										"          		<div class=\"col-sm-6\">"+
-										"               	<span class=\"text-success\">ANAQUEL:</span><span>"+arr[0]["ANAQUEL"]+"</span>"+	
+										"               	<span class=\"text-success\">ANAQUEL:</span><span class=\"text-danger\">"+arr[0]["ANAQUEL"]+"</span>"+	
 										"          		</div>"+	
 										"          </div>"+
-										"		   <hr>"+
-										"          <div class=\"row\">"+
-										"          		<div class=\"col-sm-6\">"+
+										"		</div>"+
+										"</div>"+										
+										"<div class=\"row\">"+
+										"          		<div class=\"col-sm-4\">"+
+										"               	<span class=\"label label-primary\">Hora Entrega</span>"+
+										"					<input  id=\"horaentrega\" autocomplete=\"off\" class= \"small form-control input-mask-hora\" value=\""+ lahora + "\"></input>"+
+										"          		</div>"+
+										"          		<div class=\"col-sm-4\">"+
 										"               	<span class=\"label label-primary\">Fecha Entrega</span>"+
 										" 					<div class=\"input-group\"><input  class=\"form-control date-picker\"  id=\"laentrega\" "+
 										" 							type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" value=\""+lafechae+"\"/> "+
 										" 							<span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
 										"          		</div>"+
-										"          		<div class=\"col-sm-6\" style=\"padding-top:15px;\">"+
+										"          		<div class=\"col-sm-4\" style=\"padding-top:15px;\">"+
 										"               	<button onclick=\"prestaLibro();\" class=\"btn btn-white  btn-info btn-bold\">"+
-										"                     <i class=\"ace-icon fa fa-book bigger-120 blue\"></i>Prestar Libro</button>"+
+										"                     <i class=\"ace-icon fa fa-book bigger-120 blue\"></i>Prestar</button>"+
 										"          		</div>"+																		
-										"          </div><br>"+
-										"      </div>"+
 										"</div>"
 										);	
+										$(".input-mask-hora").mask("99:99");
 										$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});					   
 				}
 			});
@@ -176,10 +189,10 @@ var losdias=[];
 							FECHASALIDA:fechasola, 
 							HORASALIDA:hora, 
 							FECHAENTREGA:$("#laentrega").val(),
-							HORAENTREGA:hora,
+							HORAENTREGA:$("#horaentrega").val(),
 							CICLO:$("#elciclo").html(),
 							ENTREGADO:"N",
-							TIPO:"LIBROS",
+							TIPO:$("#selTipos").val(),
 							USUARIOSAL: usuario,
 							FECHAUSSAL:fecha,
 							_INSTITUCION: institucion, 
@@ -189,6 +202,7 @@ var losdias=[];
 						url:"../base/inserta.php",
 						data: parametros,
 						success: function(data){ 
+							
 								cargarInformacion();
 								$("#contLibro").empty();
 								$("#selLibros").val("0");
@@ -205,7 +219,8 @@ var losdias=[];
     function cargarInformacion(){
 		$("#informacion").empty();
 		mostrarEspera("esperaInf","grid_bib_prestamos","Cargando Datos...");
-		elsql="SELECT * from vbib_prestamos where MATRICULA='"+$("#selAlumnos").val()+"' AND ENTREGADO='N' AND TIPO='LIBROS'"+
+		cadAux=" and TIPO='"+$("#selTipos").val()+"'";
+		elsql="SELECT * from vbib_prestamos where MATRICULA='"+$("#selAlumnos").val()+"' AND ENTREGADO='N' "+cadAux+
 		"  ORDER BY ID";
 	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -228,7 +243,7 @@ function generaTablaInformacion(grid_data){
 	c=0;
 
 	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
-				" style=\"font-size:10px;\">";
+				" style=\"font-size:11px;\">";
 	$("#informacion").empty();
 	$("#informacion").append(script);
 				
@@ -240,8 +255,10 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">ID</th>"+ 
 	"<th style=\"text-align: center;\">TITULO</th>"+ 
 	"<th style=\"text-align: center;\">AUTOR</th>"+
-	"<th style=\"text-align: center;\">FECHA_SALIDA</th>"+
-	"<th style=\"text-align: center;\">FECHA_ENTREGA</th>"+
+	"<th style=\"text-align: center;\">SALIDA</th>"+
+	"<th style=\"text-align: center;\">H_SALIDA</th>"+
+	"<th style=\"text-align: center;\">ENTREGA</th>"+
+	"<th style=\"text-align: center;\">H_ENTREGA</th>"+
 	"<th style=\"text-align: center;\">DIAS_RETRASO</th>"+
 	"<th style=\"text-align: center;\">RENOVACIONES</th>"
 	); 
@@ -250,16 +267,21 @@ function generaTablaInformacion(grid_data){
 	
 	 jQuery.each(grid_data, function(clave, valor) { 
 		 icon="<i class=\"fa fa-times red\"></i>";
-		 if (valor.DIASDIF>0) {icon="<i class=\"fa fa-check green\"></i>";}	
-		 if (valor.DIASDIF==0) {icon="<i class=\"fa fa-retweet blue\"></i>";}	
+		 if (valor.DIASDIF>0) {icon="<i class=\"fa fa-check green bigger-180\"></i>";}	
+		 if (valor.DIASDIF==0) {icon="<i class=\"fa fa-retweet blue bigger-180\"></i>";}	
 			 
 		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">"); 
-		 $("#row"+valor.ID).append("<i title=\"Eliminar el prestamos\" onclick=\"eliminar('"+valor.ID+"');\" class=\"ace-icon red fa fa-trash-o bigger-200\" style=\"cursor:pointer;\"></i>");
+		 $("#row"+valor.ID).append("<i title=\"Eliminar el prestamos\" onclick=\"eliminar('"+valor.ID+"');\" class=\"ace-icon red fa fa-trash-o bigger-240\" style=\"cursor:pointer;\"></i>");
 		 $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");   	
 		 $("#row"+valor.ID).append("<td>"+valor.TITULO+"</td>");    
-		 $("#row"+valor.ID).append("<td>"+valor.AUTOR+"</td>");         	    
-		 $("#row"+valor.ID).append("<td>"+valor.FECHASALIDA+"</td>");
-		 $("#row"+valor.ID).append("<td>"+valor.FECHAENTREGA+"</td>");
+		 $("#row"+valor.ID).append("<td>"+valor.AUTOR+"</td>"); 
+		      	    
+		 $("#row"+valor.ID).append("<td><span class=\"badge badge-success\">"+valor.FECHASALIDA+"</span></td>");
+		 $("#row"+valor.ID).append("<td><span class=\"badge badge-success\">"+valor.HORASALIDA+"</span></td>");   
+
+		 $("#row"+valor.ID).append("<td><span class=\"badge badge-warning\">"+valor.FECHAENTREGA+"</span></td>");
+		 $("#row"+valor.ID).append("<td><span class=\"badge badge-warning\">"+valor.HORAENTREGA+"</span></td>");
+		 
 
 		 $("#row"+valor.ID).append("<td>"+valor.DIASDIF+icon+"</td>");
 		 $("#row"+valor.ID).append("<td>"+valor.RENOVACIONES+"</td>");
