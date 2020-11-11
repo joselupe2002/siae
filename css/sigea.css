@@ -117,6 +117,14 @@ input.error{
   display: inline-block;
 }
 
+.ma_fotoRec{
+  text-align: left;
+  margin:0px; 
+  padding: 0px;
+  display: inline-block;
+}
+
+
 .ma_datos{
   text-align: left;
   margin:0px; 
@@ -141,6 +149,22 @@ input.error{
   border: 3px solid darkorange;
  
 }
+
+.ma_fotoRec{
+  width: 80px;
+  height: 90px;
+  border: 2px solid darkgray;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 5%;
+  background-size: 100% auto;
+}
+
+.ma_fotoRec:hover{
+  border: 3px solid darkorange;
+}
+
+
 
 .ma_popover{
    width: 350px;

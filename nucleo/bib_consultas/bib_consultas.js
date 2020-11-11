@@ -74,7 +74,7 @@ jQuery.each(grid_data, function(clave, valor) {
     $("#contenido").append(		
 		"	<div class=\"itemdiv memberdiv\" id=\""+valor.ID+"\">"+
 		"		<div class=\"ma_principal\">"+		
-		"				<a href=\"#\"><img src=\""+lafoto+"\" class=\"ma_foto\"  /></a><br/>"+		
+		"				<a href=\"#\"><img src=\""+lafoto+"\" class=\"ma_fotoRec\"  /></a><br/>"+		
 		"			<div class=\"body\">"+
 		"				<div class=\"name fontRoboto\">"+
 		"					<a href=\"#\">"+
@@ -90,8 +90,8 @@ jQuery.each(grid_data, function(clave, valor) {
 		"					<div class=\"time\"><i class=\"ace-icon fa fa-columns  middle bigger-120 purple\"></i><span class=\"blue\"> ANAQUEL: "+valor.ANAQUEL+"</span></div>"+
 		"					<div class=\"hr dotted hr-8\"></div>"+
 		"					<div class=\"tools action-buttons\">"+
-		"						<a title=\"Ver Avance Curricular\" onclick=\"reservar('"+valor.ID+"');\" style=\"cursor:pointer;\">"+
-		"                            <i class=\"ace-icon fa fa-bar-chart-o blue bigger-150\"></i>"+
+		"						<a title=\"Reservar libro\" onclick=\"reservar('"+valor.ID+"');\" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-check-square-o red bigger-120\"> Reservar</i>"+
 		"                       </a>"+				
 		"					</div>"+
 		"				</div>"+
