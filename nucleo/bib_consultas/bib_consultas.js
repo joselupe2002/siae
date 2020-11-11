@@ -14,10 +14,7 @@ contMat=1;
 
 		$("#lascarreras").append("<span class=\"label label-warning\">Carrera</span>");		
 		addSELECT("selSecciones","lascarreras","PROPIO", "SELECT ID, SECCION FROM bib_secciones ", "",""); 
-		
-		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
-		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
-		colocarCiclo("elciclo","CLAVE");
+	
 		
 	});
 	
@@ -38,12 +35,22 @@ function cargarInformacion(){
 	$("#informacion").empty();
 	$("#informacion").append(script);
 	
+	
 	lascarr="";
     if ($("#selSecciones").val()!="0") { lascarr=" AND SECCION='"+$("#selSecciones").val()+"'";}
 	lapal=$("#palabra").val().toUpperCase();
 	cad="";
 	if (lapal!='') { cad=" and (AUTOR LIKE '%"+lapal+"%' or TITULO LIKE '%"+lapal+"%')";}
-	elsql="select * from vbib_ejemplares where  TIPO='LIBROS'  AND ACCESIBLE=3 "+lascarr+cad+" order by IDFICHA";
+
+	cadRes=" AND ID NOT IN (select IDARTICULO from bib_reservas a where STR_TO_DATE(FECHARES,'%d/%m/%Y')>=CURDATE())";
+	if ($("#misreservas").prop("checked")) {
+		lascarr="";cad=""; 
+		cadRes= " AND ID IN (select IDARTICULO from bib_reservas a where STR_TO_DATE(FECHARES,'%d/%m/%Y')>=CURDATE())";
+	}
+
+	elsql="select * from vbib_ejemplares where  TIPO='LIBROS'  AND ACCESIBLE=3 "+lascarr+cad+
+	" AND ID NOT IN (select IDARTICULO from bib_prestamos a where a.ENTREGADO='N') "+cadRes+
+	" order by IDFICHA";
 
 
 	mostrarEspera("esperahor","grid_bib_consultas","Cargando Datos...");
@@ -70,7 +77,11 @@ $("#tabMaterias").append("<tbody id=\"cuerpoMaterias\">");
 jQuery.each(grid_data, function(clave, valor) { 
 	lafoto=valor.FOTO_LIBRO;
 	if ((valor.FOTO_LIBRO ==null) ||(valor.FOTO_LIBRO =="")){lafoto="../../imagenes/menu/default.png";} 
-	
+
+	evento="onclick=\"reservar('"+valor.ID+"');\"";
+	titulo="Reservar";
+	if ($("#misreservas").prop("checked")) {evento="onclick=\"noreservar('"+valor.ID+"');\""; titulo="Eliminar Reserva"; }
+
     $("#contenido").append(		
 		"	<div class=\"itemdiv memberdiv\" id=\""+valor.ID+"\">"+
 		"		<div class=\"ma_principal\">"+		
@@ -80,18 +91,20 @@ jQuery.each(grid_data, function(clave, valor) {
 		"					<a href=\"#\">"+
 		"                   <span class=\"elname\" mipadre=\""+valor.ID+"\">"+valor.TITULO+
 		"							<span class=\"hidden\">"+valor.AUTOR+"</span></span></a>"+
+		"							<span class=\"hidden\">"+valor.ID+"</span></span></a>"+
 		"			</div>"+
 		"		</div>"+
 		"		<div class=\"popover ma_popover\">"+
 		"			<div class=\"arrow\"></div>"+
 		"			<div class=\"popover-content\">"+
 		"				<div class=\"bolder\">"+valor.TITULO+"</div>"+
+		"					<div class=\"time\"><span class=\"badge badge-success\"> No.: "+valor.ID+"</span></div>"+
 		"					<div class=\"time\"><i class=\"ace-icon fa fa-user middle bigger-120 orange\"></i><span class=\"green\">"+valor.AUTOR+"</span></div>"+
 		"					<div class=\"time\"><i class=\"ace-icon fa fa-columns  middle bigger-120 purple\"></i><span class=\"blue\"> ANAQUEL: "+valor.ANAQUEL+"</span></div>"+
 		"					<div class=\"hr dotted hr-8\"></div>"+
 		"					<div class=\"tools action-buttons\">"+
-		"						<a title=\"Reservar libro\" onclick=\"reservar('"+valor.ID+"');\" style=\"cursor:pointer;\">"+
-		"                            <i class=\"ace-icon fa fa-check-square-o red bigger-120\"> Reservar</i>"+
+		"						<a title=\"Reservar libro\" "+evento+" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-check-square-o red bigger-120\"> "+titulo+"</i>"+
 		"                       </a>"+				
 		"					</div>"+
 		"				</div>"+
@@ -125,32 +138,108 @@ jQuery.each(grid_data, function(clave, valor) {
 } 
 
 
-function verKardex(matricula){
-	enlace="nucleo/avancecurri/kardex.php?matricula="+matricula;
-	abrirPesta(enlace,"Kardex");
+function guardaRes(id,fechares, horares) {
+	fecha=dameFecha("FECHAHORA");
+	fechaent=dameFecha("FECHAHORA",2);
+	fechasola=dameFecha("FECHA");
+	hora=dameFecha("HORA");
+	parametros={tabla:"bib_reservas",
+					bd:"Mysql",
+					MATRICULA:usuario,
+					IDARTICULO:id,
+					FECHARES:fechares, 
+					HORARES:horares, 
+					TIPO:"LIBROS",
+					USER: usuario,
+					FECHAUSER:fecha,
+					_INSTITUCION: institucion, 
+					_CAMPUS: campus	};
+		$.ajax({
+				type: "POST",
+				url:"../base/inserta.php",
+				data: parametros,
+				success: function(data){ 
+						cargarInformacion();						
+					}
+				});			
+
 }
 
-function verAvanceAlum(matricula){
-   enlace="nucleo/avancecurri/grid.php?matricula="+matricula;
-   abrirPesta(enlace,"06) Avance Curricular");
+function reservar(id){
+	mifecha=dameFecha("FECHA");
+	mihora=dameFecha("HORA");
+	var modal = 
+	'<div class="modal fade">\
+	  <div class="modal-dialog">\
+	   <div class="modal-content">\
+		 <div class="modal-body">\
+		   <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>\
+		   <form class="no-margin">\
+		           <div class=\"row\">\
+		               <div class="col-sm-4">\
+		                     <label  class="fontRobotoB">Fecha</label>\
+		                     <div class="input-group"><input  class="form-control date-picker" id="fechares" value="' + mifecha + '"\
+		                     type="text" autocomplete="off"  data-date-format="dd/mm/yyyy" /> \
+		                     <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span></div>\
+						</div>\
+						<div class="col-sm-3">\
+		                     <label  class="fontRobotoB">Hora</label>\
+							 <input  id="horares" autocomplete="off" class= "small form-control input-mask-hora" value="'+ mihora + '"></input>\
+						</div>\
+		    		</div>\
+		   </form>\
+		 </div>\
+		 <div class="modal-footer">\
+			<button type="button" class="btn btn-sm btn-primary" data-action="grabar"><i class="ace-icon fa fa-trash-o"></i> Reservar</button>\
+			<button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancel</button>\
+		 </div>\
+	  </div>\
+	 </div>\
+	</div>';
+
+	var modal = $(modal).appendTo('body');
+	modal.find('form').on('submit', function(ev){
+		ev.preventDefault();
+		modal.modal("hide");
+	});
+
+	$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+	$(".input-mask-hora").mask("99:99");
+		
+
+	modal.find('button[data-action=grabar]').on('click', function() {
+		guardaRes(id,$("#fechares").val(),$("#horares").val());
+		modal.modal("hide");
+	});
+	
+	modal.modal('show').on('hidden', function(){
+		modal.remove();
+	});
+
+	
 }
 
 
-function verCalifCiclo(matricula,nombre){
-	enlace="nucleo/tu_caltutorados/grid.php?matricula="+matricula+"&nombre="+nombre;
-	abrirPesta(enlace,"Calif. Ciclo");
- }
-
- function verHorario(matricula,nombre){
-	enlace="nucleo/pa_mihorario/grid.php?matricula="+matricula+"&nombre="+nombre+"&ciclo="+$("#selCiclos").val();
-	abrirPesta(enlace,"Horario");
- }
-
-
- function verActCom(matricula,nombre){
-	enlace="nucleo/pa_inscompl/grid.php?matricula="+matricula+"&nombre="+nombre+"&ciclo="+$("#selCiclos").val();
-	abrirPesta(enlace,"Complementarias");
- }
+function noreservar(id){
+	lafecha=dameFecha("FECHA");
+	if (confirm("¿Seguro que desea eliminar la reservación realizada?") ){
+		parametros={
+			tabla:"bib_reservas",
+			campollave:"concat(IDARTICULO,FECHARES,MATRICULA)",
+			bd:"Mysql",
+			valorllave:id+lafecha+usuario
+		};
+		$.ajax({
+			type: "POST",
+			url:"../base/eliminar.php",
+			data: parametros,
+			success: function(data){
+				cargarInformacion();
+				
+			}					     
+		});    	 
+	}        
+}
 
 
 function filtrarMenu() {

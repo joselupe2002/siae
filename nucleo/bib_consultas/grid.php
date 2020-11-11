@@ -44,7 +44,14 @@
 	<div class="widget-box widget-color-purple" id="principal">
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
-				         <div id="losciclos" class="col-sm-1">
+				         <div id="reservas" class="col-sm-1">
+						 	Reservas
+						 	<div class="checkbox" style="padding:0px; margin: 0px;">
+		                        <label> 
+									<input  id="misreservas" type="checkbox" class="selMateria ace ace-switch ace-switch-6" />
+			                        <span class="lbl"></span> 
+	                            </label> 
+                            </div> 
 						</div> 					
 
 						<div id="lascarreras" class="col-sm-3">
