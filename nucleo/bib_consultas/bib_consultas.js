@@ -88,10 +88,11 @@ jQuery.each(grid_data, function(clave, valor) {
 		"				<a href=\"#\"><img src=\""+lafoto+"\" class=\"ma_fotoRec\"  /></a><br/>"+		
 		"			<div class=\"body\">"+
 		"				<div class=\"name fontRoboto\">"+
-		"					<a href=\"#\">"+
-		"                   <span class=\"elname\" mipadre=\""+valor.ID+"\">"+valor.TITULO+
-		"							<span class=\"hidden\">"+valor.AUTOR+"</span></span></a>"+
-		"							<span class=\"hidden\">"+valor.ID+"</span></span></a>"+
+		"                   <span class=\"fontRobotoB elname text-primary\" mipadre=\""+valor.ID+"\" style=\"font-size:11px; line-height: 1.2;\">"+valor.TITULO.substring(0,29)+
+		"							<span class=\"hidden\">"+valor.TITULO+"</span>"+
+		"							<span class=\"hidden\">"+valor.AUTOR+"</span>"+
+		"							<span class=\"hidden\">"+valor.ID+"</span>"+
+	    "					</span>"+
 		"			</div>"+
 		"		</div>"+
 		"		<div class=\"popover ma_popover\">"+
@@ -178,7 +179,7 @@ function reservar(id){
 		           <div class=\"row\">\
 		               <div class="col-sm-4">\
 		                     <label  class="fontRobotoB">Fecha</label>\
-		                     <div class="input-group"><input  class="form-control date-picker" id="fechares" value="' + mifecha + '"\
+		                     <div class="input-group"><input readonly="true" class="form-control date-picker" id="fechares" value="' + mifecha + '"\
 		                     type="text" autocomplete="off"  data-date-format="dd/mm/yyyy" /> \
 		                     <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span></div>\
 						</div>\
@@ -203,7 +204,7 @@ function reservar(id){
 		modal.modal("hide");
 	});
 
-	$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+	//$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
 	$(".input-mask-hora").mask("99:99");
 		
 
