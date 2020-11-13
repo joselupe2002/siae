@@ -102,13 +102,13 @@ function addImagen(modulo,usuario,institucion, campus,essuper){
 		" or ID=CONCAT('FOTO3_',"+table.rows('.selected').data()[0][0]+")"+
 		" or ID=CONCAT('FOTO4_',"+table.rows('.selected').data()[0][0]+")";
 
-		console.log(elsql);
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 	        	 type: "POST",
 	        	 url:  "../base/getdatossqlSeg.php",
-	        	 success: function(data){ 	        	   	        		        	
+	        	 success: function(data){ 
+					                 console.log(data);	        	   	        		        	
 	        	   	        	     jQuery.each(JSON.parse(data), function(clave, valor) { 	        	   	        	 
 	        	   	        		       $("#"+valor.AUX).val(valor.RUTA);
 	        	   	        		       $("#img_"+valor.AUX).attr("src",valor.RUTA);
