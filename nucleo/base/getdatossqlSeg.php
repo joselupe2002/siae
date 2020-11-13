@@ -8,7 +8,6 @@
        $res=$miConex->getConsulta($_POST['bd'],$_POST['sql']);
        
        foreach ($res as $lin) {
-         echo "entre: ".$lin;
           $datos[]=$lin;
        }
        echo json_encode($datos);
