@@ -3,7 +3,10 @@ var estaseriando=false;
 var matser="";
 contAlum=1;
 contMat=1;
+numres=0;
 
+var laconfig=[];
+var losdias=[];
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
@@ -15,16 +18,39 @@ contMat=1;
 		$("#lascarreras").append("<span class=\"label label-warning\">Carrera</span>");		
 		addSELECT("selSecciones","lascarreras","PROPIO", "SELECT ID, SECCION FROM bib_secciones ", "",""); 
 	
-		
+		actualizaRes();
+
+		elsql="SELECT * FROM bib_config where TIPO='LIBROS'";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){   
+					laconfig=JSON.parse(data);
+				}
+			});
+
 	});
 	
+
+	function actualizaRes(){
+		elsql="SELECT count(*) FROM bib_reservas where MATRICULA='"+usuario+"' and STR_TO_DATE(FECHARES,'%d/%m/%Y')=CURDATE()";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){   
+				numres=JSON.parse(data)[0][0];
+				$("#numres").html(numres);
+			}
+		});
+	}
 	
 		 
 	function change_SELECT(elemento) {
-		if (elemento=='selCarreras') {	
-			$("#loshorarios").empty();
-				
-		}  
+
     }
 
 /*===========================================================POR MATERIAS ==============================================*/
@@ -82,6 +108,13 @@ jQuery.each(grid_data, function(clave, valor) {
 	titulo="Reservar";
 	if ($("#misreservas").prop("checked")) {evento="onclick=\"noreservar('"+valor.ID+"');\""; titulo="Eliminar Reserva"; }
 
+	botonReserva="<div class=\"tools action-buttons\">"+
+		"						<a title=\"Reservar libro\" "+evento+" style=\"cursor:pointer;\">"+
+		"                            <i class=\"ace-icon fa fa-check-square-o red bigger-120\"> "+titulo+"</i>"+
+		"                       </a>"+				
+		"				</div>";
+	if ((numres>=laconfig[0]["MAXRESERVA"]) && !($("#misreservas").prop("checked"))) {botonReserva="";}
+
     $("#contenido").append(		
 		"	<div class=\"itemdiv memberdiv\" id=\""+valor.ID+"\">"+
 		"		<div class=\"ma_principal\">"+		
@@ -102,12 +135,7 @@ jQuery.each(grid_data, function(clave, valor) {
 		"					<div class=\"time\"><span class=\"badge badge-success\"> No.: "+valor.ID+"</span></div>"+
 		"					<div class=\"time\"><i class=\"ace-icon fa fa-user middle bigger-120 orange\"></i><span class=\"green\">"+valor.AUTOR+"</span></div>"+
 		"					<div class=\"time\"><i class=\"ace-icon fa fa-columns  middle bigger-120 purple\"></i><span class=\"blue\"> ANAQUEL: "+valor.ANAQUEL+"</span></div>"+
-		"					<div class=\"hr dotted hr-8\"></div>"+
-		"					<div class=\"tools action-buttons\">"+
-		"						<a title=\"Reservar libro\" "+evento+" style=\"cursor:pointer;\">"+
-		"                            <i class=\"ace-icon fa fa-check-square-o red bigger-120\"> "+titulo+"</i>"+
-		"                       </a>"+				
-		"					</div>"+
+		"					<div class=\"hr dotted hr-8\"></div>"+botonReserva+		
 		"				</div>"+
 		"			</div>"+
 		"		</div>"+
@@ -160,63 +188,67 @@ function guardaRes(id,fechares, horares) {
 				url:"../base/inserta.php",
 				data: parametros,
 				success: function(data){ 
-						cargarInformacion();						
+						numres++;
+						cargarInformacion();
+						actualizaRes();						
 					}
 				});			
 
 }
 
 function reservar(id){
-	mifecha=dameFecha("FECHA");
-	mihora=dameFecha("HORA");
-	var modal = 
-	'<div class="modal fade">\
-	  <div class="modal-dialog">\
-	   <div class="modal-content">\
-		 <div class="modal-body">\
-		   <button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>\
-		   <form class="no-margin">\
-		           <div class=\"row\">\
-		               <div class="col-sm-4">\
-		                     <label  class="fontRobotoB">Fecha</label>\
-		                     <div class="input-group"><input readonly="true" class="form-control date-picker" id="fechares" value="' + mifecha + '"\
-		                     type="text" autocomplete="off"  data-date-format="dd/mm/yyyy" /> \
-		                     <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span></div>\
+	if (numres<laconfig[0]["MAXRESERVA"]) {
+		mifecha=dameFecha("FECHA");
+		mihora=dameFecha("HORA");
+		var modal = 
+		'<div class="modal fade">\
+		<div class="modal-dialog">\
+		<div class="modal-content">\
+			<div class="modal-body">\
+			<button type="button" class="close" data-dismiss="modal" style="margin-top:-10px;">&times;</button>\
+			<form class="no-margin">\
+					<div class=\"row\">\
+						<div class="col-sm-4">\
+								<label  class="fontRobotoB">Fecha</label>\
+								<div class="input-group"><input readonly="true" class="form-control date-picker" id="fechares" value="' + mifecha + '"\
+								type="text" autocomplete="off"  data-date-format="dd/mm/yyyy" /> \
+								<span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span></div>\
+							</div>\
+							<div class="col-sm-3">\
+								<label  class="fontRobotoB">Hora</label>\
+								<input  id="horares" autocomplete="off" class= "small form-control input-mask-hora" value="'+ mihora + '"></input>\
+							</div>\
 						</div>\
-						<div class="col-sm-3">\
-		                     <label  class="fontRobotoB">Hora</label>\
-							 <input  id="horares" autocomplete="off" class= "small form-control input-mask-hora" value="'+ mihora + '"></input>\
-						</div>\
-		    		</div>\
-		   </form>\
-		 </div>\
-		 <div class="modal-footer">\
-			<button type="button" class="btn btn-sm btn-primary" data-action="grabar"><i class="ace-icon fa fa-trash-o"></i> Reservar</button>\
-			<button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancel</button>\
-		 </div>\
-	  </div>\
-	 </div>\
-	</div>';
+			</form>\
+			</div>\
+			<div class="modal-footer">\
+				<button type="button" class="btn btn-sm btn-primary" data-action="grabar"><i class="ace-icon fa fa-trash-o"></i> Reservar</button>\
+				<button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancel</button>\
+			</div>\
+		</div>\
+		</div>\
+		</div>';
 
-	var modal = $(modal).appendTo('body');
-	modal.find('form').on('submit', function(ev){
-		ev.preventDefault();
-		modal.modal("hide");
-	});
+		var modal = $(modal).appendTo('body');
+		modal.find('form').on('submit', function(ev){
+			ev.preventDefault();
+			modal.modal("hide");
+		});
 
-	//$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
-	$(".input-mask-hora").mask("99:99");
+		//$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+		$(".input-mask-hora").mask("99:99");
+			
+
+		modal.find('button[data-action=grabar]').on('click', function() {
+			guardaRes(id,$("#fechares").val(),$("#horares").val());
+			modal.modal("hide");
+		});
 		
-
-	modal.find('button[data-action=grabar]').on('click', function() {
-		guardaRes(id,$("#fechares").val(),$("#horares").val());
-		modal.modal("hide");
-	});
-	
-	modal.modal('show').on('hidden', function(){
-		modal.remove();
-	});
-
+		modal.modal('show').on('hidden', function(){
+			modal.remove();
+		});
+	}
+	else {alert ("No puede reservar más de "+laconfig[0]["MAXRESERVA"]+" al día");}
 	
 }
 
@@ -235,7 +267,9 @@ function noreservar(id){
 			url:"../base/eliminar.php",
 			data: parametros,
 			success: function(data){
+				numres--;
 				cargarInformacion();
+				actualizaRes();
 				
 			}					     
 		});    	 

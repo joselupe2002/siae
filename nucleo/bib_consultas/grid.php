@@ -70,13 +70,18 @@
 							</button>																														 									
 						</div>
 
-						<div  class="col-sm-2">
+						<div id="filtro" class="col-sm-2">
 						   <span class="label label-success">Filtrar</span>
 							<span class="input-icon">
 								<input id="filtrar"  onkeyup="filtrarMenu();" type="text" id="form-field-icon-1" />
 								<i class="ace-icon fa fa-search blue"></i>
 							</span>
 						</div>   
+
+						<div id="add" class="col-sm-1">
+							<span id="numres" class="badge badge-primary pull-right">
+						</div>  
+
 
 		            </div> 
 		      </div>

@@ -176,13 +176,33 @@ var losdias=[];
 
 
 
+	function verificaReserva() {
+	
+	}
+
+
+
 	function prestaLibro(){
-		if (($("#selAlumnos").val()>0) && ($("#selLibros").val()>0)) {
-			fecha=dameFecha("FECHAHORA");
-			fechaent=dameFecha("FECHAHORA",2);
-			fechasola=dameFecha("FECHA");
-			hora=dameFecha("HORA");
-			parametros={tabla:"bib_prestamos",
+	if (($("#selAlumnos").val()>0) && ($("#selLibros").val()>0)) {			
+		elsql="SELECT a.*, b.*, count(*) as HAY FROM bib_reservas a, vpersonas b where MATRICULA=b.NUMERO AND MATRICULA<>'"+$("#selAlumnos").val()+
+		"' and STR_TO_DATE(FECHARES,'%d/%m/%Y')=CURDATE()"+
+		" and IDARTICULO="+$("#selLibros").val();
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){   
+				datos=JSON.parse(data);
+				if (datos[0]["HAY"]>0) {
+					alert ("El libro se encuentra reservado por: "+datos[0]["NUMERO"]+" "+datos[0]["NOMBRE"]);
+				}
+				else {
+					fecha=dameFecha("FECHAHORA");
+					fechaent=dameFecha("FECHAHORA",2);
+					fechasola=dameFecha("FECHA");
+					hora=dameFecha("HORA");
+					parametros={tabla:"bib_prestamos",
 							bd:"Mysql",
 							MATRICULA:$("#selAlumnos").val(),
 							IDARTICULO:$("#selLibros").val(),
@@ -201,16 +221,17 @@ var losdias=[];
 						type: "POST",
 						url:"../base/inserta.php",
 						data: parametros,
-						success: function(data){ 
-							
+						success: function(data){ 							
 								cargarInformacion();
 								$("#contLibro").empty();
-								$("#selLibros").val("0");
-								
+								$("#selLibros").val("0");								
 							}
 						});			
-		}
-		else {alert ("Debe seleccionar Alumno y Libro");}
+				}
+			}
+		});	
+	}
+	else {alert ("Debe seleccionar Alumno y Libro");}
 				
 	}
 
