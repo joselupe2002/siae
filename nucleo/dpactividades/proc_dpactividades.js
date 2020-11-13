@@ -96,13 +96,13 @@ function addImagen(modulo,usuario,institucion, campus,essuper){
 	    
 	    $('#modalDocument').modal({show:true, backdrop: 'static'});
        	 
-		
+		/*
 		elsql="SELECT * from eadjuntos where ID=CONCAT('FOTO1_',"+table.rows('.selected').data()[0][0]+")"+
 		" or ID=CONCAT('FOTO2_',"+table.rows('.selected').data()[0][0]+")"+
 		" or ID=CONCAT('FOTO3_',"+table.rows('.selected').data()[0][0]+")"+
-		" or ID=CONCAT('FOTO4_',"+table.rows('.selected').data()[0][0]+")";
+		" or ID=CONCAT('FOTO4_',"+table.rows('.selected').data()[0][0]+")";*/
 
-
+		elsql="select * from falumnos a where ALUM_MATRICULA='20E40001'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 	        	 type: "POST",
