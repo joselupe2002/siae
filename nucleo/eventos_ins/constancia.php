@@ -198,7 +198,7 @@
 
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('Montserrat-ExtraBold','B',20);
-		$pdf->Cell(0,0,"AL ",0,0,'C');
+		$pdf->Cell(0,0,"A EL (LA) ",0,0,'C');
 		$pdf->ln(10);
 		$pdf->SetFont('Montserrat-ExtraBold','B',22);
 		$pdf->MultiCell(170,10,utf8_decode(strtoupper($data[0]["GRADO"])." ".strtoupper($data[0]["NOMBRE"])),0,'C');

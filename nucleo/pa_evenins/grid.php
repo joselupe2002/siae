@@ -40,14 +40,33 @@
 
 	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
 	   
-	<div class="page-header">
-		<h1>Eventos Abiertos<small><i class="ace-icon fa fa-angle-double-right">
-				</i> Año <?php echo date('Y'); ?>
-		</small></h1>
-	</div><!-- /.page-header -->
-	<div id="principal"> 
-	      
+	<div class="tabbable fontRoboto">
+			 <ul class="nav nav-tabs" id="myTab">
+			 	 <li class="active">
+					  <a data-toggle="tab" href="#even">Eventos<span id="lisact" class="badge badge-danger">0</span></a>
+				 </li>
+				 <li >
+					 <a data-toggle="tab" href="#hist"><i class="green ace-icon fa fa-home bigger-120"></i>Historial</a>
+			     </li>                
+		     </ul>
+			 <div class="tab-content">
+			 		<div id="even" class="tab-pane fade in active">
+						<div class="page-header">
+							<h1>Eventos Abiertos<small><i class="ace-icon fa fa-angle-double-right">
+									</i> Año <?php echo date('Y'); ?></i>
+							</small></h1>
+						</div><!-- /.page-header -->
+						<div id="principal"> </div>
+					</div>
+
+					<div id="hist" class="tab-pane">
+						<div class="page-header"><h1>Historial de Eventos</h1></div><!-- /.page-header -->
+						<div id="historial"> </div>
+					</div>
+			</div>
 	</div>
+
+	
 <!-- ============================================================================================================-->			
 		 							
 <!-- -------------------Primero ----------------------->
