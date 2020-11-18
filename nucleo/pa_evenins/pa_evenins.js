@@ -150,10 +150,11 @@ function generaTablaHis(grid_data){
 
 		etconstancia="";constancia="";
 		etautorizada="La constancia NO se ha autorizado"; 
-		autorizada="<i class=\"fa fa-thumbs-o-up green bigger-200\"></i>";
+		autorizada="<i class=\"fa fa-thumbs-o-down red bigger-200\"></i>";
+		
 		if (valor.AUTORIZADO=='S') {
 			etautorizada="La constancia se encuentra autorizada"; 
-			autorizada="<i class=\"fa fa-thumbs-o-down red bigger-200\"></i>";
+			autorizada="<i class=\"fa fa-thumbs-o-up green bigger-200\"></i>";
 			etconstancia="Descargue su constancia de participación";
 			constancia="<button class=\"btn btn-white btn-info btn-bold\" onclick=\"verConstancia("+valor.ID+");\">"+
 			                "<i class=\"ace-icon fa fa-check-square-o bigger-120 blue\"></i>Ver Constancia</button>";
