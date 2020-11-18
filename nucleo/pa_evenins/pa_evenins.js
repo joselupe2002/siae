@@ -185,6 +185,6 @@ function generaTablaHis(grid_data){
 	
 	
 function verConstancia(id){		
-	enlace=("nucleo/eventos_ins/constancia.php?id="+id+"&tipo=2");
+	enlace=("nucleo/eventos_ins/constancia.php?id="+id+"&tipo=1");
 	abrirPesta(enlace,"Constancia");
 }
