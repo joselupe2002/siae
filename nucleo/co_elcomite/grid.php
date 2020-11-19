@@ -277,38 +277,38 @@ function cargarCasos() {
 		success: function(data){
 			c=0;		
 			jQuery.each(JSON.parse(data), function(clave, valor) { 	
-				ev="onchange=\"guardar('"+c+"');\"";
+				ev="onchange=\"guardar('"+valor.ID+"');\"";
 				$("#accordion").append(
 					"<div class=\"panel panel-default\">"+
 				    "    <div class=\"panel-heading\"> "+
 					"         <h4 class=\"panel-title\">"+
-					"             <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#tab"+c+"\">"+
+					"             <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#tab"+valor.ID+"\">"+
 					"		          <i class=\"ace-icon fa fa-angle-down bigger-110\" data-icon-hide=\"ace-icon fa fa-angle-down\" data-icon-show=\"ace-icon fa fa-angle-right\"></i>"+
 					"                    &nbsp;"+valor.PERSONA+" <span class=\"text-success\">"+valor.NOMBRE+"</span> <span class=\"text-danger\">"+valor.CARRERAD+"</span>"+
 					"              </a>"+
 					"         </h4> "+
 					"    </div>"+
-                    "    <div class=\"panel-collapse collapse\" id=\"tab"+c+"\">"+
+                    "    <div class=\"panel-collapse collapse\" id=\"tab"+valor.ID+"\">"+
 					"        <div class=\"panel-body fontRoboto bigger-120\"> "+
 					"           <div class=\"row\">"+
-					"                 <div class=\"col-sm-3\" id=\"pan1_"+c+"\" ></div>"+
-					"                 <div class=\"col-sm-6\" id=\"pan2_"+c+"\">"+
+					"                 <div class=\"col-sm-3\" id=\"pan1_"+valor.ID+"\" ></div>"+
+					"                 <div class=\"col-sm-6\" id=\"pan2_"+valor.ID+"\">"+
 										  valor.SOLICITUD+"<br><br>"+
 					"                     <span class=\"badge badge-warning bigger-120\">Motivos Personales</span><br>"+
 					                       valor.PERSONALES+"<br><br>"+
 					"                     <span class=\"badge badge-danger bigger-120\">Motivos Académicos</span><br>"+
 					                       valor.ACADEMICOS+"<br>"+
 					"                 </div>"+
-					"                 <div class=\"col-sm-3\" id=\"pan3_"+c+"\">"+
+					"                 <div class=\"col-sm-3\" id=\"pan3_"+valor.ID+"\">"+
 					"					 <span class=\"label label-danger\">Dictamén</span>"+
-					"					 <select "+ev+" style=\"width:100%;\" id=\"seldic_"+c+"\"><option value='P'>Elija Opción</option><option value='S'>SI SE RECOMIENDA</option><option value='N'>NO SE RECOMIENDA</option></select>"+
-					"					 <textarea "+ev+"  style=\"width:100%; height:200px;\" id=\"dic_"+c+"\">"+valor.OBSCOMITE+"</textarea>"+
+					"					 <select "+ev+" style=\"width:100%;\" id=\"seldic_"+valor.ID+"\"><option value='P'>Elija Opción</option><option value='S'>SI SE RECOMIENDA</option><option value='N'>NO SE RECOMIENDA</option></select>"+
+					"					 <textarea "+ev+"  style=\"width:100%; height:200px;\" id=\"dic_"+valor.ID+"\">"+valor.OBSCOMITE+"</textarea>"+
 					" 				  </div>"+
 					"	        </div> "+				
 					"	 </div> "+
 					"</div>"
 					);	
-					$("#seldic_"+c+" option[value="+valor.AUTCOMITE+"]").attr("selected",true);
+					$("#seldic_"+valor.ID+" option[value="+valor.AUTCOMITE+"]").attr("selected",true);
 				
 				if (valor.TIPO=='ALUMNOS') {
 					elsql="SELECT ALUM_ESPECIALIDAD, ALUM_MAPA, ifnull(ALUM_FOTO,'../../imagenes/menu/default.png') as ALUM_FOTO,"+
@@ -321,11 +321,11 @@ function cargarCasos() {
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data2){
 							datAlum=JSON.parse(data2);
-							$("#pan1_"+c).append(
+							$("#pan1_"+valor.ID).append(
 								"<div class=\"row\">  "+
 							    "     <div class=\"col-sm-6\">  "+
 								"			<span class=\"profile-picture\" style=\"text-align:center;\">"+
-								"				<img id=\"foto_"+c+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
+								"				<img id=\"foto_"+valor.ID+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
 								"			</span>"+	
 								"	  </div>"+
 								"	  <div class=\"col-sm-6\">  "+	
@@ -359,7 +359,7 @@ function cargarCasos() {
 							);
 							
 							
-								$("#foto_"+c).attr("src",datAlum[0]["ALUM_FOTO"]);
+								$("#foto_"+valor.ID).attr("src",datAlum[0]["ALUM_FOTO"]);
 								$('.easy-pie-chart.percentage').each(function(){
 								    var barColor = $(this).data('color') || '#2979FF';var trackColor = '#E2E2E2'; var size = parseInt($(this).data('size')) || 72;
 									$(this).easyPieChart({barColor: barColor,trackColor: trackColor,scaleColor: false,lineCap: 'butt',lineWidth: parseInt(size/5),animate:false,size: size}).css('color', barColor);
@@ -379,17 +379,17 @@ function cargarCasos() {
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data2){
 							datAlum=JSON.parse(data2);
-							$("#pan1_"+c).append(
+							$("#pan1_"+valor.ID).append(
 								"<div class=\"row\">  "+
 							    "     <div class=\"col-sm-6\">  "+
 								"			<span class=\"profile-picture\" style=\"text-align:center;\">"+
-								"				<img id=\"foto_"+c+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
+								"				<img id=\"foto_"+valor.ID+"\"  style=\"width: 80px; height: 90px;\" class=\"img-responsive\" src=\"../../imagenes/menu/esperar.gif\"/>"+																
 								"			</span>"+	
 								"	  </div>"+
 								"</div>"
 							);
 							
-							$("#foto_"+c).attr("src",datAlum[0]["EMPL_FOTO"]);
+							$("#foto_"+valor.ID).attr("src",datAlum[0]["EMPL_FOTO"]);
 											
 						}
 					});

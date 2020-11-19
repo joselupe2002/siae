@@ -211,7 +211,7 @@
 
 		$miutil = new UtilUser();
 		$fechadec=$miutil->formatFecha($data[0]["FECHAEXP"]);
-		$lafecha="MACUSPANA, TABASCO A ".date("d", strtotime($fechadec))." DE ".strtoupper($miutil->getFecha($fechadec,'MES')). " DEL ".date("Y", strtotime($fechadec));
+		$lafecha=strtoupper($dataGen[0]["inst_fechaof"])." A ".date("d", strtotime($fechadec))." DE ".strtoupper($miutil->getFecha($fechadec,'MES')). " DEL ".date("Y", strtotime($fechadec));
 		
 		$pdf->ln(10);
 		$pdf->SetFont('Montserrat-ExtraLight','',10);
@@ -232,10 +232,11 @@
 
 		*/
 		
-		if ($data[0]["EVENTOSLOGO"]!='../../imagenes/menu/default.png') {
+		if (($data[0]["EVENTOSLOGO"]!='../../imagenes/menu/default.png')  && ($data[0]["EVENTOSLOGO"]!=''))  {
 		   $pdf->Image($data[0]["EVENTOSLOGO"],15,67,40);
 		}
 
+		
 		$pdf->Image('../../imagenes/empresa/enc3.png',20,255,10);
 		$pdf->Image('../../imagenes/empresa/logo3.png',160,255,35);
 

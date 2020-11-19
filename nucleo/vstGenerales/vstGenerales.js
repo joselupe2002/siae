@@ -52,6 +52,7 @@ contMat=1;
 		addSELECT("selCiclos","losciclossel","PROPIO", "SELECT CICL_CLAVE, CICL_DESCRIP FROM ciclosesc WHERE CICL_CLAVE=9999", "","");  			      
 		actualizaSelect("selCiclos", "SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc UNION SELECT '%','TODOS LOS CICLO' FROM DUAL order by 1 DESC", "",""); 
 		
+		
 
 		$("#losreportes").empty();
 		$("#losreportes").append("<span class=\"label label-danger\">Reporte</span>");
@@ -83,6 +84,8 @@ contMat=1;
 	}
 	
 	function cargaReportes(indicador){
+	
+
 
 		mostrarEspera("esperaInf","grid_vstGenerales","Cargando Datos...");
 		elsql="SELECT usua_usuader, usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
@@ -103,6 +106,7 @@ contMat=1;
 					else {
                        elsql2="SELECT ID, CONCAT(CATEGORIA,' ',NOMBRE) AS NOMBRE FROM strepgenerales order by NOMBRE DESC";
 					}
+
 
 					parametrosw={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}				
 					$.ajax({
