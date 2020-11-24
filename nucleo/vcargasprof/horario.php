@@ -161,11 +161,11 @@
 				$this->SetDrawColor(0,0,0);
 				$this->SetX(10);
 
-				$this->SetY(-40);
-				$this->Cell(45,4,"INTERESADO",'T',0,'C',false);
+				$this->SetY(-25);
+				$this->Cell(30,4,"INTERESADO",'T',0,'C',false);
 				
-				$this->SetX(60);
-				$this->Cell(45,4,utf8_decode($this->eljefe),'T',0,'C',false);
+				$this->SetX(45);
+				$this->Cell(60,4,utf8_decode($this->eljefe),'T',0,'C',false);
 				
 				$this->SetX(110);
 				$this->Cell(45,4,utf8_decode($subdir),'T',0,'C',false);
