@@ -161,7 +161,7 @@
 				$this->SetDrawColor(0,0,0);
 				$this->SetX(10);
 
-				$this->SetY(-25);
+				$this->SetY(-45);
 				$this->Cell(30,4,"INTERESADO",'T',0,'C',false);
 				
 				$this->SetX(45);
