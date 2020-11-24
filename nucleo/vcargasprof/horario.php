@@ -180,7 +180,7 @@
 		
 				$this->SetY(-37);
 				$this->SetX(45);
-				if ($this->eljefe=='ING. CLEMENTE SILVAN EMETERIO') {$lacad="JEFE DE DEPARTAMENTO";} else {$lacad="JEFE DIVISIÓN";}
+				if ($this->eljefe=='L.M. CLEMENTE SILVAN EMETERIO') {$lacad="JEFE DE DEPARTAMENTO";} else {$lacad="JEFE DIVISIÓN";}
 				$this->Cell(60,4,utf8_decode($lacad),'',0,'C',false);
 
 				$this->SetX(110);
