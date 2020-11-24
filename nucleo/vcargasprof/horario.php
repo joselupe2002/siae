@@ -153,20 +153,23 @@
 				
 				$dir=$miutil->getJefe('301');
 				$subdir=$miutil->getJefe('304');
+				$dirgen=$miutil->getJefe('101');
 				
 				
 				//249 ANCHO
-				$this->SetFont('Montserrat-Medium','B',7);
+				$this->SetFont('Montserrat-Medium','B',6);
 				$this->SetDrawColor(0,0,0);
 				$this->SetX(10);
 				$this->SetY(-40);
-				$this->Cell(60,4,"INTERESADO",'T',0,'C',false);
-				$this->SetX(78);
-				$this->Cell(60,4,utf8_decode($this->eljefe),'T',0,'C',false);
-				$this->SetX(141);
-				$this->Cell(60,4,utf8_decode($subdir),'T',0,'C',false);
+				$this->Cell(45,4,"INTERESADO",'T',0,'C',false);
+				$this->SetX(58);
+				$this->Cell(45,4,utf8_decode($this->eljefe),'T',0,'C',false);
+				$this->SetX(121);
+				$this->Cell(45,4,utf8_decode($subdir),'T',0,'C',false);
+				$this->SetX(189);
+				$this->Cell(45,4,utf8_decode($dir),'T',0,'C',false);
 				$this->SetX(209);
-				$this->Cell(55,4,utf8_decode($dir),'T',0,'C',false);
+				$this->Cell(45,4,utf8_decode($dirgen),'T',0,'C',false);
 				
 		
 				$this->SetY(-37);
