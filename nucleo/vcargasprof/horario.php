@@ -178,12 +178,17 @@
 				
 		
 				$this->SetY(-37);
-				$this->SetX(80);
+				$this->SetX(60);
 				$this->Cell(60,4,utf8_decode('JEFE DIVISIÓN'),'',0,'C',false);
-				$this->SetX(140);
+
+				$this->SetX(120);
 				$this->Cell(60,4,utf8_decode('SUBDIRECTOR ACADÉMICO'),'',0,'C',false);
-				$this->SetX(210);
+				
+				$this->SetX(180);
 				$this->Cell(60,4,utf8_decode('DIRECTOR ACADÉMICO'),'',0,'C',false);
+
+				$this->SetX(210);
+				$this->Cell(60,4,utf8_decode('DIRECTOR GENERAL'),'',0,'C',false);
 				
 				
 			}
