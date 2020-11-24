@@ -167,14 +167,13 @@
 				$this->SetX(60);
 				$this->Cell(45,4,utf8_decode($this->eljefe),'T',0,'C',false);
 				
-				$this->SetX(105);
+				$this->SetX(110);
 				$this->Cell(55,4,utf8_decode($subdir),'T',0,'C',false);
 
-				$this->SetX(189);
-
+				$this->SetX(155);
 				$this->Cell(45,4,utf8_decode($dir),'T',0,'C',false);
-				$this->SetX(209);
-				
+
+				$this->SetX(209);				
 				$this->Cell(45,4,utf8_decode($dirgen),'T',0,'C',false);
 				
 		
