@@ -180,7 +180,7 @@
 		
 				$this->SetY(-37);
 				$this->SetX(60);
-				$this->Cell(45,4,utf8_decode('JEFE DIVISIÓN'),'',0,'C',false);
+				$this->Cell(60,4,utf8_decode('JEFE DIVISIÓN'),'',0,'C',false);
 
 				$this->SetX(110);
 				$this->Cell(45,4,utf8_decode('SUBDIRECTOR ACADÉMICO'),'',0,'C',false);
