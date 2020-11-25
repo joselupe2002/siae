@@ -273,7 +273,7 @@
 	
 		
 	
-		$header = array('CONT.', 'NOMBRE DEL ALUMNO', 'GEN.','PROGRAMA EDUCATIVO','TEMAS/ASIGNATURA','FECHA','HORA');		
+		$header = array('CONT.', 'NOMBRE DEL ALUMNO', 'GEN.','PROGRAMA EDUCATIVO','TEMA/ASIGNATURA','FECHA','HORA');		
 		$data = $pdf->cargaAsesorias();
 		$pdf->imprimeAsesorias($header,$data);
 		
