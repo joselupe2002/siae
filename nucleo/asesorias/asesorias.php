@@ -270,8 +270,7 @@
 		$pdf->Ln(4);
 		
 		$pdf->eljefe=$dataEmpl[0]["EMPL_JEFEABREVIA"]." ".$dataEmpl[0]["EMPL_JEFED"];
-	
-		
+
 	
 		$header = array('CONT.', 'NOMBRE DEL ALUMNO', 'GEN.','PROGRAMA EDUCATIVO','TEMA/ASIGNATURA','FECHA','HORA');		
 		$data = $pdf->cargaAsesorias();
