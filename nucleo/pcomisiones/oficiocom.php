@@ -116,7 +116,6 @@
 	
 		
 		$dataof=$miutil->verificaOficio($depto,"COMISION",$_GET["ID"]);
-		
 		$fechadecof=$miutil->formatFecha($dataof[0]["CONT_FECHA"]);
 		$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
 		

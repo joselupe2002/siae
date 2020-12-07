@@ -1321,7 +1321,16 @@ class UtilUser {
 	
 	
 
-	
+	public function convTitulo($cad) {
+		$cadRes="";
+		for($i=0;$i<strlen($cad);$i++) {
+			if ($cad[$i]==" ") { $cadRes.=" ".mb_strtoupper($cad[$i+1]);$i++;}
+			else { $cadRes.=mb_strtolower($cad[$i]);} 
+		}
+		$cadRes[0]=strtoupper($cadRes[0]);
+		return $cadRes;
+	}
+
 	
 	
 	public function addFiltro ($filtroAdd, $sql){

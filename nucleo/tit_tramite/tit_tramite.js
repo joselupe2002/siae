@@ -8,6 +8,8 @@ var porcProyectado=0;
 var porcPosible=0;
 var porcReal=0;
 var miciclo="";
+var laedad="";
+var tramini=false;
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -57,7 +59,8 @@ var miciclo="";
 		 
 	function cargarAvance() {
 
-		elsql="select ALUM_MATRICULA, ALUM_CORREO, ALUM_FOTO, ALUM_MAPA, ALUM_ESPECIALIDAD,"+ 
+		elsql="select ALUM_MATRICULA, TIMESTAMPDIFF(YEAR,STR_TO_DATE(ALUM_FECNAC,'%d/%m/%Y'),CURDATE()) AS EDAD, "+
+		" ALUM_CORREO, ALUM_FOTO, ALUM_MAPA, ALUM_ESPECIALIDAD,"+ 
 		"CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) as ALUM_NOMBREC,"+
 		"b.CLAVEOF as CVEESP, b.DESCRIP AS ESPECIALIDADD, ALUM_CARRERAREG, CARR_DESCRIP AS CARRERAD, PLACRED "+
 		" from falumnos a "+
@@ -81,6 +84,7 @@ var miciclo="";
 			   $("#carrera").html(losdatos[0]["ALUM_CARRERAREG"]+" "+losdatos[0]["CARRERAD"]);
 			   $("#micorreo").html(losdatos[0]["ALUM_CORREO"]);
 
+			   laedad=losdatos[0]["EDAD"];
 			   totalcred=losdatos[0]["PLACRED"];
 			   elmapa=losdatos[0]["ALUM_MAPA"];
 			   laesp=losdatos[0]["ALUM_ESPECIALIDAD"];
@@ -110,7 +114,7 @@ var miciclo="";
 						
 						losdatos=JSON.parse(data); 						
 
-						if ((porcReal>=100)) {
+						if ((porcReal>=50)) {
 										
 							$("#servicio").empty();
 							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
@@ -138,22 +142,104 @@ var miciclo="";
 
    function OpcionesTitulacion(){
 	var abierto=false;
-	elsql="select count(*) as N from tit_pasantes where MATRICULA='"+usuario+"'";
+	elsql="select a.*, count(*) as N from vtit_pasantes a where MATRICULA='"+usuario+"'";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
 		success: function(data){	
-			if (JSON.parse(data)[0]["N"]>0) {	etbtn="Ver Oficio Tramite"; evbtn="reporteTramite();"; msj="Ya iniciaste trámite de titulación"; tipo="success";} 
+			arrpasante=JSON.parse(data);
+			if (JSON.parse(data)[0]["N"]>0) { tramini=true; etbtn="Ver Oficio Tramite"; evbtn="reporteTramite();"; msj="Ya iniciaste trámite de titulación"; tipo="success";} 
 			else { etbtn="Iniciar Tramite";  evbtn="iniciarTramite();"; msj="No has iniciado trámite de titulación"; tipo="warning"; }
 			
 			$("#servicio").html();	
 
 			$("#panel1").append("<div class=\"alert alert-"+tipo+"\" style=\"width:100%;\"> "+msj+
-			"<div style=\"text-align:center;\"><button  onclick=\""+evbtn+"\" class=\"btn  btn-white btn-danger\">"+
-			"     <i class=\"ace-icon blue fa fa-gears bigger-130\"></i><span>"+etbtn+"</span>"+
-			"</button></div></div>");	
+			"<div class=\"row\">"+
+			"    <div class=\"col-sm-6\">"+
+			"        <button  style=\"width:100%\" onclick=\""+evbtn+"\" class=\"btn  btn-white btn-danger\">"+
+			"            <i class=\"ace-icon red fa fa-gears bigger-130\"></i><span>"+etbtn+"</span>"+
+			"        </button>"+
+			"    </div>"+
+			"    <div class=\"col-sm-6\" id=\"btn2\"></div>"+
+			"</div>"+
+			"<div class=\"row\">"+
+			"    <div class=\"col-sm-6\" id=\"btn3\"></div>"+
+			"    <div class=\"col-sm-6\" id=\"btn4\"></div>"+
+			"</div>");	
+
+
+			if (tramini) {
+				$("#btn2").append("<button  style=\"width:100%\" onclick=\"impSolTit();\" class=\"btn  btn-white btn-primary\">"+
+				"     <i class=\"ace-icon blue fa fa-edit bigger-130\"></i><span>Solicitud de Titulación</span>"+
+				"</button></div></div>");
+				
+				$("#btn3").append("<button style=\"width:100%\" onclick=\"impNoAdeudo();\" class=\"btn  btn-white btn-success\">"+
+				"     <i class=\"ace-icon green fa fa-tag bigger-130\"></i><span>No Adeudo</span>"+
+				"</button></div></div>");
+
+				$("#btn4").append("<button  style=\"width:100%\" onclick=\"impEntregaProy();\" class=\"btn  btn-white btn-warning\">"+
+				"     <i class=\"ace-icon purple fa fa-legal bigger-130\"></i><span>Cons. Entrega Proy.</span>"+
+				"</button></div></div>");
+
+				elsql="SELECT * FROM historialtram h where h.IDTRAM='"+usuario+"' and AREA='TITULACION' ORDER BY ID";
+
+				$("#panel1").append("<div id=\"historial\" class=\"alert alert-info fontRobotoB\" style=\"font-size:24px; width:100%;text-align:center;\">"+
+				"<span >SEGUIMIENTO DE TITULACIÓN</span>  </div>");	
+
+				cont=1;
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data){							
+						jQuery.each(JSON.parse(data), function(clave, valor) { 
+							cadSin=""; cadExam="";
+							if (valor.TIPO=="SINODALASIG") {
+								cadSin="<div class=\"col-sm-12\">"+
+									   "<span class=\"text-success\">PRESIDENTE:</span><span class=\"text-info\">"+arrpasante[0]["PRESIDENTED"]+"</span><br>"+
+									   "<span class=\"text-success\">SECREATARIO:</span><span class=\"text-info\">"+arrpasante[0]["SECRETARIOD"]+"</span><br>"+
+									   "<span class=\"text-success\">VOCAL:</span><span class=\"text-info\">"+arrpasante[0]["VOCALD"]+"</span><br>"+
+									   "<span class=\"text-success\">SUPLENTE:</span><span class=\"text-info\">"+arrpasante[0]["VOCALSUPLENTED"]+"</span><br><br>"+
+									   "</div>";									
+							}
+
+							if (valor.TIPO=="ASIGNOFECHA") {
+								cadExam="<div class=\"col-sm-12\">"+
+									   "<span class=\"text-success\">FECHA PROTOCOLO:</span><span class=\"text-info\">"+arrpasante[0]["FECHA_TIT"]+"</span><br>"+
+									   "<span class=\"text-success\">HORA PROTOCOLO:</span><span class=\"text-info\">"+arrpasante[0]["HORA_TIT"]+"</span><br>"+
+									   "<span class=\"text-success\">LUGAR:</span><span class=\"text-info\">"+arrpasante[0]["SALA_TIT"]+"</span><br>"+
+									 
+									   "</div>";									
+							}
+
+							$("#historial").append(
+							"<div class=\"row fontRobotoB\" style=\"text-align:left; font-size:14px;\">"+
+							"	<div class=\"col-sm-1\" style=\"font-size:48px; color:#0E8040;\">"+
+							        cont+
+							"	</div>"+
+							"	<div class=\"col-sm-11\" style=\"text-align:left;\">"+	
+							"		<div class=\"row\" style=\"text-align:left;\">"+												
+							"			<div class=\"col-sm-12\" style=\"text-align:left; color:#0D5183;\">"+valor.TITULO+"</div>"+
+							"			<div class=\"col-sm-12\" style=\"text-align:left;\">"+
+							"        		<i class=\"glyphicon glyphicon-time green \"></i>"+valor.FECHA+
+							"       		&nbsp;&nbsp;&nbsp;&nbsp;<i class=\"glyphicon glyphicon-calendar red \"></i>"+valor.HORA+
+							"			</div>"+											
+											cadSin+cadExam+
+							"			</div>"+
+							"		</div>"+
+							"	</div>"+
+							"</div>");
+							cont++;
+						});						
+					}			
+				});
+
+
+				
+			}
 			
 			
 		}
@@ -163,44 +249,83 @@ var miciclo="";
 
 	function  reporteTramite(){
 		enlace="nucleo/tit_tramite/formato.php?alumno="+usuario;
-		abrirPesta(enlace, "Solicitud");
+		abrirPesta(enlace, "Apertura");
 			
+	}
+
+	function  impNoAdeudo(){
+		enlace="nucleo/tit_tramite/noadeudo.php?alumno="+usuario;
+		abrirPesta(enlace, "NoAdeudo");
+			
+	}
+
+	function  impEntregaProy(){
+		enlace="nucleo/tit_tramite/entregaProy.php?alumno="+usuario;
+		abrirPesta(enlace, "Ent_Proy");
+			
+	}
+	
+
+	function  impSolTit(){
+		elsql="SELECT b.TIPO FROM tit_pasantes h, tit_opciones b where h.MATRICULA='"+usuario+"' and h.ID_OPCION=b.ID";
+
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){	
+				eltipo=JSON.parse(data)[0][0];
+				enlace="";
+				if (eltipo=='OBJETIVOS') {	enlace="nucleo/tit_tramite/soltitObj.php?alumno="+usuario;}
+				if (eltipo=='COMPETENCIA') {	enlace="nucleo/tit_tramite/soltitComp.php?alumno="+usuario;}
+				abrirPesta(enlace, "SolicitudTit");
+			}			
+		});
+
+	
+		
 	}
 
 
 	function  iniciarTramite(){
 
 				mostrarConfirm2("infoError","grid_tit_tramite","Iniciar Trámite de Titulación",
-				"<div class=\"ventanaSC\" style=\"text-align:justify; width:99%; height:250px; overflow-y:auto; overflow-x:hidden;\">"+
-					"<div class=\"row\">"+
-						"<div class=\"col-sm-12\">"+
-							"<label class=\"fontRobotoB\">Empresa donde labora:</label><input class=\"form-control captProy\" id=\"trabajo\"></input>"+
-						"</div>"+						
-					"</div>"+
-					"<div class=\"row\">"+
-						"<div class=\"col-sm-6\">"+
-							"<label class=\"fontRobotoB\">Dirección de la empresa</label><input class=\"form-control captProy\"  id=\"dirtrabajo\"></input>"+
-						"</div>"+
-						"<div class=\"col-sm-6\">"+
-							"<label class=\"fontRobotoB\">Teléfono de la empresa</label><input class=\"form-control captProy\" id=\"teltrabajo\"></input>"+
-						"</div>"+		
-					"</div>"+
+				"<div class=\"ventanaSC\" style=\"text-align:justify; width:99%; height:250px; overflow-y:auto; overflow-x:hidden;\">"+					
 					"<div class=\"row\">"+
 						"<div class=\"col-sm-12\">"+
 							"<label class=\"fontRobotoB\">Modalidad de Titulación</label><select class=\"form-control captProy\"  id=\"modalidad\"></select>"+
 						"</div>"+					
 					"</div>"+	
 					"<div class=\"row\">"+
-						"<div class=\"col-sm-12\">"+
-						"<label class=\"fontRobotoB\">Nombre del Tema (Proyecto/tesis/Residencia/etc)</label><input class=\"form-control captProy\" id=\"tema\"></input>"+
+						"<div class=\"col-sm-10\">"+
+							"<label class=\"fontRobotoB\">Nombre del Tema (Proyecto/tesis/Residencia/Curso/Área Exámen)</label>"+							
+							"<input class=\"form-control captProy\" id=\"tema\"></input>"+
+						"</div>"+	
+						"<div class=\"col-sm-2\">"+
+							"<label class=\"fontRobotoB\">Edad Actual</label>"+							
+							"<input class=\"form-control captProy\" id=\"edadtit\" value=\""+laedad+"\"></input>"+
 						"</div>"+					
+					"</div>"+	
+					"<div class=\"row\">"+
+						"<div class=\"col-sm-8\">"+
+						"<label class=\"btn btn-white btn-small btn-success\" onclick=\"getNombreRes();\"><i class=\"fa fa-retweet red\"></i> Traer nombre de Proyecto de Residencia</label>"+
+						"</div>"+					
+					"</div>"+	
+					"<div class=\"row\">"+
+						"<div class=\"col-sm-12\">"+
+							"<label class=\"fontRobotoB\">Producto de Titulación</label>"+
+							"<select class=\"form-control captProy\"  id=\"producto\"></select>"+
+						"</div>"+								
 					"</div>"+				
 
 				"</div>"
 				,"Grabar Datos","grabarPasante();","modal-lg");
 
 				actualizaSelectMarcar("modalidad", "SELECT ID, OPCION FROM tit_opciones order by OPCION", "","",""); 
-			
+				actualizaSelectMarcar("producto", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='PRODTITULACION' order by CATA_CLAVE", "","",""); 
+
+
 				$('.captProy').keypress(function(){
 					$(this).css("border-color","black");				
 				});
@@ -226,15 +351,15 @@ var miciclo="";
 			parametros={tabla:"tit_pasantes",
 					bd:"Mysql",
 					MATRICULA:usuario,
-					CICLOREG:miciclo,
+					CICLO:miciclo,
 					ID_OPCION:$("#modalidad").val(),
 					TEMA:$("#tema").val(),
+					EDADTIT:$("#edadtit").val(),
+					PRODUCTO:$("#producto").val(),
 					FECHA_REG:fecha,
 					FECHA_SE:fecha,
 					FECHAUS:fechaus,
-					TELTRABAJO:$("#teltrabajo").val(),
-					TRABAJO:$("#trabajo").val(),
-					DIRTRABAJO:$("#dirtrabajo").val(),
+				
 					USUARIO:usuario,				
 					_INSTITUCION: lainstitucion, 
 					_CAMPUS: elcampus}						
@@ -243,6 +368,7 @@ var miciclo="";
 							url:"../base/inserta.php",
 							data: parametros,
 							success: function(data){
+								 alert (data);
 								 reporteTramite(); 
 								 cargarAvance();
 								 ocultarEspera("esperaInf");  
@@ -254,444 +380,24 @@ var miciclo="";
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-function cargarDatosPropuesta(tipo){
-	$("#servicio").append("<div class=\"fontRobotoB\" id=\"lapropuesta\" style=\"text-align:left;\"></div>");
-
-	$("#lapropuesta").append("<div class=\"row\">"+
-								 "<div class=\"col-sm-6\"> "+
-									"<label>Nombre de la Empresa</label><input class=\"form-control\" id=\"empresa\"></input>"+
-								"</div>"+
-								"<div class=\"col-sm-6\"> "+
-								    "<label>Persona para Oficio</label><input class=\"form-control\" id=\"persona\"></input>"+
-								"</div>");
-
-	$("#lapropuesta").append("<div class=\"row\">"+
-								"<div class=\"col-sm-6\"> "+
-								   "<label>Puesto de la Persona</label><input class=\"form-control\" id=\"puesto\"></input>"+
-							   "</div>"+
-							   "<div class=\"col-sm-6\"> "+
-								   "<label>Dirección Empresa, (Calle, número, ciudad, estado) </label><input class=\"form-control\" id=\"direccion\"></input>"+
-							   "</div>");
-
-	$("#lapropuesta").append("<div class=\"row\">"+
-								 "<div class=\"col-sm-6\"> "+
-									"<label>Inicia Residencia</label>"+
-									" <div class=\"input-group\"><input  class=\"form-control date-picker\"  id=\"inicia\" "+
-									" type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
-									" <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
-								"</div>"+
-								"<div class=\"col-sm-6\"> "+
-									"<label>Termina Residencia</label>"+
-									" <div class=\"input-group\"><input  class=\"form-control date-picker\"  id=\"termina\" "+
-									" type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
-									" <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
-								"</div>");
-	$("#lapropuesta").append("<br><div style=\"text-align:center;\"><button  onclick=\"enviarPropuesta();\" class=\"btn  btn-bold btn-danger\" value=\"Agregar\">"+
-	                         "     <i class=\"ace-icon white fa fa-save bigger-200\"></i><span class=\"btn-lg\">Enviar propuesta</span>"+
-	                         "</button></div>");								
-
-	//Para los componentes de fecha 
-    $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
-   }
-
-
-
-   
-	function enviarPropuesta(){
-		if (($("#puesto").val()!='') && ($("#persona").val()!='') && ($("#inicia").val()!='') && ($("#empresa").val()!='') && ($("#domicilio").val()!='')) {
-			var hoy= new Date();
-			lafecha=hoy.getDate()+"/"+hoy.getMonth()+"/"+hoy.getFullYear()+" "+ hoy.getHours()+":"+hoy.getMinutes();
-			parametros={tabla:"respropuestas",
-						bd:"Mysql",
-						_INSTITUCION:"ITSM",
-						_CAMPUS:"0",
-						MATRICULA:usuario,
-						CICLO:miciclo,					
-						PUESTO:$("#puesto").val().toUpperCase(),
-						DOMICILIO:$("#direccion").val().toUpperCase(),
-						PERSONA:$("#persona").val().toUpperCase(),
-						EMPRESA:$("#empresa").val().toUpperCase(),
-						INICIA:$("#inicia").val(),
-						TERMINA:$("#termina").val(),
-						FECHAENVIADA:lafecha,
-						USUARIO:usuario,
-						FECHAUS:lafecha
-					};
-						$.ajax({
-							type: "POST",
-							url:"../base/inserta.php",
-							data: parametros,
-							success: function(data){ 
-								$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
-								"    Tu Solicitud ya fue enviada"+
-								"</div>");	
-								correoalJefe(usuario, "<html>El alumno <span style=\"color:green\"><b>"+usuario+" "+nombreuser+
-								"</b></span> ha capturado los datos de Carta de Presentaci&oacute;n para Residencia Profesional, "+
-								"Favor de Revisarlo para proceder a su autorizaci&oacute;n <BR>","ITSM: CAPTURA DE DATOS DE PRESENTACION DE "+usuario+" "+nombreuser);			
-
-								setNotificacionalJefe(usuario,"Sol. Carta Presentación RP."+usuario+" "+nombreuser,"nucleo/respropuestas/grid.php?modulo=respropuestas","P",lainstitucion,elcampus);
-								}
-							});
-						}
-		else {alert ("Todos los datos son necesarios, por favor llene todos los campos");}
-	
-	}
-
-
-
-
-
-
-
-
-
-	function abrirCapturaProyecto (){
-
-
-		elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARTAPRES'),'') AS RUTAPRES, "+
-			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SOLANTEP'),'') AS RUTASOLANTEP, "+
-			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_ANTEP'),'') AS RUTAANTEP, "+
-			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_LIBSER'),'') AS RUTALIBSER, "+
-			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_IMSS'),'') AS RUTAIMSS, "+
-			  " IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARDEX'),'') AS RUTACARDEX, "+
-			  "       IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_CARTAACEP'),'') AS RUTAACEP FROM DUAL"; 
+function getNombreRes(){
+	var abierto=false;
+		elsql="SELECT PROYECTO FROM vresidencias h where h.`MATRICULA`='"+usuario+"'"+
+		"and h.`LIBERADO`='S'";
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
 			data:parametros,
 			url:  "../base/getdatossqlSeg.php",
-			success: function(data){	
-
-				$("#documentos2").append("<div class=\"row\"><div id=\"cartaPres\" class=\"col-sm-6\"></div>"+
-															"<div id=\"cartaAcep\" class=\"col-sm-6\"></div>"+
-										"</div>"+
-										"<div class=\"row\"><div id=\"Libser\" class=\"col-sm-6\"></div>"+
-															"<div id=\"Imss\" class=\"col-sm-6\"></div>"+
-										"</div>"+
-										"<div class=\"row\"><div id=\"Cardex\" class=\"col-sm-6\"></div>"+
-															"<div id=\"Otro\" class=\"col-sm-6\"></div>"+
-										"</div>"+
-										"<div class=\"row\"><div id=\"solAntep\" class=\"col-sm-6\"></div>"+
-															"<div id=\"Antep\" class=\"col-sm-6\"></div>"+
-										"</div>");
-				activaEliminar="";
-				if (JSON.parse(data)[0]["RUTAPRES"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("cartaPres","Carta Presenta. Sellada","cartapres",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'CARTA DE PRESENTACIÓN','eadjresidencia','alta',usuario+"_"+miciclo+"_CARTAPRES",JSON.parse(data)[0]["RUTAPRES"],activaEliminar);
-				
-				activaEliminar="";
-				if (JSON.parse(data)[0]["RUTAACEP"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("cartaAcep","Carta de Aceptación","cartaacep",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'CARTA DE ACEPTACIÓN','eadjresidencia','alta',usuario+"_"+miciclo+"_CARTAACEP",JSON.parse(data)[0]["RUTAACEP"],activaEliminar);
-				
-
-				activaEliminar="";
-				if (JSON.parse(data)[0]["RUTASOLANTEP"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("solAntep","Sol. Anteproyecto Sellada","solantep",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'SOLICITUD DE ANTEPROYECTO FIRMADA Y SELLADA','eadjresidencia','alta',usuario+"_"+miciclo+"_SOLANTEP",JSON.parse(data)[0]["RUTASOLANTEP"],activaEliminar);
-				
-
-				activaEliminar="";
-				if (JSON.parse(data)[0]["RUTAANTEP"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("Antep","Anteprotecto Autorizado","antep",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'ANTEPROYECTO AUTORIZADO','eadjresidencia','alta',usuario+"_"+miciclo+"_ANTEP",JSON.parse(data)[0]["RUTAANTEP"],activaEliminar);
-				
-				activaEliminar="";
-				if (JSON.parse(data)[0]["RUTALIBSER"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("Libser","Liberación Servicio Social","libser",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'LIBERACIÓN DE SERVICIO SOCIAL','eadjresidencia','alta',usuario+"_"+miciclo+"_LIBSER",JSON.parse(data)[0]["RUTALIBSER"],activaEliminar);
-				
-				activaEliminar="";
-				if (JSON.parse(data)[0]["RUTAIMSS"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("Imss","Carta Vigencia IMSS","imss",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'ANTEPROYECTO AUTORIZADO','eadjresidencia','alta',usuario+"_"+miciclo+"_IMSS",JSON.parse(data)[0]["RUTAIMSS"],activaEliminar);
-				
-				activaEliminar="";
-				if (JSON.parse(data)[0]["RUTACARDEX"]!='') {	activaEliminar='S';}					
-				dameSubirArchivoDrive("Cardex","Cardex de estudios","cardex",'ADJRESIDENCIA','pdf',
-				'ID',usuario,'CARDEX DE ESTUDIOS','eadjresidencia','alta',usuario+"_"+miciclo+"_CARDEX",JSON.parse(data)[0]["RUTACARDEX"],activaEliminar);
-				
-				
-			}
+			success: function(data){
+				$("#tema").val(JSON.parse(data)[0][0]);
+			}			
 		});
 
-	
-
-		var abierto=false;
-		elsql="select count(*) as N from ecortescal where  CICLO='"+miciclo+"'"+
-		" and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
-		" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
-		" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CAPTPROYRES' "+
-		" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
-
-
-
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-		$.ajax({
-			type: "POST",
-			data:parametros,
-			url:  "../base/getdatossqlSeg.php",
-			success: function(data){	
-
-				
-				if (JSON.parse(data)[0]["N"]>0) {						
-					//Si esta abierto aparecemos la opción de capturar Proyecto.
-					$("#pcapt").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
-					$("#pcapt").addClass("fa  fa-check green bigger-260");
-					$("#documentos2").append("<hr><div style=\"text-align:center;\">"+
-							"<button  onclick=\"capturaProyecto();\" class=\"btn btn-white btn-info btn-bold\">"+
-							"     <i class=\"ace-icon green glyphicon glyphicon-book\"></i>1. Capturar Sol. Proyecto"+
-							"</button> &nbsp;  &nbsp; "+
-							"<button  onclick=\"verProyecto();\" class=\"btn btn-white btn-success btn-bold\">"+
-							"     <i class=\"ace-icon pink glyphicon glyphicon-print\"></i>2. Imprimir Sol. Proyecto"+
-							"</button>"+
-					"</div>");
-
-				}
-				else {
-					$("#pcapt").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
-					$("#pcapt").addClass("fa  fa-times red bigger-260");
-					$("#documentos2").append("<hr>"+
-							"<button  onclick=\"verProyecto();\" class=\"btn btn-white btn-success btn-bold\">"+
-							"     <i class=\"ace-icon pink glyphicon glyphicon-print\"></i>2. Imprimir Sol. Proyecto"+
-							"</button>"+
-					"</div>");
-				}
-			}
-		});
-	
-
-		
-
-	}
-
-
-
-	function capturaProyecto(){
-
-
-		
-	}
-
-
-
-
-	function grabarDatos(){
-		vacios=false;
-		$('.captProy').each(function(){
-			if (($(this).val()=="") || (($(this).val()=="0"))) {
-				$(this).css("border-color","red");
-				vacios=true;
-			}
-		 });
-		 if (!vacios) {
-			mostrarEspera("esperaInf","grid_pa_residencia","Cargando Datos...");
-
-			fecha=dameFecha("FECHAHORA");
-			parametros={tabla:"rescapproy",
-					bd:"Mysql",
-					MATRICULA:usuario,
-					CICLO:miciclo,
-					INICIA:$("#inicia").val(),
-					TERMINA:$("#termina").val(),
-					ASESOR:$("#asesor").val(),
-					PROYECTO:$("#proyecto").val().toUpperCase(),
-					EMPRESA:$("#empresa").val().toUpperCase(),
-					DEPARTAMENTO:$("#departamento").val().toUpperCase(),
-					GIRO:$("#giro").val().toUpperCase(),
-					SECTOR:$("#sector").val().toUpperCase(),
-					DOMICILIO:$("#domicilio").val().toUpperCase(),
-					CP:$("#cp").val().toUpperCase(),
-					RFC:$("#rfc").val().toUpperCase(),
-					TELEFONO:$("#telefono").val().toUpperCase(),
-					MISION:$("#mision").val().toUpperCase(),
-					TITULAR:$("#titular").val().toUpperCase(),
-					PSTOTITULAR:$("#pstotitular").val(),
-					ASESOREX:$("#asesorex").val().toUpperCase(),
-					PSTOASESOREX:$("#pstoasesorex").val().toUpperCase(),
-					CORREOASESOREX:$("#correoasesorex").val().toLowerCase(),
-					FIRMA:$("#firma").val().toUpperCase(),
-					PSTOFIRMA:$("#pstofirma").val().toUpperCase(),
-					CORREOFIRMA:$("#correofirma").val().toLowerCase(),
-					HORARIO:$("#horario").val().toUpperCase(),
-					USUARIO:usuario,
-					FECHAUS:fecha,
-					_INSTITUCION: lainstitucion, 
-					_CAMPUS: elcampus}						
-					$.ajax({
-							type: "POST",
-							url:"../base/inserta.php",
-							data: parametros,
-							success: function(data){ 
-								 alert (data);
-								 ocultarEspera("esperaInf");  
-								 ocultarEspera("infoError"); 
-								   							
-							
-								}
-							});			
-		 }
-		 else {alert ("No ha capturado toda la información de su proyecto");}
-	}
-
-
-	function actualizaDatos(elid){
-		vacios=false;
-		$('.captProy').each(function(){
-			if($(this).val()==""){
-				$(this).css("border-color","red");
-				vacios=true;
-			}
-		 });
-		 if (!vacios) {
-			mostrarEspera("esperaInf","grid_pa_residencia","Cargando Datos...");
-			fecha=dameFecha("FECHAHORA");
-			parametros={tabla:"rescapproy",
-					bd:"Mysql",
-					campollave:"ID",
-					valorllave:elid,
-					MATRICULA:usuario,
-					CICLO:miciclo,
-					INICIA:$("#inicia").val(),
-					TERMINA:$("#termina").val(),
-					PROYECTO:$("#proyecto").val().toUpperCase(),
-					EMPRESA:$("#empresa").val().toUpperCase(),
-					DEPARTAMENTO:$("#departamento").val().toUpperCase(),
-					GIRO:$("#giro").val().toUpperCase(),
-					SECTOR:$("#sector").val().toUpperCase(),
-					DOMICILIO:$("#domicilio").val().toUpperCase(),
-					CP:$("#cp").val().toUpperCase(),
-					RFC:$("#rfc").val().toUpperCase(),
-					TELEFONO:$("#telefono").val().toUpperCase(),
-					MISION:$("#mision").val().toUpperCase(),
-					TITULAR:$("#titular").val().toUpperCase(),
-					PSTOTITULAR:$("#pstotitular").val(),
-					ASESOREX:$("#asesorex").val().toUpperCase(),
-					PSTOASESOREX:$("#pstoasesorex").val().toUpperCase(),
-					CORREOASESOREX:$("#correoasesorex").val().toLowerCase(),
-					FIRMA:$("#firma").val().toUpperCase(),
-					PSTOFIRMA:$("#pstofirma").val().toUpperCase(),
-					CORREOFIRMA:$("#correofirma").val().toLowerCase(),
-					HORARIO:$("#horario").val().toUpperCase(),
-					ASESOR:$("#asesor").val(),
-					USUARIO:usuario,
-					FECHAUS:fecha,
-					_INSTITUCION: lainstitucion, 
-					_CAMPUS: elcampus}						
-					$.ajax({
-							type: "POST",
-							url:"../base/actualiza.php",
-							data: parametros,
-							success: function(data){ 
-								 ocultarEspera("esperaInf");  
-								 ocultarEspera("infoError"); 								   														
-								}
-							});			
-		 }
-		 else {alert ("No ha capturado toda la información de su proyecto");}
-	}
+}
 
 
 
 
 
-
-	function OpcionesEvaluaciones(){
-
-		//Verificamos el ciclo escolar 
-		elsq="select max(CICLO), count(*) AS HAY from residencias a where a.MATRICULA='"+usuario+"'";
-		parametros={sql:elsq,dato:sessionStorage.co,bd:"Mysql"}
-		$.ajax({
-			type: "POST",
-			data:parametros,
-			url:  "../base/getdatossqlSeg.php",
-			success: function(data){	
-
-				if (JSON.parse(data)[0]["HAY"]>0) {
-					$("#preg").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
-					$("#preg").addClass("fa  fa-check green bigger-260");
-					elciclo=JSON.parse(data)[0][0];
-					var abierto=false;
-					elsql="select count(*) as N from ecortescal where  CICLO='"+elciclo+"'"+
-					" and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
-					" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
-					" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='RESEVALUA' "+
-					" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
-				
-					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-					$.ajax({
-						type: "POST",
-						data:parametros,
-						url:  "../base/getdatossqlSeg.php",
-						success: function(data){	
-							if (JSON.parse(data)[0]["N"]>0) {	
-								$("#peval").removeClass("glyphicon glyphicon-unchecked blue bigger-260");								
-								$("#peval").addClass("fa fa-check green bigger-260");
-								// Abrimos las opciones para subir documentacion de residencia 	
-								elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVAL1'),'') AS EVAL1, "+
-										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVAL2'),'') AS EVAL2,"+
-										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVALF'),'') AS EVALF,"+
-										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_REPTEC'),'') AS REPTEC FROM DUAL"; 
-			
-								parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-								$.ajax({
-									type: "POST",
-									data:parametros,
-									url:  "../base/getdatossqlSeg.php",
-									success: function(data){	
-			
-										$("#documentos3").append("<hr><div class=\"row\"><div id=\"EVAL1\" class=\"col-sm-6\"></div><div id=\"EVAL2\" class=\"col-sm-6\"></div></div>"+
-										"<div class=\"row\"><div id=\"EVALF\" class=\"col-sm-6\"></div><div id=\"REPTEC\" class=\"col-sm-6\"></div></div>");
-						
-										activaEliminar="";
-										if (JSON.parse(data)[0]["EVAL1"]!='') {	activaEliminar='S';}					
-										dameSubirArchivoDrive("EVAL1","1ra Evaluación","eval1",'ADJRESIDENCIA','pdf',
-										'ID',usuario,'PRIMERA EVALUACIÓN','eadjresidencia','alta',usuario+"_"+elciclo+"_EVAL1",JSON.parse(data)[0]["EVAL1"],activaEliminar);
-										
-										activaEliminar="";
-										if (JSON.parse(data)[0]["EVAL2"]!='') {	activaEliminar='S';}					
-										dameSubirArchivoDrive("EVAL2","Segunda Evaluación","eval2",'ADJRESIDENCIA','pdf',
-										'ID',usuario,'SEGUNDA EVALUACION','eadjresidencia','alta',usuario+"_"+elciclo+"_EVAL2",JSON.parse(data)[0]["EVAL2"],activaEliminar);
-										
-										activaEliminar="";
-										if (JSON.parse(data)[0]["EVALF"]!='') {	activaEliminar='S';}					
-										dameSubirArchivoDrive("EVALF","Evaluación Final","evalf",'ADJRESIDENCIA','pdf',
-										'ID',usuario,'EVALUACIÓN FINAL','eadjresidencia','alta',usuario+"_"+elciclo+"_EVALF",JSON.parse(data)[0]["EVALF"],activaEliminar);							
-			
-										activaEliminar="";
-										if (JSON.parse(data)[0]["REPTEC"]!='') {	activaEliminar='S';}					
-										dameSubirArchivoDrive("REPTEC","Reporte Técnico","reptec",'ADJRESIDENCIA','pdf',
-										'ID',usuario,'REPORTE TÉCNICO','eadjresidencia','alta',usuario+"_"+elciclo+"_REPTEC",JSON.parse(data)[0]["REPTEC"],activaEliminar);							
-										
-									}
-								});		
-								} //DEL SI ESTA ABIERO 
-								else {		
-									$("#peval").removeClass("glyphicon glyphicon-unchecked blue bigger-260");	
-									$("#peval").addClass("fa  fa-times red bigger-260");							
-								}
-							}
-						}); //del ajax de busqueda de corte abierto 		
-					}
-					else {
-						$("#preg").removeClass("glyphicon glyphicon-unchecked blue bigger-260");
-						$("#preg").addClass("fa  fa-times red bigger-260");
-					
-					}
-			}
-		});
-
-			}
-	

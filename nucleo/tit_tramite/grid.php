@@ -38,7 +38,7 @@
 	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="alert alert-info fontRobotoB bigger-160 text-primary" style="padding:0px; text-align:center;">RESIDENCIA PROFESIONAL</div>
+			<div class="alert alert-info fontRobotoB bigger-160 text-primary" style="padding:0px; text-align:center;">TITULACIÓN</div>
 		</div>
 	</div>
 
@@ -47,7 +47,7 @@
 			
 			<div class="row">   
 				<div class="col-sm-6">  
-					<span class="profile-picture" style="text-align:center;">
+					<span class="profile-picture" >
 						<img id="foto"  style="width: 80px; height: 90px;" class="img-responsive" src="../../imagenes/menu/esperar.gif"/>								
 					</span>	
 				</div>
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 
-			<div class="row">  
+			<div class="row" style="text-align:justify;">  
 				<div class="col-sm-12">   
 					<div class="profile-user-info"> 
 						<div><div class="fontRobotoB" id="nombre" style=" text-align:center; background-color:#77BBD2;"></div></div> 

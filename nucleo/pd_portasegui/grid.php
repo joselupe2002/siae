@@ -175,7 +175,7 @@
 					                       "<i class=\"ace-icon fa fa-list-alt bigger-160 green \"></i>"+
 					                       "</a></td>");
 
-    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"impEncuadre('"+valor.ID+"','"+valor.MATERIA+"','"+valor.MATERIAD+"');\" title=\"Imprimir encuadre de la asignatura\" "+
+    	    $("#row"+valor.ID).append("<td style= \"text-align: center;\" ><a  onclick=\"impEncuadre('"+valor.ID+"','"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.TIPOMAT+"');\" title=\"Imprimir encuadre y planeación de la asignatura\" "+
                     "class=\"btn btn-white btn-info btn-bold\">"+
              "<i class=\"ace-icon fa fa-print bigger-160 blue \"></i>"+
              "</a></td>");
@@ -285,7 +285,7 @@ function cargarMaterias() {
 
 	
 
-	elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, "+
+	elsql="SELECT ID, MATERIA, TIPOMAT, MATERIAD, SIE, SEM, CICLO, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='ENCUADRE'),'') AS RUTAENCUADRE, "+
                  " IFNULL((SELECT RUTA FROM eadjuntos b where b.ID=a.ID and b.AUX='DIAGNOSTICA'),'') AS RUTADIAGNOSTICA "+                 
 				 " FROM vcargasprof a where  PROFESOR='<?php echo $_SESSION['usuario']?>' "+
@@ -335,16 +335,21 @@ function guadarPortafolio(id,campo,materia){
 }
 
 
-function impEncuadre(id, materia, descrip){
+function impEncuadre(id, materia, descrip, tipomat){
 	//window.open("encuadres.php?ID="+id+"&materiad="+materia, '_blank');
 	//window.open("planeacion.php?ID="+id+"&materia="+materia, '_blank');
 
-	enlace="nucleo/pd_portasegui/planeacion.php?ID="+id+"&materia="+materia;
-	abrirPesta(enlace,'Planeacion');
+	if (tipomat=='T') {
+		enlace="nucleo/pd_portasegui/planeacionTut.php?ID="+id+"&materia="+materia;
+		abrirPesta(enlace,'Planeacion');
+	}
+	else {
+		enlace="nucleo/pd_portasegui/planeacion.php?ID="+id+"&materia="+materia;
+		abrirPesta(enlace,'Planeacion');
+		enlace="nucleo/pd_portasegui/encuadres.php?ID="+id+"&materiad="+materia;
+		abrirPesta(enlace,'Encuadre');
+	}
 
-
-	enlace="nucleo/pd_portasegui/encuadres.php?ID="+id+"&materiad="+materia;
-	abrirPesta(enlace,'Encuadre')
 	
 						
 }

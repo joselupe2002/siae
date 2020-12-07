@@ -82,12 +82,12 @@
 											   <span class="line-height-1 smaller-90"> Ingreso </span>
 										 </span>
 
-										 <span onclick="verMaterias('A');" class="btn btn-app btn-sm btn-yellow no-hover">
+										 <span onclick="verMaterias('A');" class="btn btn-app btn-sm btn-purple no-hover">
 											   <span class="line-height-1 bigger-170" id="promedio"> </span><br />
 											   <span class="line-height-1 smaller-90"> Promedio </span>
 										 </span>
 
-										 <span onclick="verMaterias('R');" class="btn btn-app btn-sm btn-yellow no-hover">
+										 <span onclick="verMaterias('R');" class="btn btn-app btn-sm btn-pink no-hover">
 											   <span class="line-height-1 bigger-170" id="reprobadas"> </span><br />
 											   <span class="line-height-1 smaller-90"> # Rep </span>
 										 </span>
@@ -96,52 +96,105 @@
 									  </div>
 
 									<div class="space-12"></div>
-                                        <div class="profile-user-info profile-user-info-striped">
-										   
-								
-								           <div class="profile-info-row"><div class="profile-info-name">Matricula</div>
-                                                <div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-                                                     <span id="matricula"></span>
-                                                </div>
-										    </div>
-										    
-										    <div class="profile-info-row"><div class="profile-info-name">Nombre</div>
-                                                <div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
-                                                     <span id="nombreal">Nombre de la persona</span>
-                                                </div>
-										    </div>
+										<div class="tabbable">		
+											<ul class="nav nav-tabs" id="myTab">
+													<li class="active">
+														<a data-toggle="tab" href="#generales">
+															<i class="green ace-icon fa fa-user bigger-120"></i>
+															Generales
+														</a>
+													</li>
 
-											<div class="profile-info-row"><div class="profile-info-name">Direcci&oacute;n </div>
-                                                <div class="profile-info-value"><i class="fa fa-map-marker light-orange bigger-110"></i>
-													<span class="editable" id="direccion" name="direccion">Direcci&oacute;n</span>
-												</div>
-											</div>
+													<li>
+														<a data-toggle="tab" href="#laboral">
+														<i class="blue ace-icon fa fa-truck bigger-120"></i>
+															Laboral													
+														</a>
+													</li>						
+											</ul>	
 											
-											<div class="profile-info-row"><div class="profile-info-name">Tel&eacute;fono </div>
-                                                <div class="profile-info-value"><i class="fa fa-phone light-orange bigger-110"></i>
-													<span class="editable" name="telefono" id="telefono">999999999</span>
-												</div>
-											</div>
-											
-											<div class="profile-info-row"><div class="profile-info-name">e-mail </div>
-                                                <div class="profile-info-value"><i class="fa fa-maxcdn light-orange bigger-110"></i>
-													<span class="editable" id="correo">micorreo@algo.mx</span>
-												</div>
-											</div>
-											
-											<div class="profile-info-row"><div class="profile-info-name">Carrera </div>
-                                                <div class="profile-info-value"><i class="fa fa-gears light-orange bigger-110"></i>
-													<span class="editable" id="carrera"></span>
-												</div>
-											</div>
+											<div class="tab-content">
+												<div id="generales" class="tab-pane fade in active">
+													<div class="profile-user-info profile-user-info-striped">
+																								
+														<div class="profile-info-row"><div class="profile-info-name">Matricula</div>
+															<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+																<span id="matricula"></span>
+															</div>
+														</div>
+														
+														<div class="profile-info-row"><div class="profile-info-name">Nombre</div>
+															<div class="profile-info-value"><i class="fa fa-user light-orange bigger-110"></i>
+																<span id="nombreal">Nombre de la persona</span>
+															</div>
+														</div>
 
-											<div title="Esta contraseña solo será usada la primera vez que ingrese a la plataform Moodle" class="profile-info-row"><div class="profile-info-name">Moodle </div>
-                                                <div class="profile-info-value"><i class="fa fa-key light-red bigger-110"></i>
-													<span class="text text-success" id="moodle"><b>Temporal2020</b></span>
+
+														<div class="profile-info-row"><div class="profile-info-name">Direcci&oacute;n</div>
+															<div class="input-group">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<input class="form-control" name="direccion" id="direccion" type="text" />
+															</div>
+														</div>
+
+
+														<div class="profile-info-row"><div class="profile-info-name">Tel&eacute;fono</div>
+															<div class="input-group">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<input class="form-control input-mask-phone" name="telefono" id="telefono" type="text" id="form-field-mask-2" />
+															</div>
+														</div>
+														
+
+														<div class="profile-info-row"><div class="profile-info-name">e-mail</div>
+															<div class="input-group">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<input class="form-control" name="correo" id="correo" type="text" />
+															</div>
+														</div>
+																										
+													
+														
+														<div class="profile-info-row"><div class="profile-info-name">Carrera </div>
+															<div class="profile-info-value"><i class="fa fa-gears light-orange bigger-110"></i>
+																<span class="editable" id="carrera"></span>
+															</div>
+														</div>
+
+														<div title="Esta contraseña solo será usada la primera vez que ingrese a la plataform Moodle" class="profile-info-row"><div class="profile-info-name">Moodle </div>
+															<div class="profile-info-value"><i class="fa fa-key light-red bigger-110"></i>
+																<span class="text text-success" id="moodle"><b>Temporal2020</b></span>
+															</div>
+														</div>														
+													</div>
+												</div> <!--  Del contenido del primer tab -->
+												<div id="laboral" class="tab-pane fade">
+													<div class="profile-user-info profile-user-info-striped">		
+
+														<div class="profile-info-row"><div class="profile-info-name">Trabajo</div>
+															<div class="input-group">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<input class="form-control" name="trabajo" id="trabajo" type="text" />
+															</div>
+														</div>
+
+														<div class="profile-info-row"><div class="profile-info-name">Tel. Trabajo</div>
+															<div class="input-group">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<input class="form-control input-mask-phone" name="teltrabajo" id="teltrabajo" type="text" id="form-field-mask-2" />
+															</div>
+														</div>
+
+														<div class="profile-info-row"><div class="profile-info-name">Dirección</div>
+															<div class="input-group">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<input class="form-control" name="dirtrabajo" id="dirtrabajo" type="text" />
+															</div>
+														</div>
+														
+													</div>
 												</div>
-											</div>
-											
-										 </div>
+											</div> <!--  Deltab content -->
 
 										 <div class="space-20"></div>
 										 
@@ -250,6 +303,8 @@
    
    $(document).ready(function($) {
 
+		$('.input-mask-phone').mask('(999)9999999');
+
 	   $('.fileSigea').ace_file_input({
 			no_file:'Sin archivo ...',
 			btn_choose:'Buscar',
@@ -274,10 +329,10 @@
 	
 	
 
-		elsql="SELECT alum_matricula, alum_foto,alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
-		             " alum_carreraregd, alum_cicloins, getcuatrialum(alum_matricula, getciclo()) AS CUAT,"+
-                     " alum_correo AS CORREO,alum_telefono AS TEL, alum_tutor AS TUTOR "+
-					 " FROM pvalumnos_cb  WHERE alum_matricula='<?php echo $_SESSION['usuario'];?>'";
+		elsql="SELECT alum_matricula, alum_foto,concat(alum_nombre,' ',alum_apepat,' ',alum_apemat) as alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
+		             " CARR_DESCRIP AS alum_carreraregd, alum_cicloins, getcuatrialum(alum_matricula, getciclo()) AS CUAT,"+
+                     " alum_correo AS CORREO,alum_telefono AS TEL, alum_tutor AS TUTOR, ALUM_TRABAJO, ALUM_TELTRABAJO, ALUM_DIRTRABAJO "+
+					 " FROM falumnos, ccarreras  WHERE alum_matricula='<?php echo $_SESSION['usuario'];?>' and ALUM_CARRERAREG=CARR_CLAVE";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		   $.ajax({
 			   type: "POST",
@@ -294,23 +349,17 @@
 		    	  	   $('#promedio').html(valor.PROM_SR);
 		    	  	   $('#reprobadas').html(valor.NUMREP);
 		    	  	   
-		    	  	    ladirecccion=valor.alum_direccion;
-		    	  	    if (valor.alum_direccion.length<=0) {ladirecccion="Direccion...";}
-		    	  	    $('#direccion').editable({type: 'text',id: 'direccion_ed', value:ladirecccion});
-		    	  	    $('#direccion').html(ladirecccion);
-
-		    	  	    tel=valor.alum_telefono;
-		    	  	    if (valor.alum_telefono.length<=0) {tel="999999999";}
-		    	  	    $('#telefono').editable({type: 'text',id: 'telefono_ed', value:tel});
-		    	  	    $('#telefono').html(tel);
-
-
-		    	  	    elcorreo=valor.alum_correo;
-		    	  	    if (valor.alum_telefono.length<=0) {elcorreo="999999999";}
-		    	  	    $('#correo').editable({type: 'text',id: 'telefono_ed', value:elcorreo});
-		    	  	    $('#correo').html(elcorreo);
-
-
+		    	
+						  
+						$('#direccion').val(valor.alum_direccion);
+		    	  	    $('#telefono').val(valor.alum_telefono);
+						$('#correo').val(valor.alum_correo);
+						  
+					
+						$('#trabajo').val(valor.ALUM_TRABAJO);	
+						$('#teltrabajo').val(valor.ALUM_TELTRABAJO);
+						$('#dirtrabajo').val(valor.ALUM_DIRTRABAJO);
+						
 		    	  	    $('#matricula').html(valor.alum_matricula);
 						  $('#carrera').html(valor.alum_carreraregd);					
 						  $('#img_ALUM_FOTO').attr("src",valor.alum_foto);
@@ -362,10 +411,14 @@ function guardar(){
 		    	campollave:"ALUM_MATRICULA",
 		    	valorllave:"<?php echo $_SESSION['usuario'];?>",
 		    	bd:"Mysql",
-		    	ALUM_DIRECCION:$("#direccion").html(),
-		    	ALUM_TELEFONO:$("#telefono").html(),
-		    	ALUM_CORREO:$("#correo").html(),
-		    	ALUM_FOTO:$("#ALUM_FOTO").val()
+		    	ALUM_DIRECCION:$("#direccion").val(),
+		    	ALUM_TELEFONO:$("#telefono").val(),
+		    	ALUM_CORREO:$("#correo").val(),
+				ALUM_FOTO:$("#ALUM_FOTO").val(),
+				ALUM_TRABAJO:$("#trabajo").val(),
+				ALUM_TELTRABAJO:$("#teltrabajo").val(),
+				ALUM_DIRTRABAJO:$("#dirtrabajo").val(),
+				
 		    	//ALUM_TUTOR:$("#ALUM_TUTOR").val(),
 		    	//ALUM_TELTUTOR:$("#ALUM_TELTUTOR").val(),
 		    	//ALUM_PARENTESCO:$("#ALUM_PARENTESCO").val(),

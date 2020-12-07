@@ -148,20 +148,36 @@
 			
 			function Header()
 			{
-				
+				$miutil = new UtilUser();
+                $miutil->getEncabezado($this,'V');			
+                //Para que cuando se cambie a la otra pagina empiece a la derecha y la stablas no se descuadren
+                $this->SetX(10);
+                $this->Ln(5);	
 			}
 		
+			function Footer()
+			{	
+                
+                $miutil = new UtilUser();            
+                $miutil->getPie($this,'V');
+
+		
+            
+             
+			}
+
 			
 			
    }
 		
-		$pdf = new PDF('P','mm','Letter');
+  		$pdf = new PDF('P','mm','Letter');
 		header("Content-Type: text/html; charset=UTF-8");
 		
-		$pdf->SetFont('Times','',10);
-		$pdf->SetMargins(20, 25 , 25);
-		$pdf->SetAutoPageBreak(true,25); 
+		$pdf->SetFont('Arial','',10);
+		$pdf->SetMargins(25, 25 , 25);
+		$pdf->SetAutoPageBreak(true,50); 
 		$pdf->AddPage();
+	
 	
 		$miutil = new UtilUser();
         $pstotit=$miutil->getJefe('303');//Nombre del puesto de coordinacion de titulacion 
@@ -169,106 +185,83 @@
 
 		$data = $pdf->LoadData();
 		$dataGen = $pdf->LoadDatosGen();
-		$pdf->SetFont('Times','',10);
 
+		
+		$pdf->SetFont('Montserrat-ExtraBold','B',10);
+		$pdf->Ln(5);
+		$pdf->Cell(0,0,utf8_decode("SOLICITUD DEL ESTUDIANTE"),"",0,'C',false);
+		$pdf->Ln(5);
+		$pdf->Cell(0,0,utf8_decode("(PLAN COMPETENCIAS)"),"",0,'C',false);
+		$pdf->Ln(10);
+
+		$pdf->SetFont('Montserrat-Medium','',8);
 		$fechadec=$miutil->formatFecha($data[0]["FECHA_REG"]);
 		$fecha=date("d", strtotime($fechadec))." de ".$miutil->getFecha($fechadec,'MES'). " del ".date("Y", strtotime($fechadec));
-
-		$pdf->Ln(10);
 		$pdf->Cell(0,0,utf8_decode($dataGen[0]["inst_fechaof"]." a ".$fecha),"",0,'R',false);
+
+		$pdf->Ln(5);
+		$pdf->SetFont('Montserrat-ExtraBold','',8);
+		$pdf->Cell(0,0,utf8_decode($data[0]["NOMBREJEFE"]),"",0,'L',false);
+		$pdf->Ln(3);
+		$pdf->Cell(0,0,utf8_decode($data[0]["FIRMAOF"]),"",0,'L',false);
+		$pdf->Ln(3);
+		$pdf->Cell(0,0,utf8_decode("PRESENTE"),"",0,'L',false);
+	
+
+		$miutil = new UtilUser();
+        $pstotit=$miutil->getJefe('701');//Nombre del puesto de coordinacion de titulacion 
+
+
+		$pdf->Ln(5);
+		$pdf->SetFont('Montserrat-ExtraBold','',8);
+		$pdf->Cell(0,0,utf8_decode("ATN. ".$pstotit),"",0,'R',false);
+		$pdf->Ln(3);
+		$pdf->Cell(0,0,utf8_decode("COORDINADOR(A) DE TITULACIÓN"),"",0,'R',false);
+
+		$pdf->Ln(5);
+		$pdf->SetFont('Montserrat-Medium','',8);
+		$pdf->Cell(0,0,utf8_decode("Por medio del presente solicito autorización para iniciar Trámites de Titulación integral:"),"",0,'L',false);
+		 
+
+		$pdf->Ln(5);
+		$pdf->Cell(45,5,utf8_decode("a) Nombre del estudiante:"),"1",0,'L',false);
+		$pdf->Cell(121,5,utf8_decode($data[0]["PASANTE"]),"1",0,'L',false);
+		$pdf->Ln(5);
+		$pdf->Cell(45,5,utf8_decode("b) Carrera:"),"1",0,'L',false);
+		$pdf->Cell(121,5,utf8_decode($data[0]["CARRERAD"]),"1",0,'L',false);
+		$pdf->Ln(5);
+		$pdf->Cell(45,5,utf8_decode("c) No. Control:"),"1",0,'L',false);
+		$pdf->Cell(121,5,utf8_decode($data[0]["MATRICULA"]),"1",0,'L',false);
+		$pdf->Ln(5);
+
+		$pdf->SetWidths(array(45,121));
+		$pdf->Row(array(utf8_decode("d) Nombre del Proyecto:"),utf8_decode($data[0]["TEMA"])));
 		
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(0,0,utf8_decode($pstotit),"",0,'L',false);
-
-		$pdf->Ln(5);
-		$pdf->Cell(0,0,utf8_decode("DEPARTAMENTO DE SERVICIOS ESCOLARES"),"",0,'L',false);
-		$pdf->Ln(10);
-		$pdf->MultiCell(0,5,utf8_decode("Por este conducto me permito solicitarle la apertura de expediente para iniciar el Trámite de titulación,".
-		" proporcionando los siguientes datos personales y documentación anexa en el orden listado."),0,'J',FALSE);
-
-		$pdf->Ln(5);
-		$pdf->Cell(80,5,utf8_decode("Nombre(s) y apellidos completos:"),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["PASANTE"]),"",0,'L',false);
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Pasante de la carrera de:"),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["CARRERAD"]),"",0,'L',false);
-
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Clave del plan de estudios:"),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["MAPA"]),"",0,'L',false);
-
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Teléfono particular: "),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(40,5,utf8_decode($data[0]["TELEFONO"]),"",0,'L',false);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(40,5,utf8_decode("Teléfono Trabajo: "),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(40,5,utf8_decode($data[0]["TELTRABAJO"]),"",0,'L',false);
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Empresa donde labora:"),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["TRABAJO"]),"",0,'L',false);
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Localidad y estado donde labora: "),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["DIRTRABAJO"]),"",0,'L',false);
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Periodo de estudios Realizados (mes y año):  "),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode(strtoupper($miutil->getMesLetra($data[0]["MESINI"]). " ".$data[0]["ANIOINI"]). " ".strtoupper($miutil->getMesLetra($data[0]["MESFIN"]). 
-		                " A ".$data[0]["ANIOFIN"])),"",0,'L',false);
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Correo Electronico: "),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["CORREO"]),"",0,'L',false);
-
-		$pdf->Ln(5);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Opción de Titulación: "),"",0,'L',false);
-		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["OPCIOND"]),"",0,'L',false);
+		$pdf->Cell(45,5,utf8_decode("e) Producto:"),"1",0,'L',false);
+		$pdf->Cell(121,5,utf8_decode($data[0]["PRODUCTOD"]),"1",0,'L',false);
 		
-		$pdf->Ln(15);
-		$c=1;
-		$dataReq = $pdf->LoadRequisitos($data[0]["ID_OPCION"]);
-		$pdf->SetFont('Times','',9);
-		foreach($dataReq as $row) {
-			$pdf->Ln(5);			
-			$pdf->Cell(80,5,utf8_decode($c.". ".$row["REQUISITOD"]),"",0,'L',false);
-			$c++;
-		}
-			
 		$pdf->Ln(10);
-		$pdf->SetFont('Times','B',10);
-		$pdf->Cell(80,5,utf8_decode("Agradeciendo de antemano la atención brindada, quedo de Usted como su atento (a) y seguro (a) servidor(a)"),"",0,'L',false);
+		$pdf->SetFont('Montserrat-Medium','',8);
+		$pdf->Cell(0,0,utf8_decode("En espera del dictamen correspondiente, quedo a sus órdenes. "),"",0,'L',false);
+		$pdf->Ln(35);
 
+		$pdf->Ln(5);
+		$pdf->SetFont('Montserrat-ExtraBold','B',8);
+		$pdf->Cell(80,3,"ATENTAMENTE","",1,'L',false);
 		$pdf->Ln(10);
+		$pdf->Cell(80,3,utf8_decode($data[0]["PASANTE"]),"",1,'L',false);
+		$pdf->Cell(80,3,"FIRMA DEL SOLICITANTE","",1,'L',false);
 
+		$pdf->SetFont('Montserrat-Medium','',8);
+		$pdf->Ln(5);
+		$pdf->SetWidths(array(45,121));
+		$pdf->Row(array(utf8_decode("Dirección:"),utf8_decode($data[0]["DIRECCION"])));
+		$pdf->Row(array(utf8_decode("Teléfono particular o de contacto:"),utf8_decode($data[0]["TELEFONO"])));
+		$pdf->Row(array(utf8_decode("Correo electrónico del estudiante: "),utf8_decode($data[0]["CORREO"])));
+
+		
+		
 		$pdf->Ln(10);
-		$pdf->SetFont('Times','B',10);
-		$pdf->setX(70);
-		$pdf->Cell(80,5,utf8_decode($data[0]["PASANTE"]),"T",1,'C',false);
-		$pdf->setX(70);
-		$pdf->Cell(80,5,utf8_decode($data[0]["MATRICULA"]),"",1,'C',false);
 
 						
 		$pdf->Output();
