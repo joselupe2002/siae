@@ -255,7 +255,8 @@
              jQuery.each(campos, function(clave, valor){	                     
             	   var elsql="";
                    if (!(valor.sql==null)) {elsql=valor.sql;}
-                                     
+									 
+				   //alert (elsql+" {"+nombre+"}");
                    if (elsql.indexOf("{"+nombre+"}")>0) {                            
                     	    elsql=damesqldep(elsql,'<?php echo $_SESSION["usuario"];?>');
                             agregarEspera("imggif_"+valor.colum_name,valor.gif);
@@ -268,7 +269,7 @@
 								 data:parametros,
                                  url: 'dameselectSeg.php', 
                                  success: function(data){   
-								                                       
+																							
                                       $("#"+valor.colum_name).html(data);                                                                 
                                       $("#"+valor.colum_name).trigger("chosen:updated");
                                       $('.chosen-select').chosen({allow_single_deselect:true}); 			                              		 

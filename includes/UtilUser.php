@@ -799,6 +799,7 @@ class UtilUser {
 				$cadFin="+\"'\"";
 			}
 			$sqlFin="";
+
 			
 		
 			for($i=0;$i<count($lista);$i++){
@@ -810,7 +811,7 @@ class UtilUser {
                           $.ajax({
                               type: \"POST\",
                               url: 'dameselectSeg.php', 
-                              success: function(data){    
+                              success: function(data){   
                                             
                                    $('#".$row["colum_name"]."').html(data);  
                           

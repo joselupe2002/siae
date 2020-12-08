@@ -1938,7 +1938,8 @@ if (tipo=="SELECT_MULTIPLE") {
 					  type: "POST",
 					  data:parametros,
                       url: 'dameselectSeg.php', 
-                      success: function(data){     						  
+                      success: function(data){   
+						    						  
 						   $("#"+nombre).html(data);   
 						   $('#'+nombre).trigger("chosen:updated");                              
                            quitarEspera("imggif_"+nombre,ico);                                                                                  
@@ -2043,8 +2044,51 @@ if (tipo=="SELECT_MULTIPLE") {
 		return cad;
 	}
 
-	if (tipo=="ARCHIVO_CARPETA") {
 
+
+	if (tipo=="ARCHIVO_DRIVE") {
+		dominio=document.domain;
+		unaimagen=sql.split("*")[2];
+		carpeta=sql.split('*')[1];
+		elenlace=sql.split('*')[1];
+		lasext=sql.split('*')[0];
+
+		if (unaimagen=='IMG') {rutaimg=dato;} else {rutaimg="../../imagenes/menu/documentos.png";}
+		
+
+		if ((dato==null)||(dato=="")) { 
+			if (unaimagen=='IMG') {rutaimg="../../imagenes/menu/default.png";} 
+			else {rutaimg="../../imagenes/menu/pdfno.png";}			
+		}
+		
+
+		stElim="display:none; cursor:pointer;";
+    	if (dato.length>0) {stElim="cursor:pointer; display:block; ";}
+    	btnEliminar="<i style=\""+stElim+"\"  id=\"btnEli_"+nombre+"\"  title=\"Eliminar el Archivo que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+        	                            
+        "onclick=\"eliminarEnlace('file_"+nombre+"','"+nombre+"','img_"+nombre+"','"+nombre+"','pdf','S','"+nombre+"','"+
+                                        dato+"','"+nombre+"');\"></i> "; 
+
+		cad="<label class=\"et\" for=\""+nombre+"\">"+etiqueta+"</label><br/> "+
+		     "  <div class=\"row align-items-end\"> "+
+		     "      <div class=\"col-sm-2\">"+
+		     "           <a target=\"_blank\" id=\"enlace_"+nombre+"\" href=\""+dato+"\">"+
+		     "                <img id=\"img_"+nombre+"\" name=\"img_"+nombre+"\" src=\""+rutaimg+"\" width=\"50px\" height=\"50px\">"+
+			 "           </a>"+
+			 "           <div class=\"col-sm-1\">"+btnEliminar+"</div>"+
+		     "      </div>"+
+		     "      <div class=\"col-sm-10\">"+
+		     "          <input type=\"file\" id=\"file_"+nombre+"\" name=\"file_"+nombre+"\""+
+	         "                 onchange=\"subirPDFDrive('file_"+nombre+"','"+carpeta+"','img_"+nombre+"','"+nombre+"','"+lasext+"','N');\"/>"+
+	         "          <input "+estilo+" type=\"hidden\" value=\""+dato+"\"  name=\""+nombre+"\" id=\""+nombre+"\"  placeholder=\"\" />\n"+
+		     "      </div> "+
+		     "  </div>";
+		$("#"+padre).append(cad);
+		return cad;
+	}
+
+
+
+	if (tipo=="ARCHIVO_CARPETA") {
 		dominio=document.domain;
 		unaimagen=sql.split("*")[2];
 		if (unaimagen=='IMG') {rutaimg=sql.split('*')[1]+dato;} else {rutaimg="../../imagenes/menu/pdf.png";}
@@ -2079,8 +2123,6 @@ if (tipo=="SELECT_MULTIPLE") {
 		$("#"+padre).append(cad);
 		return cad;
 	}
-
-	
 }
 
 
