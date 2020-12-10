@@ -286,7 +286,7 @@
 
         $pdf->Ln(5);
         $cad="EN LA CIUDAD DE ".utf8_decode($dataGen[0]["inst_fechaof"])." A LOS ".$fechaof2. " SIENDO LAS ".$dataCom[0]["HORAINI"]." HORAS ".
-        ", SE REUNEN ".$dataCom[0]["LUGAR"]." A FIN DE CELEBRAR LA ".utf8_decode($dataCom[0]["COMITED"]).utf8_decode(", DEL COMITÉ ACADÉMICO, DEL ").
+        ", SE REUNEN ".utf8_decode($dataCom[0]["LUGAR"])." A FIN DE CELEBRAR LA ".utf8_decode($dataCom[0]["COMITED"]).utf8_decode(", DEL COMITÉ ACADÉMICO, DEL ").
         utf8_decode($dataGen[0]["inst_razon"]." ");
 
         foreach($dataPRE as $row) { $cad.=utf8_decode($row["NOMBRE"]." ".$row["PUESTO"].", "); }
