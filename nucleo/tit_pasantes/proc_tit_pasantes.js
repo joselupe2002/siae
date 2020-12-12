@@ -47,7 +47,18 @@ function constnoincov(modulo,usuario,essuper){
 			}
 		}
 
-
+		
+		function solce(modulo,usuario,essuper){
+			table = $("#G_"+modulo).DataTable();
+			if (table.rows('.selected').data().length>0) {
+				enlace="nucleo/tit_tramite/formato.php?alumno="+table.rows('.selected').data()[0]["MATRICULA"];
+				abrirPesta(enlace, "SOLCE");
+			}
+			else {
+				alert ("Debe seleccionar un Registro");
+				return 0;
+				}
+			}
 	
 
 		function setStatus(id,valor, campo, cargar){			

@@ -224,9 +224,10 @@
 
 		$pdf->Ln(5);
 		$pdf->SetFont('Times','B',10);
+	
 		$pdf->Cell(80,5,utf8_decode("Localidad y estado donde labora: "),"",0,'L',false);
 		$pdf->SetFont('Times','U',10);
-		$pdf->Cell(100,5,utf8_decode($data[0]["DIRTRABAJO"]),"",0,'L',false);
+		$pdf->MultiCell(0,5,utf8_decode($data[0]["DIRTRABAJO"]),0,'J',FALSE);
 
 		$pdf->Ln(5);
 		$pdf->SetFont('Times','B',10);
@@ -252,8 +253,11 @@
 		$dataReq = $pdf->LoadRequisitos($data[0]["ID_OPCION"]);
 		$pdf->SetFont('Times','',9);
 		foreach($dataReq as $row) {
-			$pdf->Ln(5);			
-			$pdf->Cell(80,5,utf8_decode($c.". ".$row["REQUISITOD"]),"",0,'L',false);
+
+		   $cad=$c.". ".$row["REQUISITOD"];
+		   if ($row["OBS"]!='') {$cad=$c.". ".$row["REQUISITOD"]."(".$row["OBS"].")";}
+			$pdf->MultiCell(0,5,utf8_decode($cad),0,'J',FALSE);
+
 			$c++;
 		}
 			
