@@ -217,6 +217,9 @@ class UtilUser {
 		}
 		return $data;
 	}
+
+
+	
 	
 
 	public function getJefe($depto){

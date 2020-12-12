@@ -227,13 +227,19 @@
 		$nombre=$miutil->getJefe('303');//Nombre del puesto Control escolar
 		$elpsto="DEPARTAMENTO DE SERVICIOS ESCOLARES";
 		
-		//Para el numero de oficio 
-		$dataof=$miutil->getConsecutivoDocumento("LIBRESIDENCIAS",$data[0]["ALUM_MATRICULA"]);
-		
 
-		$fechadecof=$miutil->formatFecha($dataof[0]["FECHA"]);
-		$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
-	
+		
+		if ($_GET["confolio"]=='S') { 
+			 $elconsecutivo=$_GET["folio"];		
+			 $fechaof=$_GET["fecha"];				
+		 }
+		else {
+			 $dataof=$miutil->getConsecutivoDocumento("LIBRESIDENCIAS",$data[0]["ALUM_MATRICULA"]);
+			 $elconsecutivo=$dataof[0]["CONSECUTIVO"];
+			 $fechadecof=$miutil->formatFecha($dataof[0]["FECHA"]);
+			 $fechaof=date("d", strtotime($fechadecof))."/".date("m", strtotime($fechadecof))."/".date("Y", strtotime($fechadecof));
+		}
+		
 		
 		$pdf->Ln(3);
         $pdf->SetFont('Montserrat-ExtraBold','B',11);
@@ -243,11 +249,11 @@
         $pdf->Ln(5);
         $pdf->SetX(120);
         $pdf->Cell(35,5,'OFICIO NO:',0,0,'L');
-        $pdf->Cell(35,5,$dataof[0]["CONSECUTIVO"],0,0,'L');
+        $pdf->Cell(35,5,$elconsecutivo,0,0,'L');
 		$pdf->Ln(5);
 		$pdf->SetX(120);
         $pdf->Cell(35,5,'FECHA:',0,0,'L');
-        $pdf->Cell(35,5,$dataof[0]["FECHA"],0,0,'L');
+        $pdf->Cell(35,5,$fechaof,0,0,'L');
         $pdf->Ln(5);
         $pdf->SetX(120);
         $pdf->Cell(35,5,'CLAVE:',0,0,'L');

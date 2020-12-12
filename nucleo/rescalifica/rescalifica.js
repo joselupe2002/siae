@@ -136,8 +136,12 @@ function generaTablaMaterias(grid_data){
 		}
 		else {
 			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span class=\"badge badge-success\">"+valor.CALASEN+"</span></td>");
-			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\"><span onclick=\"verOficio('"+valor.MATRICULA+"')\" "+
-		                           "class=\"btn btn-white\"><i class=\"fa fa-info red bigger-160\"></i></span></td>");
+			$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+
+											 //"<input  placeholder=\"Folio\" id=\"folio"+valor.MATRICULA+"\" class=\"fontRoboto\" style=\"width:40px;\"></input>&nbsp;&nbsp;"+
+											 "<span onclick=\"OficioPersonalizado('"+valor.MATRICULA+"');\" "+
+		                                     "title=\"Ver oficio personalizado\" class=\"btn btn-white\"><i class=\"fa fa-file blue  bigger-160\"></i></span>"+
+										     "<span onclick=\"verOficio('"+valor.MATRICULA+"','N','0');\" "+
+		                                     "title=\"Ver oficio\" class=\"btn btn-white\"><i class=\"fa fa-file-text-o green  bigger-160\"></i></span></td>");
 		}
 		$("#rowM"+contAlum).append("<td style=\"font-size:12px;\">"+valor.PROYECTO+"</td>");	
 		
@@ -301,8 +305,40 @@ function eliminarCal(id, materiad){
 
 
 
-	function verOficio(matricula){
+	function verOficio(matricula,confolio,folio,fecha){
+		
+		enlace="nucleo/rescalifica/oficioLib.php?matricula="+matricula+"&ciclo="+$("#selCiclos").val()+
+		"&folio="+folio+"&confolio="+confolio+"&fecha="+fecha;
 
-	    window.open("oficioLib.php?matricula="+matricula+"&ciclo="+$("#selCiclos").val(),"_blank");
+
+		abrirPesta(enlace,"Oficio")
+	
+			
+	}	
+
+	function OficioPersonalizado(matricula){		
+		mostrarConfirm2("pidefec","grid_rescalifica","Oficio Personalizado",
+		"<div class=\"row\" style=\"text-align:left;\">"+
+			"<div class=\"col-sm-6\"> "+
+				"<label class=\"fontRobotoB label label-success\">Fecha de Oficio</label>"+
+				" <div class=\"input-group\"><input  class=\"form-control date-picker\"  id=\"lafecha\" "+
+					" type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
+					" <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
+			"</div>"+
+			"<div class=\"col-sm-6\"> "+
+				"<label class=\"fontRobotoB label label-success\" >Folio de Oficio</label>"+
+				"<input class=\"form-control\" id=\"elfolio\"></input>"+
+			"</div>"+
+		"</div>"
+			, "Ver Oficio", "verOficioP('"+matricula+"')", "modal-sm");
+		
+		$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+			
+	}	
+
+
+	function verOficioP(matricula){
+		verOficio(matricula,'S',$("#elfolio").val(),$("#lafecha").val());
+		$("#pidefec").modal("hide");
 			
 	}	
