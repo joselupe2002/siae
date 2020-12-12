@@ -174,7 +174,6 @@
 		$fechadec=$miutil->formatFecha($data[0]["FECHA_REG"]);
 		$fecha=date("d", strtotime($fechadec))." de ".$miutil->getFecha($fechadec,'MES'). " del ".date("Y", strtotime($fechadec));
 
-		$pdf->Ln(10);
 		$pdf->Cell(0,0,utf8_decode($dataGen[0]["inst_fechaof"]." a ".$fecha),"",0,'R',false);
 		
 		$pdf->Ln(5);
@@ -183,7 +182,7 @@
 
 		$pdf->Ln(5);
 		$pdf->Cell(0,0,utf8_decode("DEPARTAMENTO DE SERVICIOS ESCOLARES"),"",0,'L',false);
-		$pdf->Ln(10);
+		$pdf->Ln(5);
 		$pdf->MultiCell(0,5,utf8_decode("Por este conducto me permito solicitarle la apertura de expediente para iniciar el Trámite de titulación,".
 		" proporcionando los siguientes datos personales y documentación anexa en el orden listado."),0,'J',FALSE);
 
@@ -256,7 +255,7 @@
 
 		   $cad=$c.". ".$row["REQUISITOD"];
 		   if ($row["OBS"]!='') {$cad=$c.". ".$row["REQUISITOD"]."(".$row["OBS"].")";}
-			$pdf->MultiCell(0,5,utf8_decode($cad),0,'J',FALSE);
+			$pdf->MultiCell(0,3,utf8_decode($cad),0,'J',FALSE);
 
 			$c++;
 		}
