@@ -87,7 +87,7 @@
 
 										<div class="toolbar clearfix">
 											<div>
-												<a href="#" data-target="#forgot-box" class="forgot-password-link">
+												<a href="#" data-target="#forgot-box" class="hide forgot-password-link">
 													<i class="ace-icon fa fa-arrow-left"></i>
 													Recordar clave
 												</a>
@@ -110,14 +110,14 @@
 
 											<div class="space-6"></div>
 											<p>
-												Ingrese su correo electr&oacute;nico
+												Ingrese su numero de control / No Empl.
 											</p>
 
 											<form>
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input name="correo_re" id="correo_re" type="email" class="form-control" placeholder="Email" />
+															<input name="correo_re" id="correo_re" class="form-control" placeholder="" />
 															<i class="ace-icon fa fa-envelope"></i>
 														</span>
 													</label>
@@ -258,6 +258,7 @@
 <script src="assets/js/jquery.maskedinput.min.js"></script>
 <script src="assets/js/jquery-ui.min.js"></script>
 <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="js/sha/sha512.js"></script>
 
 <script type="text/javascript"> var laip=""; function get_ip(obj){ laip=obj.ip;}</script>
 
@@ -335,11 +336,16 @@ function ingresar() {
 
 			   //================================RECORDAR CONTRASE&Ntilde;A  =========================================
 			   $('#enviarClave').on('click', function(e) {
+				var hoy = new Date();
+				var tah = hoy.getMinutes().toString()+hoy.getSeconds().toString()+hoy.getHours().toString();
+			
 				   var parametros = {			              
 			                "correo" : $('#correo_re').val(),
-			                "usuario" : $('#correo_re').val()	                
+							"usuario" : $('#correo_re').val(),
+							"tag1":tah,
+							"tag2": encrip=sha512(tah)                
 			            };
-		            $("#dialogEspera").html("<img src=\"imagenes/menu/espere.gif\" style=\"background: transparent; width: 60px; height: 60px\">"+
+		            $("#dialogEspera").html("<img src=\"imagenes/menu/esperar.gif\" style=\"background: transparent; width: 60px; height: 60px\">"+
 				            "<span class=\"red\">Procesando...</span>");
 		        	 var dialog = $( "#dialogEspera" ).removeClass('hide').dialog({
 		        		    open: function(event, ui) { $(".ui-dialog-titlebar-close", ui.dialog).hide(); },
@@ -352,7 +358,7 @@ function ingresar() {
 		                data: parametros,
 		                success: function(data){	
 		                	$("#dialogEspera").dialog( "close" );
-		                	alert ("Tu contrase&ntilde;a ha sido enviado al correo: "+$("#correo_re").val());	                	
+		                	alert (data);	                	
 		                }
 		            });
 
