@@ -456,3 +456,45 @@ function constnoincov(modulo,usuario,essuper){
 
 /*===================================================*/		
 
+function titulado(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+		if (table.rows('.selected').data().length>0) {	
+			if (table.rows('.selected').data()[0]["ASIGNOFECHA"]=='S') {
+					if (table.rows('.selected').data()[0]["TITULADO"]=='N') {
+						if (confirm("Desea marcar como TITULADO el registro: "+table.rows('.selected').data()[0]["MATRICULA"])) {
+							procesoTitulado(table.rows('.selected').data()[0]["MATRICULA"],'S',table.rows('.selected').data()[0]["CICLO"]);						
+							insertaHistorial(table.rows('.selected').data()[0]["MATRICULA"],'TITULACION','TITULADO','HAS REALIZADO TU PROTOCOLO DE TITULACIÓN','S',usuario,institucion,campus);
+							setStatus(table.rows('.selected').data()[0]["MATRICULA"],"S","TITULADO",true);
+						}
+					}
+					else {
+						if (confirm("El registro: "+table.rows('.selected').data()[0]["MATRICULA"]+" Esta como TITULADO ¿desea marcar como NO TITULADO?")) {
+							procesoTitulado(table.rows('.selected').data()[0]["MATRICULA"],'','');
+							setStatus(table.rows('.selected').data()[0]["MATRICULA"],"N","TITULADO",true);
+							eliminaHistorial(table.rows('.selected').data()[0]["MATRICULA"],'TITULACION','TITULADO');
+						}
+					} 	
+				}
+			else { alert ("No puede asignar status de TITULADO ya que no se ha ASIGNADO FECHA"); return 0; }
+		}
+
+		else { alert ("Debe seleccionar un Registro"); return 0; }
+}
+
+
+function procesoTitulado(matricula, valortit,valorcic){
+
+	parametros={tabla:"falumnos",campollave:"ALUM_MATRICULA",bd:"Mysql",
+	valorllave:matricula,
+	ALUM_TITULADO:valortit,
+	ALUM_CICLOTIT:valorcic
+};
+	$.ajax({
+	type: "POST",
+	url:"actualiza.php",
+	data: parametros,
+	success: function(data){	
+					
+	}					     
+});    
+}
