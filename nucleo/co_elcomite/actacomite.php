@@ -286,7 +286,7 @@
 
         $pdf->Ln(5);
         $cad="EN LA CIUDAD DE ".utf8_decode($dataGen[0]["inst_fechaof"])." A LOS ".$fechaof2. " SIENDO LAS ".$dataCom[0]["HORAINI"]." HORAS ".
-        ", SE REUNEN ".utf8_decode($dataCom[0]["LUGAR"])." A FIN DE CELEBRAR LA ".utf8_decode($dataCom[0]["COMITED"]).utf8_decode(", DEL COMITÉ ACADÉMICO, DEL ").
+        ", SE REUNEN EN ".utf8_decode($dataCom[0]["LUGAR"])." A FIN DE CELEBRAR LA ".utf8_decode($dataCom[0]["COMITED"]).utf8_decode(", DEL COMITÉ ACADÉMICO, DEL ").
         utf8_decode($dataGen[0]["inst_razon"]." ");
 
         foreach($dataPRE as $row) { $cad.=utf8_decode($row["NOMBRE"]." ".$row["PUESTO"].", "); }
@@ -384,7 +384,7 @@
 
                         $pdf->Row(array( utf8_decode($row2["NUMCOMITE"]),
                                          utf8_decode($pre." ".$row2["SOLICITUD"]."\n\n"."PROBLEMÁTICA PERSONAL: \n".
-                                                     $row2["PERSONALES"]."\n\nPROBLEMÁTICA ACADÉMICA: \n".$row2["ACADEMICOS"]),
+                                         utf8_decode($row2["PERSONALES"])."\n\nPROBLEMÁTICA ACADÉMICA: \n".utf8_decode($row2["ACADEMICOS"])),
                                          utf8_decode($cadaut.$row2["OBSCOMITE"])
                                          )
                                   );
@@ -449,7 +449,7 @@
          $pdf->Ln(5);
          $pdf->SetFont('Montserrat-Medium','',10);
          $pdf->Multicell(0,5,utf8_decode("LAS FIRMAS ARRIBA PLASMADAS CORRESPONDEN AL ACTA DE LA ".$dataCom[0]["COMITED"].
-         "DEL COMITÉ ACADÉMICO DEL ".$dataGen[0]["inst_razon"]." CELEBRADA EL DÍA ").strtoupper($fechaof2)." ".$dataCom[0]["LUGAR"].".",0,'J',false);
+         "DEL COMITÉ ACADÉMICO DEL ".$dataGen[0]["inst_razon"]." CELEBRADA A LOS ").strtoupper($fechaof2)." EN ".utf8_decode($dataCom[0]["LUGAR"]).".",0,'J',false);
          $pdf->Ln(5);
 
          $pdf->Output(); 
