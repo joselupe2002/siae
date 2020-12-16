@@ -92,7 +92,7 @@
 	         <div class="row">	
 				         <div class="col-sm-6" style="text-align: center;">
 				               <?php $antes=""; if ($_GET['gridpropio']=='S') { $antes="../".$_GET['modulo']."/";}	?>	
-				               <a href="<?php echo $antes;?>grid.php?modulo=<?php echo $_GET['modulo'];?>&bd=<?php echo $_GET['bd']?>&nombre=<?php echo $_GET['modulo'];?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&loscamposf=<?php echo $_GET['loscamposf']?>&losdatosf=<?php echo $_GET['losdatosf']?>"
+				               <a href="<?php echo $antes;?>grid.php?modulo=<?php echo $_GET['modulo'];?>&bd=<?php echo $_GET['bd']?>&nombre=<?php echo $_GET['modulo'];?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&loscamposf=<?php echo $_GET['loscamposf']?>&losdatosf=<?php echo $_GET['losdatosf']?>&restr=<?php echo $_GET['restr']?>"
 				               class="btn  btn-white btn-warning" role="button" style="width: 150px; height: 40px;">
 				               <i class="ace-icon red fa fa-arrow-left bigger-160 "></i><span class="btn-lg">Cancelar</span></a>
 				         </div>
@@ -345,7 +345,7 @@
 			                				                                	                     
 				                if (!(data.substring(0,1)=="0"))	
 					                 { 						                  
-                                      location.href="<?php echo $antes;?>grid.php?modulo=<?php echo $_GET['modulo']?>&bd=<?php echo $_GET['bd']?>&nombre=<?php echo $_GET['nombre']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&loscamposf=<?php echo $_GET['loscamposf']?>&losdatosf=<?php echo $_GET['losdatosf']?>";
+                                      location.href="<?php echo $antes;?>grid.php?modulo=<?php echo $_GET['modulo']?>&bd=<?php echo $_GET['bd']?>&nombre=<?php echo $_GET['nombre']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&loscamposf=<?php echo $_GET['loscamposf']?>&losdatosf=<?php echo $_GET['losdatosf']?>&restr=<?php echo $_GET['restr']?>";
 					                  }	
 				                else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
 			                }					     

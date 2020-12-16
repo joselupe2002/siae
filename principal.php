@@ -421,17 +421,15 @@
 	       if ($('#myTab').tabs('exists',nombre)){
 		        $('#myTab').tabs('select', nombre);
 	       } else {
+					  restr=pagina; if (restr=="null") {alert ("sii es null"); restr='';}
 	    	          var alto=($(window).height()-100)+"px";
-
 	    	      	   
-	    	      	   var url="nucleo/base/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=S"+"&automatico="+automatico+"&bd="+bd;
-	    	      	 
-
+	    	      	   var url="nucleo/base/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=S"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;	    	      	 
+					  
 	    	      	   if (existeUrl("nucleo/"+modulo+"/grid.php?modulo="+modulo)) {
-	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=N"+"&automatico="+automatico+"&bd="+bd;
+	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=N"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;
 	    	      	   }
-	    	      	  
-
+	    	      	  		
 	    	          var content = '<iframe frameborder="0" id="FR'+modulo+'" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';	
 				     $('#myTab').tabs('add',{
 				    	    title:nombre,

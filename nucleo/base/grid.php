@@ -476,19 +476,26 @@
 		});
 
 		function modificar(){
-			
-
-			ruta="editaReg.php?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=N&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca m�s abajo este debe ser siempre el ultimo parametros
+					
+			restr="<?php echo $_GET['restr']?>";
+	
+			ruta="editaReg.php?modulo=<?php echo $_GET["modulo"]?>&restr=<?php echo $_GET['restr']?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=N&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca m�s abajo este debe ser siempre el ultimo parametros
 		   <?php                  
 	             if (file_exists("../".$_GET["modulo"]."/editaReg.php")) {?>
-	                 ruta="<?php echo "../".$_GET["modulo"]."/editaReg.php"?>?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&campollave=<?php echo $campoLlave; ?>&gridpropio=N&valorllave=";  //El valor llave se coloca m�s abajo este debe ser siempre el ultimo parametros
+	                 ruta="<?php echo "../".$_GET["modulo"]."/editaReg.php"?>?modulo=<?php echo $_GET["modulo"]?>&restr=<?php echo $_GET['restr']?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&campollave=<?php echo $campoLlave; ?>&gridpropio=N&valorllave=";  //El valor llave se coloca m�s abajo este debe ser siempre el ultimo parametros
 	       <?php }?>
 	              
 			
 			var table = $('#G_<?php echo $_GET['modulo']?>').DataTable();
-			if (table.rows('.selected').data().length>0) {
-				 $('#dlgproceso').modal({backdrop: 'static', keyboard: false});
-				 location.href=ruta+table.rows('.selected').data()[0][0]; 
+		
+			if  (table.rows('.selected').data().length>0) {
+				if ((restr!="") && (table.rows('.selected').data()[0][restr.split("|")[0]]==restr.split("|")[1])) {
+					alert ("El registro no puede ser modificado "+restr.split("|")[2]);
+				}
+				else {
+					$('#dlgproceso').modal({backdrop: 'static', keyboard: false});
+					location.href=ruta+table.rows('.selected').data()[0][0]; 
+				}
 				}
 			else {
 				alert ("Debe seleccionar un registro");
@@ -498,8 +505,13 @@
 
 		  function eliminar(){
 			   
+			    restr="<?php echo $_GET['restr']?>";
 			    var table = $('#G_<?php echo $_GET['modulo']?>').DataTable();
 			    if (table.rows('.selected').data().length>0) {
+					if ((restr!="") && (table.rows('.selected').data()[0][restr.split("|")[0]]==restr.split("|")[1])) {
+					alert ("El registro no puede ser modificado "+restr.split("|")[2]);
+				}
+				else {
 			    	  if(confirm("Seguro que desea eliminar el registro: "+table.rows('.selected').data()[0][0])) {
 			    			$('#dlgproceso').modal({backdrop: 'static', keyboard: false});			    		
 			    		        
@@ -517,11 +529,12 @@
 				  	            success:  function (response) {
 				  	            	$('#dlgproceso').modal("hide");
 				  	            	alert(response);
-				  	            	location.href ="grid.php?modulo=<?php echo $_GET['modulo'];?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET['nombre'];?>&loscamposf=<?php echo $loscamposf;?>&losdatosf=<?php echo $losdatosf;?>";
+				  	            	location.href ="grid.php?modulo=<?php echo $_GET['modulo'];?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo $_GET['limitar']?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET['nombre'];?>&loscamposf=<?php echo $loscamposf;?>&losdatosf=<?php echo $losdatosf;?>&restr=<?php echo $_GET['restr']?>";
 			    		        }		
 				  	       }); 
-			    	  }    
-					}
+			    	  	}  
+					}	  
+				}
 				else {
 					alert ("Debe seleccionar un registro a eliminar");
 					}
@@ -535,8 +548,8 @@
 			
 			  $('#dlgproceso').modal({backdrop: 'static', keyboard: false});	
                <?php                  
-               $url="nuevoReg.php?modulo=".$_GET["modulo"]."&bd=".$_GET["bd"]."&limitar=".$_GET["limitar"]."&automatico=".$_GET["automatico"]."&nombre=".$_GET["nombre"]."&tablagraba=".$laTablaGraba."&tabla=".$laTabla."&loscamposf=".$loscamposf."&losdatosf=".$losdatosf."&gridpropio=N";
-               if (file_exists("../".$_GET["modulo"]."/nuevoReg.php")) {$url="../".$_GET["modulo"]."/nuevoReg.php?modulo=".$_GET["modulo"]."&bd=".$_GET["bd"]."&limitar=".$_GET["limitar"]."&automatico=".$_GET["automatico"]."&loscamposf=".$loscamposf."&losdatosf=".$losdatosf."&gridpropio=N";}?>
+               $url="nuevoReg.php?modulo=".$_GET["modulo"]."&restr=".$_GET['restr']."&bd=".$_GET["bd"]."&limitar=".$_GET["limitar"]."&automatico=".$_GET["automatico"]."&nombre=".$_GET["nombre"]."&tablagraba=".$laTablaGraba."&tabla=".$laTabla."&loscamposf=".$loscamposf."&losdatosf=".$losdatosf."&gridpropio=N";
+               if (file_exists("../".$_GET["modulo"]."/nuevoReg.php")) {$url="../".$_GET["modulo"]."/nuevoReg.php?modulo=".$_GET["modulo"]."&restr=".$_GET['restr']."&bd=".$_GET["bd"]."&limitar=".$_GET["limitar"]."&automatico=".$_GET["automatico"]."&loscamposf=".$loscamposf."&losdatosf=".$losdatosf."&gridpropio=N";}?>
                  location.href="<?php echo $url;?>";       
                       
 			}
@@ -623,7 +636,7 @@
 			 losdatos=losdatos.substring(0,losdatos.length-1);	
              loscampos=loscampos.substring(0,loscampos.length-1);
 
-		     var url="grid.php?modulo=<?php echo $_GET["modulo"];?>&nombre=<?php echo $_GET["nombre"];?>&padre=SIGEA&limitar=N&automatico=<?php echo $_GET["automatico"];?>&bd=<?php echo $_GET["bd"];?>&loscamposf="+loscampos+"&losdatosf="+losdatos+"&porfiltro=1"; 
+		     var url="grid.php?modulo=<?php echo $_GET["modulo"];?>&nombre=<?php echo $_GET["nombre"];?>&padre=SIGEA&limitar=N&automatico=<?php echo $_GET["automatico"];?>&bd=<?php echo $_GET["bd"];?>&restr=<?php echo $_GET['restr']?>&loscamposf="+loscampos+"&losdatosf="+losdatos+"&porfiltro=1"; 
 		     location.href=url;
 	     
 		   }
