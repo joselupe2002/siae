@@ -234,3 +234,17 @@ function autorizarAct(modulo,usuario,institucion, campus,essuper){
 	else { alert ("Debe seleccionar un Registro"); return 0; }
 
 }
+
+
+function formatoPla(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {	
+		enlace="nucleo/dpactividades/formatoSeg.php?mes="+table.rows('.selected').data()[0]["MES"]+
+			   "&anio="+table.rows('.selected').data()[0]["ANIO"]+
+			   "&meta="+table.rows('.selected').data()[0]["META"];
+		abrirPesta(enlace,"Rep_Meta")
+	}
+
+	else { alert ("Debe seleccionar un Registro, para saber el MES y META que desea emitir"); return 0; }
+
+}

@@ -222,7 +222,7 @@ function verCalificaciones() {
 
 	elsql="select ID AS ID, MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD, LISCAL AS CAL "+
 	    " from dlista a, cmaterias b where MATCVE=MATE_CLAVE AND a.ALUCTR='"+$("#selAlumnos").val()+"'"+
-		" and a.GPOCVE='REV' ORDER BY ID DESC";
+		" and a.GPOCVE='REV' ORDER BY MATCVE DESC";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
 			type: "POST",
