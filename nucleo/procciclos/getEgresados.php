@@ -24,7 +24,7 @@
        {$msj="1:Registro actualizado satisfactoriamente";}
        
 
-       $sql="UPDATE inscritos set EGRESADO='S' where getAvanceMatCiclo(MATRICULA,'".$_POST['ciclo']."')>=100";
+       $sql="UPDATE inscritos set EGRESADO='S' where getAvanceCred(MATRICULA,'".$_POST['ciclo']."')>=100";
        $res=$miConex->afectaSQL($_SESSION["bd"],$sql);   
        $msj="";
        if (!($res=='')) { $msj= "0: SEGUNDO:".$res."\n";}
