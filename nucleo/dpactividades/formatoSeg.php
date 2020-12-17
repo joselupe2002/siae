@@ -130,6 +130,18 @@
 			}
 
 
+			function LoadAvance()
+			{				
+				
+				$miConex = new Conexion();
+				$resultado=$miConex->getConsulta($_SESSION['bd'],"select * from dpmetasav where MES='".$_GET["mes"].
+				"' and ANIO='".$_GET["anio"]."' and META='".$_GET["meta"]."'");				
+				foreach ($resultado as $row) {
+					$data[] = $row;
+				}
+				return $data;
+			}
+
 	
 			
 			function LoadDatosGen()
@@ -223,15 +235,16 @@
 		$pdf->AddPage();
 	
 		$data = $pdf->LoadData();
+		$dataAv = $pdf->LoadAvance();
 		$pdf->SetY(42);
 		$pdf->Cell(0,0,utf8_decode("SEGUIMIENTO FÍSICO DE METAS INSTITUCIONALES"),"",0,'C',false);
 
 		$pdf->Ln(2);
 		$pdf->SetFont('Times','',10);
 
-		$elavancemeta="14";
+		$elavancemeta=$dataAv[0]["AVANCE"];
 		$pdf->SetWidths(array(40,169,20,10));
-		$pdf->Row(array(utf8_decode("META:"),utf8_decode($data[0]["METAD"]),utf8_decode("AVANCE:"),$elavancemeta));
+		$pdf->Row(array(utf8_decode("META:"),utf8_decode($data[0]["METAD"]),utf8_decode("AVANCE:"),$elavancemeta."%"));
 
 		$pdf->SetWidths(array(40,199));
 		$pdf->Row(array(utf8_decode("OBJETIVO ESTRATÉGICO:"),utf8_decode($data[0]["OBJESTD"])));
