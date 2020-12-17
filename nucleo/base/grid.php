@@ -33,6 +33,7 @@
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
 
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery-ui.custom.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
 		<link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
 	
 		

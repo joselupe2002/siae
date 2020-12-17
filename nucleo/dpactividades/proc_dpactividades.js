@@ -248,3 +248,98 @@ function formatoPla(modulo,usuario,institucion, campus,essuper){
 	else { alert ("Debe seleccionar un Registro, para saber el MES y META que desea emitir"); return 0; }
 
 }
+
+
+
+function avanceMeta(modulo,usuario,institucion, campus,essuper){
+	meses=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
+	table = $("#G_"+modulo).DataTable();
+
+	elanio=table.rows('.selected').data()[0]["ANIO"];
+	elmes=meses[table.rows('.selected').data()[0]["MES"]-1];
+	mes=table.rows('.selected').data()[0]["MES"];
+	meta=table.rows('.selected').data()[0]["META"];
+
+
+	elsql="SELECT AVANCE,COUNT(*) as N FROM dpmetasav o where META='"+meta+"' and MES='"+mes+"' and ANIO='"+elanio+"'";   
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}   
+	$.ajax({
+	   type: "POST",
+	   data:parametros,
+	   url: 'getdatossqlSeg.php', 
+	   success: function(data){ 
+			elavance="";
+			if (JSON.parse(data)[0]["N"]>0) {elavance=JSON.parse(data)[0]["AVANCE"];}
+	   	
+			script="<div class=\"modal fade\" id=\"modalMetas\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
+		       "   <div class=\"modal-dialog modal-sm\" role=\"document\" >"+
+			   "      <div class=\"modal-content\">"+
+			   "          <div class=\"modal-header widget-header  widget-color-green\">"+
+			   "             <span class=\"label fontRobotoB label-lg label-primary arrowed arrowed-right\"> Avance de Metas: "+elmes+" "+elanio+"</span>"+	
+			   "             		<div class=\"space-10\"></div>"+
+			   "             <span class=\"label label-lg label-warning arrowed arrowed-right\"> Meta No.: "+meta+"</span>"+			
+			   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
+			   "                  <span aria-hidden=\"true\">&times;</span>"+
+			   "             </button>"+
+			   "          </div>"+  
+			   "          <div id=\"frmdescarga\" class=\"modal-body\" >"+					 
+			   "             <div class=\"row\" style=\"overflow-x: auto; overflow-y: auto; height:130px; text-align:left\"> "+		
+			   "					<label class=\"label label-success\">% de Avance </label>"+	   
+			   "                    <input class=\"form-control fontRobotoB input-mask-numero\" id=\"avance\" value=\""+elavance+"\"></input>"+
+			   "             		<div class=\"space-10\"></div>"+	
+			   "                    <span style=\"width:100%\" class=\"btn btn-info fontRobotoB\" onclick=\"guardarAvance('"+meta+"','"+elanio+"','"+mes+"');\">Guardar Avance</span>"+
+			   "             </div> "+ //div del row
+			   	   
+			   "          </div>"+ //div del modal-body		 
+		       "          </div>"+ //div del modal content		  
+			   "      </div>"+ //div del modal dialog
+			   "   </div>"+ //div del modal-fade
+			   "</div>";
+		 
+			   $('.input-mask-numero').mask('999');
+
+		
+			 $("#modalMetas").remove();
+		    if (! ( $("#modalMetas").length )) {
+		        $("#grid_"+modulo).append(script);
+			}
+			$('#modalMetas').modal({show:true, backdrop: 'static'});
+			 
+	   }
+	});
+
+
+	
+
+		}
+
+
+
+		function guardarAvance(meta,anio, mes){			
+	
+				 var losdatos=[]; 
+				 losdatos[0]=meta+"|"+mes+"|"+anio+"|"+$("#avance").val();
+			 	 var loscampos = ["META","MES","ANIO","AVANCE",];
+					parametros={
+					  tabla:"dpmetasav",
+					  campollave:"concat(META,MES,ANIO)",
+					  bd:"Mysql",
+					  valorllave:meta+mes+anio,
+					  eliminar: "S",
+					  separador:"|",
+					  campos: JSON.stringify(loscampos),
+					  datos: JSON.stringify(losdatos)
+					};
+
+		
+			   $.ajax({
+			   type: "POST",
+			   url:"grabadetalle.php",
+			   data: parametros,
+			   success: function(data){
+
+				   $('#modalMetas').modal("hide"); 
+				   if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}							   
+			   		}					     
+			   });    	                
+		}
