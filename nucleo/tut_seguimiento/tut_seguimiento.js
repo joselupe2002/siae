@@ -28,7 +28,7 @@ contMat=1;
 
 		
 		$("#losciclos2").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
-		addSELECT("selCiclos","losciclos2","PROPIO","SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) FROM CICLOSESC ORDER BY CICL_CLAVE DESC" , "","");  	
+		addSELECT("selCiclos","losciclos2","PROPIO","SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc ORDER BY CICL_CLAVE DESC" , "","");  	
 
 
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
