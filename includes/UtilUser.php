@@ -580,6 +580,7 @@ class UtilUser {
 	public function getParamSubmit($rescampos,$tabla,$op,$bd){	
 		$util= new UtilUser();
 		$param="";$resparam="";$paramadd="";
+		date_default_timezone_set('America/Mexico_City');
 		foreach ($rescampos as $campos) {
 			$cad=$campos["colum_name"].":$(\"#".$campos["colum_name"]."\").val(),\n";
 			
@@ -595,7 +596,7 @@ class UtilUser {
 				$cad=$campos["colum_name"].":\"".$_SESSION['usuario']."\",\n";
 			}
 			if ($campos["tipo"]==":FECHA"){
-				$cad=$campos["colum_name"].":\"".date("d-m-Y")."\",\n";
+				$cad=$campos["colum_name"].":\"".date("d-m-Y H:i")."\",\n";
 			}
 			if ($campos["keys"]=="S"){
 				$llave=$campos["colum_name"];

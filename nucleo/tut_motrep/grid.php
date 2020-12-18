@@ -26,6 +26,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
 
         
 
@@ -38,9 +39,10 @@
 	     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
 
 
-      <h3 class="header smaller lighter text-warning"><strong>Calificaciones Parciales <i class="ace-icon fa fa-angle-double-right"></i> <small id="elciclo"></small> <small id="elciclod"></small></strong></h3>
-	     <div  class="table-responsive" style="height:400px;overflow: auto; ">
-		     <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
+      <h3 class="header smaller lighter text-warning"><strong>Motivos de Reprobación <i class="ace-icon fa fa-angle-double-right"></i> 
+	            <small id="elciclo"></small> <small id="elcorte"></small><small class="hide" id="lostiposhide"></small></strong></h3>
+	     <div  class="table-responsive">
+		     <table id=tabHorarios class= "display  table-condensed table-striped table-sm table-bordered table-hover nowrap ">
 			 </table>	
 		</div>
 
@@ -119,13 +121,51 @@ var id_unico="";
 var estaseriando=false;
 var matser="";
 var maxuni=0;
+var elciclo="";
+var idcorte="";
+var iniCorte=""; 
+var finCorte=""; 	
+var tipocorte=""; 
+
+var usuario="<?php echo $_SESSION["usuario"];?>";
+var lains="<?php echo $_SESSION["INSTITUCION"];?>";
+var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
     $(window).load(function() {$('.preloader-wrapper').fadeOut();$('container').removeClass('preloader-site');});
 
 
     jQuery(function($) { 
-        $("#info").css("display","none");
+		$("#info").css("display","none");
+		
+		 //Buscamos los cortes que esta abierto para la asignatura de acuerdo al ciclo 
+		 sqlCor="select * from ecortescal where  CICLO=getciclo()"+
+		        " and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
+				" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
+		        " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CALIFICACION' "+
+		        " order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
+			
+
+			parametros={sql:sqlCor,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				 type: "POST",
+				 data:parametros,
+		         url:  "../base/getdatossqlSeg.php",
+		         success: function(dataCor){   
+					 	        				         
+		        	 jQuery.each(JSON.parse(dataCor), function(clave, valorCor) { 	
+						iniCorte=valorCor.INICIA; finCorte=valorCor.TERMINA; eltidepocorte=	valorCor.TIPO;	
+						$("#elcorte").html(valorCor.DESCRIPCION);	
+						elciclo=valorCor.CICLO;
+						idcorte=valorCor.ID;	
+						tipocorte=valorCor.TIPO;			
+					 });
+					}
+				});
+
+
+		//creamos select de tipos de motivos 
+		addSELECT("selTipos","lostiposhide","PROPIO","SELECT ID,DESCRIP FROM tut_catmotrep order by ORDEN", "","");  
 
         cargarMaterias('<?php echo $_SESSION["usuario"];?>');
        
@@ -139,14 +179,22 @@ var maxuni=0;
             $("#cuerpo").empty();
             caduni="";
     
-            for (i=1; i<=maxuni;i++) {caduni+="<th title=\"Calificaci&oacute;n parcial "+i+"\"style=\"text-align: center;\">CP"+i+"</th>";}
-            $("#tabHorarios").append("<thead><tr id=\"titulo\"><th style=\"text-align: center;\">Clave</th>"+ 
-            "<th style=\"text-align: center;\">Materia</th><th style=\"text-align: center;\">Profesor</th>"+
-            "<th title=\"Semestre de la asignatura\" style=\"text-align: center;\">SEM</th>"+
-            "<th title=\"N&uacute;mero de Unidades de la asignatura\" style=\"text-align: center;\">NU</th>"+
-            "<th title=\"Calificaci&oacute;n final de la asignatura\" style=\"text-align: center;\">CF</th>"+caduni); 
+			
+			
+            $("#tabHorarios").append(
+			"<thead class=\"fontRobotoB\" style=\"background:#0C1E61; color:white;\">"+
+			"	<tr id=\"titulo\"><th style=\"text-align: center;\" >Clave</th>"+ 
+			"		<th style=\"text-align: center;\">Materia</th>"+			
+			"		<th style=\"text-align: center;\">Profesor</th>"+
+            "		<th title=\"Semestre de la asignatura\" style=\"text-align: center;\">SEM</th>"+
+            "		<th title=\"N&uacute;mero de Unidades de la asignatura\" style=\"text-align: center;\">NU</th>"+
+			"		<th title=\"Calificaci&oacute;n final de la asignatura\" style=\"text-align: center;\">CF</th>"+
+			"		<th title=\"Motivo por el cuál reprobó las unidades del corte\" style=\"text-align: left;\">MOTIVO</th>"+
+			"		<th title=\"Información adicional para determinar la causa\" style=\"text-align: left;\">OBSERVACIONES</th>"+
+			"	</tr>"+
+			"</thead>"); 
 
-     	    $("#tabHorarios").append("<tbody id=\"cuerpo\">");
+     	    $("#tabHorarios").append("<tbody id=\"cuerpo\" class=\"fontRoboto\">");
      	   
             jQuery.each(grid_data, function(clave, valor) { 	
              	    
@@ -154,19 +202,18 @@ var maxuni=0;
          	    $("#row"+valor.MATERIA).append("<td>"+valor.MATERIA+"</td>");         	    
          	    $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
          	    $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");
-         	   $("#row"+valor.MATERIA).append("<td>"+valor.SEM+"</td>");
+         	    $("#row"+valor.MATERIA).append("<td>"+valor.SEM+"</td>");
          	    $("#row"+valor.MATERIA).append("<td>"+valor.NUMUNI+"</td>");
-         	    $("#row"+valor.MATERIA).append("<td>"+valor.LISCAL+"</td>");
-         	   
-         	    for (i=1; i<=maxuni;i++) {
-             	     cal=grid_data[clave]["LISPA"+i];
-             	     caltxt="<span class=\"pull-right badge badge-danger\">"+cal+"</span>";
-             	     if (cal>=70) { caltxt="<span class=\"pull-right badge badge-info\">"+cal+"</span>";}
-         	    	$("#row"+valor.MATERIA).append("<td>"+caltxt+"</td>"); 
-             	    }
-         	   $("#row"+valor.MATERIA).append("</tr>");
+				$("#row"+valor.MATERIA).append("<td>"+valor.GRUPO+"</td>");
+				$("#row"+valor.MATERIA).append("<td><select class=\"form-control text-success\" id=\"mot"+valor.MATERIA+"\" onchange=\"guardar('"+valor.ID+"','"+valor.MATERIA+"','"+valor.GRUPO+"');\"></select></td>");
+				$("#row"+valor.MATERIA).append("<td><input class=\"form-control text-success\" id=\"obs"+valor.MATERIA+"\" value=\""+valor.OBS+"\" onchange=\"guardar('"+valor.ID+"','"+valor.MATERIA+"','"+valor.GRUPO+"');\"></input></td>");
+				 $("#row"+valor.MATERIA).append("</tr>");
+				 
+				 $("#mot"+valor.MATERIA).html($("#selTipos").html());
+				 $("#mot"+valor.MATERIA).val(valor.TIPO); 
              });
-            $('#dlgproceso').modal("hide"); 
+			$('#dlgproceso').modal("hide"); 
+			
      }		
          
 
@@ -219,7 +266,9 @@ var maxuni=0;
 								 "ifnull(LISPA12,0) AS LISPA12,ifnull(LISPA13,0) AS LISPA13,ifnull(LISPA14,0) AS LISPA14,ifnull(LISPA15,0) AS LISPA15,"+
         	                      " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,"+
         	                      " (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,"+
-        	                      " ifnull(getcuatrimatxalum(e.MATCVE,ALUCTR),0) AS SEM "+
+								  " ifnull(getcuatrimatxalum(e.MATCVE,ALUCTR),0) AS SEM, "+
+								  " IFNULL((SELECT TIPO FROM tut_motrepalum WHERE IDDETALLE=e.ID AND IDCORTE="+idcorte+"),'') as TIPO,"+
+								  " IFNULL((SELECT OBS FROM tut_motrepalum WHERE IDDETALLE=e.ID AND IDCORTE="+idcorte+"),'') as OBS"+
         	                      " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+        	                      
 								  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.BAJA='N' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N') order by PDOCVE DESC"			  		  
 				parametros={sql:sqlMat,dato:sessionStorage.co,bd:"Mysql"}
@@ -250,6 +299,37 @@ var maxuni=0;
     	
     }
 
+
+	function guardar(iddet,materia,grupo,){
+		campo='';
+	
+		eltipo=$("#mot"+materia).val();
+		laobs=$("#obs"+materia).val();
+		lafecha=dameFecha("FECHAHORA");
+		var losdatos=[];
+		losdatos[0]=iddet+"|"+idcorte+"|"+tipocorte+"|"+eltipo+"|"+laobs+"|"+materia+"|"+grupo+"|"+usuario+"|"+elciclo+"|"+lains+"|"+elcam+"|"+usuario+"|"+lafecha;
+   		var loscampos = ["IDDETALLE","IDCORTE","CORTE","TIPO","OBS","MATERIA","GRUPO","MATRICULA","CICLO","_INSTITUCION","_CAMPUS","USUARIO","FECHAUS"];
+
+		   parametros={
+			tabla:"tut_motrepalum",
+			 campollave:"IDDETALLE",
+			 bd:"Mysql",
+			 valorllave:iddet,
+			 eliminar: "S",
+			 separador:"|",
+			 campos: JSON.stringify(loscampos),
+			 datos: JSON.stringify(losdatos)
+		   };
+
+		  $.ajax({
+			 type: "POST",
+			 url:"../base/grabadetalle.php",
+			 data: parametros,
+			 success: function(data){
+						          
+			 }					     
+		 });    	                 	 
+}
 
 
 

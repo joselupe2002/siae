@@ -20,6 +20,7 @@ if (count($res)>0) {
 		$_SESSION['INSTITUCION'] = $res[0]["_INSTITUCION"];
 		$_SESSION['CAMPUS'] = $res[0]["_CAMPUS"];
 		$_SESSION['encode'] = "ISO-8859-1";
+		$_SESSION['roles'] = $res[0]["usua_usuader"];
 		$_SESSION['carrera'] = $res[0]["usua_carrera"];
 		$_SESSION['depto'] = $res[0]["usua_depto"];
 		$_SESSION['idsesion'] =0;
