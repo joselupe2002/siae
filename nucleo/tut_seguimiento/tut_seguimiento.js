@@ -105,10 +105,11 @@ contMat=1;
 						 
 					   elsqlMat="SELECT DISTINCT MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD from dlista g, cmaterias h "+
 					            " where g.MATCVE=h.MATE_CLAVE AND g.PDOCVE='"+$("#selCiclos").val()+"'"+
-					            "AND h.MATE_TIPO NOT IN ('OC') AND g.ALUCTR IN ("+
+					            "AND IFNULL(h.MATE_TIPO,'') NOT IN ('OC') AND g.ALUCTR IN ("+
 								"    SELECT  a.ALUCTR FROM dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and "+
 								"    a.IDGRUPO="+$("#selMateria").val()+")";	
-									
+						
+						
 						parametros2={sql:elsqlMat,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
 							type: "POST",
