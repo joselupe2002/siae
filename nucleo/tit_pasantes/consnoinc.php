@@ -219,7 +219,7 @@
         $pdf->Ln(3);
         $pdf->Cell(0,5,"OFICIO NO. ITSM-SE-T-".$dataof[0]["CONSECUTIVO"],0,0,'R');
 		$pdf->Ln(3);
-        $pdf->Cell(0,5,'ASUNTO:'.utf8_decode("CONSTANCIA DE NO INCONVEINCIA"),0,0,'R');
+        $pdf->Cell(0,5,'ASUNTO:'.utf8_decode("CONSTANCIA DE NO INCONVENINCIA"),0,0,'R');
         $pdf->Ln(3);
         $pdf->Cell(0,5,$dataGen[0]["inst_fechaof"].$fechaof,0,0,'R');
         $pdf->Ln(10);
