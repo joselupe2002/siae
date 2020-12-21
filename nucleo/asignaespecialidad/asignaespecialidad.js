@@ -90,7 +90,7 @@ contMat=1;
 										" <i class=\"ace-icon blue fa fa-arrow-down bigger-120\"></i><span class=\"btn-small\"></span> "+           
 										"</button>");
 		
-			$("#selEspecialidad").append("<option value=''>SIN ESPECIALIDAD</option>");
+			$("#selEspecialidad").append("<option value='0'>SIN ESPECIALIDAD</option>");
 		   
 		sinesp=" and ((IFNULL(ALUM_ESPECIALIDAD,'')<>'') or (ALUM_ESPECIALIDAD<>'0')) ";
 		if (todos=='N') {sinesp=" and ((IFNULL(ALUM_ESPECIALIDAD,'')='') or (ALUM_ESPECIALIDAD='0')) ";}
@@ -136,7 +136,7 @@ function generaTablaInformacion(grid_data){
 		$("#rowM"+contR).append("<td>"+valor.MATRICULA+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.NOMBRE+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.MAPA+"</td>");
-		$("#rowM"+contR).append("<td><select onchange=\"actualizaEsp('"+valor.MATRICULA+"','"+$("#losselectesp").val()+"');\" class=\"losselectesp\" matricula=\""+valor.MATRICULA+"\" id=\"sel_"+valor.MATRICULA+"\"></select></td>");	
+		$("#rowM"+contR).append("<td><select onchange=\"actualizaIndi('"+valor.MATRICULA+"','sel_"+valor.MATRICULA+"');\" class=\"losselectesp\" matricula=\""+valor.MATRICULA+"\" id=\"sel_"+valor.MATRICULA+"\"></select></td>");	
 		//$("#rowM"+contR).append("<td><span class=\"badge badge-danger\">"+valor.AVANCE+"</span></td>");		
 		$("#sel_"+valor.MATRICULA).html($("#selEspecialidad").html());	
 		$("#sel_"+valor.MATRICULA).val(valor.ESPECIALIDAD);	
@@ -160,6 +160,11 @@ function agregarTodas(){
 	}
 }
 
+function actualizaIndi (matricula,nombre){
+	
+	actualizaEsp(matricula,$("#"+nombre).val());
+}
+
 function actualizaEsp (matricula,especialidad) {
    
     parametros={
@@ -169,11 +174,13 @@ function actualizaEsp (matricula,especialidad) {
 		valorllave:matricula,
 		ALUM_ESPECIALIDAD:especialidad
 	};
+
 	$.ajax({
 		type: "POST",
 		url:"../base/actualiza.php",
 		data: parametros,
-		success: function(data){     
+		success: function(data){  
+	
 				        									 
 		}					     
 	}); 
