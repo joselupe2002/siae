@@ -20,7 +20,7 @@ contMat=1;
 function cargarInformacion(){
 
 	mostrarEspera("esperaInf","grid_ayudaTec","Cargando Datos...");
-	elsql="SELECT usua_usuader, usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
+	elsql="SELECT ifnull(usua_usuader,'') as usua_usuader,  usua_super FROM CUSUARIOS WHERE usua_usuario='"+usuario+"'";
 	elsql2="";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"SQLite"}
 	$.ajax({
