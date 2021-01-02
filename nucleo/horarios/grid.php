@@ -69,7 +69,7 @@
                     </div>
 					<div class="widget-footer bg-primary" style="padding-top:5px;">
 					     <div class='row'>
-						      <div class="col-sm-12">
+						      <div class="col-sm-6">
 									<button title="Buscar Espacios en aulas" onclick="buscarEspacios();" class="btn btn-white btn-warning btn-round" value="Agregar"> 
 										<i class="ace-icon blue fa fa-trello bigger-140"></i>Bucar Espacios<span class="btn-small"></span>            
 									</button>
@@ -78,6 +78,20 @@
 									</button>
 									
 							  </div> 
+
+							  <div class="col-sm-4">
+									<button title="Reporte de horarios por Carrera" onclick="reporteGen();" class="btn btn-white btn-primary btn-round" value="Agregar"> 
+										<i class="ace-icon blue fa fa-calendar bigger-140"></i>Reporte Carrera<span class="btn-small"></span>            
+									</button>
+									<button title="Reporte de Horarios por Aulas"  id="btnfiltrar" onclick="reporteAula();" class="btn btn-white btn-primary btn-round pull-right" value="Agregar"> 
+										<i class="ace-icon red fa fa-home bigger-140"></i>Reporte Aula<span class="btn-small"></span>            
+									</button>
+									
+									
+							  </div> 
+							  <div class="col-sm-2">
+							  		<span id="contAulas" > </span>
+							   </div>
 							  			  
 						</div>
 					</div>

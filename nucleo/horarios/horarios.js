@@ -34,8 +34,8 @@ var matser="";
 		$("#losplanes").append("<span class=\"label label-danger\">Plan de estudios</span>");
 		addSELECT("selPlanes","losplanes","PROPIO", "SELECT MAPA_CLAVE,MAPA_DESCRIP FROM mapas where MAPA_CLAVE='0'", "","");  			      
 
-		addSELECT_ST("aulas","grid_horarios","PROPIO", "select AULA_CLAVE, AULA_DESCRIP from eaula where "+
-		                                           "AULA_ACTIVO='S' order by AULA_DESCRIP", "","","visibility:hidden;");  			      
+		addSELECT_ST("aulas","contAulas","PROPIO", "select AULA_CLAVE, AULA_DESCRIP from eaula where "+
+		                                           "AULA_ACTIVO='S' order by AULA_DESCRIP", "","","width:80px;");  			      
 		
 		addSELECT_ST("losprofes","grid_horarios","PROPIO","SELECT EMPL_NUMERO, CONCAT(IFNULL(EMPL_APEPAT,''),' ',"+
 													  "IFNULL(EMPL_APEMAT,''),' ',IFNULL(EMPL_NOMBRE,''),' ',EMPL_NUMERO)"+
@@ -359,7 +359,7 @@ function horarioAulas (linea,id,dia,tipo,elaula){
 function filtrarHorarios() {
 	dameVentana("ventFiltros", "grid_horarios","Filtrar Horarios","sm","bg-successs","fa blue fa-filter bigger-160","370");
     $("#body_ventFiltros").append("<div class=\"row\">"+
-								   "    <div class=\"col-sm-12\" id=\"losCampos\"><span class=\"label label-success\">Ciclo Escolar</span></div>"+
+								   "    <div class=\"col-sm-12\" id=\"losCampos\"><span class=\"label label-success\">Tipo Filtro</span></div>"+
 								   "</div><br/>"+
 								   "<div class=\"row\">"+
 								   "    <div class=\"col-sm-12\">"+
@@ -612,3 +612,23 @@ function guardarTodos() {
 		$(this).trigger("click");
      });
 }
+
+function reporteGen() {
+	if (($("#selCiclos").val()>0) && ($("#selCarreras").val()>0) ) {
+	enlace="nucleo/horarios/repHorGen.php?ciclo="+$("#selCiclos").val()+"&carrera="+$("#selCarreras").val();
+	abrirPesta(enlace,"Reporte");	
+	}
+	else {alert ("Debe elegir un Ciclo escolar y Un Programa Educativo");}
+}
+
+
+
+function reporteAula() {
+	if (($("#selCiclos").val()>0))  {
+	enlace="nucleo/horarios/repAula.php?ciclo="+$("#selCiclos").val()+"&carrera="+$("#selCarreras").val()+
+	"&aula="+$("#aulas").val();
+	abrirPesta(enlace,"Reporte");	
+	}
+	else {alert ("Debe elegir un Ciclo escolar");}
+}
+
