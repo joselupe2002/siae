@@ -386,8 +386,8 @@ class UtilUser {
 
 	
 	public function  getPie($pdf,$orienta){	
-		$top1=257; $top2=253; $left1=20; $left2=190;
-		if ($orienta=='H') {$top1=192; $top2=188; $left1=20; $left2=250;}
+		$top1=253; $top2=243; $left1=20; $left2=170; $iniciaTexto=40; $anchoTexto=110;
+		if ($orienta=='H') {$top1=192; $top2=181; $left1=20; $left2=225;  $iniciaTexto=70; $anchoTexto=150;}
 
 		$direccion=""; $telefonos=""; $pagina="";
 		$miConexU = new Conexion();
@@ -397,28 +397,21 @@ class UtilUser {
 			$telefonos=$row["inst_telefono"];
 			$pagina=$row["inst_pagina"];
 		}
-		
-		$pdf->Image('../../imagenes/empresa/pie1.png',$left1,$top1,20);
-		$pdf->Image('../../imagenes/empresa/pie2.png',$left2,$top2,15);
+	
+		$pdf->Image('../../imagenes/empresa/piepag1.png',$left1,$top1,46);
 		$pdf->SetFont('Montserrat-Medium','',8);
 		$pdf->SetY(-25);
-		$pdf->Cell(0,10,utf8_decode($direccion),0,0,'C');
-		$pdf->SetY(-22);
-		$pdf->Cell(0,10,utf8_decode($telefonos),0,0,'C');
-		$pdf->SetY(-19);
-		$pdf->SetFont('Montserrat-Medium','B',8);
-		$pdf->Cell(0,10,utf8_decode($pagina),0,0,'C');		
+		$elpie= utf8_decode($direccion)." ".utf8_decode($telefonos)."\n ".utf8_decode($pagina);
+		$pdf->Cell($iniciaTexto,0,'',0,0,'C');$pdf->MultiCell($anchoTexto,3,$elpie,0,'C',false);
+		$pdf->Image('../../imagenes/empresa/piepag2.png',$left2,$top2,20);	
 	}
 	
 	public function  getEncabezado($pdf,$orienta){
-		$left2=120; $left3=180;
-		if ($orienta=='H') {$left2=210; $left3=260;}
+		$left2=110; $left3=160; $anchoenc=163;
+		if ($orienta=='H') {$left2=210; $left3=260; $anchoenc=180;}
 		$pdf->Image('../../imagenes/empresa/fondo.png',0,0,187,275);
-		$pdf->Image('../../imagenes/empresa/enc1.png',20,8,85);
-		$pdf->Image('../../imagenes/empresa/enc2.png',$left2,6,40);
-		$pdf->Image('../../imagenes/empresa/enc3.png',$left3,8,10);
-		
-		
+		$pdf->Image('../../imagenes/empresa/encabezado.png',20,8,$anchoenc);
+	
 		$pdf->AddFont('Montserrat-Black','B','Montserrat-Black.php');
 		$pdf->AddFont('Montserrat-Black','','Montserrat-Black.php');
 		$pdf->AddFont('Montserrat-Medium','B','Montserrat-Medium.php');
