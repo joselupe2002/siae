@@ -111,11 +111,13 @@
 			var $eljefe="";
 			var $lafirma="";
 			var $elsello="";
+			var $lafirmaempl="";
    	       
    	       function getDatosPersona($num){   		       
             	$miConex = new Conexion();  
             	$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_NOMBREC, EMPL_ULTIGRAD, EMPL_EGRESADODED, ".
-            			"EMPL_JEFESELLO, EMPL_JEFEFIRMA,EMPL_FOTO, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
+						"ifnull(EMPL_JEFESELLO,'') as EMPL_JEFESELLO, ifnull(EMPL_JEFEFIRMA,'') as EMPL_JEFEFIRMA, ".
+						"ifnull(EMPL_FIRMA,'') as EMPL_FIRMA, EMPL_FOTO, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
             			" FROM vempleados WHERE EMPL_NUMERO= '".$num."'" );
                 foreach ($resultado as $row) {$data[] = $row;}            
             	return $data;            		
@@ -148,11 +150,18 @@
 			function Footer()
 			{		
 				
-				if (($_GET["tipoRep"]=='1')) {			
-					$this->Image($this->elsello,150,160,45);
-					$this->Image($this->lafirma,220,155,40);			
+				if (($_GET["tipoRep"]=='1')) {		
+					if (($this->elsello!='') &&($this->elsello!='../../imagenes/menu/default.png'))
+						{$this->Image($this->elsello,150,160,45);}
+
+					if (($this->lafirma!='') &&($this->lafirma!='../../imagenes/menu/default.png'))
+					    {$this->Image($this->lafirma,220,155,40);}
+			
+			
+					if (($this->lafirmaempl!='') &&($this->lafirmaempl!='../../imagenes/menu/default.png'))
+					    {$this->Image($this->lafirmaempl,20,155,40);}
 				}
-				
+
 				$miutil = new UtilUser();
 				$miutil->getPie($this,'H');
 				
@@ -285,7 +294,7 @@
 		$pdf->eljefe=$dataEmpl[0]["EMPL_JEFEABREVIA"]." ".$dataEmpl[0]["EMPL_JEFED"];
 		$pdf->lafirma=$dataEmpl[0]["EMPL_JEFEFIRMA"];
 		$pdf->elsello=$dataEmpl[0]["EMPL_JEFESELLO"];
-		
+		$pdf->lafirmaempl=$dataEmpl[0]["EMPL_FIRMA"];
 	
 		$header = array('CONT.', 'NOMBRE DEL ALUMNO', 'GEN.','PROGRAMA EDUCATIVO','TEMA/ASIGNATURA','FECHA','HORA');		
 		$data = $pdf->cargaAsesorias();
