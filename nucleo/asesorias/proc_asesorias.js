@@ -110,7 +110,7 @@ function reporteAsesorias(modulo,usuario,institucion, campus,essuper){
     		           }
     		         });
 						
-					 elsql2="SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias";
+					 elsql2="SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias ORDER BY ASES_CICLO DESC";
 					parametros2={sql:elsql2,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
 
     	   		     $.ajax({
@@ -213,14 +213,21 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
         "              </div>"+
         "              <div class=\"space-8\"></div>"+
         "              <div class=\"row\"> "+
-        "                    <div class=\"col-sm-5\"> </div>"+ 
+		"                    <div class=\"col-sm-1\"> </div>"+ 
+		"                    <div class=\"col-sm-3\"> "+ 	   		           
+         "                          <div class=\"col-sm-1\" style=\"padding-top:0px;\"> "+
+         "                                <button type=\"button\" class=\"btn btn-white btn-warning btn-bold\" onclick=\"generarReporteJefe('1');\">"+
+         "                                <i class=\"ace-icon fa fa-plus bigger-120 blue\"> Generar Reporte Sellado</i></button>"+
+         "                          </div>"+
+		 "                    </div>"+
+		 "                    <div class=\"col-sm-2\"> </div>"+ 
          "                    <div class=\"col-sm-2\"> "+ 	   		           
          "                          <div class=\"col-sm-1\" style=\"padding-top:0px;\"> "+
-         "                                <button type=\"button\" class=\"btn btn-white btn-info btn-bold\" onclick=\"generarReporteJefe();\">"+
+         "                                <button type=\"button\" class=\"btn btn-white btn-info btn-bold\" onclick=\"generarReporteJefe('0');\">"+
          "                                <i class=\"ace-icon fa fa-plus bigger-120 blue\"> Generar Reporte</i></button>"+
          "                          </div>"+
          "                    </div>"+
-         "                    <div class=\"col-sm-5\"> </div>"+ 
+         "                    <div class=\"col-sm-1\"> </div>"+ 
 	       "              </div>"+
 	     "              <div class=\"space-50\"></div>"+
 		   "          </div>"+
@@ -267,7 +274,7 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
         }
       });
 		 
-	  elsql="SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias";
+	  elsql="SELECT DISTINCT(ASES_CICLO), CONCAT(ASES_CICLO,' ',ASES_CICLOD) FROM vasesorias ORDER BY ASES_CICLO DESC";
 	  parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
 
 	     $.ajax({
@@ -307,10 +314,11 @@ function generarReporte(){
 }
 
 
-function generarReporteJefe(){
-	
+function generarReporteJefe(tipo){
+
 	window.open("../asesorias/asesorias.php?ID="+$("#profesor").val()+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
-			                                "&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
+											"&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
+											"&tipoRep="+tipo+
 			                                "&ciclo="+$("#ciclo").val()+"&ciclod="+$("#ciclo  option:selected").text(), '_blank');
 	$('#modalDocument').modal("hide");  
     return false;

@@ -108,12 +108,14 @@
    	
    
    	        
-   	     var $eljefe="";
+			var $eljefe="";
+			var $lafirma="";
+			var $elsello="";
    	       
    	       function getDatosPersona($num){   		       
             	$miConex = new Conexion();  
             	$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_NOMBREC, EMPL_ULTIGRAD, EMPL_EGRESADODED, ".
-            			"EMPL_FOTO, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
+            			"EMPL_JEFESELLO, EMPL_JEFEFIRMA,EMPL_FOTO, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
             			" FROM vempleados WHERE EMPL_NUMERO= '".$num."'" );
                 foreach ($resultado as $row) {$data[] = $row;}            
             	return $data;            		
@@ -144,7 +146,13 @@
 			
 
 			function Footer()
-			{				
+			{		
+				
+				if (($_GET["tipoRep"]=='1')) {			
+					$this->Image($this->elsello,150,160,45);
+					$this->Image($this->lafirma,220,155,40);			
+				}
+				
 				$miutil = new UtilUser();
 				$miutil->getPie($this,'H');
 				
@@ -152,7 +160,7 @@
 				$dir=$miutil->getJefe('301');
 				$subdir=$miutil->getJefe('304');
 				
-				
+			
 				//249 ANCHO
 				$this->SetFont('Montserrat-Medium','B',7);
 				$this->SetDrawColor(0,0,0);
@@ -167,6 +175,8 @@
 				$this->SetX(209);
 				$this->Cell(60,4,utf8_decode('JEFE DIVISIÓN'),'',0,'C',false);
 				
+				
+
 				
 			}
 			
@@ -267,10 +277,15 @@
 		$pdf->setX(185); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,"__________________________",0,1,'L');
 		
 		
+		
+		
+
 		$pdf->Ln(4);
 		
 		$pdf->eljefe=$dataEmpl[0]["EMPL_JEFEABREVIA"]." ".$dataEmpl[0]["EMPL_JEFED"];
-
+		$pdf->lafirma=$dataEmpl[0]["EMPL_JEFEFIRMA"];
+		$pdf->elsello=$dataEmpl[0]["EMPL_JEFESELLO"];
+		
 	
 		$header = array('CONT.', 'NOMBRE DEL ALUMNO', 'GEN.','PROGRAMA EDUCATIVO','TEMA/ASIGNATURA','FECHA','HORA');		
 		$data = $pdf->cargaAsesorias();
