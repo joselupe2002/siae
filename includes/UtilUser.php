@@ -440,7 +440,7 @@ class UtilUser {
 		$pdf->SetFont('Montserrat-Medium','B',8);
 		$pdf->Ln(6);
 		
-		$lema='"'.$lema.'"'; if ($lema=='') {$lema='';}
+		if ($lema=='') {$lema='';} else {$lema='"'.$lema.'"';}
 		$pdf->Cell(0,0,utf8_decode($lema),0,0,'C');
 		
 	}
