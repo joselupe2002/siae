@@ -256,7 +256,7 @@
 		header("Content-Type: text/html; charset=UTF-8");
 		
 		$pdf->SetFont('Arial','',10);
-		$pdf->SetMargins(20, 30 , 20);
+		$pdf->SetMargins(25, 25 , 25);
 		$pdf->SetAutoPageBreak(true,30); 
         $pdf->AddPage();
 

@@ -492,7 +492,7 @@ class VariableStream
 		header("Content-Type: text/html; charset=UTF-8");
 		
 		$pdf->SetFont('Arial','',10);
-		$pdf->SetMargins(20, 25 , 25);
+		$pdf->SetMargins(25, 25 , 25);
 		$pdf->SetAutoPageBreak(true,30); 
         $pdf->AddPage();
          
