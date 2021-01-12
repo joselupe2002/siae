@@ -305,7 +305,7 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
 
 function generarReporte(){
 	
-	window.open("../asesorias/asesorias.php?ID="+claveProf+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
+	window.open("nucleo/asesorias/asesorias.php?ID="+claveProf+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
 			                                "&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
 			                                "&ciclo="+$("#ciclo").val()+"&ciclod="+$("#ciclo  option:selected").text(), '_blank');
 	$('#modalDocument').modal("hide");  
@@ -316,7 +316,7 @@ function generarReporte(){
 
 function generarReporteJefe(tipo){
 
-	enlace="nucleo/base/asesorias/asesorias.php?ID="+$("#profesor").val()+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
+	enlace="nucleo/asesorias/asesorias.php?ID="+$("#profesor").val()+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
 	"&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
 	"&tipoRep="+tipo+
 	"&ciclo="+$("#ciclo").val()+"&ciclod="+$("#ciclo  option:selected").text();
