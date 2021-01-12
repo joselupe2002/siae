@@ -255,7 +255,7 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
 	        url:  "../base/dameselectSeg.php",
 	        success: function(data){
 	     	   $("#profesor").html(data);   
-	     	  $('#profesor').trigger("chosen:updated");
+	     	   $('#profesor').trigger("chosen:updated");
 	     	   
 	        }
 	      });
@@ -286,7 +286,7 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
             }
         });
 		 
-		elsql2="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
+		elsql2="SELECT DISTINCT(ANIO), ANIO FROM vasesorias order by ANIO DESC";
 		parametros2={sql:elsql2,dato:sessionStorage.co,bd:"Mysql",sel:'0'} 
 	  $.ajax({
 		  type: "POST",
@@ -316,11 +316,12 @@ function generarReporte(){
 
 function generarReporteJefe(tipo){
 
-	window.open("../asesorias/asesorias.php?ID="+$("#profesor").val()+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
-											"&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
-											"&tipoRep="+tipo+
-			                                "&ciclo="+$("#ciclo").val()+"&ciclod="+$("#ciclo  option:selected").text(), '_blank');
-	$('#modalDocument').modal("hide");  
+	enlace="nucleo/base/asesorias/asesorias.php?ID="+$("#profesor").val()+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
+	"&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
+	"&tipoRep="+tipo+
+	"&ciclo="+$("#ciclo").val()+"&ciclod="+$("#ciclo  option:selected").text();
+	abrirPesta(enlace, "Asesorias");
+	//$('#modalDocument').modal("hide");  
     return false;
 	
 }

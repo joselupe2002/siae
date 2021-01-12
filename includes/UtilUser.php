@@ -401,8 +401,8 @@ class UtilUser {
 		$pdf->Image('../../imagenes/empresa/piepag1.png',$left1,$top1,46);
 		$pdf->SetFont('Montserrat-Medium','',8);
 		$pdf->SetY(-25);
-		$elpie= utf8_decode($direccion)." ".utf8_decode($telefonos)."\n ".utf8_decode($pagina);
-		$pdf->Cell($iniciaTexto,0,'',0,0,'C');$pdf->MultiCell($anchoTexto,3,$elpie,0,'C',false);
+		$elpie= utf8_decode($direccion)." \n".utf8_decode($telefonos)."\n ".utf8_decode($pagina);
+		$pdf->Cell($iniciaTexto,0,'',0,0,'C');$pdf->MultiCell($anchoTexto,3,$elpie,0,'L',false);
 		$pdf->Image('../../imagenes/empresa/piepag2.png',$left2,$top2,20);	
 	}
 	
