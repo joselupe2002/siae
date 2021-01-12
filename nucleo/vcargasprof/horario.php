@@ -100,7 +100,7 @@
    	       function getDatosPersona($num){   		       
             	$miConex = new Conexion();  
             	$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_NOMBREC, EMPL_ULTIGRAD, EMPL_EGRESADODED, ".
-            			"EMPL_FOTO, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
+            			"EMPL_FOTO, EMPL_HORAS, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
             			" FROM vempleados WHERE EMPL_NUMERO= '".$num."'" );
                 foreach ($resultado as $row) {$data[] = $row;}            
             	return $data;            		
@@ -401,9 +401,13 @@
 		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_EGRESADODED"]),0,1,'L');
 		$pdf->setX(180); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"CURP: ",0,0,'L');
 		$pdf->setX(190); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_CURP"]),0,1,'L');
+		
 		$pdf->Ln(4);
 		$pdf->setX(40); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,utf8_decode("DEPARTAMENTO O ACADEMIA: "),0,0,'L');
 		$pdf->setX(90); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_DEPTOD"]),0,1,'L');
+	
+		$pdf->setX(180); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"HORAS: ",0,0,'L');
+		$pdf->setX(195); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_HORAS"]),0,1,'L');
 		
 		$pdf->setX(220); $pdf->SetFont('Montserrat-ExtraBold','B',8); $pdf->Cell(0,0,"INGRESO:",0,0,'L');
 		$pdf->setX(238); $pdf->SetFont('Montserrat-Medium','U',8); $pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_FECING"]),0,1,'L');

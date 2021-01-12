@@ -134,6 +134,7 @@
 			{				
 				$cad=" and a.CARRERA='".$_GET["tipov"]."'";
 				if ($_GET["tipo"]=='DEPTO') { $cad=" and a.DEPTO='".$_GET["tipov"]."'";}
+
 				$miConex = new Conexion();
 				$resultado=$miConex->getConsulta($_SESSION['bd'],"select a.MATERIA,a.MATERIAD, a.CARRERAD, ".
 						                        "(SELECT COUNT(*) from eunidades l where l.UNID_MATERIA=a.MATERIA and UNID_PRED='')".
