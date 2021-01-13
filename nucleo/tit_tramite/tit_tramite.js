@@ -290,46 +290,63 @@ var tramini=false;
 
 	function  iniciarTramite(){
 
-				mostrarConfirm2("infoError","grid_tit_tramite","Iniciar Trámite de Titulación",
-				"<div class=\"ventanaSC\" style=\"text-align:justify; width:99%; height:250px; overflow-y:auto; overflow-x:hidden;\">"+					
-					"<div class=\"row\">"+
-						"<div class=\"col-sm-12\">"+
-							"<label class=\"fontRobotoB\">Modalidad de Titulación</label><select class=\"form-control captProy\"  id=\"modalidad\"></select>"+
-						"</div>"+					
-					"</div>"+	
-					"<div class=\"row\">"+
-						"<div class=\"col-sm-10\">"+
-							"<label class=\"fontRobotoB\">Nombre del Tema (Proyecto/tesis/Residencia/Curso/Área Exámen)</label>"+							
-							"<input class=\"form-control captProy\" id=\"tema\"></input>"+
-						"</div>"+	
-						"<div class=\"col-sm-2\">"+
-							"<label class=\"fontRobotoB\">Edad Actual</label>"+							
-							"<input class=\"form-control captProy\" id=\"edadtit\" value=\""+laedad+"\"></input>"+
-						"</div>"+					
-					"</div>"+	
-					"<div class=\"row\">"+
-						"<div class=\"col-sm-8\">"+
-						"<label class=\"btn btn-white btn-small btn-success\" onclick=\"getNombreRes();\"><i class=\"fa fa-retweet red\"></i> Traer nombre de Proyecto de Residencia</label>"+
-						"</div>"+					
-					"</div>"+	
-					"<div class=\"row\">"+
-						"<div class=\"col-sm-12\">"+
-							"<label class=\"fontRobotoB\">Producto de Titulación</label>"+
-							"<select class=\"form-control captProy\"  id=\"producto\"></select>"+
-						"</div>"+								
-					"</div>"+				
+		elsql="SELECT count(*) as HAY FROM encrespuestas a where a.IDRESPONDE='"+usuario+"' and a.IDENC='2'";
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+				$.ajax({
+					type: "POST",
+					data:parametros,
+					url:  "../base/getdatossqlSeg.php",
+					success: function(data){	
+				
+						if (JSON.parse(data)[0]["HAY"]>0) {
 
-				"</div>"
-				,"Grabar Datos","grabarPasante();","modal-lg");
+							mostrarConfirm2("infoError","grid_tit_tramite","Iniciar Trámite de Titulación",
+							"<div class=\"ventanaSC\" style=\"text-align:justify; width:99%; height:250px; overflow-y:auto; overflow-x:hidden;\">"+					
+								"<div class=\"row\">"+
+									"<div class=\"col-sm-12\">"+
+										"<label class=\"fontRobotoB\">Modalidad de Titulación</label><select class=\"form-control captProy\"  id=\"modalidad\"></select>"+
+									"</div>"+					
+								"</div>"+	
+								"<div class=\"row\">"+
+									"<div class=\"col-sm-10\">"+
+										"<label class=\"fontRobotoB\">Nombre del Tema (Proyecto/tesis/Residencia/Curso/Área Exámen)</label>"+							
+										"<input class=\"form-control captProy\" id=\"tema\"></input>"+
+									"</div>"+	
+									"<div class=\"col-sm-2\">"+
+										"<label class=\"fontRobotoB\">Edad Actual</label>"+							
+										"<input class=\"form-control captProy\" id=\"edadtit\" value=\""+laedad+"\"></input>"+
+									"</div>"+					
+								"</div>"+	
+								"<div class=\"row\">"+
+									"<div class=\"col-sm-8\">"+
+									"<label class=\"btn btn-white btn-small btn-success\" onclick=\"getNombreRes();\"><i class=\"fa fa-retweet red\"></i> Traer nombre de Proyecto de Residencia</label>"+
+									"</div>"+					
+								"</div>"+	
+								"<div class=\"row\">"+
+									"<div class=\"col-sm-12\">"+
+										"<label class=\"fontRobotoB\">Producto de Titulación</label>"+
+										"<select class=\"form-control captProy\"  id=\"producto\"></select>"+
+									"</div>"+								
+								"</div>"+				
 
-				actualizaSelectMarcar("modalidad", "SELECT ID, OPCION FROM tit_opciones order by OPCION", "","",""); 
-				actualizaSelectMarcar("producto", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='PRODTITULACION' order by CATA_CLAVE", "","",""); 
+							"</div>"
+							,"Grabar Datos","grabarPasante();","modal-lg");
+
+							actualizaSelectMarcar("modalidad", "SELECT ID, OPCION FROM tit_opciones order by OPCION", "","",""); 
+							actualizaSelectMarcar("producto", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='PRODTITULACION' order by CATA_CLAVE", "","",""); 
 
 
-				$('.captProy').keypress(function(){
-					$(this).css("border-color","black");				
-				});
-			
+							$('.captProy').keypress(function(){
+								$(this).css("border-color","black");				
+							});
+							
+						}	
+						else {
+							alert ("Para iniciar trámite de titulación primero debe llenar la Encuesta de egresados en Ecuestas - 04) Aplicar Encuestas");
+						}				
+						
+					}
+				});			
 	}
 
 
