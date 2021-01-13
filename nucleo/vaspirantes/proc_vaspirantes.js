@@ -179,7 +179,7 @@ function verPago(modulo,usuario,essuper){
 
 		    
 			sqlAsp="SELECT ifnull(RUTA,'') AS RUTA FROM adjaspirantes b where "+
-				   " b.AUX=CONCAT('PAGO','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
+				   " b.AUX=CONCAT('"+table.rows('.selected').data()[0]["CICLO"]+"','PAGO','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
 			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
 		    $.ajax({
 				   type: "POST",
@@ -248,7 +248,7 @@ function VerPagoIns(modulo,usuario,essuper){
 
 		    // SE DEBE AGREGAR EL CICLO ESCOLAR MAS ADELANTE PROCESO 2021
 			sqlAsp="SELECT ifnull(RUTA,'') AS RUTA FROM adjaspirantes b where "+
-				   " b.AUX=CONCAT('PAIN','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
+				   " b.AUX=CONCAT('"+table.rows('.selected').data()[0]["CICLO"]+"','PAIN','"+table.rows('.selected').data()[0]["CURP"]+"')";		          
 			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
 		    $.ajax({
 				   type: "POST",

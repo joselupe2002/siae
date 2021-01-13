@@ -786,7 +786,7 @@ function cargarAdjuntos() {
 					"            <input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.CLAVE+"\""+
 					"                   onchange=\"subirPDFDriveSaveAsp('file_"+valor.CLAVE+"','ASPIRANTES_"+valor.CICLO+"','pdf_"+
 												  valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','S','ID','"+valor.CLAVE+
-												  "',' DOCUMENTO  "+valor.DOCUMENTO+" ','adjaspirantes','alta','"+valor.CLAVE+$("#CURP").val()+"');\">"+
+												  "',' DOCUMENTO  "+valor.DOCUMENTO+" ','adjaspirantes','alta','"+valor.CICLO+valor.CLAVE+$("#CURP").val()+"');\">"+
 					"           <input  type=\"hidden\" value=\""+valor.RUTA+"\"  name=\"RUTA_"+valor.CLAVE+"\" id=\"RUTA_"+valor.CLAVE+"\"  placeholder=\"\" />"+
 					"        </div>"+
 					"        <div class=\"col-sm-1\" style=\"padding-top:5px;\">"+
@@ -796,7 +796,7 @@ function cargarAdjuntos() {
 					"           <i style=\""+stElim+"\"  id=\"btnEli_RUTA_"+valor.CLAVE+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
 					"            onclick=\"eliminarEnlaceDriveAsp('file_"+valor.CLAVE+"','ASPIRANTES_"+valor.CICLO+"',"+
 					"                      'pdf_"+valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','S','ID','"+valor.CLAVE+"','"+valor.DOCUMENTO+"-DOCUMENTO',"+
-					"                      'adjaspirantes','alta','"+valor.CLAVE+$("#CURP").val()+"');\"></i> "+              				                        
+					"                      'adjaspirantes','alta','"+valor.CICLO+valor.CLAVE+$("#CURP").val()+"');\"></i> "+              				                        
 					"      </div> ";
 
 					
