@@ -122,7 +122,7 @@ function reporteAsesorias(modulo,usuario,institucion, campus,essuper){
    		                	}
    		            });
 						
-					   elsql3="SELECT DISTINCT(ANIO), ANIO FROM vasesorias";
+					   elsql3="SELECT DISTINCT(ANIO), ANIO FROM vasesorias ORDER BY ANIO DESC";
 					   parametros3={sql:elsql3,dato:sessionStorage.co,bd:"Mysql",sel:'0'}
 
     	   		  $.ajax({
@@ -305,9 +305,11 @@ function reporteAsesoriasJefe(modulo,usuario,institucion, campus,essuper){
 
 function generarReporte(){
 	
-	window.open("nucleo/asesorias/asesorias.php?ID="+claveProf+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
-			                                "&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
-			                                "&ciclo="+$("#ciclo").val()+"&ciclod="+$("#ciclo  option:selected").text(), '_blank');
+	enlace="nucleo/asesorias/asesorias.php?ID="+claveProf+"&mes="+$("#mes").val()+"&anio="+$("#anio").val()+
+	"&tipo="+$("#tipoas").val()+"&tipod="+$("#tipoas  option:selected").text()+
+	"&ciclo="+$("#ciclo").val()+"&ciclod="+$("#ciclo  option:selected").text()+"&tipoRep=0";
+
+	abrirPesta(enlace, "Asesorias");
 	$('#modalDocument').modal("hide");  
     return false;
 	
