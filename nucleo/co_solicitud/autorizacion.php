@@ -28,6 +28,17 @@
 				}
 				return $data;
 			}
+
+			function LoadDataDG($empl)
+			{			
+			
+				$miConex = new Conexion();
+				$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_FIRMA, EMPL_SELLO from fures, pempleados  where URES_URES='".$empl."' AND URES_JEFE=EMPL_NUMERO");				
+				foreach ($resultado as $row) {
+					$data[] = $row;
+				}
+				return $data;
+			}
 			
 			function LoadDatosGen()
 			{
@@ -52,14 +63,14 @@
 				$miutil = new UtilUser();
 				$miutil->getPie($this,'V');
 				
-				$this->SetX(10);$this->SetY(-65);
+				$this->SetX(10);$this->SetY(-85);
 				$this->SetFont('Montserrat-ExtraBold','B',10);
 				$this->Cell(0,0,'A T E N T A M E N T E',0,1,'L');
 				
-				$this->SetX(10);$this->SetY(-60);
+				$this->SetX(10);$this->SetY(-80);
 				$this->SetFont('Montserrat-ExtraLight','I',8);
 				$this->Cell(0,0,utf8_decode('Excelencia en Educación Tecnológica'),0,1,'L');
-				$this->SetX(10);$this->SetY(-57);
+				$this->SetX(10);$this->SetY(-77);
 				$this->SetFont('Montserrat-ExtraLight','I',8);
 				$this->Cell(0,0,utf8_decode('"Habilidad, Actitud y Conocimiento"'),0,1,'L');
 				
@@ -102,6 +113,7 @@
 	
 		 
 		$data = $pdf->LoadData();
+		$dataDG = $pdf->LoadDataDG("101");
 		$miutil = new UtilUser();
 	
 		
@@ -117,10 +129,12 @@
 		$dirgen=$miutil->getJefe('101');
 		$diracad=$miutil->getJefe('301');
 
+
 	
-		if (($_GET["tipo"]=='1') ||($_GET["tipo"]=='2')) {			
-			$pdf->Image($data[0]["EMPL_SELLO"],150,200,45);
-			$pdf->Image($data[0]["EMPL_FIRMA"],50,215,40);			
+		if (($_GET["tipo"]=='1') ||($_GET["tipo"]=='2')) {	
+			$pdf->Image("../../imagenes/EMPL_SELLO/DG.png",150,185,50);		
+			//$pdf->Image($data[0]["EMPL_SELLO"],150,200,45);
+			$pdf->Image($dataDG[0]["EMPL_FIRMA"],35,205,80,30);			
 		}
 		
 		
