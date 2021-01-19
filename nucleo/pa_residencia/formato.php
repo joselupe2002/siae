@@ -196,7 +196,7 @@
 				$this->SetY(29);$this->SetX(155);
 				$this->Cell(40,3,"VIGENCIA A PARTIR DEL","",0,'C',false);
 				$this->SetY(32);$this->SetX(155);
-				$this->Cell(40,3,"08 DE ENERO 2020","",0,'C',false);
+				$this->Cell(40,3,"18 DE ENERO 2021","",0,'C',false);
 				$this->SetY(35);$this->SetX(155);
 				$this->Cell(40,3,"VERSION 2015","BR",0,'C',false);
 				
