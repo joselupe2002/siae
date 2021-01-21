@@ -302,7 +302,7 @@
 				$pdf->SetFont('Montserrat-ExtraBold','',8);
 				$pdf->Cell(55,5,utf8_decode("NOMBRE TENTATIVO DEL TEMA:"),"L",0,'L',false);
 				$pdf->SetFont('Montserrat-Medium','U',8);
-				$pdf->Cell(111,5,utf8_decode($data[0]["TEMA"]),"R",0,'L',false);
+				$pdf->MultiCell(111,5,utf8_decode($data[0]["TEMA"]),"J",0,false);
 				$pdf->SetFont('Montserrat-Medium','',8);
 				$pdf->Ln(3);				
 				$pdf->Cell(166,5,utf8_decode("ANEXAR A LA PRESENTE: OBJETIVO, INTRODUCCIÓN, INDICE Y BIBLIOGRAFÍA DEL TEMA PROPUESTO."),"LR",0,'L',false);

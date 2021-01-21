@@ -200,7 +200,7 @@
 		$pdf->Ln(5);
 		$pdf->SetFont('Montserrat-ExtraBold','',10);
 		$pdf->MultiCell(0,5,utf8_decode("EL C. ".$data[0]["PASANTE"]." DE LA CARRERA DE: ".
-		                $data[0]["CARRERAD"]." NO. DE CONTROL ".$data[0]["MATRICULA"]." HIZO ENTREGA DE PROYECTO DE TITULACIÓN INTEGRAL EN FORMATO DIGITAL (CD) A LAS SIGUIENTES ÁREAS: "),0,'J',false);
+		                $data[0]["CARRERAD"]." NO. DE CONTROL ".$data[0]["MATRICULA"]." HIZO ENTREGA DE PROYECTO DE TITULACIÓN INTEGRAL EN FORMATO DIGITAL A LAS SIGUIENTES ÁREAS: "),0,'J',false);
 		 
 
 		$pdf->Ln(5);
@@ -210,13 +210,13 @@
 		$pdf->Ln(5);
 
 		$pdf->SetFont('Montserrat-Medium','',10);
-		$pdf->Cell(66,15,utf8_decode("CENTRO DE INFORMACIÓN"),"1",0,'L',false);
+		$pdf->Cell(66,15,utf8_decode("CENTRO DE INFORMACIÓN (CD) "),"1",0,'L',false);
 		$pdf->Cell(50,15,"","1",0,'L',false);
 		$pdf->Cell(50,15,"","1",0,'L',false);
 		$pdf->Ln();
 
 		$pdf->SetFont('Montserrat-Medium','',10);
-		$pdf->Cell(66,15,utf8_decode("JEFATURA DE DIVISIÓN"),"1",0,'L',false);
+		$pdf->Cell(66,15,utf8_decode("JEFATURA DE DIVISIÓN (ARCHIVO DIGITAL)"),"1",0,'L',false);
 		$pdf->Cell(50,15,"","1",0,'L',false);
 		$pdf->Cell(50,15,"","1",0,'L',false);
 		$pdf->Ln(30);
