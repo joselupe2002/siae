@@ -86,7 +86,7 @@ function verLibTit  (modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
 		 
 	if (table.rows('.selected').data().length>0) {
-		enlace="nucleo/residencias/libTitulacion.php?ID="+table.rows('.selected').data()[0]["IDRES"]+"&producto=RESIDENCIA PROFESIONAL";;
+		enlace="nucleo/residencias/libTitulacion.php?ID="+table.rows('.selected').data()[0]["IDRES"]+"&producto=INFORME TÉCNICO DE RESIDENCIA PROFESIONAL";;
 		abrirPesta(enlace, "Titulación");
   }
   else {
