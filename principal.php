@@ -46,7 +46,7 @@
           
          
           $miConex = new Conexion();
-          $resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT IFNULL(a.EMPL_FOTO,'imagenes/menu/default.png') FROM pempleados a where a.EMPL_USER='".$_SESSION['usuario']."'".
+          $resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT IFNULL(a.EMPL_FOTO,'imagenes/menu/default.png') FROM pempleados a where a.EMPL_NUMERO='".$_SESSION['usuario']."'".
           		                                           " UNION  SELECT IFNULL(b.ALUM_FOTO,'imagenes/menu/default.png') from falumnos b where b.ALUM_MATRICULA='".$_SESSION['usuario']."'" );
            foreach ($resultado as $row) {
 				   $logouser= $row[0];
