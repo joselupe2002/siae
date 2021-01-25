@@ -211,9 +211,14 @@ function impAutDG (modulo,usuario,institucion, campus,essuper){
 
 function impAutDGSello (modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
+	
+
 	if (table.rows('.selected').data().length>0) {
-		enlace="nucleo/co_solicitud/autorizacion.php?id="+table.rows('.selected').data()[0]["ID"]+"&tipo=1";
-		abrirPesta(enlace, "Aut."+table.rows('.selected').data()[0]["ID"]);
+		if (table.rows('.selected').data()[0]["AUTDIR"]=='S') {
+				enlace="nucleo/co_solicitud/autorizacion.php?id="+table.rows('.selected').data()[0]["ID"]+"&tipo=1";
+				abrirPesta(enlace, "Aut."+table.rows('.selected').data()[0]["ID"]);}
+		else {alert ("No se puede ver Oficio Sellado si no esta autorizado por Dirección General");}
+		   
 	}
 	else {
 		alert ("Debe seleccionar un Registro");
