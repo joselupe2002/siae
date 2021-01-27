@@ -4,7 +4,6 @@ var elReg=0;
 
 
 function setAutorizado(id,valor){
-	table = $("#G_"+modulo).DataTable();
     
 				$('#modalDocument').modal({show:true, backdrop: 'static'});	 
 				parametros={
