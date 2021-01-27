@@ -4,24 +4,26 @@ var elReg=0;
 
 
 function setAutorizado(id,valor){
-	$('#modalDocument').modal({show:true, backdrop: 'static'});	 
-	   parametros={
-		   tabla:"prorrogas",
-		   campollave:"ID",
-		   bd:"Mysql",
-		   valorllave:id,
-		   AUTORIZADA: valor
-	   };
-	   $.ajax({
-	   type: "POST",
-	   url:"actualiza.php",
-	   data: parametros,
-	   success: function(data){
-		   $('#dlgproceso').modal("hide"); 
-		   if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}
-		   window.parent.document.getElementById('FRvprorrogas').contentWindow.location.reload();
-	   }					     
-	   });    	                
+	table = $("#G_"+modulo).DataTable();
+    
+				$('#modalDocument').modal({show:true, backdrop: 'static'});	 
+				parametros={
+					tabla:"prorrogas",
+					campollave:"ID",
+					bd:"Mysql",
+					valorllave:id,
+					AUTORIZADA: valor
+				};
+				$.ajax({
+				type: "POST",
+				url:"actualiza.php",
+				data: parametros,
+				success: function(data){
+					$('#dlgproceso').modal("hide"); 
+					if (data.substring(0,1)=='0') {alert ("Ocurrio un error: "+data);}
+					window.parent.document.getElementById('FRvprorrogas').contentWindow.location.reload();
+				}					     
+				});            
 }
 
 
@@ -29,6 +31,8 @@ function setAutorizado(id,valor){
 function Autorizar(modulo,usuario,institucion, campus,essuper) {
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
+		
+
         if (table.rows('.selected').data()[0]["AUTORIZADA"]=='S') {
 			if (confirm("Desea DESAUTORIZAR PRORROGA DE: "+table.rows('.selected').data()[0]["MATRICULA"]+" "+table.rows('.selected').data()[0]["NOMBRE"])) {
 				setAutorizado(table.rows('.selected').data()[0]["ID"],"N");
@@ -37,10 +41,14 @@ function Autorizar(modulo,usuario,institucion, campus,essuper) {
 		}
 		else {
 			if (confirm("Desea AUTORIZAR PRORROGA DE: "+table.rows('.selected').data()[0]["MATRICULA"]+" "+table.rows('.selected').data()[0]["NOMBRE"])) {
-				setAutorizado(table.rows('.selected').data()[0]["ID"],"S");
-				if (table.rows('.selected').data()[0]["TIPOPAGO"]=='I') {enviarCorreoJefe(modulo,"I");}
-				else {enviarCorreoJefe(modulo,"N");}
-				
+				if (table.rows('.selected').data()[0]["RUTA"]!='S') { 	
+					setAutorizado(table.rows('.selected').data()[0]["ID"],"S");
+					if (table.rows('.selected').data()[0]["TIPOPAGO"]=='I') {enviarCorreoJefe(modulo,"I");}
+					else {enviarCorreoJefe(modulo,"N");}
+				}
+				else {
+					alert ("No se puede autorizar si no se ha adjuntado Sol. Firmada")
+				}				
 			}
 		} 
 
