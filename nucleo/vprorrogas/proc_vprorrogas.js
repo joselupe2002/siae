@@ -40,7 +40,7 @@ function Autorizar(modulo,usuario,institucion, campus,essuper) {
 		}
 		else {
 			if (confirm("Desea AUTORIZAR PRORROGA DE: "+table.rows('.selected').data()[0]["MATRICULA"]+" "+table.rows('.selected').data()[0]["NOMBRE"])) {
-				if (table.rows('.selected').data()[0]["RUTA"]!='S') { 	
+				if (table.rows('.selected').data()[0]["RUTA"]!='') { 	
 					setAutorizado(table.rows('.selected').data()[0]["ID"],"S");
 					if (table.rows('.selected').data()[0]["TIPOPAGO"]=='I') {enviarCorreoJefe(modulo,"I");}
 					else {enviarCorreoJefe(modulo,"N");}
