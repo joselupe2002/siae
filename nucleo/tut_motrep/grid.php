@@ -34,16 +34,22 @@
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
+	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
        
 	     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
 
+		<div class="row">
+		    <div class="col-sm-6">
+				<h3 class="header smaller lighter text-warning"><strong>Motivos de Reprobación <i class="ace-icon fa fa-angle-double-right"></i> 
+							<small id="elciclo"></small> <small id="lostiposhide" class="hide"></small></strong></h3>				
+			</div>
+			<div class="col-sm-3">
+				<small id="loscortes"></small>
+			</div>
+		</div>
 
-      <h3 class="header smaller lighter text-warning"><strong>Motivos de Reprobación <i class="ace-icon fa fa-angle-double-right"></i> 
-	            <small id="elciclo"></small> <small id="elcorte"></small><small class="hide" id="lostiposhide"></small></strong></h3>
-	     <div  class="table-responsive">
-		     <table id=tabHorarios class= "display  table-condensed table-striped table-sm table-bordered table-hover nowrap ">
-			 </table>	
+		<div  class="table-responsive">
+			<table id=tabHorarios class= "display  table-condensed table-striped table-sm table-bordered table-hover nowrap "></table>	
 		</div>
 
 
@@ -122,10 +128,6 @@ var estaseriando=false;
 var matser="";
 var maxuni=0;
 var elciclo="";
-var idcorte="";
-var iniCorte=""; 
-var finCorte=""; 	
-var tipocorte=""; 
 
 var usuario="<?php echo $_SESSION["usuario"];?>";
 var lains="<?php echo $_SESSION["INSTITUCION"];?>";
@@ -151,35 +153,47 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 				 type: "POST",
 				 data:parametros,
 		         url:  "../base/getdatossqlSeg.php",
-		         success: function(dataCor){   
-					 	        				         
-		        	 jQuery.each(JSON.parse(dataCor), function(clave, valorCor) { 	
-						iniCorte=valorCor.INICIA; finCorte=valorCor.TERMINA; eltidepocorte=	valorCor.TIPO;	
-						$("#elcorte").html(valorCor.DESCRIPCION);	
-						elciclo=valorCor.CICLO;
-						idcorte=valorCor.ID;	
-						tipocorte=valorCor.TIPO;			
+		         success: function(dataCor){   					 	        				         
+		        	 jQuery.each(JSON.parse(dataCor), function(clave, valorCor) { 							
+						elciclo=valorCor.CICLO;	
 					 });
 					}
 				});
 
 
+		
+		
+		$("#loscortes").append("<span class=\"label label-danger\">Corte de Calificación</span>");
+		addSELECT("selCortes","loscortes","PROPIO", "SELECT ID, concat(DESCRIPCION,'|',TIPO)FROM ecortescal  WHERE CICLO=getciclo() and CLASIFICACION='CALIFICACION' ORDER BY ID ", "","");  					
+
+
 		//creamos select de tipos de motivos 
 		addSELECT("selTipos","lostiposhide","PROPIO","SELECT ID,DESCRIP FROM tut_catmotrep order by ORDEN", "","");  
 
-        cargarMaterias('<?php echo $_SESSION["usuario"];?>');
+        
        
 	      
     });
 
 
 
+	function change_SELECT(elemento) {
+		if (elemento=="selCortes") {
+			if ($("#selCortes").val()>0) {
+			   cargarMaterias('<?php echo $_SESSION["usuario"];?>');
+			}
+			else {$("#tabHorarios").empty();}
+		}
+    }
+
+
+
         function generaTabla(grid_data){
-            c=0;
-            $("#cuerpo").empty();
-            caduni="";
-    
+			c=0;
+			$("#tabHorarios").empty();
+			$("#cuerpo").empty();
 			
+            caduni="";
 			
             $("#tabHorarios").append(
 			"<thead class=\"fontRobotoB\" style=\"background:#0C1E61; color:white;\">"+
@@ -267,8 +281,8 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
         	                      " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,"+
         	                      " (select count(*) from eunidades l where l.UNID_MATERIA=e.MATCVE and UNID_PRED='') AS NUMUNI,"+
 								  " ifnull(getcuatrimatxalum(e.MATCVE,ALUCTR),0) AS SEM, "+
-								  " IFNULL((SELECT TIPO FROM tut_motrepalum WHERE IDDETALLE=e.ID AND IDCORTE="+idcorte+"),'') as TIPO,"+
-								  " IFNULL((SELECT OBS FROM tut_motrepalum WHERE IDDETALLE=e.ID AND IDCORTE="+idcorte+"),'') as OBS"+
+								  " IFNULL((SELECT TIPO FROM tut_motrepalum WHERE IDDETALLE=e.ID AND IDCORTE="+$("#selCortes").val()+"),'') as TIPO,"+
+								  " IFNULL((SELECT OBS FROM tut_motrepalum WHERE IDDETALLE=e.ID AND IDCORTE="+$("#selCortes").val()+"),'') as OBS"+
         	                      " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+        	                      
 								  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and e.BAJA='N' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N') order by PDOCVE DESC"			  		  
 				parametros={sql:sqlMat,dato:sessionStorage.co,bd:"Mysql"}
@@ -303,6 +317,9 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 	function guardar(iddet,materia,grupo,){
 		campo='';
 	
+		idcorte=$("#selCortes").val();
+		tipocorte=$("#selCortes option:selected").text().split("|")[1];
+
 		eltipo=$("#mot"+materia).val();
 		laobs=$("#obs"+materia).val();
 		lafecha=dameFecha("FECHAHORA");
