@@ -37,6 +37,16 @@
 				return $data;
 			}
 
+			function LoadDatosEmplCarrera($car)
+			{				
+				$miConex = new Conexion();
+				$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from pempleados, ccarreras where  CARR_JEFE=EMPL_NUMERO AND CARR_CLAVE='".$car."'");				
+				foreach ($resultado as $row) {
+					$data[] = $row;
+				}
+				return $data;
+			}
+
 			
 			function LoadDatosGen()
 			{
@@ -167,8 +177,8 @@
 
 		if (($_GET["tipo"]=='1')) {
 			
-			$dataJ = $pdf->LoadDatosEmpl($data[0]["JEFE"]);
 			$dataR = $pdf->LoadDatosEmpl($data[0]["RESPONSABLE"]);
+			$dataJ = $pdf->LoadDatosEmplCarrera($data[0]["CARRERA_ALUM"]);
 			$pdf->Image($dataJ[0]["EMPL_SELLO"],150,180,50);
 			$pdf->Image($dataJ[0]["EMPL_FIRMA"],125,210,40);
 
