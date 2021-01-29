@@ -5,8 +5,31 @@ function liberacion(modulo,usuario,institucion, campus,essuper){
 	if (table.rows('.selected').data().length>0) {		
 		
 		if (table.rows('.selected').data()[0]["PROM"]>=1) {
-			window.open("../vecompl_cal/liberacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"], '_blank');
-			window.open("../vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"], '_blank');
+			window.open("../vecompl_cal/liberacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=0", '_blank');
+			window.open("../vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=0", '_blank');
+		}
+		else {
+			alert ("No se puede emitir oficio si la calificación de la actividad no es mayor o igual a  1")
+			}
+		}
+	else {
+		alert ("Debe seleccionar a un alumno");
+		return 0;
+
+		}
+	
+}
+
+
+function liberacionSellada(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {		
+		
+		if (table.rows('.selected').data()[0]["PROM"]>=1) {
+			enlace="nucleo/vecompl_cal/liberacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1";
+			enlace2="nucleo/vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1";
+			abrirPesta(enlace,"Liberación");
+			abrirPesta(enlace2,"Evaluación");
 		}
 		else {
 			alert ("No se puede emitir oficio si la calificación de la actividad no es mayor o igual a  1")
@@ -26,7 +49,7 @@ function laliberacion(modulo,usuario,institucion, campus,essuper){
 	if (table.rows('.selected').data().length>0) {		
 		
 		if (table.rows('.selected').data()[0]["PROM"]>=1) {
-			window.open("../vecompl_cal/liberacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"], '_blank');
+			window.open("../vecompl_cal/liberacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=0", '_blank');
 		}
 		else {
 			alert ("No se puede emitir oficio si la calificación de la actividad no es mayor o igual a  1")
@@ -67,7 +90,7 @@ function laevaluacion(modulo,usuario,institucion, campus,essuper){
 	if (table.rows('.selected').data().length>0) {		
 		
 		if (table.rows('.selected').data()[0]["PROM"]>=1) {
-			window.open("../vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"], '_blank');
+			window.open("../vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1", '_blank');
 		}
 		else {
 			alert ("No se puede emitir oficio si la calificación de la actividad no es mayor o igual a  1")
