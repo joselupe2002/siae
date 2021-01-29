@@ -159,14 +159,14 @@
 
         
         $pdf->MultiCell(0,8,"El que suscribe : ".utf8_decode($jefediv).", por este medio se permite hacer de su conocimiento ".
-        		"que el estudiante ". utf8_decode($data[0]["MATRICULAD"])." con n�mero de control ".utf8_decode($data[0]["MATRICULA"]).
-        		" de la carrera de ".utf8_decode($data[0]["CARRERA_ALUMD"])." ha cumplido su actividad complementaria con el nivel de desempe�o ".
-        		utf8_decode($data[0]["PROML"])." y un valor num�rico de ".utf8_decode($data[0]["PROM"]).", durante el periodo escolar ".
-        		utf8_decode($data[0]["CICLO"]." ".$data[0]["CICLOD"])." con un valor curricular de ".utf8_decode($data[0]["CREDITOS"])." cr�ditos.".
+        		"que el estudiante ". utf8_decode($data[0]["MATRICULAD"]).utf8_decode(" con número de control ").utf8_decode($data[0]["MATRICULA"]).
+        		" de la carrera de ".utf8_decode($data[0]["CARRERA_ALUMD"]).utf8_decode(" ha cumplido su actividad complementaria con el nivel de desempeño ").
+        		utf8_decode($data[0]["PROML"]).utf8_decode(" y un valor numérico de ").utf8_decode($data[0]["PROM"]).", durante el periodo escolar ".
+        		utf8_decode($data[0]["CICLO"]." ".$data[0]["CICLOD"])." con un valor curricular de ".utf8_decode($data[0]["CREDITOS"]).utf8_decode(" créditos.").
         		" Actividad Desarrollada: ".utf8_decode($data[0]["ACTIVIDADD"])." del ".$fechaini." al ".$fechafin,0,'J', false);
         $pdf->Ln(5);
         $pdf->Ln(5);
-        $pdf->MultiCell(0,8,"Se extiende la presente en la ciudad de Macuspana, Tabasco a los ".$eldia." d�as del mes de ".$elmes." de ".$elanio,0,'J', false);
+        $pdf->MultiCell(0,8,"Se extiende la presente en la ciudad de Macuspana, Tabasco a los ".$eldia.utf8_decode(" días del mes de ").$elmes." de ".$elanio,0,'J', false);
         $pdf->Ln(5);
        
         
