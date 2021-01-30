@@ -52,11 +52,54 @@ var miciclo="";
 				});
 
 
-			
+		
 		cargarAvance();
+		verCartaPresentacion();
+		
 	});
 	
 	
+
+
+	function verCartaPresentacion(){
+		
+
+		elsqlc="select ifnull(MAX(PDOCVE),getciclo()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
+			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP'";
+
+		parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(dataCic2){ 
+				losdatosCic=JSON.parse( dataCic2); 
+				elciclo=losdatosCic[0][0];
+				elsql="select ifnull(RUTA,'') as RUTA, count(*) as HAY FROM respropuestas a where MATRICULA='"+usuario+"' and CICLO='"+elciclo+"'";
+				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		
+				$.ajax({
+							type: "POST",
+							data:parametros,
+							url:  "../base/getdatossqlSeg.php",
+							success: function(data){	
+								losdatos=JSON.parse(data); 				
+								if ((losdatos[0]["HAY"]>0) && (losdatos[0]["RUTA"]!="")) {							
+									$("#lacarta").append(
+										"<div class=\"row\">"+
+											"<div class=\"row\">"+
+												"<button  onclick=\"abrirPesta('"+losdatos[0]["RUTA"]+"','Carta');\" class=\"btn  btn-bold btn-danger\" value=\"Agregar\">"+
+												"     <i class=\"ace-icon white fa fa-file-text bigger-200\"></i><span class=\"fontRobotoB text-white\">Ver Carta Presentación</span>"+
+												"</button>"+
+											"<div>"+
+										"</div>");							
+									}									 
+								else {cargarDatosPropuesta(0);}
+							}
+					});
+			}
+		});
+	}
 		 
 	function cargarAvance() {
 
@@ -219,6 +262,7 @@ function cargarDatosPropuesta(tipo){
 							success: function(data){	
 								losdatos=JSON.parse(data); 
 								if (losdatos[0]["HAY"]>0) {	
+									
 									$("#pacarta").removeClass("glyphicon glyphicon-unchecked blue bigger-260");									    							
 									$("#pcarta").addClass("fa  fa-check purple bigger-260");									
 									}									 
@@ -763,7 +807,8 @@ function cargarDatosPropuesta(tipo){
 									$("#peval").addClass("fa  fa-times red bigger-260");							
 								}
 							}
-						}); //del ajax de busqueda de corte abierto 		
+						}); //del ajax de busqueda de corte abierto 												
+
 					}
 					else {
 						$("#preg").removeClass("glyphicon glyphicon-unchecked blue bigger-260");

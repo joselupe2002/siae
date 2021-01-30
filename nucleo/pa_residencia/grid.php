@@ -128,10 +128,13 @@
 
 		</div>
 
-		<div class="col-sm-7">   
+		<div class="col-sm-7"> 
 			<div class="row"> 
-				<div class="col-sm-12" id="servicio" style="text-align:center;">
-				
+				<div class="col-sm-12" id="lacarta" style="text-align:center;">							
+				</div>
+			</div> 
+			<div class="row"> 
+				<div class="col-sm-12" id="servicio" style="text-align:center;">							
 				</div>
 			</div>
 		</div>
