@@ -94,7 +94,6 @@ var miciclo="";
 											"<div>"+
 										"</div>");							
 									}									 
-								else {cargarDatosPropuesta(0);}
 							}
 					});
 			}
