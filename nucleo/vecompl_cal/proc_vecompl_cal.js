@@ -29,7 +29,7 @@ function liberacionSellada(modulo,usuario,institucion, campus,essuper){
 			enlace="nucleo/vecompl_cal/liberacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1";
 			//enlace2="nucleo/vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1";
 			abrirPesta(enlace,"Liberación");
-			abrirPesta(enlace2,"Evaluación");
+			//abrirPesta(enlace2,"Evaluación");
 		}
 		else {
 			alert ("No se puede emitir oficio si la calificación de la actividad no es mayor o igual a  1")
