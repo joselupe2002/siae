@@ -27,7 +27,7 @@ function liberacionSellada(modulo,usuario,institucion, campus,essuper){
 		
 		if (table.rows('.selected').data()[0]["PROM"]>=1) {
 			enlace="nucleo/vecompl_cal/liberacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1";
-			enlace2="nucleo/vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1";
+			//enlace2="nucleo/vecompl_cal/evaluacion.php?ID="+table.rows('.selected').data()[0]["IDCAL"]+"&tipo=1";
 			abrirPesta(enlace,"Liberación");
 			abrirPesta(enlace2,"Evaluación");
 		}
