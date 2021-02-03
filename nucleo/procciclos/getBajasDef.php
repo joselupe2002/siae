@@ -16,7 +16,7 @@
        $sql="UPDATE inscritos set BAJA='S' where MATRICULA IN (".
         "SELECT MATRICULA FROM (".
         "                 SELECT MATRICULA,MATCVE,COUNT(*) AS N  FROM inscritos,dlista where ALUCTR=MATRICULA ".
-        "                  AND  LISCAL<70".
+        "                  AND  IFNULL(LISCAL,0)<70".
         "                  GROUP BY MATRICULA,MATCVE) a ".
         " where N>=3 AND MATCVE NOT IN ( select MATCVE  from dlista WHERE ALUCTR=matricula AND LISCAL>=70)".
         " AND CONCAT(MATRICULA,MATCVE) NOT IN (SELECT concat(h.MATRICULA,h.MATERIA) FROM econvenios h where h.CICLO=getciclo()))";
