@@ -156,11 +156,11 @@
 				$this->SetY(20);$this->SetX(155);
 				$this->Cell(40,3,utf8_decode("PÁG. 1 DE 2"),"TRL",0,'C',false);
 				$this->SetY(23);$this->SetX(155);
-				$this->Cell(40,3,utf8_decode("REVISIÓN NO. 02"),"B",0,'C',false);
+				$this->Cell(40,3,utf8_decode("REVISIÓN NO. 03"),"B",0,'C',false);
 				$this->SetY(26);$this->SetX(155);
 				$this->Cell(40,3,"VIGENTE A PARTIR DEL","",0,'C',false);
 				$this->SetY(29);$this->SetX(155);
-				$this->Cell(40,3,"8 DE ENERO 2020","",0,'C',false);
+				$this->Cell(40,3,"26 DE ENERO 2021","",0,'C',false);
 				$this->SetY(32);$this->SetX(155);
 				$this->Cell(40,3,utf8_decode("VERSIÓN 2015"),"",0,'C',false);
 				
