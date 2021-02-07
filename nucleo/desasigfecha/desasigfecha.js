@@ -44,10 +44,11 @@ contMat=1;
 	   	   "        <thead >  "+
 		   "             <tr id=\"headMaterias\">"+
 		   "                <th>No.</th> "+
+		   "                <th>ID</th> "+
 		   "                <th>ORDEN</th> "+
 		   "                <th>ACTIVIDAD</th> "+
 		   "                <th>ENTREGABLE</th> "+
-		   "                <th>fecha</th> "+		
+		   "                <th>FECHA</th> "+		
 		   "              </tr>"+
 		   "            </thead>" +
 		   "         </table>";
@@ -56,7 +57,7 @@ contMat=1;
 
 	
 		elsql="select y.ID, y.IDACT, ORDEN,ACTIVIDAD, ENTREGABLE, IFNULL(z.FECHA,'') AS FECHA "+
-			  " from edestipplan y left outer join edesfechas z on ( z.`IDTIPOACT`=y.ID) where  IDACT='"+$("#selActividades").val()+"'";
+			  " from edestipplan y left outer join edesfechas z on ( z.IDTIPOACT=y.ID) where  IDACT='"+$("#selActividades").val()+"' order by ORDEN";
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	  
@@ -89,17 +90,19 @@ function generaTablaInformacion(grid_data){
 		$("#cuerpoInformacion").append("<tr id=\"rowM"+contR+"\">");
 		$("#rowM"+contR).append("<td>"+contR+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.ID+"</td>");
-		$("#rowM"+contR).append("<td>"+valor.PROFESOR+"</td>");
-		$("#rowM"+contR).append("<td>"+valor.PROFESORD+"</td>");
+		$("#rowM"+contR).append("<td>"+valor.ORDEN+"</td>");
 		$("#rowM"+contR).append("<td>"+valor.ACTIVIDAD+"</td>");
-		$("#rowM"+contR).append("<td>"+valor.ACTIVIDADD+"</td>");
+		$("#rowM"+contR).append("<td>"+valor.ENTREGABLE+"</td>");
 
-		evento="crearPlan("+valor.ID+",'"+valor.ACTIVIDAD+"','"+valor.ACTIVIDADD+"');"; etbtn="Crear Plan"; ico="fa-list-ol red";
-		if (valor.ESTA>0) {evento="verPlan("+valor.ID+",'"+valor.ACTIVIDAD+"','"+valor.ACTIVIDADD+"');"; etbtn="Ver Plan"; ico="fa-th-list blue";}
-		$("#rowM"+contR).append("<td><button id=\"btn"+valor.ID+"\"  onclick=\""+evento+"\""+
-		                        "class=\"btn btn-white btn-info btn-round\" value=\"Agregar\"> "+
-		                        "<i id=\"iconbtn"+valor.ID+"\" class=\"ace-icon fa "+ico+" bigger-140\"></i><span id=\"etbtn"+valor.ID+"\" class=\"btn-small\">"+
-		                        etbtn+"</span></button></td>");
+		htmlfecfin= "<div class=\"input-group\">"+
+				             "     <input onchange=\"grabaFecha('"+valor.ID+"');\" "+
+				             "            value=\""+valor.FECHA+"\" class=\"form-control date-picker\" id=\"fecha"+valor.ID+"\" "+
+							"            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" /> "+
+							"     <span class=\"input-group-addon\"><i class=\"fa red fa-calendar bigger-110\"></i></span>"+
+							"</div>";
+
+		$("#rowM"+contR).append("<td>"+htmlfecfin+"</td>");
+		$('.date-picker').datepicker({autoclose: true,todayHighlight: true});
 		
 		contR++;    
 		
@@ -109,235 +112,32 @@ function generaTablaInformacion(grid_data){
 } 
 
 
+function grabaFecha(id){
+		ciclo=$("#selCiclos").val();
+		lafecha=$("#fecha"+id).val();
+		var losdatos=[];
+		losdatos[0]=ciclo+"|"+id+"|"+lafecha;
+    	var loscampos = ["CICLO","IDTIPOACT","FECHA",];
+		   parametros={
+			 tabla:"edesfechas",
+			 campollave:"IDTIPOACT",
+			 bd:"Mysql",
+			 valorllave:id,
+			 eliminar: "S",
+			 separador:"|",
+			 campos: JSON.stringify(loscampos),
+			 datos: JSON.stringify(losdatos)
+		   };
 
-function agregarTodas(){
-	if (confirm("¿Seguro desea asignar a todos los alumnos de esta vista la especialidad "+$("#selEspecialidad option:selected").text())){
-		$(".losselectesp").each(function(){
-			$(this).val($("#selEspecialidad").val());
-			lamat=$(this).attr("matricula");
-			actualizaEsp(lamat,$("#selEspecialidad").val());
-		});
-	}
+		  $.ajax({
+			 type: "POST",
+			 url:"../base/grabadetalle.php",
+			 data: parametros,
+			 success: function(data){		
+				 if (data.length>0) {alert ("Ocurrio un error: "+data);}					                      	                                        					          
+			 }					     
+		 });    	 
+
 }
 
 
-
-
-function crearPlan (id,actividad,actividadd) {
-    elsql="INSERT INTO eplandescarga (PLAN_IDACT, PLAN_ACTIVIDAD,PLAN_ENTREGABLE,"+
-		  "PLAN_FECHAENTREGA,PLAN_ORDEN, _INSTITUCION,_CAMPUS )  SELECT "+id+", ACTIVIDAD, ENTREGABLE, "+
-		  "b.FECHA, ORDEN, a._INSTITUCION, a._CAMPUS FROM edestipplan a, edesfechas b "+
-		  "where a.ID=b.IDTIPOACT and b.CICLO='"+$("#selCiclos").val()+"' and a.IDACT='"+actividad+"'";
-		
-		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	    $.ajax({
-			   type: "POST",
-			   data:parametros,
-			   url:  "../base/ejecutasql.php",
-	           success: function(data){  
-				$("#etbtn"+id).html("Ver Plan");
-				$("#iconbtn"+id).removeClass("fa-list-ol red");
-				$("#iconbtn"+id).addClass("fa-th-list blue");
-				$("#btn"+id).removeAttr('onclick');
-				$("#btn"+id).bind( "click", function( ) {
-					verPlan(id,actividad,actividadd);
-				});
-			
-			   }	
-			   
-			});			 
-   
-}
-
-
-
-/*==============================================VER PLAN ============================0*/
-function verPlan(id,actividad,actividadd){
-	script="<div class=\"modal fade\" id=\"modalDocument\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
-    "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
-	   "      <div class=\"modal-content\">"+
-	   "          <div class=\"modal-header widget-header  widget-color-green\">"+
-	 
-	   "             <span class=\"text-success\"><b> <i class=\"menu-icon red fa fa-male\"></i><span class=\"menu-text\"> Actividad:"+actividad+" "+actividadd+"</span></b> </span>"+
-	   "             <input type=\"hidden\" id=\"elid\" value=\""+id+"\"></input>"+
-	   "             <button type=\"button\" class=\"close\"  data-dismiss=\"modal\"   aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
-	   "                  <span aria-hidden=\"true\">&times;</span>"+
-	   "             </button>"+
-	   "          </div>"+  
-	   "          <div id=\"frmdescarga\" class=\"modal-body\" style=\"overflow-x: auto; overflow-y: auto;\" >"+					  
-	   "             <div class=\"row\"> "+		
-       "                  <table id=\"tabActividad\" class= \"table table-condensed table-bordered table-hover\">"+
-	   "                         <thead>  "+
-	   "                               <tr>"+
-	   "                             	   <th>Op</th> "+
-	   "                             	   <th>PDF</th> "+
-	   "                             	   <th>R</th> "+//Sirve para le lectura del renglon al momento de validar cruce
-	   "                             	   <th>ID</th> "+ 
-	   "                                   <th>Orden</th> "+
-	   "                                   <th>Actividad</th> "+
-	   "                                   <th>Entregable</th> "+
-	   "                                   <th>Fecha</th> "+
-	   "                               </tr> "+
-	   "                         </thead>" +
-	   "                   </table>"+	
-	   "             </div> "+ //div del row
-	   "          </div>"+ //div del modal-body		 
-    "          </div>"+ //div del modal content		  
-	   "      </div>"+ //div del modal dialog
-	   "   </div>"+ //div del modal-fade
-	   "</div>";
-	 $("#modalDocument").remove();
- if (! ( $("#modalDocument").length )) {
-     $("#grid_desasignaprof").append(script);
- }
-
-
-
- $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
- 
- $('#modalDocument').modal({show:true, backdrop: 'static'});
-
- elsql="SELECT count(*) as NUM FROM eplandescarga WHERE PLAN_IDACT='"+id+"'";
- parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
- 
- $.ajax({
-		type: "POST",
-		data:parametros,
-        url:  "../base/getdatossqlSeg.php",
-        success: function(data){  
-     	      losdatos=JSON.parse(data);  
-     	        
-     	      jQuery.each(losdatos, function(clave, valor) { hay=valor.NUM; });
-     
-     	    	  if (hay>0) {	        	    			        	    	
-					   elsql="SELECT *  FROM eplandescarga WHERE PLAN_IDACT='"+id+"' order by PLAN_ORDEN";
-					   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-     	    		  $.ajax({
-     	   	           type: "POST",
-					   data:parametros,   
-					   url:  "../base/getdatossqlSeg.php",
-     	   	           success: function(data){ 	        	   	        	
-     	   	        	     generaTablaActividad(JSON.parse(data));
-     	   	                 },
-     	   	           error: function(data) {	                  
-     	   	                      alert('ERROR: '+data);
-     	   	                  }
-     	   	          });
-     	   	   
-     	    	  }
-
-              },
-        error: function(data) {	                  
-                   alert('ERROR: '+data);
-               }
-});
-	   
-}
-
-
-function generaTablaActividad(grid_data){		
-  	 $("#cuerpoActividad").empty();
-  	 $("#tabActividad").append("<tbody id=\"cuerpoActividad\">");
-      c=1;	
-      global=1; 
-      ladefault="..\\..\\imagenes\\menu\\pdf.png";
-      
-  	jQuery.each(grid_data, function(clave, valor) { 	
-  		
-  		
-  	       btnSubir="<button title=\"Subir archivo PDF comprobable de la actividad\" onclick=\"subirArchivo('"+valor.PLAN_ID+"','"+valor.PLAN_ACTIVIDAD+"');\" class=\"btn btn-xs btn-success\"> " +
-                     "    <i class=\"ace-icon fa fa-upload bigger-120\"></i>" +
-                      "</button>";
-	       boton=btnSubir;
-
-	       
-           botonPDF="<a target=\"_blank\" id=\"enlace_I_"+valor.PLAN_ID+"\" href=\""+valor.RUTA+"\">"+
-	  		        "     <img width=\"40px\" height=\"40px\" id=\"pdf_"+valor.PLAN_ID+"\" name=\"pdf_"+valor.PLAN_ID+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
-	 		        "</a>";
-
-	 	   botonPDF+="<input type=\"hidden\" value=\""+valor.RUTA+"\"  name=\"I_"+valor.PLAN_ID+"\" id=\"I_"+valor.PLAN_ID+"\"  placeholder=\"\" />";    
-
-	   	 
-	   	 $("#cuerpoActividad").append("<tr id=\"row"+c+"\">");
-	   	 $("#row"+c).append("<td>"+btnSubir+"</td>");
-	   	 $("#row"+c).append("<td>"+botonPDF+"</td>");
-	   	 $("#row"+c).append("<td>"+c+"</td>");
-	     $("#row"+c).append("<td>SC</td>");	
-	     $("#row"+c).append("<td id=\"a_"+c+"_1\">"+valor.PLAN_ORDEN+"</td>");		
-	   	 $("#row"+c).append("<td id=\"a_"+c+"_2\">"+valor.PLAN_ACTIVIDAD+"</td>");	
-	   	 $("#row"+c).append("<td id=\"a_"+c+"_3\">"+valor.PLAN_ENTREGABLE+"</td>");	
-		 $("#row"+c).append("<td id=\"a_"+c+"_4\">"+valor.PLAN_FECHAENTREGA+"</td>");	  	
-		 
-		 
-		 if (valor.RUTA=='') { 								
-			$('#enlace_I_'+valor.PLAN_ID).click(function(evt) {evt.preventDefault();});			
-			$("#pdf_"+valor.PLAN_ID).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");	                        		                       	                    
-		  }
-
-  		c++;
-  		global=c;
-  	});
-  }
-
-
-
-function subirArchivo (id,actividad) {
-
-	ladefault="..\\..\\imagenes\\menu\\pdf.png";
-	script="<div class=\"modal fade\" id=\"modalFile\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
-    "   <div class=\"modal-dialog modal-sm \" role=\"document\">"+
-	   "      <div class=\"modal-content\">"+
-	   "          <div class=\"modal-header\">"+
-	   "             <span class=\"text-success\"><b> <i class=\"menu-icon red fa fa-thumb-tack\"></i><span class=\"menu-text\"> Actividad: "+actividad+"</span></b> </span>"+
-	   "             <input type=\"hidden\" id=\"elidfile\" value=\""+id+"\"></input>"+
-	   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\">"+
-	   "                  <span aria-hidden=\"true\">&times;</span>"+
-	   "             </button>"+
-	   "             <div class=\"row\"> "+			
-       "                 <div class=\"col-sm-12\"> "+			   
-	    "                       <div class=\"widget-box widget-color-green2\"> "+
-		"                              <div class=\"widget-header\">"+
-		"	                                <h4 class=\"widget-title lighter smaller\">Subir Archivo PDF</h4>"+
-		"                              </div>"+
-		"                              <div id =\"elarchivo\" style=\"overflow-y: auto;height:200px;width:100%;\">"+
-		"                                  <div class=\"row\" style=\"width:90%;\">"+
-		"                                    <div class=\"col-sm-1\"></div>"+
-		"                                    <div class=\"col-sm-10\">"+
-		"                                        <input class=\"fileSigea\" type=\"file\" id=\"file_"+id+"\" name=\"file_"+id+"\""+
-	        "                                        onchange=\"subirPDFDriveSave('file_"+id+"','ACTDESCARGA','pdf_"+id+"','I_"+id+"','pdf','S','PLAN_ID','"+id+"','"+actividad+"','eplandescarga','edita','');\">"+
-	        "                                    <\div>"+  
-	        "                                    <div class=\"col-sm-1\"></div>"+	         	                                     
-	        "                                  <\div>"+
-	        "                                  <div class=\"row\">"+
-	        "                                      <a target=\"_blank\" id=\"enlace_I_"+id+"_2\" href=\"\">"+
-	    "                                          <img width=\"40px\" height=\"40px\" id=\"pdf_"+id+"_2\" name=\"pdf_"+id+"_2\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
-        "                                      </a>"+
-        "                                  <\div>"+
-			"                              </div>"+
-	    "                       </div>"+
-	    "                 </div>"+
-	    "             </div>"+	    
-       "          </div>"+
-	   "      </div>"+
-	   "   </div>"+
-	   "</div>";
-	   
-	 $("#modalFile").remove();
-	 if (! ( $("#modalFile").length )) {$("body").append(script);}
-	    
-	 $('#modalFile').modal({show:true, backdrop: 'static', keyboard: false});
-
-	 $('.fileSigea').ace_file_input({
-			no_file:'Sin archivo ...',
-			btn_choose:'Buscar',
-			btn_change:'Cambiar',
-			droppable:false,
-			onchange:null,
-			thumbnail:false, //| true | large
-			whitelist:'pdf',
-			blacklist:'exe|php'
-			//onchange:''
-			//
-		});
-	   
-}
