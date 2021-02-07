@@ -47,7 +47,7 @@
 						</div> 	
 						<div id="losciclossel" class="col-sm-2" >
 						</div>              				
-						<div id="lasactividades" class="col-sm-3">
+						<div id="lasactividades" class="col-sm-6">
 						</div>    
 					
 						<div class="col-sm-3" style="padding-top:14px;">
