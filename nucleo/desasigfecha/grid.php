@@ -47,13 +47,14 @@
 						</div> 	
 						<div id="losciclossel" class="col-sm-2" >
 						</div>              				
-						<div id="lascarreras" class="col-sm-3">
+						<div id="lasactividades" class="col-sm-3">
 						</div>    
 					
 						<div class="col-sm-3" style="padding-top:14px;">
-                            <button title="Ver Todas las Actividades de Desarga" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+                            <button title="Ver Plan de Actividad" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon red fa fa-search bigger-140"></i><span class="btn-small">Ver Act. Des.</span>            
-							</button>																											 									
+							</button>
+						  																											 									
 						</div>
 		            </div> 
 		      </div>
@@ -133,7 +134,7 @@
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
 
 
-<script src="desasignaprof.js?v=<?php echo date('YmdHis'); ?>"></script>
+<script src="desasigfecha.js?v=<?php echo date('YmdHis'); ?>"></script>
 <script type="text/javascript">
  
 </script>
