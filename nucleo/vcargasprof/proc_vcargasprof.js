@@ -121,8 +121,8 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 		 " edescarga.DESC_DESCRIP AS descrip, "+
 		 " LUNES AS lunes, MARTES AS martes, MIERCOLES as miercoles,"+
 			 " JUEVES as jueves, VIERNES as viernes, SABADO as sabado, DOMINGO as domingo, DESC_HORAS as horas"+
-			 " FROM edescarga LEFT OUTER JOIN etipodescarga ON (DESC_ACTIVIDAD=DESC_CLAVE) WHERE DESC_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
-			 " and DESC_CICLO='"+table.rows('.selected').data()[0][2]+"' and DESC_ACTIVO='S'";
+			 " FROM edescarga LEFT OUTER JOIN etipodescarga ON (DESC_ACTIVIDAD=DESC_CLAVE and DESC_ACTIVO='S') WHERE DESC_PROFESOR='"+table.rows('.selected').data()[0][0]+"'"+
+			 " and DESC_CICLO='"+table.rows('.selected').data()[0][2]+"'";
 		
 		 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
