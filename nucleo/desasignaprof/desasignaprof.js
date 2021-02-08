@@ -20,8 +20,8 @@ contMat=1;
 			type: "GET",
 			url:  "../base/getSesion.php?bd=Mysql&campo=depto",
 			success: function(data){  
-				addSELECT("selDeptos","lascarreras","PROPIO", "SELECT URES_URES, URES_DESCRIP FROM fures where IFNULL(CARRERA,'')<>''"+
-				" and URES_URES IN ("+data+")", "",""); 
+				addSELECT("selDeptos","lascarreras","PROPIO", "SELECT URES_URES, URES_DESCRIP FROM fures "+
+				" WHERE URES_URES IN ("+data+")", "",""); 
 				},
 			error: function(data) {	                  
 					   alert('ERROR: '+data);
