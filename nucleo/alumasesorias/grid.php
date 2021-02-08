@@ -306,11 +306,12 @@ function cargarAsesorias(){
 			btnd=""; if (valor.DOMINGO!='') {btnd="<span title=\"Programar asesorías para el dia "+valor.DOMINGO+"\" onclick=\"programar('"+valor.DESC_PROFESOR+"','"+valor.DESC_PROFESORD+"','7','DOMINGO','"+valor.DOMINGO+"','"+valor.DESC_CICLO+"','"+valor.EMPL_LUGARAS+"');\" style=\"cursor:pointer;\"><i class=\"ace-icon blue fa fa-calendar bigger-140\"></i></span>";}
 			
 
+			enlace="";
+			if (valor.EMPL_LUGARAS!='') {enlace="<a href=\""+valor.EMPL_LUGARAS+"\" target=\"_blank\">Ir a Enlace Videoconferencia</a>";}
     	    $("#cuerpoInformacion").append("<tr id=\"row"+c+"\">");
     	    $("#row"+c).append("<td>"+c+"</td>");
     	    $("#row"+c).append("<td>"+valor.DESC_PROFESOR+"</td>");
-			$("#row"+c).append("<td>"+btnMat+"&nbsp&nbsp"+valor.DESC_PROFESORD+"<br>"+
-			                        "<a href=\""+valor.EMPL_LUGARAS+"\" target=\"_blank\">Ir a Enlace Videoconferencia</a></td>");
+			$("#row"+c).append("<td>"+btnMat+"&nbsp&nbsp"+valor.DESC_PROFESORD+"<br>"+enlace+"</td>");
 		    $("#row"+c).append("<td>"+valor.LUNES+"&nbsp&nbsp"+btnl+"</td>");
 		    $("#row"+c).append("<td>"+valor.MARTES+"&nbsp&nbsp"+btnm+"</td>");
 			$("#row"+c).append("<td>"+valor.MIERCOLES+"&nbsp&nbsp"+btnmi+"</td>");
