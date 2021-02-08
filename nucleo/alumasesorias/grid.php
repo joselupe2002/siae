@@ -27,7 +27,11 @@
         <link href="imagenes/login/sigea.png" rel="image_src" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
 
-        
+        <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }
+               th, td {  word-wrap: break-word;        
+                         overflow-wrap: break-word;   }
+               
+        </style>
 	</head>
 
 
@@ -232,7 +236,7 @@
     	    $("#rowFirma"+c).append("<td>"+c+"</td>");
 			$("#rowFirma"+c).append("<td>"+valor.ASES_FECHA+"</td>");
 			$("#rowFirma"+c).append("<td>"+valor.ASES_HORA+"</td>");
-		    $("#rowFirma"+c).append("<td style=\"width:30px;\">"+valor.ASES_PROFESORD+"</td>");
+		    $("#rowFirma"+c).append("<td>"+valor.ASES_PROFESORD+"</td>");
 		    $("#rowFirma"+c).append("<td>"+valor.ASES_ASIGNATURAD+"</td>");
 		    $("#rowFirma"+c).append("<td>"+valor.ASES_TEMA+"</td>");
 			$("#rowFirma"+c).append("<td><button onclick=\"confirma('"+valor.ASES_ID+"','"+c+"');\" class=\"btn btn-xs btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i></button></td>");
@@ -305,8 +309,8 @@ function cargarAsesorias(){
     	    $("#cuerpoInformacion").append("<tr id=\"row"+c+"\">");
     	    $("#row"+c).append("<td>"+c+"</td>");
     	    $("#row"+c).append("<td>"+valor.DESC_PROFESOR+"</td>");
-			$("#row"+c).append("<td style=\"width:30px;\">"+btnMat+"&nbsp&nbsp"+valor.DESC_PROFESORD+"<br>"+
-			                        "<a href=\""+valor.EMPL_LUGARAS+"\" target=\"_blank\">"+valor.EMPL_LUGARAS+"</a></td>");
+			$("#row"+c).append("<td>"+btnMat+"&nbsp&nbsp"+valor.DESC_PROFESORD+"<br>"+
+			                        "<a href=\""+valor.EMPL_LUGARAS+"\" target=\"_blank\">Ir a Enlace Videoconferencia</a></td>");
 		    $("#row"+c).append("<td>"+valor.LUNES+"&nbsp&nbsp"+btnl+"</td>");
 		    $("#row"+c).append("<td>"+valor.MARTES+"&nbsp&nbsp"+btnm+"</td>");
 			$("#row"+c).append("<td>"+valor.MIERCOLES+"&nbsp&nbsp"+btnmi+"</td>");
