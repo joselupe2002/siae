@@ -147,6 +147,7 @@ class UtilUser {
 
 
 	function verificaOficio($depto,$tipo,$elidControl){
+		/*
 		$fecha_actual=date("d/m/Y");
 		$anio=date("Y");
 		$miConex = new Conexion();
@@ -154,7 +155,7 @@ class UtilUser {
 		
 		$data[0]["CONT_FECHA"]="SELECT count(*) as N from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'";
 		
-		/*
+		
 		$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT count(*) as N from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'");
 		foreach ($resultado as $row) {$hay=$row["N"];}
 		
@@ -176,8 +177,10 @@ class UtilUser {
 		else {
 			$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'");
 			foreach ($resultado as $row) {$data[] = $row;}
-		}*/
+		}
 		return $data;
+		*/
+		return 0;
 	}
 	
 
