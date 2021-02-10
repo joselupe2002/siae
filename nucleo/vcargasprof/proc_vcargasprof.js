@@ -662,7 +662,7 @@ function entInstxDepto(modulo,usuario,institucion, campus,essuper){
 		enlace="nucleo/vcargasprof/entregaInst.php?profesor="+table.rows('.selected').data()[0]["CVE_PROFESOR"]+"&profesord="+
 		table.rows('.selected').data()[0]["NOMBRE"]+"&ciclod="+table.rows('.selected').data()[0]["CICLOD"]+
 		"&ciclo="+table.rows('.selected').data()[0]["CICLO"]+"&tipo=DEPTO&tipov="+
-		table.rows('.selected').data()[0]["DEPTO"];
+		table.rows('.selected').data()[0]["DEPTO"]+"&tipoRep=0";
 
 		abrirPesta(enlace, "OficioEnt");
 	}
@@ -680,7 +680,7 @@ function entInstxCar(modulo,usuario,institucion, campus,essuper){
 		enlace="nucleo/vcargasprof/entregaInst.php?profesor="+table.rows('.selected').data()[0]["CVE_PROFESOR"]+"&profesord="+
 		table.rows('.selected').data()[0]["NOMBRE"]+"&ciclod="+table.rows('.selected').data()[0]["CICLOD"]+
 		"&ciclo="+table.rows('.selected').data()[0]["CICLO"]+"&tipo=CAR&tipov="+
-		table.rows('.selected').data()[0]["CARRERA"];
+		table.rows('.selected').data()[0]["CARRERA"]+"&tipoRep=0";
 
 		abrirPesta(enlace, "OficioEnt");			
 					
@@ -694,7 +694,7 @@ function entInstxCar(modulo,usuario,institucion, campus,essuper){
 function oficioDes(modulo,usuario,institucion, campus,essuper){	
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
-		enlace="nucleo/vcargasprof/oficiodes.php?ID="+table.rows('.selected').data()[0][0]+"&ciclod="+table.rows('.selected').data()[0][3]+"&ciclo="+table.rows('.selected').data()[0][2];
+		enlace="nucleo/vcargasprof/oficiodes.php?ID="+table.rows('.selected').data()[0][0]+"&ciclod="+table.rows('.selected').data()[0][3]+"&ciclo="+table.rows('.selected').data()[0][2]+"&tipo=0";
 		abrirPesta(enlace, "OficioDes");	
 	}
 	else {
@@ -716,3 +716,39 @@ function oficioDesSel(modulo,usuario,institucion, campus,essuper){
 		}
 }
 
+
+
+function entInstxCarSel(modulo,usuario,institucion, campus,essuper){	
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+
+		enlace="nucleo/vcargasprof/entregaInst.php?profesor="+table.rows('.selected').data()[0]["CVE_PROFESOR"]+"&profesord="+
+		table.rows('.selected').data()[0]["NOMBRE"]+"&ciclod="+table.rows('.selected').data()[0]["CICLOD"]+
+		"&ciclo="+table.rows('.selected').data()[0]["CICLO"]+"&tipo=CAR&tipov="+
+		table.rows('.selected').data()[0]["CARRERA"]+"&tipoRep=1";
+
+		abrirPesta(enlace, "OficioEnt");			
+					
+	}
+	else {
+		alert ("Debe seleccionar un profesor");
+		return 0;
+		}
+}
+
+
+function entInstxDeptoSel(modulo,usuario,institucion, campus,essuper){	
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+		enlace="nucleo/vcargasprof/entregaInst.php?profesor="+table.rows('.selected').data()[0]["CVE_PROFESOR"]+"&profesord="+
+		table.rows('.selected').data()[0]["NOMBRE"]+"&ciclod="+table.rows('.selected').data()[0]["CICLOD"]+
+		"&ciclo="+table.rows('.selected').data()[0]["CICLO"]+"&tipo=DEPTO&tipov="+
+		table.rows('.selected').data()[0]["DEPTO"]+"&tipoRep=1";
+
+		abrirPesta(enlace, "OficioEnt");
+	}
+	else {
+		alert ("Debe seleccionar un profesor");
+		return 0;
+		}
+}

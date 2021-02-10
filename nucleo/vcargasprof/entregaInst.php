@@ -113,7 +113,7 @@
    	       
    	       function getDatosPersona($num){   		       
             	$miConex = new Conexion();  
-            	$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_NOMBREC, EMPL_ULTIGRAD, EMPL_EGRESADODED, ".
+            	$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_NOMBREC, EMPL_JEFEFIRMA, EMPL_JEFESELLO, EMPL_ULTIGRAD, EMPL_EGRESADODED, ".
             			"EMPL_FOTO, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
             			" FROM vempleados WHERE EMPL_NUMERO= '".$num."'" );
                 foreach ($resultado as $row) {$data[] = $row;}            
@@ -123,7 +123,7 @@
             
             function getJefeCarrera($carr){
             	$miConex = new Conexion();
-            	$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_NOMBREC, EMPL_ULTIGRAD, EMPL_EGRESADODED, ".
+            	$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT EMPL_NOMBREC, EMPL_JEFEFIRMA, EMPL_JEFESELLO, EMPL_ULTIGRAD, EMPL_EGRESADODED, ".
             			"EMPL_FOTO, EMPL_DEPTOD, EMPL_JEFEABREVIA,EMPL_JEFE, EMPL_JEFED, EMPL_RFC, EMPL_CURP, EMPL_NUMERO, EMPL_FECING ".
             			" FROM vempleados WHERE EMPL_NUMERO IN (SELECT URES_JEFE FROM fures WHERE CARRERA='".$carr."')");
             	foreach ($resultado as $row) {$data[] = $row;}
@@ -132,9 +132,13 @@
    	
 			function LoadData()
 			{				
+
+
 				$cad=" and a.CARRERA='".$_GET["tipov"]."'";
 				if ($_GET["tipo"]=='DEPTO') { $cad=" and a.DEPTO='".$_GET["tipov"]."'";}
 
+			
+				
 				$miConex = new Conexion();
 				$resultado=$miConex->getConsulta($_SESSION['bd'],"select a.MATERIA,a.MATERIAD, a.CARRERAD, ".
 						                        "(SELECT COUNT(*) from eunidades l where l.UNID_MATERIA=a.MATERIA and UNID_PRED='')".
@@ -279,6 +283,21 @@
 			$pdf->eljefe=$dataEmpl[0]["EMPL_JEFEABREVIA"]." ".$dataEmpl[0]["EMPL_JEFED"];
 		}
 		
+
+		if (($_GET["tipoRep"]=='1') ||($_GET["tipoRep"]=='2')) {
+
+			$lafirma=$dataEmpl[0]["EMPL_JEFEFIRMA"];
+			$elsello=$dataEmpl[0]["EMPL_JEFESELLO"];
+		
+			$pdf->Image($elsello,140,160,45);
+			$pdf->Image($lafirma,130,215,40);
+
+			$miutil = new UtilUser();
+		
+			$lafirmaE=$miutil->getDatoEmpl($_GET["profesor"],"EMPL_FIRMA");	
+			$pdf->Image($lafirmaE,30,215,40);
+			
+		}
 		
 	
 		
