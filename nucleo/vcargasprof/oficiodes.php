@@ -204,8 +204,8 @@
 			$firmaof=$miutil->getDatoEmpl($dataEmpl[0]["EMPL_JEFE"],"EMPL_FIRMAOF");
 			
 			if (($_GET["tipo"]=='1') ||($_GET["tipo"]=='2')) {
-				$firmaof=$miutil->getDatoEmpl($dataEmpl[0]["EMPL_JEFE"],"EMPL_SELLO");
-				$firmaof=$miutil->getDatoEmpl($dataEmpl[0]["EMPL_JEFE"],"EMPL_FIRMA");
+				$elsello=$miutil->getDatoEmpl($dataEmpl[0]["EMPL_JEFE"],"EMPL_SELLO");
+				$lafirma=$miutil->getDatoEmpl($dataEmpl[0]["EMPL_JEFE"],"EMPL_FIRMA");
 				$pdf->Image($elsello,150,200,45);
 				$pdf->Image($lafirma,50,215,40);
 				
