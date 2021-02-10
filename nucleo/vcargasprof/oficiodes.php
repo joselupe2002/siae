@@ -104,7 +104,7 @@
 			$this->SetDrawColor(181,57,35);
 			$this->SetLineWidth(.3);
 
-			$w = array(13, 60, 73, 13);
+			$w = array(13, 73, 70, 10);
 			$this->SetFont('Montserrat-ExtraBold','B',8);
 			for($i=0;$i<count($headerdes);$i++) 
 				$this->Cell($w[$i],7,$headerdes[$i],1,0,'C',true);
@@ -195,7 +195,7 @@
 			$pdf->MultiCell(0,8,"Por este medio me permito informarle a usted, que le han sido asignadas en su carga horaria correspondiente al semestre ".
 					$_GET["ciclo"]." ".$_GET["ciclod"]. ", las siguientes actividades:",0,'J', false);
 			$pdf->Ln(5);			
-			$headerdes = array('CLAVE',utf8_decode('ACTIVIDAD'),utf8_decode('DESCRIPCIÓN'),'HORAS');
+			$headerdes = array('CLAVE',utf8_decode('ACTIVIDAD'),utf8_decode('DESCRIPCIÓN/ENTREGABLE'),'HORAS');
 			$pdf->imprimeDescarga($headerdes,$datades);
 			$pdf->Ln(5);
 			$pdf->SetFont('Montserrat-SemiBold','',10);
