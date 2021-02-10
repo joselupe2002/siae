@@ -15,7 +15,7 @@
    	        
    	     var $eljefe="";
    	       
-   	     function verificaOficio($depto,$tipo,$elidControl){
+   	     function verificaOficioDes($depto,$tipo,$elidControl){
    	     	$fecha_actual=date("d/m/Y");
    	     	$anio=date("Y");
    	     	$miConex = new Conexion();
@@ -124,7 +124,7 @@
 					
 					if (count($rowdes)) {
 						$this->Cell($w[0],4,utf8_decode($rowdes[0]),'LR',0,'J',$fill);
-						$this->Cell($w[1],4,$rowdes[1],'LR',0,'L',$fill);
+						$this->Cell($w[1],4,utf8_decode($rowdes[1]),'LR',0,'L',$fill);
 						$this->Cell($w[2],4,utf8_decode($rowdes[2]),'LR',0,'L',$fill);
 						$this->Cell($w[3],4,$rowdes[3],'LR',0,'C',$fill);						
 						$suma+=$rowdes[3];						
@@ -169,7 +169,7 @@
 			$depto=$miutil->getDatoEmpl($_GET["ID"],"EMPL_DEPTO");
 			
 			
-			$dataof=$pdf->verificaOficio($depto,"DESCARGA",$_GET["ID"]."-".$_GET["ciclo"]);
+			$dataof=$pdf->verificaOficioDes($depto,"DESCARGA",$_GET["ID"]."-".$_GET["ciclo"]);
 			
 		
 
@@ -195,7 +195,7 @@
 			$pdf->MultiCell(0,8,"Por este medio me permito informarle a usted, que le han sido asignadas en su carga horaria correspondiente al semestre ".
 					$_GET["ciclo"]." ".$_GET["ciclod"]. ", las siguientes actividades:",0,'J', false);
 			$pdf->Ln(5);			
-			$headerdes = array('CLAVE','ACTIVIDAD',utf8_decode('DESCRIPCIÓN'),'HORAS');
+			$headerdes = array('CLAVE',utf8_decode('ACTIVIDAD'),utf8_decode('DESCRIPCIÓN'),'HORAS');
 			$pdf->imprimeDescarga($headerdes,$datades);
 			$pdf->Ln(5);
 			$pdf->SetFont('Montserrat-SemiBold','',10);
