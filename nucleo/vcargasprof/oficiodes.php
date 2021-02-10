@@ -104,7 +104,7 @@
 			$this->SetDrawColor(181,57,35);
 			$this->SetLineWidth(.3);
 
-			$w = array(13, 73, 70, 10);
+			$w = array(10, 76, 70, 10);
 			$this->SetFont('Montserrat-ExtraBold','B',8);
 			for($i=0;$i<count($headerdes);$i++) 
 				$this->Cell($w[$i],7,$headerdes[$i],1,0,'C',true);
@@ -137,8 +137,8 @@
 				$this->Cell(array_sum($w),0,'','T');
 				$this->Ln();
 				$this->SetFont('Montserrat-ExtraBold','B',8);
-				$this->Cell(array_sum($w)-13,4,'Suma de Horas','LR',0,'R',$fill);
-				$this->Cell(13,4,$suma,'LR',0,'C',$fill);
+				$this->Cell(array_sum($w)-10,4,'Suma de Horas','LR',0,'R',$fill);
+				$this->Cell(10,4,$suma,'LR',0,'C',$fill);
 				$this->Ln();
 				$this->Cell(array_sum($w),0,'','T');
 				// L�nea de cierre
@@ -195,7 +195,7 @@
 			$pdf->MultiCell(0,8,"Por este medio me permito informarle a usted, que le han sido asignadas en su carga horaria correspondiente al semestre ".
 					$_GET["ciclo"]." ".$_GET["ciclod"]. ", las siguientes actividades:",0,'J', false);
 			$pdf->Ln(5);			
-			$headerdes = array('CLAVE',utf8_decode('ACTIVIDAD'),utf8_decode('DESCRIPCIÓN/ENTREGABLE'),'HORAS');
+			$headerdes = array('CVE',utf8_decode('ACTIVIDAD'),utf8_decode('DESCRIPCIÓN/ENTREGABLE'),'HRS');
 			$pdf->imprimeDescarga($headerdes,$datades);
 			$pdf->Ln(5);
 			$pdf->SetFont('Montserrat-SemiBold','',10);
