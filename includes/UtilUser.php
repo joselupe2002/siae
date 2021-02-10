@@ -146,6 +146,36 @@ class UtilUser {
 	
 
 
+	function verificaOficio($depto,$tipo,$elidControl){
+		$fecha_actual=date("d/m/Y");
+		$anio=date("Y");
+		$miConex = new Conexion();
+		$ofisolo="0";
+		
+		$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT count(*) as N from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'");
+		foreach ($resultado as $row) {$hay=$row["N"];}
+		
+		if ($hay==0) {
+			$numofi="NO HAY CONSECUTIVO";
+			$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT CONS_NUMERO, CONS_PRE from pconsoficios where CONS_URES='".$depto."' and CONS_ANIO='".$anio."'");
+			foreach ($resultado as $row) {$ofisolo=$row["CONS_NUMERO"]; $numofi=$row["CONS_PRE"]."-".$row["CONS_NUMERO"]."/".$anio;}
+			$res=$miConex->afectaSQL($_SESSION['bd'],"UPDATE pconsoficios set CONS_NUMERO=CONS_NUMERO+1 where CONS_URES='".$depto."'");
+			
+			if (!($numofi=="NO HAY CONSECUTIVO")){
+				$res=$miConex->afectaSQL($_SESSION['bd'],"INSERT INTO contoficios (CONT_TIPO,CONT_NUMOFI,CONT_FECHA, CONT_CONTROL,".
+						"CONT_USUARIO,_INSTITUCION,_CAMPUS,CONT_SOLO) values ('".$tipo."','".$numofi."','".$fecha_actual."','".$elidControl."',".
+						"'".$_SESSION['usuario']."','".$_SESSION['INSTITUCION']."','".$_SESSION['CAMPUS']."','".$ofisolo."');");
+			}
+			$data[0]["CONT_FECHA"]=$fecha_actual;
+			$data[0]["CONT_NUMOFI"]=$numofi;
+			$data[0]["CONT_SOLO"]=$ofisolo;
+		}
+		else {
+			$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'");
+			foreach ($resultado as $row) {$data[] = $row;}
+		}
+		return $data;
+	}
 	
 
 	function dameCardinal($num){
