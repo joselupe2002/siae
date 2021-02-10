@@ -35,12 +35,12 @@
    	     		$data[0]["CONT_FECHA"]=$fecha_actual;
    	     		$data[0]["CONT_NUMOFI"]=$numofi;
    	     	}
-   	     	else {   	     		
-   	     		$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL=".$_GET["ID"]);
+   	     	else {   	   		
+   	     		$resultado=$miConex->getConsulta($_SESSION['bd'],"SELECT * from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'");
    	     		foreach ($resultado as $row) {$data[] = $row;}
 				}   	
 				
-				echo "SELECT count(*) as N from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'";
+				
 				return $data;   	     	
    	     }
    	     
