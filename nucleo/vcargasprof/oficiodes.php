@@ -173,7 +173,7 @@
 			
 			$pdf->SetFont('Montserrat-Medium','',9);
 			$pdf->Ln(10);
-			$pdf->Cell(0,0,$dataGen[0]["inst_fechaof"].$fechaof,0,1,'R');
+			$pdf->Cell(0,0,$dataGen[0]["inst_fechaof"]." ".$fechaof,0,1,'R');
 			$pdf->Ln(5);
 			$pdf->Cell(0,0,'OFICIO No. '.utf8_decode($dataof[0]["CONT_NUMOFI"]),0,1,'R');
 			$pdf->Ln(5);
