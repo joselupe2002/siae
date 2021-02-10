@@ -151,7 +151,7 @@ class UtilUser {
 		$anio=date("Y");
 		$miConex = new Conexion();
 		$ofisolo="0";
-
+		echo "SELECT count(*) as N from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'";
 
 		$data[0]["CONT_FECHA"]="SELECT count(*) as N from contoficios where CONT_TIPO='".$tipo."' and CONT_CONTROL='".$elidControl."'";
 		
