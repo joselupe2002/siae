@@ -171,8 +171,8 @@
 			
 		
 
-			//$fechadecof=$miutil->formatFecha($dataof[0]["CONT_FECHA"]);
-			//$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
+			$fechadecof=$miutil->formatFecha($dataof[0]["CONT_FECHA"]);
+			$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
 			
 			$pdf->SetFont('Montserrat-Medium','',9);
 			$pdf->Ln(10);
