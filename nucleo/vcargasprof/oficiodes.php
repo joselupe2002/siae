@@ -166,9 +166,11 @@
 			$dataGen = $pdf->LoadDatosGen();
 			$depto=$miutil->getDatoEmpl($_GET["ID"],"EMPL_DEPTO");
 			
-			echo $_GET["ID"]."-".$_GET["ciclo"];
+			
 			$dataof=$pdf->verificaOficio($depto,"DESCARGA",$_GET["ID"]."-".$_GET["ciclo"]);
 			
+			echo $dataof[0]["CONT_FECHA"]." ".$dataof[0]["CONT_NUMOFI"];
+
 			$fechadecof=$miutil->formatFecha($dataof[0]["CONT_FECHA"]);
 			$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
 			
