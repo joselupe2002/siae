@@ -150,8 +150,8 @@
 		$top1=257; $top2=253; $left1=20; $left2=190; $left3=180;
 
 		$pdf->Image('../../imagenes/empresa/fondo.png',0,0,187,275);
-		$pdf->Image('../../imagenes/empresa/enc1.png',30,20,90);
-		$pdf->Image('../../imagenes/empresa/enc2.png',130,17,40);
+		$pdf->Image('../../imagenes/empresa/encabezado.png',18,22,170);
+		//$pdf->Image('../../imagenes/empresa/enc2.png',130,17,40);
 
 		$pdf->AddFont('Montserrat-Black','B','Montserrat-Black.php');
 		$pdf->AddFont('Montserrat-Black','U','Montserrat-Black.php');
@@ -237,8 +237,8 @@
 		}
 
 		
-		$pdf->Image('../../imagenes/empresa/enc3.png',20,255,10);
-		$pdf->Image('../../imagenes/empresa/logo3.png',160,255,35);
+		$pdf->Image('../../imagenes/empresa/libre.png',150,250,36,18);
+		$pdf->Image('../../imagenes/empresa/logo3.png',16,250,57,24);
 
 		
 		if (($_GET["tipo"]=='1') || ($_GET["tipo"]=='2'))  {
