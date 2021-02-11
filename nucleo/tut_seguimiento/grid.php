@@ -61,6 +61,9 @@
 							</button>	
 							<button title="Exportar a Excel" onclick="convertirDataTable('tabAvances');" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon orange fa fa-wrench bigger-120"></i><span class="btn-small"></span>            
+							</button>
+							<button title="Reporte" onclick="reporte();" class="btn btn-white btn-info btn-round"> 
+								<i class="ace-icon orange fa fa-file-text-o bigger-120"></i><span class="btn-small">Reporte </span>            
 							</button>										
 						</div>
 		            </div> 
@@ -147,6 +150,8 @@
 <script type="text/javascript">
  
  var usuario="<?php echo $_SESSION["usuario"];?>";
+ var lains="<?php echo $_SESSION["INSTITUCION"];?>";
+ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
  var roles="<?php echo $_SESSION["roles"];?>";
 
 </script>

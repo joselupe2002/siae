@@ -1,6 +1,7 @@
 var id_unico="";
 var estaseriando=false;
 var matser="";
+var esdocente="";
 contAlum=1;
 contMat=1;
 
@@ -43,7 +44,9 @@ contMat=1;
 		 
 	function change_SELECT(elemento) {
 		if (elemento=="selCiclos") {
+			esdocente=false;
 			if ((roles.indexOf("DOCENTE")>=0) ){
+				esdocente=true;
 				elsql="SELECT a.ID, CONCAT(a.MATERIA,'|',a.MATERIAD,'|',a.SIE,'|',a.CARRERAD) FROM vcargasprof a where a.CICLO="+
 				"'"+$("#selCiclos").val()+"' and a.TIPOMAT IN ('T') AND a.PROFESOR='"+usuario+"'";
 			} 
@@ -55,7 +58,7 @@ contMat=1;
 		
 			actualizaSelect("selMateria",elsql , "BUSQUEDA","");  	
 
-			actualizaSelect("selCortes", "SELECT ID, DESCRIPCION FROM ecortescal  WHERE CICLO='"+$("#selCiclos").val()+"' and CLASIFICACION='CALIFICACION' ORDER BY ID ", "","");  					
+			actualizaSelect("selCortes", "SELECT ID,  concat(DESCRIPCION,'|',TIPO) FROM ecortescal  WHERE CICLO='"+$("#selCiclos").val()+"' and CLASIFICACION='CALIFICACION' ORDER BY ID ", "","");  					
 
 		
 			$("#elciclo").html($("#selCiclos").val());
@@ -80,6 +83,7 @@ contMat=1;
 		   "                <th>No.</th> "+
 		   "                <th>Control</th> "+	
 		   "                <th>Nombre</th> "+	
+		   "                <th>Obs</th> "+	
 		   "                <th>Per</th> "+		
 		   "             </tr> "+
 		   "            </thead>" +
@@ -90,8 +94,7 @@ contMat=1;
 		elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE,"+
 		" getPeriodos(ALUM_MATRICULA,'"+$("#selCiclos").val()+"') as PERIODOS  FROM "+
 		" dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.IDGRUPO="+$("#selMateria").val()+
-
-		" ORDER BY ALUM_MATRICULA";
+		" ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE";
 		mostrarEspera("esperahor","grid_avancegral","Cargando Datos...");
 
 	
@@ -105,10 +108,11 @@ contMat=1;
 						 
 					   elsqlMat="SELECT DISTINCT MATCVE AS MATERIA, MATE_DESCRIP AS MATERIAD from dlista g, cmaterias h "+
 					            " where g.MATCVE=h.MATE_CLAVE AND g.PDOCVE='"+$("#selCiclos").val()+"'"+
-					            "AND IFNULL(h.MATE_TIPO,'') NOT IN ('OC') AND g.ALUCTR IN ("+
+					            " AND g.ALUCTR IN ("+
 								"    SELECT  a.ALUCTR FROM dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and "+
 								"    a.IDGRUPO="+$("#selMateria").val()+")";	
 						
+			
 						
 						parametros2={sql:elsqlMat,dato:sessionStorage.co,bd:"Mysql"}
 						$.ajax({
@@ -144,12 +148,20 @@ function generaTablaAvances(grid_data){
 		$("#rowA"+contAlum).append("<td>"+contAlum+"</td>");
 		$("#rowA"+contAlum).append("<td id=\"alum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.ALUM_MATRICULA+"</td>");
 		$("#rowA"+contAlum).append("<td id=\"Nalum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.NOMBRE+"</td>");
+
+		$("#rowA"+contAlum).append("<td><button title=\"Agregar Observación al alumno\" onclick=\"addObs('"+valor.ALUM_MATRICULA+"');\" "+
+			                           "class=\"btn btn-white btn-info btn-round\" > "+
+									   "     <i class=\"ace-icon orange fa fa-comment bigger-120\"></i><span class=\"btn-small\"></span> "+          
+									   " </button>	</td>");
+
 		$("#rowA"+contAlum).append("<td style=\"font-size:10px;\"><span class=\"badge  badge-info\">"+valor.PERIODOS+"</span></td>");
 
 	    contAlum++;      			
 	});	
 	
 } 
+
+
 
 
 
@@ -170,7 +182,7 @@ function generaTablaMaterias(grid_data){
 								 
 		for (i=1;i<contAlum;i++) {
 
-			elsqlPaso="select "+i+" as ID, ifnull(TIPO,'') AS TIPO, b.DESCRIP AS DESCRIP, b.CORTO AS CORTO,"+
+			elsqlPaso="select "+i+" as ID, ifnull(TIPO,'') AS TIPO, b.DESCRIP AS DESCRIP, b.CORTO AS CORTO, b.COLOR,"+
 			" ifnull(OBS,'') AS OBS, "+
 			" (select count(*) from dlista b where b.ALUCTR='"+$("#alum_"+i).html()+
 			          "' AND b.MATCVE='"+valor.MATERIA+"' AND BAJA='N' AND PDOCVE='"+$("#selCiclos").val()+"') AS LLEVA,"+
@@ -188,8 +200,8 @@ function generaTablaMaterias(grid_data){
 					misdatos=JSON.parse(dataPaso);
 				
 					if (misdatos[0]["LLEVA"]>0) {
-					   if (misdatos[0]["HAY"]>0) {	$("#rowA"+misdatos[0]["ID"]).append("<td><span title=\""+misdatos[0]["DESCRIP"]+"\" class=\"badge badge-warning\">"+misdatos[0]["CORTO"]+"</badge></td>");}	
-					   else {$("#rowA"+misdatos[0]["ID"]).append("<td><span title=\""+misdatos[0]["DESCRIP"]+"\" class=\"badge badge-danger\">"+"SD"+"</badge></td>");}							      
+					   if (misdatos[0]["HAY"]>0) {	$("#rowA"+misdatos[0]["ID"]).append("<td><span title=\""+misdatos[0]["DESCRIP"]+'|'+valor.MATERIAD+"\" class=\"badge "+misdatos[0]["COLOR"]+"\">"+misdatos[0]["CORTO"]+"</badge></td>");}	
+					   else {$("#rowA"+misdatos[0]["ID"]).append("<td><span title=\"No respondio la encuesta\" class=\"badge badge-danger\">"+"SD"+"</badge></td>");}							      
 					}
 					else {$("#rowA"+misdatos[0]["ID"]).append("<td><span title=\"No Cursa la asignatura\" ><i class=\"fa fa-times green\"></i></badge></td>");}							      
 			
@@ -202,3 +214,71 @@ function generaTablaMaterias(grid_data){
 	});	
 	
 } 
+
+/*==================================GUARDAR OBSERVACIONES =============================*/
+
+
+function addObs (matricula){
+
+	elsql="SELECT ifnull(OBS,''),count(*) hay FROM tut_obsprof WHERE IDCORTE='"+$("#selCortes").val()+"'"+
+	" AND MATRICULA='"+matricula+"' and CICLO='"+$("#selCiclos").val()+"'";
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+	        success: function(data){  
+				    laobsant=JSON.parse(data)[0][0];				
+
+					$("#frmObs").empty();
+					mostrarConfirm2("frmObs", "grid_tut_seguimiento",  "Observaciones",
+					"<span class=\"label label-success\">Observaciones</span>"+
+					"     <textarea id=\"obsProf\" style=\"width:100%; height:100%; resize: none;\">"+laobsant+"</textarea>"
+					,"Guardar Observación", "guardarObs('"+matricula+"');","modal-sm");
+			}
+		});
+}
+
+
+function guardarObs(matricula){
+	campo='';
+
+	elciclo=$("#selCiclos").val();
+	idcorte=$("#selCortes").val();
+	tipocorte=$("#selCortes option:selected").text().split("|")[1];
+	laobs=$("#obsProf").val().toUpperCase();
+
+	lafecha=dameFecha("FECHAHORA");
+	var losdatos=[];
+	losdatos[0]=idcorte+"|"+tipocorte+"|"+laobs+"|"+matricula+"|"+elciclo+"|"+lains+"|"+elcam+"|"+usuario+"|"+lafecha;
+	   var loscampos = ["IDCORTE","CORTE","OBS","MATRICULA","CICLO","_INSTITUCION","_CAMPUS","USUARIO","FECHAUS"];
+
+	   parametros={
+		tabla:"tut_obsprof",
+		 campollave:"concat(MATRICULA,IDCORTE,CICLO)",
+		 bd:"Mysql",
+		 valorllave:matricula+idcorte+elciclo,
+		 eliminar: "S",
+		 separador:"|",
+		 campos: JSON.stringify(loscampos),
+		 datos: JSON.stringify(losdatos)
+	   };
+
+	  $.ajax({
+		 type: "POST",
+		 url:"../base/grabadetalle.php",
+		 data: parametros,
+		 success: function(data){
+				$("#frmObs").modal("hide");			  
+		 }					     
+	 });    	                 	 
+}
+
+
+
+function reporte() {
+	enlace="nucleo/tut_seguimiento/reporteSeg.php?ciclo="+$("#selCiclos").val()+"&materia="+
+	$("#selMateria").val()+"&corte="+$("#selCortes").val()+"&corted="+$("#selCortes option:selected").text();
+	abrirPesta(enlace, "Reporte Seg");
+}

@@ -317,6 +317,8 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 	function guardar(iddet,materia,grupo,){
 		campo='';
 	
+		elciclo=$("#elciclo").html();
+	
 		idcorte=$("#selCortes").val();
 		tipocorte=$("#selCortes option:selected").text().split("|")[1];
 
@@ -329,9 +331,9 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 
 		   parametros={
 			tabla:"tut_motrepalum",
-			 campollave:"IDDETALLE",
+			 campollave:"concat(IDDETALLE,'_',IDCORTE)",
 			 bd:"Mysql",
-			 valorllave:iddet,
+			 valorllave:iddet+"_"+idcorte,
 			 eliminar: "S",
 			 separador:"|",
 			 campos: JSON.stringify(loscampos),
