@@ -82,7 +82,7 @@
 		$elperiodo='del '.$fechaini.' al '.$fechafin;
 		$pdf->MultiCell(0,5,utf8_decode('Según documentos que obran en los archivos de esta Institución, el (la) C. ').utf8_decode($data[0]["NOMBRE"]).
 		' con matricula No. '.utf8_decode($data[0]["MATRICULA"]).utf8_decode(', de la carrera de ').utf8_decode($data[0]["CARRERAD"]).
-		utf8_decode(' realizó su servicio social en ').utf8_decode($data[0]["PREEMPRESA"]).utf8_decode($data[0]["EMPRESAD"]).
+		utf8_decode(' realizó su servicio social en ').utf8_decode($data[0]["PREEMPRESA"]).utf8_decode($data[0]["EMPRESA"]).
 		utf8_decode(' obteniendo una calificacion final de ').utf8_decode($data[0]["CALIFICACION"]).
 		utf8_decode(', cumpliendo satisfactoriamente con los requisitos que se establecen de acuerdo a lo establecido en el artículo 55 '.
 					'de la Ley Reglamentaria del artículo 5o Constitucional, relativo al ejercicio de las Profesiones '.

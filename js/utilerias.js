@@ -3696,3 +3696,194 @@ function eliminaHistorial(idtram,area,tipo,){
 		});    	    
 
 }
+
+
+/*=========================SOLO PARA EL MODULO DE SERVICIO SOCIAL ===============================*/
+function ss_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper,miciclo,matricula){
+
+	
+	script="<div class=\"modal fade\" id=\"adjuntos\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
+	   "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
+	   "      <div class=\"modal-content\">"+
+	   "          <div class=\"modal-header widget-header  widget-color-green\">"+
+	   "             <span class=\"label label-lg label-primary arrowed arrowed-right\"> Documentos Adjuntados </span>"+
+	   "             <span class=\"label label-lg label-success arrowed arrowed-right\">"+table.rows('.selected').data()[0]["NOMBRE"]+"</span>"+			   
+	   "             <input type=\"hidden\" id=\"elid\" value=\""+table.rows('.selected').data()[0]["ID"]+"\"></input>"+
+	   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
+	   "                  <span aria-hidden=\"true\">&times;</span>"+
+	   "             </button>"+
+	   "          </div>"+  
+	   "          <div id=\"frmdescarga\" class=\"modal-body\" >"+					 
+	   "             <div class=\"row\" style=\"overflow-x: auto; overflow-y: auto; height:300px;\"> "+		
+	   "                  <table id=\"tabAsp\" class= \"table table-condensed table-bordered table-hover\">"+
+		  "                         <thead>  "+
+	   "                               <tr>"+	
+	   "                                   <th>Documento</th> "+
+	   "                             	   <th>PDF</th> "+ 
+	   "                             	   <th>VALIDAR</th> "+ 
+	   "                               </tr> "+
+	   "                         </thead>" +
+	   "                   </table>"+	
+	   "             </div> "+ //div del row
+	   "             <div class=\"space-10\"></div>"+		   
+	   "          </div>"+ //div del modal-body		 
+	   "          </div>"+ //div del modal content		  
+	   "      </div>"+ //div del modal dialog
+	   "   </div>"+ //div del modal-fade
+	   "</div>";
+ 
+
+	  
+	 $("#adjuntos").remove();
+	if (! ( $("#adjuntos").length )) {
+		$("#grid_"+modulo).append(script);
+	}
+
+	$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+	
+	$('#adjuntos').modal({show:true, backdrop: 'static'});
+
+	sqlAsp="SELECT 'SSSOLSS' AS TIPO, 'SOLICITUD FIRMADA' as REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSCARTACOM' AS TIPO, 'CARTA COMPROMISO' AS REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSPLAN' AS TIPO, 'PLAN DE TRABAJO' AS REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSBIM1' AS TIPO, 'REPORTE BIMESTRE 1' AS REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSBIM2' AS TIPO, 'REPORTE BIMESTRE 2' AS REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSBIM3' AS TIPO, 'REPORTE FINAL' AS REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSFINAL' AS TIPO, 'DOCUMENTOS FINALES' AS REPORTE FROM DUAL  ";										
+
+
+	parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		   type: "POST",
+		   data:parametros,
+		   url:  "../base/getdatossqlSeg.php",
+		   success: function(data){  
+				  losdatos=JSON.parse(data);  
+				  ladefault="..\\..\\imagenes\\menu\\pdf.png";
+				  $("#cuerpoAsp").empty();
+				  $("#tabAsp").append("<tbody id=\"cuerpoAsp\">");
+				  c=0;	
+				  globalUni=1; 
+				  grid_data=JSON.parse(data);	  
+				  jQuery.each(grid_data, function(clave, valor) { 	
+
+					sqlad="select IFNULL(RUTA,'') AS RUTA, IFNULL(VALIDADO,'N') AS VALIDADO, IFNULL(OBSVALIDADO,'') AS OBSVALIDADO, count(*) as ESTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_"+valor.TIPO+"'";
+					parametros={sql:sqlad,dato:sessionStorage.co,bd:"Mysql"}
+					   $.ajax({
+						type: "POST",
+						data:parametros,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(dataAdj){  
+							jQuery.each(JSON.parse(dataAdj), function(clave, valorAdj) {
+									$("#cuerpoAsp").append("<tr id=\"rowAsp"+c+"\"></tr>");								
+									$("#rowAsp"+c).append("<td>"+valor.REPORTE+"</td>");
+									grid_data=JSON.parse(data);
+
+									cadEnc="<a title=\"Ver Archivo Adjunto\" target=\"_blank\" id=\"enlace_"+c+"\" href=\""+valorAdj.RUTA+"\">"+
+												" <img width=\"40px\" height=\"40px\" id=\"pdf"+c+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+												" </a>";	
+									$("#rowAsp"+c).append("<td style=\"text-align: center; vertical-align: middle;\">"+cadEnc+"</td>");
+							
+									if (valorAdj.VALIDADO=='S') {cadValor='N'; mensajebtn="No Validar"; } else {cadValor='S'; mensajebtn="Validar";}
+
+									evento="ss_validaradj('"+valor.TIPO+"','"+miciclo+"','"+matricula+"','"+cadValor+"','"+valorAdj.OBSVALIDADO+"','"+valor.REPORTE+"');";
+									$("#rowAsp"+c).append( "<td><button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" "+
+														"onclick=\""+evento+"\"><strong>"+mensajebtn+"</strong></button><td>");		
+										
+									if ((valorAdj.RUTA=='')||(valorAdj.RUTA==null)) { 				    
+											$('#enlace_'+c).attr('disabled', 'disabled');
+											$('#enlace_'+c).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+											$('#pdf'+c).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");
+									}
+										
+									c++;
+									globalUni=c;
+								});
+						
+						}
+					});
+
+							  
+				});
+		   
+			   $('.fileSigea').ace_file_input({
+				   no_file:'Sin archivo ...',
+				   btn_choose:'Buscar',
+				   btn_change:'Cambiar',
+				   droppable:false,
+				   onchange:null,
+				   thumbnail:false, //| true | large
+				   whitelist:'pdf',
+				   blacklist:'exe|php'
+				   //onchange:''
+				   //
+			   });
+											  
+											
+				 },
+		   error: function(data) {	                  
+					  alert('ERROR: '+data);
+				  }
+   });		
+
+}
+
+function ss_validaradj(tipo,ciclo,matricula,valor,obs, reporte){
+$("#confVal").empty();
+mostrarConfirm("confVal", "adjuntos",  "Proceso de Cotejo",
+"<span class=\"label label-success\">Observaciones "+reporte+"</span>"+
+"     <textarea id=\"ss_obsValidado\" style=\"width:100%; height:100%; resize: none;\">"+obs+"</textarea>",
+"¿Marcar como Validado? "+
+"<SELECT id=\"ss_validado\"><OPTION value=\"S\">SI</OPTION><OPTION value=\"N\">NO</OPTION></SELECT>"
+,"Finalizar Proceso", "ss_btnValidarAdj('"+ciclo+"','"+matricula+"','"+valor+"','"+tipo+"','"+reporte+"');","modal-sm");
+}
+
+
+function ss_btnValidarAdj(ciclo,matricula,valor,tipo, reporte){
+
+parametros={
+   tabla:"eadjresidencia",
+   campollave:"AUX",
+   bd:"Mysql",
+   valorllave:matricula+"_"+ciclo+"_"+tipo,
+   VALIDADO: valor,
+   OBSVALIDADO:$("#ss_obsValidado").val()
+};
+
+$.ajax({
+type: "POST",
+url:"actualiza.php",
+data: parametros,
+success: function(data){
+   $('#dlgproceso').modal("hide"); 
+   status="<span style=\"color:red\"><b>NO VALIDADO</b></span>"; 
+   cadObs="<b>Favor de Revisar la siguiente Observación:<b><br>"+$("#obsCotejado").val();
+   if ($("#ss_validado").val()=='S') {status="<span style=\"color:green\"><b> VALIDADO</b></span>"; cadObs="";}
+
+   correoalAlum(matricula, "<html>Servicio Social: "+reporte+" "+status+
+						"</b></span>."+cadObs
+						,"STATUS DE SOLICITUD SERVICIO SOCIAL "+matricula);
+	$("#adjuntos").modal("hide");
+	$("#confVal").modal("hide");
+	
+	
+	//ss_mostrarAdjuntos("vss_alumnos","","","","",ciclo,matricula);
+
+	   }					     
+});    	
+}
+
+
+function previewAdjunto(enlace) {
+	//quitamos los ../ que tenga ya que se debe encontrar en raiz 
+	var re = /\.\.\//gi;
+	var str = enlace;
+	var newstr = str.replace(re, "");
+	abrirPesta(newstr, "Adjunto");
+}

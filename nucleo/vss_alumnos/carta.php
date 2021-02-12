@@ -121,7 +121,7 @@
 
 		$pdf->Cell(0,4,utf8_decode(strtoupper ($data[0]["REPRESENTANTE"])),0,1,'L');
 		$pdf->Cell(0,4,utf8_decode(strtoupper ($data[0]["PUESTO"])),0,1,'L');
-		$pdf->MultiCell(100,5,utf8_decode(strtoupper ($data[0]["EMPRESAD"])),0,'L',false);
+		$pdf->MultiCell(100,5,utf8_decode(strtoupper ($data[0]["EMPRESA"])),0,'L',false);
 
 		$pdf->Ln(10);
 
