@@ -23,7 +23,7 @@ function cargarInformacion(){
 	mostrarEspera("esperaInf","grid_pa_evenins","Cargando Datos...");
 	cadSql="select x.ID, x.FOTOACTIVIDAD, x.ENLACE, x.DESCRIPCION, x.FECHA, x.HORA, (select count(*) from eventos_ins where EVENTO=x.ID and PERSONA='"+usuario+"') as INSCRITO "+
 	" from eeventos x, eeventosprin y, vepersonas z where "+
-	" x.EVENTO=y.ID AND STR_TO_DATE(x.FECHA,'%d/%m/%Y')>=NOW() - INTERVAL 1 DAY	and x.TITULAR=z.ID and ABIERTOINS='S' order by STR_TO_DATE(x.FECHA,'%d/%m/%Y'), x.HORA";
+	" x.EVENTO=y.ID AND STR_TO_DATE(x.FECHA,'%d/%m/%Y')>=NOW() and x.TITULAR=z.ID and ABIERTOINS='S' order by STR_TO_DATE(x.FECHA,'%d/%m/%Y'), x.HORA";
 	
 	
 	parametros={sql:cadSql,dato:sessionStorage.co,bd:"Mysql"}
