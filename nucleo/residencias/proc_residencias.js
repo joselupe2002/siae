@@ -96,3 +96,34 @@ function verLibTit  (modulo,usuario,institucion, campus,essuper){
 	return false;
 }
 
+
+
+
+function oficioAsesor  (modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+		 
+	if (table.rows('.selected').data().length>0) {
+		enlace="nucleo/residencias/asigAsesor.php?ID="+table.rows('.selected').data()[0]["IDRES"]+"&tipo=0";
+		abrirPesta(enlace, "Asig_Asesor");
+  }
+  else {
+	  alert ("Debe seleccionar un registro");
+	  return 0;
+	  }
+	return false;
+}
+
+
+function oficioAsesorS (modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+		 
+	if (table.rows('.selected').data().length>0) {
+		enlace="nucleo/residencias/asigAsesor.php?ID="+table.rows('.selected').data()[0]["IDRES"]+"&tipo=1";
+		abrirPesta(enlace, "Asig_Asesor");
+  }
+  else {
+	  alert ("Debe seleccionar un registro");
+	  return 0;
+	  }
+	return false;
+}

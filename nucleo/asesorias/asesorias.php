@@ -223,7 +223,6 @@
 				$this->SetDrawColor(0,0,0);
 				$this->SetLineWidth(.2);
 				
-	
 				$w = array(15, 61, 10,50,85,15,15);
 				$this->SetFont('Montserrat-ExtraBold','B',7);
 				$this->SetWidths(array(15, 61, 10,50,85,15,15));	
@@ -248,13 +247,8 @@
 									utf8_decode($row[5]), utf8_decode($row[6])
 							));
 						}
-					}
-				
-				
-					
-			}
-			
-			
+					}	
+			}			
 				
 		}
 		
