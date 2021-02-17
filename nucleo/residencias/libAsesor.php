@@ -297,7 +297,7 @@
         $pstocoor=$miutil->getJefe('701');//Nombre del puesto de coordinacion de titulacion 
     
         
-        $dataof=$miutil->verificaOficio($dataCar[0]["DEPTO"],"ASIGASERES",$_GET["ID"]);
+        $dataof=$miutil->verificaOficio($dataCar[0]["DEPTO"],"LIBERARES",$_GET["ID"]);
 		
 		$fechadecof=$miutil->formatFecha($dataof[0]["CONT_FECHA"]);
 		$fechaof=date("d", strtotime($fechadecof))."/".$miutil->getFecha($fechadecof,'MES'). "/".date("Y", strtotime($fechadecof));
@@ -309,7 +309,9 @@
 		$pdf->Cell(0,0,'OFICIO No. '.utf8_decode($dataof[0]["CONT_NUMOFI"]),0,1,'R');
         $pdf->SetFont('Montserrat-ExtraBold','B',9);
         $pdf->Ln(5);
-        $pdf->Cell(0,0,'ASUNTO:'.utf8_decode("ASIGNACIÓN DE ASESOR RESIDENCIA"),0,1,'R');
+        $pdf->Cell(0,0,'ASUNTO:'.utf8_decode("CONSTANCIA DE CUMPLIMIENTO"),0,1,'R');
+        $pdf->Ln(3);
+        $pdf->Cell(0,0,'ASUNTO:'.utf8_decode("DE ASESORÍAS RESIDENCIA"),0,1,'R');
 		$pdf->SetFont('Montserrat-ExtraBold','B',9);
         $pdf->Ln(5);
         
@@ -322,7 +324,7 @@
         $pdf->Ln(10);
         
         $pdf->SetFont('Montserrat-Medium','',10);
-        $pdf->MultiCell(0,5,utf8_decode("Por este medio informo a usted que ha sido asignado como ASESOR DE RESIDENCIA PROFESIONAL en el periodo ".$dataAlum[0]["CICLOD"].", de el(los) siguiente(s) alumno(s)."),0,'J',FALSE);
+        $pdf->MultiCell(0,5,utf8_decode("Por medio de la presente hago constar que cumplió con el 100% de sus ACTIVIDADES DE ASESORÍAS DE RESIDENCIAS PROFESIONALES en el periodo ".$dataAlum[0]["CICLOD"].", de el(los) siguiente(s) alumno(s)."),0,'J',FALSE);
         $pdf->Ln(10);
 
         $header = array('No.', 'NOMBRE DEL ALUMNO', 'MATRICULA','PROYECTO','PERIODO');		
