@@ -155,7 +155,7 @@ var miciclo="";
 						
 						losdatos=JSON.parse(data); 						
 
-						if ((porcReal>=85)) {
+						if ((porcReal>=80)) {
 														
 							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
 							"    <div class=\"col-sm-12\"> "+
