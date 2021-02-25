@@ -50,6 +50,12 @@
     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
     </div>
 
+	<?php 
+		$miConex = new Conexion();
+		$resultado=$miConex->getConsulta("SQLite","SELECT * from INSTITUCIONES where inst_clave='".$_SESSION["INSTITUCION"]."'");
+		foreach ($resultado as $row) {$titulo= $row["inst_tituloasp"]; }		
+	?>
+
 
 	<div style="height:10px; background-color: #C18900;"> </div>
 	<div class="container-fluid informacion" style="background-color: #9B0B0B;">   
@@ -59,9 +65,8 @@
 			  </div>
 			  <div class="col-md-4" >
 				   <div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">
-						  PROCESO DE ADMISIÓN
-				    </div>
-				   <div class="text-primary"  style="padding:0px; font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">2020</div>
+				  	 <?php echo $titulo ?>
+				    </div>				   
 			  </div>
 			  <div class="col-md-4" style="padding-top: 20px; text-align: right;">			      
 			  </div>
@@ -694,71 +699,7 @@
 	</div><!-- /.widget-body -->
 
 
-<!--====================================================PIE DE PAGINA ========================================= -->
-<div style="height:5px; background-color:#C40E0E;"> </div>
-<div class="container-fluid informacion" >   
-		 <div class="row" style="background-color: #9B0B0B;">
-		     <div class="col-md-2" > </div>
-             <div class="col-md-3" > 
-			    <div class='space-8'></div>
-			    <div class="row"> 
-					<div class="col-md-12"> 
-						 <span style="color:#9E9494; font-weight: bold;"> REDES SOCIALES</span>
-					</div>
-				 </div>
-				 <div class="row"> 
-				    <div class="col-md-12"> 
-						 <a href="https://www.facebook.com/tecnologico.macuspana.73" target="_blank">
-						 <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
-						 <span style="color:white; font-weight: bold;"> Facebook</span></a>
-                    </div>
-
-				 </div>
-             </div>
-			  <div class="col-md-3" >
-					<div class='space-8'></div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<span style="color:#9E9494; font-weight: bold;"> CONTACTO</span>
-							</div>
-					</div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<i class="ace-icon fa fa-phone white bigger-150"></i>
-								<span style="color:white; font-weight: bold;"> escolares@macuspana.tecnm.mx</span>
-							</div>
-					</div>				
-			  </div>				
-
-			  <div class="col-md-4" >
-					<div class='space-8'></div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<span style="color:#9E9494; font-weight: bold;">INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA</span>
-							</div>
-					</div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<i class="ace-icon fa fa-map-marker green bigger-150"></i>
-								<span style="color:white; font-weight: bold;"> Avenida Tecnológico s/n, Lerdo de Tejada 1ra Secc.</span>
-						    </div>
-					</div>
-					<div class="row"> 
-							<div class="col-md-12"> 								
-								<span style="color:white; font-weight: bold;"> Macuspana, Tabasco, C.P. 86719</span>
-						    </div>
-					</div>
-					
-					
-
-					
-			  </div>
-
-			  <div class="col-md-1" style="padding-top: 20px; text-align: right;">
-			    
-			  </div>
-        </div>
-	</div>
+	<?php include '../admision/pie.php'?>
 	
 
 	

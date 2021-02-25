@@ -13,10 +13,8 @@ var elciclo="";
 			url:  "../nucleo/base/getdatossqlSeg.php",
 			success: function(data){	
 					if (!(JSON.parse(data)[0]["hay"]>0)) {window.location.href="cerrado.php";}
-
-				   jQuery.each(JSON.parse(data), function(clave, valor) { 	
-				      elciclo=valor.CICL_CLAVE;			  
-								   }); 				   
+					elciclo=JSON.parse(data)[0]["CICL_CLAVE"];	
+									   
 				  },
 			error: function(data) {	                  
 					   alert('ERROR: '+data);
@@ -467,8 +465,8 @@ function guardarPag1(){
 	parametros={
 		tabla:"aspirantes",
 		bd:"Mysql",
-		campollave:"CURP",
-		valorllave:$("#CURP").val().toUpperCase(),		
+		campollave:"CONCAT(CURP,CICLO)",
+		valorllave:$("#CURP").val().toUpperCase()+elciclo,		
 			APEPAT:$("#APEPAT").val().toUpperCase(),
 			APEMAT:$("#APEMAT").val().toUpperCase(),
 			NOMBRE:$("#NOMBRE").val().toUpperCase(),
@@ -492,8 +490,8 @@ function guardarPag2(){
 		parametros={
 			tabla:"aspirantes",
 			bd:"Mysql",
-			campollave:"CURP",
-			valorllave:$("#CURP").val().toUpperCase(),
+			campollave:"CONCAT(CURP,CICLO)",
+			valorllave:$("#CURP").val().toUpperCase()+elciclo,
 			NACIONALIDAD: $("#NACIONALIDAD").val(),	
 			NACIONALIDAD_ADD : $("#NACIONALIDAD_ADD").val().toUpperCase(),
 			FECHANAC: $("#FECHANAC").val(),
@@ -526,8 +524,8 @@ function guardarPag3(){
 	parametros={
 		tabla:"aspirantes",
 		bd:"Mysql",
-		campollave:"CURP",
-		valorllave:$("#CURP").val().toUpperCase(),
+		campollave:"CONCAT(CURP,CICLO)",
+		valorllave:$("#CURP").val().toUpperCase()+elciclo,
 		
 		ESTESCPROC: $("#ESTESCPROC").val() ,
 	    ESCPROC: $("#ESCPROC").val() , 
@@ -556,8 +554,8 @@ function guardarPag4(){
 	parametros={
 		tabla:"aspirantes",
 		bd:"Mysql",
-		campollave:"CURP",
-		valorllave:$("#CURP").val().toUpperCase(),
+		campollave:"CONCAT(CURP,CICLO)",
+		valorllave:$("#CURP").val().toUpperCase()+elciclo,
 		
 		    ESTRES: $("#ESTRES").val() , 
 			MUNRES: $("#MUNRES").val() , 
@@ -592,8 +590,8 @@ function guardarPag5(){
 	parametros={
 		tabla:"aspirantes",
 		bd:"Mysql",
-		campollave:"CURP",
-		valorllave:$("#CURP").val().toUpperCase(),
+		campollave:"CONCAT(CURP,CICLO)",
+		valorllave:$("#CURP").val().toUpperCase()+elciclo,
 		
 		SM : $("#SM").val() ,
 		SMNUMERO: $("#SMNUMERO").val() ,
@@ -624,8 +622,8 @@ function guardarPag6(){
 	parametros={
 		tabla:"aspirantes",
 		bd:"Mysql",
-		campollave:"CURP",
-		valorllave:$("#CURP").val().toUpperCase(),
+		campollave:"CONCAT(CURP,CICLO)",
+		valorllave:$("#CURP").val().toUpperCase()+elciclo,
 		TUTOR: $("#TUTOR").val().toUpperCase() , 
 		ESTTUTOR: $("#ESTTUTOR").val() ,
 		MUNTUTOR: $("#MUNTUTOR").val() ,
@@ -658,8 +656,8 @@ function finalizar(){
 	parametros={
 		tabla:"aspirantes",
 		bd:"Mysql",
-		campollave:"CURP",
-		valorllave:$("#CURP").val().toUpperCase(),
+		campollave:"CONCAT(CURP,CICLO)",
+		valorllave:$("#CURP").val().toUpperCase()+elciclo,
 		FINALIZADO:"S"
 		};
 
@@ -723,12 +721,13 @@ function confirmarFinalizado(){
 
 
 function cargarAdjuntos() {
+	
 	contFila=0;
 	contDatos=1;
 	elsqlAdj="select IDDOC, DOCUMENTO, ifnull(b.RUTA,'') as RUTA, CLAVE, TIPOADJ, "+
-			 " (SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' ORDER BY CICL_ORDEN DESC LIMIT 1) AS CICLO "+
+			 " (SELECT max(CICL_CLAVE) FROM ciclosesc where CICL_REGISTROLINEA='S' ORDER BY CICL_ORDEN DESC LIMIT 1) AS CICLO "+
 	         " from documaspirantes a "+
-	         "LEFT OUTER JOIN  adjaspirantes b  on (b.AUX=concat(a.CLAVE,'"+$("#CURP").val()+"'))"+
+	         "LEFT OUTER JOIN  adjaspirantes b  on (b.AUX=concat('"+elciclo+"',a.CLAVE,'"+$("#CURP").val()+"'))"+
 			 " WHERE a.ENLINEA='S' and a.MODULO='REGISTRO' order by TIPOADJ, DOCUMENTO";
 			 parametros={sql:elsqlAdj,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
@@ -780,6 +779,7 @@ function cargarAdjuntos() {
 			jQuery.each(JSON.parse(data), function(clave, valor) { 
 				   stElim="display:none; cursor:pointer;";
 					if (valor.RUTA.length>0) { stElim="cursor:pointer; display:block; ";} 
+					
 					
 					cadFile="<div class=\"col-sm-4\">"+											
 					"            <span class=\"text-primary\"><strong>"+utf8Decode(valor.DOCUMENTO)+"</strong></span>"+											

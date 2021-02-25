@@ -49,19 +49,23 @@
        
     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>	      
     </div>
+	
+	<?php 
+		$miConex = new Conexion();
+		$resultado=$miConex->getConsulta("SQLite","SELECT * from INSTITUCIONES where inst_clave='".$_SESSION["INSTITUCION"]."'");
+		foreach ($resultado as $row) {$titulo= $row["inst_tituloasp"]; }		
+	?>
 
-
-	<div style="height:10px; background-color: #C18900;"> </div>
-	<div class="container-fluid informacion" style="background-color: #9B0B0B;">   
+	<div style="height:10px; background-color: #040E5A;"> </div>
+	<div class="container-fluid informacion" style="background-color: #DBEEEA;">   
          <div class="row">
              <div class="col-md-4" >
-                   <img src="../imagenes/empresa/logo2.png" alt="" width="50%" class="img-fluid" alt="Responsive image" />  
+                   <img src="../imagenes/empresa/logo2.png" alt="" width="90px" class="img-fluid" alt="Responsive image" />  
 			  </div>
 			  <div class="col-md-4" >
-				   <div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">
-						  PROCESO DE ADMISIÓN
+				   <div class="text-success" style="padding:0px;  font-size:35px; font-family:'Girassol'; color:#1728A3; text-align:center; font-weight: bold;">
+				   			<?php echo $titulo ?>
 				    </div>
-				   <div class="text-primary"  style="padding:0px; font-size:35px; font-family:'Girassol'; color:white; text-align:center; font-weight: bold;">2020</div>
 			  </div>
 			  <div class="col-md-4" style="padding-top: 20px; text-align: right;">
 			        <button onclick="window.open('registroCapt.php', '_blank'); " class="btn btn-white bigger-180  btn-info btn-round btn-next">
@@ -71,7 +75,7 @@
 			  </div>
         </div>
     </div>
-	<div style="height:10px; background-color: #C18900;"> 
+	<div style="height:10px; background-color: #040E5A;"> 
 	 </div>
 	 
 <div style="padding-left: 30px; padding-right:30px; ">  
@@ -88,165 +92,25 @@
 				  </span> 
               </div>
 		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-primary bigger-120">1</span>
-				  <span class="fontAmaranth text-light bigger-120">Clave Única de registro de Población CURP. la cuál será tu identificador como aspirante, por lo que se debe capturar correctamente. 
-				  </span> 
-				  <a href="https://www.gob.mx/curp/" target="_blank"><span class="label label-white label-success middle">Consulta tu CURP</span></a>
-              </div>
-		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="fontAmaranth badge badge-success bigger-120">2</span>
-				  <span class="fontAmaranth text-light bigger-120">Número de Seguro Social del IMSS, que fue otorgado en tu Bachiller  
-				  </span> 
-				  <a  target="_blank" href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS;JSESSIONIDASEGEXTERNO=SpgaCff8MRCqwDIw13E4NlcwPXSkV1jKBE6u0cilknwtWuzE4o0r!-1509158015">
-					  <span class="label label-white label-success middle">Consulta tu IMSS</span>
-				  </a>
-              </div>
-		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-danger bigger-120">3</span>
-				  <span class="fontAmaranth text-light bigger-120"> Constancia de Estudios de Educación Media Superior. 
-					  <span class="fontAmaranth text-danger">En caso de no contar con ella por la situación actual deberá 
-						                        llenar el documento de prorroga, firmarlo, escanearlo y subirlo en la sección de Constancia en formato PDF <i class="ace-icon blue fa fa-hand-o-right"></i> </span>  
-				  </span> 
-				  <a href="docProroga.docx">
-					  <span class="label label-white label-success middle">Prorroga</span>
-				  </a>
-              </div>
-		</div>
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-yellow bigger-120">4</span>
-				  <span class="fontAmaranth text-light bigger-120"> Haber realizado el pago correspondiente de
-					  <span class="fontAmaranth text-danger bigger-140"> $ 545.00 </span> por concepto de Ficha. Debe tener escaneado en formato PDF el Recibo
-				  </span>
-				  <a href="docCuenta.pdf" target="_blank">
-					  <span class="fontAmaranth label label-white label-success middle">Datos Cuenta</span>
-				  </a>
-				  <br/>				  
-				  <strong><span class="fontAmaranthB text-primary bigger-140">CUENTA: </span><span class="text-success bigger-140">0114349660</span></strong><br/>				   
-				  <strong><span class="fontAmaranthB text-primary bigger-140">CLABE : </span><span class="text-success bigger-140">012790001143496603</span></strong><br/> 
-				  <strong><span class="fontAmaranthB text-primary bigger-140">BANCO : </span><span class="text-success bigger-140">BBVA Bancomer</span></strong>
-              </div>
-		</div>
 
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-pink bigger-120">5</span>
-				  <span class="fontAmaranthB  text-light bigger-140"> Deberá tener los siguientes documentos en PDF</span> 
-				  <br/>				  				         
-					     <span class="fontAmaranth  text-inverse bigger-140">Acta de Nacimiento</span><br/>				         
-						 <span class="fontAmaranth  text-inverse bigger-140">Clave Única de registro de Población</span><br/>						 
-						 <span class="fontAmaranth  text-inverse bigger-140">Número de Seguridad Social Expedida por el IMSS</span><br/>						 
-						<!-- <span class="fontAmaranth  text-inverse bigger-140">Certificado de Secundaria (opcional)</span><br/>						 -->
-						 <span class="fontAmaranth  text-inverse bigger-140">Constancia de estudio con calificaciones hasta 5to semestre de Bachiller o Certificado de Estudios o Prorroga debidamente firmada</span><br/>						 
-						 <span class="fontAmaranth text-inverse bigger-140">Recibo de Pago</span><br/>
-              </div>
-		</div>
-
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-purple bigger-120">6</span>
-				  <span class="fontAmaranth  text-light bigger-120"> Fotografía infantil (blanco y negro o a color) en formato PNG o JPEG</span> 			  
-              </div>
-		</div>
-
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-success bigger-120">7</span>
-				  <strong>
-				  <span class=" fontAmaranth  text-danger bigger-120"> Una vez que capture Su CURP, Carrera y Nombre Completo, su registro queda guardado y puede finalizarlo en cualquier momento.</span> 			  
-				  </strong>
-              </div>
-		</div>
-
-		<div class="row" style="padding-top: 10px; text-align:justify;"> 
-			 <div class="col-sm-12">
-				  <span class="badge badge-warning bigger-120">8</span>
-				  <strong>
-				  <span class="fontAmaranth  text-success bigger-120"> Al finalizar su registro si desea imprimir nuevamente su ficha, solo ingrese al registro, coloque su CURP y le dará la opción de Imprimir su Ficha</span> 			  
-				  </strong>
-              </div>
-		</div>
-
-
+		<?php 
+			$loscolor=["badge-primary","badge-success","badge-danger","badge-pink","badge-info","badge-Secondary","badge-yellow","badge-purple",
+			"badge-dark","badge-success","badge-danger","badge-pink","badge-info","badge-Secondary","badge-yellow","badge-purple"];
+			$miConex = new Conexion();
+			$resultado=$miConex->getConsulta($_SESSION["bd"],"SELECT * from aspobserva where TIPO='ASPIRANTES' ORDER BY orden");
+			foreach ($resultado as $row) {
+				echo "<div class=\"row\" style=\"padding-top: 10px; text-align:justify;\">". 
+				     "     <div class=\"col-sm-12\"> ".
+					 "     		<span class=\"badge ".$loscolor[$row["ORDEN"]]." bigger-120\">".$row["ORDEN"]."</span>".
+					 "     		<span class=\"fontAmaranth text-light bigger-120\">".$row["OBSERVACION"]."</span>".
+					 "		</div>".
+					 "</div>"; 
+				}		
+		?>
 	</div>
 </div>
 
-<div class='space-20'></div>
-<div style="height:5px; background-color:#C40E0E;"> </div>
-<div class="container-fluid informacion" >   
-		 <div class="row" style="background-color: #9B0B0B;">
-		     <div class="col-md-2" > </div>
-             <div class="col-md-3" > 
-			    <div class='space-8'></div>
-			    <div class="row"> 
-					<div class="col-md-12"> 
-						 <span style="color:#9E9494; font-weight: bold;"> REDES SOCIALES</span>
-					</div>
-				 </div>
-				 <div class="row"> 
-				    <div class="col-md-12"> 
-						 <a href="https://www.facebook.com/tecnologico.macuspana.73" target="_blank">
-						 <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
-						 <span style="color:white; font-weight: bold;"> Facebook</span></a>
-                    </div>
-
-				 </div>
-             </div>
-			  <div class="col-md-3" >
-					<div class='space-8'></div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<span style="color:#9E9494; font-weight: bold;"> CONTACTO</span>
-							</div>
-					</div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<i class="ace-icon fa fa-envelope-o white bigger-150"></i>
-								<span style="color:white;">escolares@macuspana.tecnm.mx</span>
-							</div>
-					</div>				
-			  </div>				
-
-			  <div class="col-md-4" >
-					<div class='space-8'></div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<span style="color:#9E9494; font-weight: bold;">INSTITUTO TECNOLÓGICO SUPERIOR DE MACUSPANA</span>
-							</div>
-					</div>
-					<div class="row"> 
-							<div class="col-md-12"> 
-								<i class="ace-icon fa fa-map-marker green bigger-150"></i>
-								<span style="color:white; font-weight: bold;"> Avenida Tecnológico s/n, Lerdo de Tejada 1ra Secc.</span>
-						    </div>
-					</div>
-					<div class="row"> 
-							<div class="col-md-12"> 								
-								<span style="color:white; font-weight: bold;"> Macuspana, Tabasco, C.P. 86719</span>
-						    </div>
-					</div>
-					
-					
-
-					
-			  </div>
-
-			  <div class="col-md-1" style="padding-top: 20px; text-align: right;">
-			    
-			  </div>
-        </div>
-	</div>
-	
-
-
-
-
+<?php include '../admision/pie.php'?>
 	
 		 							
 <!-- -------------------Primero ----------------------->
