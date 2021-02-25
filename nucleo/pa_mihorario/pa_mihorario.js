@@ -51,7 +51,7 @@ var elalumno="";
 		mostrarEspera("esperaInf","grid_pa_mihorario","Cargando Datos...");
 		elsql="SELECT PDOCVE, ID, MATCVE AS MATERIA, MATERIAD,SEMESTRE, CREDITOS, LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, "+
 		"SABADO, DOMINGO, CARRERA"+
-		" FROM vhorario_alum a where a.PDOCVE='"+$('#elciclo').html()+"' and a.ALUCTR='"+usuario+"' ORDER BY SEMESTRE, MATERIAD";
+		" FROM vhorario_alum a where a.PDOCVE='"+$('#elciclo').html()+"' and a.ALUCTR='"+usuario+"' AND GPOCVE<>'REV' ORDER BY SEMESTRE, MATERIAD";
 	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
