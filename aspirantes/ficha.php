@@ -221,7 +221,7 @@ class VariableStream
 			{	
                 $data=[];			
                 $miConex = new Conexion();
-                $sql="select RUTA from adjaspirantes a where a.AUX='FOTO".$_GET["curp"]."'";
+                $sql="select RUTA from adjaspirantes a where a.AUX='".$_GET["ciclo"]."FOTO".$_GET["curp"]."'";
                 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$sql);				
 				foreach ($resultado as $row) {
