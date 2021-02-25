@@ -108,7 +108,7 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.ID).append("<td>"+valor.PDOCVE+"</td>");   	
 		 $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");    
 		 $("#row"+valor.ID).append("<td>"+valor.MATERIAD+"</td>");         	    
-		 $("#row"+valor.ID).append("<td>"+utf8Decode(valor.SEMESTRE)+"</td>");
+		 $("#row"+valor.ID).append("<td>"+valor.SEMESTRE+"</td>");
 		 $("#row"+valor.ID).append("<td>"+valor.CREDITOS+"</td>");
 
 		 $("#row"+valor.ID).append("<td>"+valor.LUNES+"</td>");
