@@ -52,9 +52,11 @@
 	
 	<?php 
 		$miConex = new Conexion();
-		$resultado=$miConex->getConsulta("SQLite","SELECT * from INSTITUCIONES where inst_clave='".$_SESSION["INSTITUCION"]."'");
+		$resultado=$miConex->getConsultaAspira("SQLite","SELECT * from INSTITUCIONES where inst_clave='".$_SESSION["INSTITUCION"]."'");
 		foreach ($resultado as $row) {$titulo= $row["inst_tituloasp"]; }		
 	?>
+
+
 
 	<div style="height:10px; background-color: #040E5A;"> </div>
 	<div class="container-fluid informacion" style="background-color: #DBEEEA;">   
