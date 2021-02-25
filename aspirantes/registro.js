@@ -14,7 +14,7 @@ var elciclo="";
 			success: function(data){	
 					if (!(JSON.parse(data)[0]["hay"]>0)) {window.location.href="cerrado.php";}
 					elciclo=JSON.parse(data)[0]["CICL_CLAVE"];	
-					if (elciclo=='') {alert ("No hay ciclo abierto por favor actualice la página");}
+					if ((elciclo=='') || (elciclo==null)) {alert ("No hay ciclo abierto por favor actualice la página");}
 				
 									   
 				  },
