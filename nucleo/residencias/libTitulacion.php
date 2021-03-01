@@ -269,7 +269,7 @@
         $pdf->Row(array(utf8_decode("Carrera:"),utf8_decode($dataAlum[0]["CARRERAD"])));
         $pdf->Row(array(utf8_decode("No. de Control:"),utf8_decode($dataAlum[0]["MATRICULA"])));
         $pdf->Row(array(utf8_decode("Nombre del Proyecto:"),utf8_decode($dataAlum[0]["PROYECTO"])));    
-        $pdf->Row(array(utf8_decode("Producto:"),$_GET["producto"]));
+        $pdf->Row(array(utf8_decode("Producto:"),utf8_decode($_GET["producto"])));
 
         $pdf->Ln(10);
         $pdf->SetFont('Montserrat-Medium','',10);
