@@ -262,7 +262,8 @@ function constnoincov(modulo,usuario,essuper){
 				type: "POST",
 				url:"actualiza.php",
 				data: parametros,
-				success: function(data){				
+				success: function(data){
+					console.log(data);				
 					setStatus(table.rows('.selected').data()[0]["MATRICULA"],"S","ASIGNOFECHA",false);
 
 					enviarNotificacionSinodal(table.rows('.selected').data()[0]["PRES"],'PRESIDENTE',modulo,table.rows('.selected').data()[0]["MATRICULA"],table.rows('.selected').data()[0]["PASANTE"],lainst,elcampus);
