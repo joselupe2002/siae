@@ -263,7 +263,7 @@ var elciclo="";
 					ESTESCPROC:{min: 1},
 					ESCPROC:{min: 1},
 					PROMBAC : {required : true,number: true, min:60, max:100},
-					EGRESOBAC : {required : true,number: true, min:60, max:100},
+					EGRESOBAC : {required : true,number: true},
 					SMNUMERO: {required : true,number: true, maxlength:11, minlength:11},
 					AREACONOC:{min: 1},
 
