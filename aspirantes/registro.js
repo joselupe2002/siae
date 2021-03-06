@@ -14,419 +14,416 @@ var elciclo="";
 			success: function(data){	
 					if (!(JSON.parse(data)[0]["hay"]>0)) {window.location.href="cerrado.php";}
 					elciclo=JSON.parse(data)[0]["CICL_CLAVE"];	
-					if ((elciclo=='') || (elciclo==null)) {alert ("No hay ciclo abierto por favor actualice la página");}
-				
-									   
-				  },
-			error: function(data) {	                  
-					   alert('ERROR: '+data);
-				   }
-		   });
+					if ((elciclo=='') || (elciclo==null)) {alert ("No hay ciclo abierto por favor actualice la página");}													
 
-		actualizaSelect("CARRERA","select CARR_CLAVE, CARR_DESCRIP from ccarreras where "+
-							"CARR_OFERTAR='S'","NORMAL","FUERA");
-		actualizaSelect("CARRERA2","select CARR_CLAVE, CARR_DESCRIP from ccarreras where "+
-							"CARR_OFERTAR='S'","NORMAL","FUERA");
-		actualizaSelect("EDOCIVIL","select EDOC_CLAVE, EDOC_DESCRIP from eedocivil ORDER BY EDOC_DESCRIP","NORMAL","FUERA");
+					actualizaSelect("CARRERA","select CARR_CLAVE, CARR_DESCRIP from ccarreras where "+
+										"CARR_OFERTAR='S'","NORMAL","FUERA");
+					actualizaSelect("CARRERA2","select CARR_CLAVE, CARR_DESCRIP from ccarreras where "+
+										"CARR_OFERTAR='S'","NORMAL","FUERA");
+					actualizaSelect("EDOCIVIL","select EDOC_CLAVE, EDOC_DESCRIP from eedocivil ORDER BY EDOC_DESCRIP","NORMAL","FUERA");
 
-		actualizaSelect("EDONAC","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
-        actualizaSelect("MUNINAC","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
-		
-		actualizaSelect("ESTESCPROC","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
-		actualizaSelect("ESCPROC","SELECT ESCCVE, ESCNOM FROM descue","BUSQUEDA","FUERA"); 
-
-		actualizaSelect("ESTTUTOR","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
-		actualizaSelect("MUNTUTOR","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
-
-		actualizaSelect("AREACONOC","SELECT CLAVE, NOMBRE FROM areaconoc order by CLAVE","NORMAL","FUERA"); 
-
-		actualizaSelect("ESTRES","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
-        actualizaSelect("MUNRES","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
-
-		actualizaSelect("GRUPOIND","select IDGRUPO, DESCRIP from grupoindigena  ORDER BY IDGRUPO","NORMAL","FUERA");
-
-		actualizaSelect("LENIND","select IDLENGUA, DESCRIP from lenguaindigena  ORDER BY IDLENGUA","NORMAL","FUERA");
-		
-		actualizaSelect("SM","select IDSM, DESCRIP from servmed  ORDER BY IDSM","NORMAL","FUERA");
-
-
-							$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
-		
-							$('.fileSigea').ace_file_input({
-								no_file:'Sin archivo ...',
-								btn_choose:'Buscar',
-								btn_change:'Cambiar',
-								droppable:false,
-								onchange:null,
-								thumbnail:false, //| true | large
-								whitelist:'pdf',
-								blacklist:'exe|php'
-								//onchange:''
-								//
-							});
-
-		$("#CARRERA").change(function(){			
-			actualizaSelect("CARRERA2","select CARR_CLAVE, CARR_DESCRIP from ccarreras where "+
-			                           "CARR_OFERTAR='S' and CARR_CLAVE<>'"+$("#CARRERA").val()+"' ORDER BY CARR_DESCRIP","NORMAL","FUERA"); 
-		}); 
+					actualizaSelect("EDONAC","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
+					actualizaSelect("MUNINAC","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
 					
-		$("#NACIONALIDAD").change(function(){
-			if ($(this).val()=='E') {apareceEdit($(this).attr("id"),true);}
-			else {apareceEdit($(this).attr("id"),false);}
-		}); 
-		$("#CAPACIDADDIF").change(function(){
-			if ($(this).val()=='S') {apareceEdit($(this).attr("id"),true);}
-			else {apareceEdit($(this).attr("id"),false);}
-		}); 
-		$("#BECA").change(function(){
-			if ($(this).val()=='S') {apareceEdit($(this).attr("id"),true);}
-			else {apareceEdit($(this).attr("id"),false);}
-		}); 
+					actualizaSelect("ESTESCPROC","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
+					actualizaSelect("ESCPROC","SELECT ESCCVE, ESCNOM FROM descue","BUSQUEDA","FUERA"); 
 
-		$("#EDONAC").change(function(){			
-			actualizaSelect("MUNINAC","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#EDONAC").val()+"' ORDER BY MUNICIPIO","NORMAL","FUERA"); 
-		}); 
-		
+					actualizaSelect("ESTTUTOR","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
+					actualizaSelect("MUNTUTOR","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
 
-		$("#ELTUTOR").change(function(){			
-			if ($("#ELTUTOR").val()=='P') {
-				$("#TUTOR").val($("#PADRE").val());
-			}
-			if ($("#ELTUTOR").val()=='M') {
-				$("#TUTOR").val($("#MADRE").val());
-			}
-		}); 
+					actualizaSelect("AREACONOC","SELECT CLAVE, NOMBRE FROM areaconoc order by CLAVE","NORMAL","FUERA"); 
 
-		$("#ESTRES").change(function(){				
-			actualizaSelect("MUNRES","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#ESTRES").val()+"' ORDER BY MUNICIPIO","NORMAL","FUERA"); 
-		}); 
+					actualizaSelect("ESTRES","select ID_ESTADO, ESTADO from cat_estado  ORDER BY ID_ESTADO","NORMAL","FUERA");
+					actualizaSelect("MUNRES","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio","NORMAL","FUERA"); 
 
-		$("#ESTTUTOR").change(function(){				
-			actualizaSelect("MUNTUTOR","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#ESTTUTOR").val()+"' ORDER BY MUNICIPIO","NORMAL","FUERA"); 
-		}); 
+					actualizaSelect("GRUPOIND","select IDGRUPO, DESCRIP from grupoindigena  ORDER BY IDGRUPO","NORMAL","FUERA");
 
-		$("#ESTESCPROC").change(function(){			
-			actualizaSelect("ESCPROC","SELECT ESCCVE, ESCNOM FROM descue WHERE ESTCVE='"+$("#ESTESCPROC").val()+"' "+
-			" UNION SELECT ESCCVE, ESCNOM FROM descue WHERE ESCCVE='999' ORDER BY 2 ","BUSQUEDA","FUERA"); 
-		}); 
-
-		$("#ESCPROC").change(function(){
-			if ($(this).val()=='999') {apareceEdit($(this).attr("id"),true);}
-			else {apareceEdit($(this).attr("id"),false);}
-		}); 
-
-		$("#CURP").change(function(){
-			encontre=false;
-			
-			//mostrarEspera("esperaCURP","grid_registro","Cargando..");
-			//Verificamos si la CURP ya fue registrada anteriormente 
-			elsql="SELECT CURP, FINALIZADO FROM aspirantes where CURP='"+$("#CURP").val().toUpperCase()+"' and CICLO='"+elciclo+"'";
-			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-			$.ajax({
-					type: "POST",
-					data:parametros,
-					url:  "../nucleo/base/getdatossqlSeg.php",
-					success: function(data){														 
-						jQuery.each(JSON.parse(data), function(clave, valor) { 
-								if (valor.FINALIZADO=='S') {
-									lacurp=$("#CURP").val();
-									mostrarConfirm("confirmReimpresion", "grid_registro", "Registro finalizado",
-									"<span class=\"lead text-danger\"><strong> la CURP <span class=\"lead text-success\"> "+lacurp+" </span> ya cuenta con un registro finalizado para este periodo</span>",
-		                             "¿Desea reimprimir su ficha?","Reimprimir", "reimprimir('"+lacurp+"');","modal-lg");
-									$("#CURP").val("");
-									$("#CURP").focus();
-								}	
-								else { 
-									mostrarIfo("infoYa", "grid_registro", "Registro no Finalizado",
-									"<span class=\"lead text-danger\"><strong> Al parecer ya se registro anteriormente en este ciclo,"+
-									" pero no ha finalizado su registro se cargaran los datos capturados anteriormente para que "+
-									" finalize su registro</strong></span>","modal-lg");
-									elsqlbus="SELECT * from aspirantes where CURP='"+$("#CURP").val()+"' and CICLO='"+elciclo+"'";
-									parametros={sql:elsqlbus,dato:sessionStorage.co,bd:"Mysql"}
-									$.ajax({
-										type: "POST",
-										data:parametros,
-										url:  "../nucleo/base/getdatossqlSeg.php",
-										success: function(data){
-											datosasp=JSON.parse(data);													 
-											jQuery.each(datosasp, function(clave, valor) {
-											
-												$("#NOMBRE").val(valor.NOMBRE);
-												$("#APEPAT").val(valor.APEPAT);
-												$("#APEMAT").val(valor.APEMAT);
-												$("#CARRERA").val(valor.CARRERA);
-												$("#CARRERA2").val(valor.CARRERA2);
-
-												$("#NACIONALIDAD").val(valor.NACIONALIDAD);
-												$("#NACIONALIDAD_ADD").val(valor.NACIONALIDAD_ADD);
-												$("#FECHANAC").val(valor.FECHANAC);
-												$("#GENERO").val(valor.GENERO);
-												$("#EDOCIVIL").val(valor.EDOCIVIL);
-												$("#CAPACIDADDIF").val(valor.CAPACIDADDIF);
-												$("#CAPACIDADDIF_ADD").val(valor.CAPACIDADDIF_ADD);
-												$("#BECA").val(valor.BECA);
-												$("#BECA_ADD").val(valor.BECA_ADD);
-												$("#EDONAC").val(valor.EDONAC  );
-												$("#MUNINAC").val(valor.MUNINAC);
-												$("#RFC").val(valor.RFC);
-												$("#ESTESCPROC").val(valor.ESTESCPROC);
-												$("#ESCPROC").val(valor.ESCPROC);
-												$("#ESCPROC").trigger("chosen:updated");	
-
-												$("#ESCPROC_ADD").val(valor.ESCPROC_ADD);
-												$("#PROMBAC").val(valor.PROMBAC);
-												$("#EGRESOBAC").val(valor.EGRESOBAC);
-												$("#AREACONOC").val(valor.AREACONOC);
-												$("#GRUPOIND").val(valor.GRUPOIND);
-												$("#LENIND").val(valor.LENIND);
-												$("#ESTRES").val(valor.ESTRES);
-												$("#MUNRES").val(valor.MUNRES);
-												$("#CIUDADRES").val(valor.CIUDADRES);
-												$("#CALLE").val(valor.CALLE );
-												$("#NUMEROCALLE").val(valor.NUMEROCALLE );
-												$("#COLONIA").val(valor.COLONIA);
-												$("#CP").val(valor.CP);
-												$("#TELCEL").val(valor.TELCEL );
-												$("#TELCASA").val(valor.TELCASA );
-												$("#CORREO").val(valor.CORREO );
-												$("#INTERNET").val(valor.INTERNET );
-												$("#EQUIPO").val(valor.EQUIPO );
-												$("#EXAMENENCASA").val(valor.EXAMENENCASA );
-
-
-												$("#SM").val(valor.SM );											
-												$("#SMNUMERO").val(valor.SMNUMERO);
-												$("#TIPOSAN").val(valor.TIPOSAN);
-												$("#PADRE").val(valor.PADRE);
-												$("#PADREVIVE").val(valor.PADREVIVE);
-												$("#MADRE").val(valor.MADRE);
-												$("#MADREVIVE").val(valor.MADREVIVE);
-												$("#PADRETEL").val(valor.PADRETEL);
-												$("#MADRETEL").val(valor.MADRETEL);
-												$("#TUTOR").val(valor.TUTOR); 
-												$("#ESTTUTOR").val(valor.ESTTUTOR); 
-												$("#MUNTUTOR").val(valor.MUNTUTOR); 
-												$("#CIUDADTUTOR").val(valor.CIUDADTUTOR);
-												$("#CALLETUTOR").val(valor.CALLETUTOR);
-												$("#NUMEROCALLETUTOR").val(valor.NUMEROCALLETUTOR);
-												$("#COLONIATUTOR").val(valor.COLONIATUTOR);
-												$("#CPTUTOR").val(valor.CPTUTOR);
-												$("#TELCASATUTOR").val(valor.TELCASATUTOR);
-												$("#TELCELTUTOR").val(valor.TELCELTUTOR);
-												$("#CORREOTUTOR").val(valor.CORREOTUTOR);
-												$("#TRABAJOTUTOR").val(valor.TRABAJOTUTOR);
-												$("#CURP").prop("disabled","true");
-												$("#CURP").val($("#CURP").val().toUpperCase());
-												//ocultarEspera("esperaCURP");
-											}); 				   
-										},
-									error: function(data) {	                  
-											alert('ERROR: '+data);
-											//ocultarEspera("esperaCURP");
-										}
-								});
-									}
-								  
-						}); 				   
-					},
-				error: function(data) {	                  
-						alert('ERROR: '+data);
-					}
-			});
-
-		}); 
-
-
-		
-
-		$('.chosen-select').chosen({allow_single_deselect:true});
-		$(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
-		$(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
-
-
-
-		$.validator.setDefaults({
-			ignore: [],
-			rules: {
-					CURP:{ required: true, curpCorrecta:"#CURP"},
-					CARRERA:{min: 1},
-					CARRERA2:{min: 1},
-					APEPAT:{ required: true},
-					APEMAT:{ required: true},
-					NOMBRE:{ required: true},
-					uno:{ required: true},
+					actualizaSelect("LENIND","select IDLENGUA, DESCRIP from lenguaindigena  ORDER BY IDLENGUA","NORMAL","FUERA");
 					
-					FECHANAC: {required: true, edadCorrecta:"#FECHANAC"},
-					EDONAC:{min: 1},
-					MUNINAC:{min: 1},
-
-					ESTESCPROC:{min: 1},
-					ESCPROC:{min: 1},
-					PROMBAC : {required : true,number: true, min:60, max:100},
-					EGRESOBAC : {required : true,number: true},
-					SMNUMERO: {required : true,number: true, maxlength:11, minlength:11},
-					AREACONOC:{min: 1},
-
-					EDORES:{min: 1},
-					MUNIRES:{min: 1},
-					CIUDADRES:{ required: true},
-					CALLE:{ required: true},
-					CP : {number: true},
-					TELCEL : {required : true, number: true,maxlength:10, minlength:10},
-					CORREO : {required : true, email: true},
-					INTERNET : {required : true},
-					EQUIPO : {required : true},
-					EXAMENENCASA : {required : true},
-
-					TUTOR : {required: true},
-					TELCELTUTOR : {required : true, number: true,maxlength:10, minlength:10},
-					CORREOTUTOR : {required : true, email: true},
+					actualizaSelect("SM","select IDSM, DESCRIP from servmed  ORDER BY IDSM","NORMAL","FUERA");
 
 
-					},
-			messages: {
-					CURP:{required:"Debe colocar su CURP",curpCorrecta:"La CURP no cumple con un formato valido"},
-					CARRERA: "Debe elegir la carrera a la que desea ingresar",
-					CARRERA: "Debe elegir una carrera de segunda opción",
-					APEPAT: "Debe colocar su Apellido Paterno",
-					APEMAT: "Debe colocar su Apellido Materno",
-					NOMBRE: "Debe colocar su Nombre Completo",	
-					uno: "Debe colocar su Apellido Materno",
+										$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
 					
-					FECHANAC: {required:"Debe colocar su fecha de Nacimiento",edadCorrecta:"Su edad no es mayor a 17"},		
-					EDONAC: "Debe elegir su estado de nacimiento",
-					MUNINAC: "Debe elegir su municipio de nacimiento",
+										$('.fileSigea').ace_file_input({
+											no_file:'Sin archivo ...',
+											btn_choose:'Buscar',
+											btn_change:'Cambiar',
+											droppable:false,
+											onchange:null,
+											thumbnail:false, //| true | large
+											whitelist:'pdf',
+											blacklist:'exe|php'
+											//onchange:''
+											//
+										});
 
-					ESTESCPROC: "Debe elegir el estado de la escuela de procedencia",
-					ESCPROC: "Debe elegir una escuela de procedencia",
-					PROMBAC: {required: "Debe colocar su promedio de Bachiller", number: "No es un número valido", min:"El promedio debe ser  entre 60 a 100",max:"El promedio debe ser  entre 60 a 100"},
-					SMNUMERO: {required: "Debe colocar su número de IMSS", number: "No es un número valido",
-					           maxlength:"El número de afiliación debe ser de 11 carácteres",
-							   minlength:"El número de afiliación debe ser de 11 carácteres"},
-					EGRESOBAC:"Debe elegir año de egreso del bachiller",
-					AREACONOC:"Debe elegir una opción de area de conocimiento de bachiller",
+					$("#CARRERA").change(function(){			
+						actualizaSelect("CARRERA2","select CARR_CLAVE, CARR_DESCRIP from ccarreras where "+
+												"CARR_OFERTAR='S' and CARR_CLAVE<>'"+$("#CARRERA").val()+"' ORDER BY CARR_DESCRIP","NORMAL","FUERA"); 
+					}); 
+								
+					$("#NACIONALIDAD").change(function(){
+						if ($(this).val()=='E') {apareceEdit($(this).attr("id"),true);}
+						else {apareceEdit($(this).attr("id"),false);}
+					}); 
+					$("#CAPACIDADDIF").change(function(){
+						if ($(this).val()=='S') {apareceEdit($(this).attr("id"),true);}
+						else {apareceEdit($(this).attr("id"),false);}
+					}); 
+					$("#BECA").change(function(){
+						if ($(this).val()=='S') {apareceEdit($(this).attr("id"),true);}
+						else {apareceEdit($(this).attr("id"),false);}
+					}); 
 
-					EDORES: "Debe elegir su estado de Residencia actual",
-					MUNIRES: "Debe elegir su municipio de Residencia actual",
-					CIUDADRES:"Debe colocar su ciudado localidad de Residencia actual",
-					CALLE:"Debe colocar su dirección de Residencia actual",
-					CP : "El CP debe ser número",
-					TELCEL : {required:"Se requiere número de celular",number:"debe colocar sólo números",
-					          maxlength:"El número de TELÉFONO debe ser de 10 números",
-					          minlength:"El número de TELÉFONO debe ser de 10 números"},
-					CORREO : {required:"Se requiere correo electrónico",email:"El email no es correcto"},
-
-					INTERNET : {required:"Es necesario conteste este campo"},
-					EQUIPO : {required:"Es necesario conteste este campo"},
-					EXAMENENCASA : {required:"Es necesario conteste este campo"},
-
-					TUTOR: "Debe colocar el nombre de un tutor",
-					TELCELTUTOR : {required:"Se requiere número de celular de tutor",number:"debe colocar sólo números",
-					               maxlength:"El número de TELÉFONO debe ser de 10 números",
-					               minlength:"El número de TELÉFONO debe ser de 10 números"},
-					CORREOTUTOR : {required:"Se requiere correo electrónico de tutor",email:"El email no es correcto"},
+					$("#EDONAC").change(function(){			
+						actualizaSelect("MUNINAC","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#EDONAC").val()+"' ORDER BY MUNICIPIO","NORMAL","FUERA"); 
+					}); 
 					
-			}			
-		});
 
-			
-		function sonvalidos(formulario){
-			var noval = 0;
-			$(formulario).find("input, select").each(function () {			
-			    if (!($(this).valid())) {noval++; ultimo=$(this).attr("id");}     
-			});
-			if (noval>0) {return ultimo;}
-			else {return "";}		
-		}
+					$("#ELTUTOR").change(function(){			
+						if ($("#ELTUTOR").val()=='P') {
+							$("#TUTOR").val($("#PADRE").val());
+						}
+						if ($("#ELTUTOR").val()=='M') {
+							$("#TUTOR").val($("#MADRE").val());
+						}
+					}); 
 
+					$("#ESTRES").change(function(){				
+						actualizaSelect("MUNRES","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#ESTRES").val()+"' ORDER BY MUNICIPIO","NORMAL","FUERA"); 
+					}); 
 
-		$.validator.addMethod("edadCorrecta", function(value, element) {
-			res=false;
-			edad=calcularEdad(value);
-	        if (edad>=16) {res=true;} 
-			return res;
-		}, "La Edad debe ser mayor o igual a 17 años");
+					$("#ESTTUTOR").change(function(){				
+						actualizaSelect("MUNTUTOR","SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#ESTTUTOR").val()+"' ORDER BY MUNICIPIO","NORMAL","FUERA"); 
+					}); 
 
-		$.validator.addMethod("curpCorrecta", function(value, element) {
-			res=false;
-			res=curpValida(value);
-			return res;
-		}, "");
+					$("#ESTESCPROC").change(function(){			
+						actualizaSelect("ESCPROC","SELECT ESCCVE, ESCNOM FROM descue WHERE ESTCVE='"+$("#ESTESCPROC").val()+"' "+
+						" UNION SELECT ESCCVE, ESCNOM FROM descue WHERE ESCCVE='999' ORDER BY 2 ","BUSQUEDA","FUERA"); 
+					}); 
 
+					$("#ESCPROC").change(function(){
+						if ($(this).val()=='999') {apareceEdit($(this).attr("id"),true);}
+						else {apareceEdit($(this).attr("id"),false);}
+					}); 
 
-		$('#fuelux-wizard-container').ace_wizard({}).on('actionclicked.fu.wizard' , function(e, info){
-			  
-			    if(info.step == 1) {					  
-				  if (!$("#RFC").val().length>0) { $("#RFC").val($("#CURP").val().substr(0,10));}
-				      	
-					  var form = $( "#frmReg" );
-					  form.validate();
-					  campo=sonvalidos(form);
-					  if (!(campo=="")) { e.preventDefault();}					
-					  else {						   
-						if (!$("#CURP").prop("disabled")) {guardarGen(); cargarAdjuntos();}
-					    else {guardarPag1(); cargarAdjuntos();}
-					}
-				}
-				if(info.step == 2) {
-					var form = $( "#frmReg2" ); form.validate(); campo=sonvalidos(form);
-					if (!(campo=="")) { e.preventDefault();}
-					else {guardarPag2();}
-				}
-			
-
-				if(info.step == 3) {
-					var form = $( "#frmReg3" ); form.validate(); campo=sonvalidos(form);
-					if (!(campo=="")) { e.preventDefault();}
-					else {guardarPag3();}
-				}
-				
-
-				if(info.step == 4) {
-					var form = $( "#frmReg4" ); form.validate(); campo=sonvalidos(form);
-					if (!(campo=="")) { e.preventDefault();}
-					else {guardarPag4();}
-				}
-                
-				
-				if(info.step == 5) {					
-					var form = $( "#frmReg5" ); form.validate(); campo=sonvalidos(form);
-					if (!(campo=="")) { e.preventDefault();}
-					else {guardarPag5();}
-				}
-			
-
-				if(info.step == 6) {
-					var form = $( "#frmReg6" ); form.validate(); campo=sonvalidos(form);
-					if (!(campo=="")) { e.preventDefault();}
-					else {guardarPag6();}
-				}
-			
-							
-			  })
-	     .on('changed.fu.wizard', function(e, info) {
-			    //alert ("cambie "+info.step);
-				})
-		.on('finished.fu.wizard', function(e) { 
-			  confirmarFinalizado();
-			  /*
-			                    bootbox.dialog({
-									message: "Gracias. Su registro ha finalizado", 
-									buttons: {
-										"success" : {
-											"label" : "OK",
-											"className" : "btn-sm btn-primary"
-										}
-									}
-								});
-								*/
-		}).on('stepclick.fu.wizard', function(e){ 
-			
-		});
+					$("#CURP").change(function(){
+						encontre=false;
 						
-		$('#modal-wizard-container').ace_wizard();
-		$('#modal-wizard .wizard-actions .btn[data-dismiss=modal]').removeAttr('disabled');
-	
+						//mostrarEspera("esperaCURP","grid_registro","Cargando..");
+						//Verificamos si la CURP ya fue registrada anteriormente 
+						elsql="SELECT CURP, FINALIZADO FROM aspirantes where CURP='"+$("#CURP").val().toUpperCase()+"' and CICLO='"+elciclo+"'";
+						parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+						$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../nucleo/base/getdatossqlSeg.php",
+								success: function(data){														 
+									jQuery.each(JSON.parse(data), function(clave, valor) { 
+											if (valor.FINALIZADO=='S') {
+												lacurp=$("#CURP").val();
+												mostrarConfirm("confirmReimpresion", "grid_registro", "Registro finalizado",
+												"<span class=\"lead text-danger\"><strong> la CURP <span class=\"lead text-success\"> "+lacurp+" </span> ya cuenta con un registro finalizado para este periodo</span>",
+												"¿Desea reimprimir su ficha?","Reimprimir", "reimprimir('"+lacurp+"');","modal-lg");
+												$("#CURP").val("");
+												$("#CURP").focus();
+											}	
+											else { 
+												mostrarIfo("infoYa", "grid_registro", "Registro no Finalizado",
+												"<span class=\"lead text-danger\"><strong> Al parecer ya se registro anteriormente en este ciclo,"+
+												" pero no ha finalizado su registro se cargaran los datos capturados anteriormente para que "+
+												" finalize su registro</strong></span>","modal-lg");
+												elsqlbus="SELECT * from aspirantes where CURP='"+$("#CURP").val()+"' and CICLO='"+elciclo+"'";
+												parametros={sql:elsqlbus,dato:sessionStorage.co,bd:"Mysql"}
+												$.ajax({
+													type: "POST",
+													data:parametros,
+													url:  "../nucleo/base/getdatossqlSeg.php",
+													success: function(data){
+														datosasp=JSON.parse(data);													 
+														jQuery.each(datosasp, function(clave, valor) {
+														
+															$("#NOMBRE").val(valor.NOMBRE);
+															$("#APEPAT").val(valor.APEPAT);
+															$("#APEMAT").val(valor.APEMAT);
+															$("#CARRERA").val(valor.CARRERA);
+															$("#CARRERA2").val(valor.CARRERA2);
+
+															$("#NACIONALIDAD").val(valor.NACIONALIDAD);
+															$("#NACIONALIDAD_ADD").val(valor.NACIONALIDAD_ADD);
+															$("#FECHANAC").val(valor.FECHANAC);
+															$("#GENERO").val(valor.GENERO);
+															$("#EDOCIVIL").val(valor.EDOCIVIL);
+															$("#CAPACIDADDIF").val(valor.CAPACIDADDIF);
+															$("#CAPACIDADDIF_ADD").val(valor.CAPACIDADDIF_ADD);
+															$("#BECA").val(valor.BECA);
+															$("#BECA_ADD").val(valor.BECA_ADD);
+															$("#EDONAC").val(valor.EDONAC  );
+															$("#MUNINAC").val(valor.MUNINAC);
+															$("#RFC").val(valor.RFC);
+															$("#ESTESCPROC").val(valor.ESTESCPROC);
+															$("#ESCPROC").val(valor.ESCPROC);
+															$("#ESCPROC").trigger("chosen:updated");	
+
+															$("#ESCPROC_ADD").val(valor.ESCPROC_ADD);
+															$("#PROMBAC").val(valor.PROMBAC);
+															$("#EGRESOBAC").val(valor.EGRESOBAC);
+															$("#AREACONOC").val(valor.AREACONOC);
+															$("#GRUPOIND").val(valor.GRUPOIND);
+															$("#LENIND").val(valor.LENIND);
+															$("#ESTRES").val(valor.ESTRES);
+															$("#MUNRES").val(valor.MUNRES);
+															$("#CIUDADRES").val(valor.CIUDADRES);
+															$("#CALLE").val(valor.CALLE );
+															$("#NUMEROCALLE").val(valor.NUMEROCALLE );
+															$("#COLONIA").val(valor.COLONIA);
+															$("#CP").val(valor.CP);
+															$("#TELCEL").val(valor.TELCEL );
+															$("#TELCASA").val(valor.TELCASA );
+															$("#CORREO").val(valor.CORREO );
+															$("#INTERNET").val(valor.INTERNET );
+															$("#EQUIPO").val(valor.EQUIPO );
+															$("#EXAMENENCASA").val(valor.EXAMENENCASA );
+
+
+															$("#SM").val(valor.SM );											
+															$("#SMNUMERO").val(valor.SMNUMERO);
+															$("#TIPOSAN").val(valor.TIPOSAN);
+															$("#PADRE").val(valor.PADRE);
+															$("#PADREVIVE").val(valor.PADREVIVE);
+															$("#MADRE").val(valor.MADRE);
+															$("#MADREVIVE").val(valor.MADREVIVE);
+															$("#PADRETEL").val(valor.PADRETEL);
+															$("#MADRETEL").val(valor.MADRETEL);
+															$("#TUTOR").val(valor.TUTOR); 
+															$("#ESTTUTOR").val(valor.ESTTUTOR); 
+															$("#MUNTUTOR").val(valor.MUNTUTOR); 
+															$("#CIUDADTUTOR").val(valor.CIUDADTUTOR);
+															$("#CALLETUTOR").val(valor.CALLETUTOR);
+															$("#NUMEROCALLETUTOR").val(valor.NUMEROCALLETUTOR);
+															$("#COLONIATUTOR").val(valor.COLONIATUTOR);
+															$("#CPTUTOR").val(valor.CPTUTOR);
+															$("#TELCASATUTOR").val(valor.TELCASATUTOR);
+															$("#TELCELTUTOR").val(valor.TELCELTUTOR);
+															$("#CORREOTUTOR").val(valor.CORREOTUTOR);
+															$("#TRABAJOTUTOR").val(valor.TRABAJOTUTOR);
+															$("#CURP").prop("disabled","true");
+															$("#CURP").val($("#CURP").val().toUpperCase());
+															//ocultarEspera("esperaCURP");
+														}); 				   
+													},
+												error: function(data) {	                  
+														alert('ERROR: '+data);
+														//ocultarEspera("esperaCURP");
+													}
+											});
+												}
+											
+									}); 				   
+								},
+							error: function(data) {	                  
+									alert('ERROR: '+data);
+								}
+						});
+
+					}); 
+
+
+					
+
+					$('.chosen-select').chosen({allow_single_deselect:true});
+					$(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+					$(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+
+
+
+					$.validator.setDefaults({
+						ignore: [],
+						rules: {
+								CURP:{ required: true, curpCorrecta:"#CURP"},
+								CARRERA:{min: 1},
+								CARRERA2:{min: 1},
+								APEPAT:{ required: true},
+								APEMAT:{ required: true},
+								NOMBRE:{ required: true},
+								uno:{ required: true},
+								
+								FECHANAC: {required: true, edadCorrecta:"#FECHANAC"},
+								EDONAC:{min: 1},
+								MUNINAC:{min: 1},
+
+								ESTESCPROC:{min: 1},
+								ESCPROC:{min: 1},
+								PROMBAC : {required : true,number: true, min:60, max:100},
+								EGRESOBAC : {required : true,number: true},
+								SMNUMERO: {required : true,number: true, maxlength:11, minlength:11},
+								AREACONOC:{min: 1},
+
+								EDORES:{min: 1},
+								MUNIRES:{min: 1},
+								CIUDADRES:{ required: true},
+								CALLE:{ required: true},
+								CP : {number: true},
+								TELCEL : {required : true, number: true,maxlength:10, minlength:10},
+								CORREO : {required : true, email: true},
+								INTERNET : {required : true},
+								EQUIPO : {required : true},
+								EXAMENENCASA : {required : true},
+
+								TUTOR : {required: true},
+								TELCELTUTOR : {required : true, number: true,maxlength:10, minlength:10},
+								CORREOTUTOR : {required : true, email: true},
+
+
+								},
+						messages: {
+								CURP:{required:"Debe colocar su CURP",curpCorrecta:"La CURP no cumple con un formato valido"},
+								CARRERA: "Debe elegir la carrera a la que desea ingresar",
+								CARRERA: "Debe elegir una carrera de segunda opción",
+								APEPAT: "Debe colocar su Apellido Paterno",
+								APEMAT: "Debe colocar su Apellido Materno",
+								NOMBRE: "Debe colocar su Nombre Completo",	
+								uno: "Debe colocar su Apellido Materno",
+								
+								FECHANAC: {required:"Debe colocar su fecha de Nacimiento",edadCorrecta:"Su edad no es mayor a 17"},		
+								EDONAC: "Debe elegir su estado de nacimiento",
+								MUNINAC: "Debe elegir su municipio de nacimiento",
+
+								ESTESCPROC: "Debe elegir el estado de la escuela de procedencia",
+								ESCPROC: "Debe elegir una escuela de procedencia",
+								PROMBAC: {required: "Debe colocar su promedio de Bachiller", number: "No es un número valido", min:"El promedio debe ser  entre 60 a 100",max:"El promedio debe ser  entre 60 a 100"},
+								SMNUMERO: {required: "Debe colocar su número de IMSS", number: "No es un número valido",
+										maxlength:"El número de afiliación debe ser de 11 carácteres",
+										minlength:"El número de afiliación debe ser de 11 carácteres"},
+								EGRESOBAC:"Debe elegir año de egreso del bachiller",
+								AREACONOC:"Debe elegir una opción de area de conocimiento de bachiller",
+
+								EDORES: "Debe elegir su estado de Residencia actual",
+								MUNIRES: "Debe elegir su municipio de Residencia actual",
+								CIUDADRES:"Debe colocar su ciudado localidad de Residencia actual",
+								CALLE:"Debe colocar su dirección de Residencia actual",
+								CP : "El CP debe ser número",
+								TELCEL : {required:"Se requiere número de celular",number:"debe colocar sólo números",
+										maxlength:"El número de TELÉFONO debe ser de 10 números",
+										minlength:"El número de TELÉFONO debe ser de 10 números"},
+								CORREO : {required:"Se requiere correo electrónico",email:"El email no es correcto"},
+
+								INTERNET : {required:"Es necesario conteste este campo"},
+								EQUIPO : {required:"Es necesario conteste este campo"},
+								EXAMENENCASA : {required:"Es necesario conteste este campo"},
+
+								TUTOR: "Debe colocar el nombre de un tutor",
+								TELCELTUTOR : {required:"Se requiere número de celular de tutor",number:"debe colocar sólo números",
+											maxlength:"El número de TELÉFONO debe ser de 10 números",
+											minlength:"El número de TELÉFONO debe ser de 10 números"},
+								CORREOTUTOR : {required:"Se requiere correo electrónico de tutor",email:"El email no es correcto"},
+
+							}	
+					
+				});
+
+			
+				function sonvalidos(formulario){
+					var noval = 0;
+					$(formulario).find("input, select").each(function () {			
+						if (!($(this).valid())) {noval++; ultimo=$(this).attr("id");}     
+					});
+					if (noval>0) {return ultimo;}
+					else {return "";}		
+				}
+
+
+				$.validator.addMethod("edadCorrecta", function(value, element) {
+					res=false;
+					edad=calcularEdad(value);
+					if (edad>=16) {res=true;} 
+					return res;
+				}, "La Edad debe ser mayor o igual a 17 años");
+
+				$.validator.addMethod("curpCorrecta", function(value, element) {
+					res=false;
+					res=curpValida(value);
+					return res;
+				}, "");
+
+
+				$('#fuelux-wizard-container').ace_wizard({}).on('actionclicked.fu.wizard' , function(e, info){
+					
+						if(info.step == 1) {					  
+						if (!$("#RFC").val().length>0) { $("#RFC").val($("#CURP").val().substr(0,10));}
+								
+							var form = $( "#frmReg" );
+							form.validate();
+							campo=sonvalidos(form);
+							if (!(campo=="")) { e.preventDefault();}					
+							else {						   
+								if (!$("#CURP").prop("disabled")) {guardarGen(); cargarAdjuntos();}
+								else {guardarPag1(); cargarAdjuntos();}
+							}
+						}
+						if(info.step == 2) {
+							var form = $( "#frmReg2" ); form.validate(); campo=sonvalidos(form);
+							if (!(campo=="")) { e.preventDefault();}
+							else {guardarPag2();}
+						}
+					
+
+						if(info.step == 3) {
+							var form = $( "#frmReg3" ); form.validate(); campo=sonvalidos(form);
+							if (!(campo=="")) { e.preventDefault();}
+							else {guardarPag3();}
+						}
+						
+
+						if(info.step == 4) {
+							var form = $( "#frmReg4" ); form.validate(); campo=sonvalidos(form);
+							if (!(campo=="")) { e.preventDefault();}
+							else {guardarPag4();}
+						}
+						
+						
+						if(info.step == 5) {					
+							var form = $( "#frmReg5" ); form.validate(); campo=sonvalidos(form);
+							if (!(campo=="")) { e.preventDefault();}
+							else {guardarPag5();}
+						}
+					
+
+						if(info.step == 6) {
+							var form = $( "#frmReg6" ); form.validate(); campo=sonvalidos(form);
+							if (!(campo=="")) { e.preventDefault();}
+							else {guardarPag6();}
+						}
+					
+									
+					})
+				.on('changed.fu.wizard', function(e, info) {
+						//alert ("cambie "+info.step);
+						})
+				.on('finished.fu.wizard', function(e) { 
+					confirmarFinalizado();
+					/*
+										bootbox.dialog({
+											message: "Gracias. Su registro ha finalizado", 
+											buttons: {
+												"success" : {
+													"label" : "OK",
+													"className" : "btn-sm btn-primary"
+												}
+											}
+										});
+										*/
+				}).on('stepclick.fu.wizard', function(e){ 
+					
+				});
+								
+				$('#modal-wizard-container').ace_wizard();
+				$('#modal-wizard .wizard-actions .btn[data-dismiss=modal]').removeAttr('disabled');
+			
+											
+				}
+		});	 // fin del ajax del ciclo escolar 
 
 	});
 	
