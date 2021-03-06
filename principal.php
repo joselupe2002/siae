@@ -182,6 +182,15 @@
 											       <img alt="" src="imagenes/empresa/logo2.png" width="80%" height="80%">											
 											 </div>
 										 </div>	 
+										 <div class="row">
+										     <div class="col-xs-5" style="border-left: 5px solid #B07D06;">
+											 	<a href="https://elibro.net/es/lc/macuspana/inicio" target="_blank"> <img alt="" src="imagenes/empresa/b_biblioitsm.png" width="80%" height="80%"></a>	
+											 </div>
+											 <div class="col-xs-2" style="text-align: center;"></div>
+											 <div class="col-xs-5" style="text-align: center;">
+											      <a href="http://www.elibro.com/marketing/" target="_blank"> <img alt="" src="imagenes/empresa/b_tutorial.png" width="80%" height="80%"></a>											
+											 </div>
+										 </div>	 
 									</div>
 						    </div>						    
 					</div>
