@@ -163,7 +163,7 @@
    $(document).ready(function($) { 
        var Body = $('body'); 
        Body.addClass('preloader-site');
-       elsqlCiclo="SELECT CICL_CLAVE FROM ciclosesc where CICL_ADMISION='S' order by CICL_ORDEN DESC";
+       elsqlCiclo="SELECT CICL_CLAVE FROM ciclosesc where CICL_REGISTROLINEA='S' order by CICL_ORDEN DESC";
        parametros={sql:elsqlCiclo,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
             type: "POST",
