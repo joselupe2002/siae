@@ -152,14 +152,14 @@
 				
 				if (($_GET["tipoRep"]=='1')) {		
 					if (($this->elsello!='') &&($this->elsello!='../../imagenes/menu/default.png'))
-						{$this->Image($this->elsello,150,140,45);}
+						{$this->Image($this->elsello,150,160,45);}
 
 					if (($this->lafirma!='') &&($this->lafirma!='../../imagenes/menu/default.png'))
-					    {$this->Image($this->lafirma,220,145,40);}
+					    {$this->Image($this->lafirma,220,155,40);}
 			
 			
 					if (($this->lafirmaempl!='') &&($this->lafirmaempl!='../../imagenes/menu/default.png'))
-					    {$this->Image($this->lafirmaempl,20,145,40);}
+					    {$this->Image($this->lafirmaempl,20,155,40);}
 				}
 
 				$miutil = new UtilUser();
