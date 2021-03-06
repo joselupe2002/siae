@@ -303,6 +303,7 @@ var elciclo="";
 					SMNUMERO: {required: "Debe colocar su número de IMSS", number: "No es un número valido",
 					           maxlength:"El número de afiliación debe ser de 11 carácteres",
 							   minlength:"El número de afiliación debe ser de 11 carácteres"},
+					EGRESOBAC:"Debe elegir año de egreso del bachiller",
 					AREACONOC:"Debe elegir una opción de area de conocimiento de bachiller",
 
 					EDORES: "Debe elegir su estado de Residencia actual",
