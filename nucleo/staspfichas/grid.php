@@ -33,7 +33,7 @@
         </head>
 
 
-<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
+<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
     
 <div class="row">
