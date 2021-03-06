@@ -480,7 +480,8 @@ function guardarPag1(){
 		type: "POST",
 		url:"../nucleo/base/actualiza.php",
 		data: parametros,
-		success: function(data){        			        	
+		success: function(data){   
+			console.log(data);       			        	
 										 
 		}					     
 	}); 
@@ -512,7 +513,8 @@ function guardarPag2(){
 		type: "POST",
 		url:"../nucleo/base/actualiza.php",
 		data: parametros,
-		success: function(data){        			        	
+		success: function(data){     
+			console.log(data);     			        	
 												 
 	},
 	error: function(data) {	                  
@@ -542,7 +544,8 @@ function guardarPag3(){
 			type: "POST",
 			url:"../nucleo/base/actualiza.php",
 			data: parametros,
-			success: function(data){        			        	
+			success: function(data){     
+				console.log(data);   			        	
 													 
 		},
 		error: function(data) {	                  
@@ -578,7 +581,8 @@ function guardarPag4(){
 			type: "POST",
 			url:"../nucleo/base/actualiza.php",
 			data: parametros,
-			success: function(data){        			        	
+			success: function(data){      
+				console.log(data);    			        	
 														 
 		},
 		error: function(data) {	                  
@@ -609,7 +613,8 @@ function guardarPag5(){
 			type: "POST",
 			url:"../nucleo/base/actualiza.php",
 			data: parametros,
-			success: function(data){        			        	
+			success: function(data){    
+				console.log(data);      			        	
 														 
 		},
 		error: function(data) {	                  
@@ -643,7 +648,8 @@ function guardarPag6(){
 			type: "POST",
 			url:"../nucleo/base/actualiza.php",
 			data: parametros,
-			success: function(data){        			        	
+			success: function(data){      
+				console.log(data);    			        	
 														 
 		},
 		error: function(data) {	                  
