@@ -34,7 +34,7 @@
         </head>
 
 
-<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;" class="sigeaPrin">
+<body id="grid_<?php echo $_GET['modulo']; ?>" class="sigePrin" style="background-color: white; width:98%;">
     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
     
 <div class="row">
@@ -99,7 +99,7 @@
                 </div><!--  del widget header-->
                 <div class="widget-body">
                     <div class="widget-main"> 
-                        <div id="graphfichas" class="graph"></div>
+                      <!--    <div id="graphfichas" class="graph"></div>-->
                     </div>
                 </div>                                         
         </div><!--  del widget box-->

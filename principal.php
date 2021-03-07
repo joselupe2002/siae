@@ -61,7 +61,10 @@
 	</head>
 
 
-	<body id="sigea" class="no-skin">
+
+
+	<body id="sigea" class="no-skin sigeaPrin" style="overflow-x:hidden; ">
+
 		<div id="navbar" class="navbar navbar-default ace-save-state" >
 			<div class="navbar-container ace-save-state" id="navbar-container">	
 			<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" name="menu-toggler" data-target="#sidebar">
@@ -136,14 +139,14 @@
 			<div id="sidebar" class="sidebar responsive ace-save-state">
 				<script type="text/javascript"> try{ace.settings.loadState('sidebar')}catch(e){} </script>				
 				<ul id="miMenu" class="nav nav-list" ></ul> <!--*********************** MENU PRINCIPAL *************************-->
-				<div class="sidebar-toggle sidebar-collapse"  id="sidebar-collapse">
+				<div class="sidebar-toggle sidebar-collapse"  id="sidebar-collapse" >
 					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
 				</div>
 			</div>
 			
-			<div class="main-content">
-				<div class="main-content-inner"> 		
-					<div id="myTab" class="easyui-tabs" style="width:100%; height:600px; overflow-y: hidden;">
+			<div class="main-content sigeaPrin">
+				<div class="main-content-inner sigeaPrin" > 		
+					<div id="myTab" style="width:100%; height:700px; overflow-x: hidden; overflow-y: hidden;"  class="easyui-tabs sigeaPrin">
 					       <div title="Inicio" style="padding:20px;">	
 									<div class="row" id="prorroga"> </div>
 						            <div class="widget-main">
@@ -189,8 +192,10 @@
 											 <div class="col-xs-2" style="text-align: center;"></div>
 											 <div class="col-xs-5" style="text-align: center;">
 											      <a href="http://www.elibro.com/marketing/" target="_blank"> <img alt="" src="imagenes/empresa/b_tutorial.png" width="80%" height="80%"></a>											
-											 </div>
+											 </div>																					
 										 </div>	 
+									
+										 
 									</div>
 						    </div>						    
 					</div>
@@ -329,7 +334,7 @@
 					   if (JSON.parse(data2)[0]["HAY"]>0) {
 							var alto=$(window).height()+"px";
 							url="nucleo/pa_prorrogas/grid.php"	;   	      	
-							var content = '<iframe frameborder="0" id="FR'+"pa_prorrroga"+'" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';	
+							var content = '<iframe frameborder="0" id="FR'+"pa_prorrroga"+'" src="'+url+'" style="overflow-x:hidden; overflow-y:hidden; width:100%;height:'+alto+';"></iframe></div>';	
 							$('#myTab').tabs('add',{
 									title:"Prorroga",
 								// href:"nucleo/grid.php?modulo="+modulo,
@@ -403,7 +408,7 @@
 		function cambioClave(){	
 			   var url="modClave.php";
 			   var alto=$(window).height()+"px";
-			   var content = '<iframe frameborder="0" id="cambioClave" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';
+			   var content = '<iframe scrolling = "auto"  frameborder="0" id="cambioClave" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';
 			     $('#myTab').tabs('add',{
 			    	    title:"Clave",
 			    	    content:content,
@@ -416,7 +421,7 @@
 		function generales(){	
 			   var url="generales.php";
 			   var alto=$(window).height()+"px";
-			   var content = '<iframe frameborder="0" id="cambioClave" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';	
+			   var content = '<iframe scrolling = "auto"  frameborder="0" id="cambioClave" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';	
 			     $('#myTab').tabs('add',{
 			    	    title:"Generales",
 			    	   content:content,
@@ -427,11 +432,13 @@
 		
 		
 		function abrirPagina(modulo, pagina, nombre,automatico, bd){
+	
 	       if ($('#myTab').tabs('exists',nombre)){
 		        $('#myTab').tabs('select', nombre);
 	       } else {
 					  restr=pagina; if (restr=="null") { restr='';}
 	    	          var alto=($(window).height()-100)+"px";
+
 	    	      	   
 	    	      	   var url="nucleo/base/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=S"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;	    	      	 
 					  
@@ -439,7 +446,7 @@
 	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=N"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;
 	    	      	   }
 	    	      	  		
-	    	          var content = '<iframe frameborder="0" id="FR'+modulo+'" src="'+url+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';	
+	    	          var content = '<iframe scrolling = "auto" frameborder="0" id="FR'+modulo+'" src="'+url+'" style="overflow-x:hidden;overflow-y:hidden;width:100%;height:'+alto+';" class="sigeaPrin sigeaFrame"></iframe>';	
 				     $('#myTab').tabs('add',{
 				    	    title:nombre,
 				    	   // href:"nucleo/grid.php?modulo="+modulo,
@@ -457,7 +464,7 @@
 			 var alto=$(window).height()+"px";
 				
              if (tipo=="P") {
-			         var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:'+alto+';"></iframe></div>';	
+			         var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:'+alto+';" class="sigeaPrin"></iframe></div>';	
 				     $('#myTab').tabs('add',{
 				    	    title:'Notificacion',
 				    	   // href:"nucleo/grid.php?modulo="+modulo,

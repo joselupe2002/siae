@@ -389,6 +389,8 @@
 	                 			} );
 
 	                 		   
+						
+								$('body').find('.dataTables_scrollBody').addClass("sigeaPrin");
 	                 			
 	                 			myTable.buttons().container().appendTo( $('.tableTools-container') );
 
@@ -578,8 +580,8 @@
 			   "                 </div>"+	
 			   "             </div>"+		   
 			   "          </div>"+
-			   "          <div id=\"frmdocumentos\" class=\"modal-body\" style=\"overflow-y: auto; height:300px;\">"+	
-		       "                           <table id=\"tabCampos\" style=\"width:auto;\" class= \"table table-condensed table-striped table-bordered table-hover\">"+
+			   "          <div id=\"frmdocumentos\" class=\"modal-body sigeaPrin\" style=\"overflow-y: auto; height:300px;\">"+	
+		       "                           <table id=\"tabCampos\" style=\"width:auto;\" class= \"table table-condensed table-striped table-bordered table-hover sigeaPrin\">"+
 		   	   "                           </table>"+	
 			   "          </div>"+
 			   "          <div class=\"modal-footer\">"+

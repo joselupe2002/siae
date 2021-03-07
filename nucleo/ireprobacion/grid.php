@@ -28,17 +28,13 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/bootstrap-editable.min.css" />
         
         <link rel="stylesheet"  href="<?php echo $nivel; ?>js/morris/morris.css">
-        
-
-
-        
-        
+		<link rel="stylesheet"  href="<?php echo $nivel; ?>css/sigea.css">
 
         <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }</style>
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
+	<body id="grid_<?php echo $_GET['modulo']; ?>" class="sigePrin" style="background-color: white;">
 	    <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
 	    
 	    

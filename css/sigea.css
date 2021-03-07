@@ -169,3 +169,52 @@ input.error{
 .ma_popover{
    width: 350px;
 }
+
+
+
+
+/*=================================BARRAS VERTICALES =========================================*/
+
+.sigeaFrame {
+SCROLLBAR-FACE-COLOR:#6699CC;
+SCROLLBAR-HIGHLIGHT-COLOR: #6699CC;
+SCROLLBAR-SHADOW-COLOR: #6699CC;
+SCROLLBAR-3DLIGHT-COLOR: #FFFFFF;
+SCROLLBAR-ARROW-COLOR: #FFFFFF;
+SCROLLBAR-TRACK-COLOR: #E3E3E3;
+SCROLLBAR-DARKSHADOW-COLOR: #000000;
+}
+
+.sigeaPrin {
+  /*Estilos estándar experimentales (Principalmente Firefox)*/
+  scrollbar-color: rgba(0, 0, 0, .5) rgba(0, 0, 0, 0);
+  scrollbar-width: thin;
+  
+
+}
+
+.sigeaPrin::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.sigeaPrin::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.sigeaPrin::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.sigeaPrin::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.sigeaPrin::-webkit-scrollbar-thumb {
+  background-color: #23b3df;
+  border-radius: 20px;
+  border: 2px solid #5789bb;
+}
+
+.sigeaPrin::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
