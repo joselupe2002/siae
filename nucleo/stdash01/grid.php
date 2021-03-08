@@ -61,57 +61,105 @@
 
               <div class="widget-body" >
 				   <div class="widget-main">
-				       <div class="row">							   
-					       <div id="informacion" class="col-sm-12 sigeaPrin" style="overflow-y: auto; height:450px;" >    		
-						   		<div class="row">
-									<div class="ayudaPadre fontRoboto col-sm-3">
-										<div style="padding:15px;" >											
-											<div class="row layuda dashboard" id="c11a"></div>																						
-											<div class="row layuda dashboard" id="c11b"></div>											
-											<div class="row layuda dashboard" id="c11c"></div>											
-											<div class="row layuda dashboard" id="c11d"></div>
-										</div>
-									</div>	
-									
-									<div class="ayudaPadre fontRoboto col-sm-6">
-										<div  style="padding:15px;" >																			
-											<div class="row layuda dashboard" id="c12"></div>
-										</div>
-									</div>
-
-									<div class="ayudaPadre fontRoboto col-sm-3">
-										<div style="padding:15px;" >												
-											<div class="row layuda dashboard" id="c13a"></div>																				
-											<div class="row layuda dashboard" id="c13b"></div>
-											<div class="row layuda dashboard" id="c13c"></div>
-										</div>
-									</div>									  
-								</div>
-								<div class="row">
-									<div class="ayudaPadre fontRoboto col-sm-12">
-										<div style="padding:15px;" >											
-											<div class="row layuda dashboard" id="c21"></div>
-										</div>
-									</div>								
-								</div>
-
-								<div class="row">
-									<div class="ayudaPadre fontRoboto col-sm-12">
-										<div style="padding:15px;" >											
-											<div class="row layuda dashboard" id="c31"></div>
-										</div>
-									</div>								
-								</div>
-
-								<div class="row">
-									<div class="ayudaPadre fontRoboto col-sm-12">
-										<div style="padding:15px;" >											
-											<div class="row layuda dashboard" id="c41"></div>
-										</div>
-									</div>								
-								</div>
+				   		<div class="row">							   
+					       <div id="informacion" class="col-sm-12 sigeaPrin" style="overflow-y: auto; height:450px;" >    												   		
+								<div class="tabbable fontRoboto" >
+										<ul class="nav nav-tabs">
+											<li class="active">
+												<a data-toggle="tab" href="#p1" onclick="evento('p1');"><i class="green ace-icon fa fa-home bigger-120"></i>Indicadores</a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#p2" onclick="evento('p2');"><i class="red ace-icon fa fa-home bigger-120"></i>Reprobación</a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#p3" onclick="evento('p3');"><i class="blue ace-icon fa fa-home bigger-120"></i>Matricula</a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#p4" onclick="evento('p4');" ><i class="purple ace-icon fa fa-home bigger-120"></i>Nuevo Ing.</a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#p5" onclick="evento('p5');" ><i class="white ace-icon fa fa-home bigger-120"></i>Egresados</a>
+											</li>
 								
-							
+										</ul>
+
+										<div class="tab-content">
+											<div id="p1" class="tab-pane fade in active">	
+												<div class="row">
+													<div class="ayudaPadre fontRoboto col-sm-3">
+														<div style="padding:15px;" >											
+															<div class="row layuda dashboard" id="c11a"></div>																						
+															<div class="row layuda dashboard" id="c11b"></div>											
+															<div class="row layuda dashboard" id="c11c"></div>											
+															<div class="row layuda dashboard" id="c11d"></div>
+														</div>
+													</div>	
+													
+													<div class="ayudaPadre fontRoboto col-sm-6">
+														<div  style="padding:15px;" >																			
+															<div class="row layuda dashboard" id="c12"></div>
+														</div>
+													</div>
+
+													<div class="ayudaPadre fontRoboto col-sm-3">
+														<div style="padding:15px;" >												
+															<div class="row layuda dashboard" id="c13a"></div>																				
+															<div class="row layuda dashboard" id="c13b"></div>
+															<div class="row layuda dashboard" id="c13c"></div>
+														</div>
+													</div>									  
+												</div>
+											</div>				       	
+									
+											<div id="p2" class="tab-pane ">
+												<div class="row">
+													<div class="ayudaPadre fontRoboto col-sm-12">
+														<div style="padding:15px;" >											
+															<div class="row layuda dashboard" id="c21">
+															     <div id="graphRepMat" class="graph" style="width:100%;"></div>
+															</div>
+														</div>
+													</div>								
+												</div>
+											</div>
+
+											<div id="p3" class="tab-pane">
+												<div class="row">
+													<div class="ayudaPadre fontRoboto col-sm-12">
+														<div style="padding:15px;" >											
+															<div class="row layuda dashboard" id="c31">
+																<div id="graphHisMat" class="graph" style="width:100%;"></div>
+															
+															</div>
+														</div>
+													</div>								
+												</div>
+											</div>
+
+											<div id="p4" class="tab-pane">
+												<div class="row">
+													<div class="ayudaPadre fontRoboto col-sm-12">
+														<div style="padding:15px;" >											
+															<div class="row layuda dashboard" id="c41"></div>
+														</div>
+													</div>								
+												</div>
+											</div>
+
+
+											<div id="p5" class="tab-pane">
+												<div class="row">
+													<div class="ayudaPadre fontRoboto col-sm-12">
+														<div style="padding:15px;" >											
+															<div class="row layuda dashboard" id="c51"></div>
+														</div>
+													</div>								
+												</div>
+											</div>
+
+
+										</div>
+									</div>				        
 
 						   </div>
                        </div>

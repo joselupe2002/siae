@@ -46,10 +46,15 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
 		colocarCiclo("elciclo","CLAVE");
+
+
+
+
 		
 	});
 	
 	
+
 		 
 	function change_SELECT(elemento) {
 		if (elemento=='selCiclo') {miciclo=$("#selCiclo").val(); $("#elciclo").html($("#selCiclo").val());}
@@ -63,6 +68,14 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 	  
 	}
 
+
+	function evento(pes){
+		if (pes=="p2") {cargaReprobacion("danger");}
+		if (pes=="p3") {cargaHistMat("warning");}
+		if (pes=="p4") {cargaHistMatNew("primary");}
+		if (pes=="p5") {cargaHistEgresados("primary");}
+	}
+
     function cargarInformacion(){
 		limpiar();
 		cargaMatricula("primary");
@@ -72,11 +85,8 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		cargaAprobaron('c11c',"=1",'REPROBARON 1 MATERIA','warning');
 		cargaAprobaron('c11d',">1",'REPROBARON MAS DE 1 MATERIA','danger');
 		cargaTitulados("c13b","","INICIARON TITULACIÓN","primary");
-		cargaTitulados("c13c"," AND TITULADO='S'","TITULADOS","success");
-		cargaReprobacion();
-		cargaHistMat("warning");
-		cargaHistMatNew("primary");
-		
+		cargaTitulados("c13c"," AND TITULADO='S'","TITULADOS","success");	
+
 	}
 
 
@@ -184,6 +194,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 
 	function cargaMatriculaPer(coloret) {
 		var graphperiodo;
+		$('#c12').empty();
 		$('#c12').append("<img id=\"esperarc12\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
 		elsql="SELECT concat('SEM. ',getPeriodos(ALUM_MATRICULA,'"+miciclo+"')) as label, COUNT(*) as value "+
 		"FROM falumnos where ALUM_MATRICULA IN (SELECT ALUCTR FROM falumnos, dlista, cmaterias"+
@@ -208,6 +219,9 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
          		
          		 });
 
+				  graphperiodo.redraw();
+				  $(window).trigger('resize');
+
 				$("#esperarc12").remove();
 			
 			}  
@@ -219,6 +233,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 
 	function cargaReprobacion(coloret) {
 		var graphRepMat;
+		$('#c21').empty();
 		$('#c21').append("<img id=\"esperarc21\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
 		
 		elsql="SELECT MATE_DESCRIP, COUNT(*) AS INSCRITOS,SUM(IF (LISCAL>=70,1,0)) AS APROBADOS,"+
@@ -230,7 +245,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		//console.log(elsql);
 
 		$('#c21').append("<div class=\"row\"><span  class=\"label label-"+coloret+" fontRobotoB\">REPROBACIÓN POR MATERIA</span></div>");
-		$('#c21').append("<div id=\"graphRepMat\" class=\"graph\"></div>");
+		$('#c21').append("<div id=\"graphRepMat\" class=\"graph\" style=\"width:100%;\"></div>");
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
@@ -238,12 +253,13 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){    
 				datosgraf=JSON.parse(data);
-				graphperiodo= Morris.Bar({
+
+				graphRepMat= Morris.Bar({
          		   element: 'graphRepMat',
          		   data: datosgraf,
          		   xkey: 'MATE_DESCRIP',
          		   ykeys: ['PORREP'],
-         		   labels: ['label'],
+         		   labels: [''],
          		   xLabelAngle: 90,         	
          		   gridTextSize: '10',
          		   resize: true,
@@ -257,10 +273,15 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
          		  
          		 });
 
+				  graphRepMat.redraw();
+				  $(window).trigger('resize');
+
 				  
-          	    $( "#chartdiv svg rect" ).on("click", function(data) {    			     
+          	    $( "#graphRepMat svg rect" ).on("click", function(data) {    			     
                       detalle($(".morris-hover-row-label").html(),'','','');    			     
     			});
+
+				
 				
 
 				$("#esperarc21").remove();
@@ -274,6 +295,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 
 	function cargaHistMat(coloret) {
 		var graphHisMat;
+		$('#c31').empty();
 		$('#c31').append("<img id=\"esperarc31\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
 		
 		elsql="select CICLO,MATRICULA from vstmatriculaxcic where CARRERA="+micarrera+" ORDER BY CICLO";
@@ -282,7 +304,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		//console.log(elsql);
 
 		$('#c31').append("<div class=\"row\"><span  class=\"label label-"+coloret+" fontRobotoB\">HISTORIAL DE MATRICULA</span></div>");
-		$('#c31').append("<div id=\"graphHisMat\" class=\"graph\"></div>");
+		$('#c31').append("<div id=\"graphHisMat\" class=\"graph\" style=\"width:100%;\"></div>");
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
@@ -304,8 +326,10 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
          		  
          		 });
 
+				  graphHisMat.redraw();
+				  $(window).trigger('resize');
 				  
-          	    $( "#chartdiv svg rect" ).on("click", function(data) {    			     
+          	    $( "#graphHisMat svg rect" ).on("click", function(data) {    			     
                       detalle($(".morris-hover-row-label").html(),'','','');    			     
     			});
 				
@@ -318,17 +342,16 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 	}
 
 
+/*==============================================================================*/
 	function cargaHistMatNew(coloret) {
-		var graphHisMatNew;
-		$('#c41').append("<img id=\"esperarc41\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
 		
+		var graphHisMatNew;
+		$('#c41').empty();
+		$('#c41').append("<img id=\"esperarc41\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");	
 		elsql="select CICLO,MATRICULA from vstmatriculanewxcic where CARRERA="+micarrera+" ORDER BY CICLO";
-	
-
-		//console.log(elsql);
 
 		$('#c41').append("<div class=\"row\"><span  class=\"label label-"+coloret+" fontRobotoB\">HISTORIAL DE MATRICULA DE NUEVO INGRESO</span></div>");
-		$('#c41').append("<div id=\"graphHisMatNew\" class=\"graph\"></div>");
+		$('#c41').append("<div id=\"graphHisMatNew\" class=\"graph\" style=\"width:100%;\"></div>");
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 			type: "POST",
@@ -345,21 +368,75 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
          		   xLabelAngle: 00,         	
          		   gridTextSize: '10',
          		   resize: true,
+				   postUnits: '', //% $				         		  
+         		 });
+
+				  $("#esperarc41").remove();
+				  graphHisMatNew.redraw();
+				  $(window).trigger('resize');			
+
+          	    $( "#graphHisMatNew svg rect" ).on("click", function(data) {    			     
+                      detalle($(".morris-hover-row-label").html(),'','','');    			     
+    			});			
+			}  
+		});
+	}
+
+
+
+
+	function cargaHistEgresados(coloret) {
+		var graphRepEgre;
+		$('#c51').empty();
+		$('#c51').append("<img id=\"esperarc51\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
+		
+		elsql="SELECT CICLOING,ifnull((SELECT l.MATRICULA FROM vstmatriculanewxcic l "+
+			   " where l.CICLO=CICLOING AND l.CARRERA=h.CARRERA),0) as INS,"+			
+			   " COUNT(*) AS EGRESADOS, IFNULL(ROUND(COUNT(*)/ifnull((SELECT l.MATRICULA FROM vstmatriculanewxcic l "+
+			   "                                where l.CICLO=CICLOING AND l.CARRERA=h.CARRERA),0)*100,0),0) AS EFI "+
+			   " FROM vst_egresados h WHERE CARRERA="+micarrera+" GROUP BY CICLOING ORDER BY CICLOING";
+
+		$('#c51').append("<div class=\"row\"><span  class=\"label label-"+coloret+" fontRobotoB\">HISTORIAL DE EGRESADOS</span></div>");
+		$('#c51').append("<div id=\"graphRepEgre\" class=\"graph\" style=\"width:100%;\"></div>");
+		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+		$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){    
+				datosgraf=JSON.parse(data);
+
+				graphRepEgre= Morris.Bar({
+         		   element: 'graphRepEgre',
+         		   data: datosgraf,
+         		   xkey: 'CICLOING',
+         		   ykeys: ['EFI'],
+         		   labels: [''],
+         		   xLabelAngle: 90,         	
+         		   gridTextSize: '10',
+         		   resize: true,
 				   postUnits: '', //% $
-				  
+				   hoverCallback: function(index, options, content) {
+					var data = options.data[index];
+					return  "<b>"+data.CICLOING+"("+data.EFI+"%)</b><br>"+
+							"<b class=\"text-primary\">Inscritos: "+data.INS+"</b><br>"+
+							"<b class=\"text-success\">Egresados: "+data.EGRESADOS+"</b><br>";
+				}
          		  
          		 });
 
+				  graphRepEgre.redraw();
+				  $(window).trigger('resize');
+
 				  
-          	    $( "#chartdiv svg rect" ).on("click", function(data) {    			     
+          	    $( "#graphRepEgre svg rect" ).on("click", function(data) {    			     
                       detalle($(".morris-hover-row-label").html(),'','','');    			     
     			});
-				
-
-				$("#esperarc41").remove();
+				$("#esperarc51").remove();
 			
 			}  
 		});
 
 	}
+
 
