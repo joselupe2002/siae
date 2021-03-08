@@ -90,7 +90,7 @@ contMat=1;
 		   $("#losAvances").append(script);
 				
 		elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE,"+
-		" getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"') as PERIODOS  FROM "+
+		" getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"') as PERIODOS, ALUM_ACTIVO  FROM "+
 		" falumnos b where 1=1"+
 		cadPeriodo+
 		" and b.ALUM_CARRERAREG="+$("#selCarreras").val()+" and b.ALUM_MAPA='"+$("#selPlanes").val()+"' ORDER BY ALUM_MATRICULA";
@@ -129,8 +129,10 @@ contMat=1;
 													jQuery.each(JSON.parse(dataPaso), function(clavePaso, valorPaso) { 														
 														for (j=1;j<contMat;j++) {														
 															if (valorPaso.MATCVE==$("#mat_"+j).html()) {
+																
+																colorCur="green"; if (valorPaso.VECES>1) {colorCur="red"; }
 																if  (valorPaso.CICLO=='A') { // asignaturas del ciclo A = Acctual 
-																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa green fa-thumbs-up bigger-160\"><i>C"); 																	
+																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).html("<i class=\"fa "+colorCur+" fa-thumbs-up bigger-160\"><i>C"); 																	
 																	$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title","CURSANDO ACTUALMENTE "+$("#celda_"+valorPaso.ALUCTR+"_"+valorPaso.MATCVE).attr("title"));												
 																}
 																if ((valorPaso.CICLO=='C') && (valorPaso.LISCAL>=70)) {
@@ -173,12 +175,14 @@ function generaTablaAvances(grid_data){
 	$("#cuerpoAvances").empty();
 	$("#tabAvances").append("<tbody id=\"cuerpoAvances\">");
 	//$("#btnfiltrar").attr("disabled","disabled");
-	jQuery.each(grid_data, function(clave, valor) { 	        			
+	jQuery.each(grid_data, function(clave, valor) { 	
+		cadbaja="";
+		if (valor.ALUM_ACTIVO!=1) {cadbaja="color:red;";}        			
 		$("#cuerpoAvances").append("<tr id=\"rowA"+contAlum+"\">");
 		
 		$("#rowA"+contAlum).append("<td>"+contAlum+"</td>");
-		$("#rowA"+contAlum).append("<td id=\"alum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.ALUM_MATRICULA+"</td>");
-		$("#rowA"+contAlum).append("<td id=\"Nalum_"+contAlum+"\" style=\"font-size:10px;\">"+valor.NOMBRE+"</td>");
+		$("#rowA"+contAlum).append("<td id=\"alum_"+contAlum+"\" class=\"fontRobotoB\" style=\"font-size:12px; "+cadbaja+"\">"+valor.ALUM_MATRICULA+"</td>");
+		$("#rowA"+contAlum).append("<td id=\"Nalum_"+contAlum+"\" class=\"fontRobotoB\" style=\"font-size:12px; "+cadbaja+"\">"+valor.NOMBRE+"</td>");
 		$("#rowA"+contAlum).append("<td style=\"font-size:10px;\"><span class=\"badge  badge-info\">"+valor.PERIODOS+"</span></td>");
 
 	    contAlum++;      			
