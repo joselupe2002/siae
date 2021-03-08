@@ -37,10 +37,10 @@
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;">
+	<body id="grid_<?php echo $_GET['modulo']; ?>" class="sigeaPrin" style="background-color: white; width:98%;">
 	   
 
-	<div class="widget-box widget-color-purple" id="principal_1">
+	<div class="widget-box widget-color-purple sigeaPrin" id="principal_1">
 			  <div class="widget-header widget-header-small">
 			      <div class="row" >							
 						<div class="col-sm-8" style="padding-left:20px;padding-top:5px;">                            
@@ -112,7 +112,7 @@
 							</div>
 				       </div>
 				       <div class="row">							   
-					       <div id="informacion" class="col-sm-12" class="sigeaPrin" style="overflow-x: auto; height:350px;" >    
+					       <div id="informacion" class="col-sm-12 sigeaPrin" style="overflow-x: auto; height:350px;">    
 						   </div>
                        </div>
                     </div>

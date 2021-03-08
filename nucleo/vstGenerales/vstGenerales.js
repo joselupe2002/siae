@@ -179,7 +179,7 @@ contMat=1;
 						       }
 							);
 
-							script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover\">"+
+							script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"table table-condensed table-bordered table-hover sigeaPrin\">"+
 							    "        <thead>  "+
 								"             <tr id=\"headMaterias\"><td>No.</td>"+cadCampos+"</tr>"
 								"            </thead>" +
