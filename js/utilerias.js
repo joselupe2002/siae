@@ -3887,3 +3887,12 @@ function previewAdjunto(enlace) {
 	var newstr = str.replace(re, "");
 	abrirPesta(newstr, "Adjunto");
 }
+
+
+function addbtninfo(contenedor,titulo,tipo,valor,txt) {
+	$("#"+contenedor).append("<span title=\""+titulo+"\" class=\"btn btn-app btn-sm "+tipo+" no-hover\">"+
+	"   <span class=\"line-height-1 bigger-170\">"+valor+"</span>"+
+	"   <br /> "+
+	"   <span class=\"line-height-1 smaller-60\">"+txt+"</span>"+
+	"</span>");
+}
