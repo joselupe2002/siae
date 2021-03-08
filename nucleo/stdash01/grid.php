@@ -69,16 +69,16 @@
 												<a data-toggle="tab" href="#p1" onclick="evento('p1');"><i class="green ace-icon fa fa-home bigger-120"></i>Indicadores</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p2" onclick="evento('p2');"><i class="red ace-icon fa fa-home bigger-120"></i>Reprobación</a>
+												<a data-toggle="tab" href="#p2" onclick="evento('p2');"><i class="red ace-icon fa fa-thumbs-down bigger-120"></i>Reprobación</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p3" onclick="evento('p3');"><i class="blue ace-icon fa fa-home bigger-120"></i>Matricula</a>
+												<a data-toggle="tab" href="#p3" onclick="evento('p3');"><i class="blue ace-icon fa fa-user bigger-120"></i>Matricula</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p4" onclick="evento('p4');" ><i class="purple ace-icon fa fa-home bigger-120"></i>Nuevo Ing.</a>
+												<a data-toggle="tab" href="#p4" onclick="evento('p4');" ><i class="purple ace-icon fa fa-certificate bigger-120"></i>Nuevo Ing.</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p5" onclick="evento('p5');" ><i class="white ace-icon fa fa-home bigger-120"></i>Egresados</a>
+												<a data-toggle="tab" href="#p5" onclick="evento('p5');" ><i class="green ace-icon fa fa-trophy bigger-120"></i>Egresados</a>
 											</li>
 								
 										</ul>
