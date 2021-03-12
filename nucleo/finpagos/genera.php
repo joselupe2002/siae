@@ -6,7 +6,7 @@ $options=array('trace'=>true,
                'soap_version' => SOAP_1_2,
                'stream_context'=>stream_context_create( ['http' => ['timeout'=>1] ] )
             );
-$client = new SoapClient("wsdl.xml",$options);
+$client = new SoapClient("http://tservicios.spf.tabasco.gob.mx:8082/RE_ServiciosInternetExternos/SIExternosWSPort?wsdl",$options);
 
 $idTramite=$_GET["idTramite"];
 $nombre=$_GET["nombre"];
