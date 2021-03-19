@@ -260,7 +260,9 @@ var miciclo="";
 												"    </div>"+
 												"</div>");
 
-							$("#documentos").append("<div class=\"row\"><div id=\"cont_sssol\" class=\"col-sm-6\"></div>"+
+							$("#documentos").append("<div class=\"row\"><div id=\"cont_sscartapres\" class=\"col-sm-6\"></div>"+
+													"                   <div id=\"cont_sscartaacep\" class=\"col-sm-6\"></div></div>"+
+													"<div class=\"row\"><div id=\"cont_sssol\" class=\"col-sm-6\"></div>"+
 													"                   <div id=\"cont_sscartacom\" class=\"col-sm-6\"></div></div>"+
 													"<div class=\"row\"><div id=\"cont_ssplan\" class=\"col-sm-6\"></div>"+
 													"                   <div id=\"cont_sslibre\" class=\"col-sm-6\"></div></div>"+
@@ -273,6 +275,9 @@ var miciclo="";
 
 							elsql="SELECT IFNULL((select concat(VALIDADO,'|',RUTA) from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSSOLSS'),'|') AS RUTA_SSSOLSS, "+
 							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSCARTACOM'),'|') AS RUTA_SSCARTACOM, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSCARTAPRES'),'|') AS RUTA_SSCARTAPRES, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSCARTAACEP'),'|') AS RUTA_SSCARTAACEP, "+
+
 							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSPLAN'),'|') AS RUTA_SSPLAN, "+
 							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSBIM1'),'|') AS RUTA_SSBIM1, "+
 							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSBIM2'),'|') AS RUTA_SSBIM2, "+
@@ -288,6 +293,27 @@ var miciclo="";
 								success: function(data){
 					
 									
+									activaEliminar="";							
+									if ((JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[0]!='S') {
+										dameSubirArchivoDrive("cont_sscartapres","Carta Presentación Sellada","sscartapres",'SERVSOC','pdf',
+										'ID',usuario,'CARTA PRESENTACIÓN SELLADA','eadjresidencia','alta',usuario+"_"+miciclo+"_SSCARTAPRES",JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[1],activaEliminar);										
+									} else {
+										agregaPDF("cont_sssol","Carta Presentación Sellada",JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[1]);
+									}
+
+
+									activaEliminar="";							
+									if ((JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[0]!='S') {
+										dameSubirArchivoDrive("cont_sscartaacep","Carta Aceptación Sellada","sscartaacep",'SERVSOC','pdf',
+										'ID',usuario,'CARTA ACEPTACIÓN SELLADA','eadjresidencia','alta',usuario+"_"+miciclo+"_SSCARTAACEP",JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[1],activaEliminar);										
+									} else {
+										agregaPDF("cont_sssol","Carta Aceptación Sellada",JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[1]);
+									}
+									
+
+
 									activaEliminar="";							
 
 									if ((JSON.parse(data)[0]["RUTA_SSSOLSS"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSSOLSS"].split("|")[0]!='S'))  {	activaEliminar='S';}					
