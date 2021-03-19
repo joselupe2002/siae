@@ -3425,7 +3425,11 @@ function residencia_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper
 					"UNION "+
 					"SELECT 'EVALUACIÓN FINAL' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_EVALF'),'') AS RUTA FROM DUAL  "+					
 					"UNION "+
-					"SELECT 'REPORTE TÉCNICO' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_REPTEC'),'') AS RUTA FROM DUAL  ";										
+					"SELECT 'REPORTE TÉCNICO' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_REPTEC'),'') AS RUTA FROM DUAL "+
+					"UNION "+
+					"SELECT 'CARTA DE LIBERACIÓN' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_LIB'),'') AS RUTA FROM DUAL  "+					
+					"UNION "+
+					"SELECT 'CARTA DE ANUENVIA' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_ANUE'),'') AS RUTA FROM DUAL  ";					
 
 
 			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
