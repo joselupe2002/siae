@@ -3429,7 +3429,7 @@ function residencia_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper
 					"UNION "+
 					"SELECT 'CARTA DE LIBERACIÓN' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_LIB'),'') AS RUTA FROM DUAL  "+					
 					"UNION "+
-					"SELECT 'CARTA DE ANUENVIA' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_ANUE'),'') AS RUTA FROM DUAL  ";					
+					"SELECT 'CARTA DE ANUENCIA' AS REPORTE,IFNULL((select RUTA from eadjresidencia where  AUX='"+matricula+"_"+miciclo+"_ANUE'),'') AS RUTA FROM DUAL  ";					
 
 
 			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
@@ -3747,7 +3747,12 @@ function ss_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper,miciclo
 	
 	$('#adjuntos').modal({show:true, backdrop: 'static'});
 
-	sqlAsp="SELECT 'SSSOLSS' AS TIPO, 'SOLICITUD FIRMADA' as REPORTE FROM DUAL  "+
+	sqlAsp=
+			"SELECT 'SSCARTAPRES' AS TIPO, 'CARTA PRESENTACIÓN SELLADA' as REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSCARTAACEP' AS TIPO, 'CARTA ACEPTACIÓN SELLADA' as REPORTE FROM DUAL  "+
+			"UNION "+
+			"SELECT 'SSSOLSS' AS TIPO, 'SOLICITUD FIRMADA' as REPORTE FROM DUAL  "+
 			"UNION "+
 			"SELECT 'SSCARTACOM' AS TIPO, 'CARTA COMPROMISO' AS REPORTE FROM DUAL  "+
 			"UNION "+
