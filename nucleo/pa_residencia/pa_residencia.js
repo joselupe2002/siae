@@ -766,6 +766,8 @@ function cargarDatosPropuesta(tipo){
 								elsql="SELECT IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVAL1'),'') AS EVAL1, "+
 										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVAL2'),'') AS EVAL2,"+
 										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_EVALF'),'') AS EVALF,"+
+										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_LIB'),'') AS LIB,"+
+										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_ANUE'),'') AS ANUE,"+
 										"IFNULL((select RUTA from eadjresidencia where  AUX='"+usuario+"_"+elciclo+"_REPTEC'),'') AS REPTEC FROM DUAL"; 
 			
 								parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -776,7 +778,8 @@ function cargarDatosPropuesta(tipo){
 									success: function(data){	
 			
 										$("#documentos3").append("<hr><div class=\"row\"><div id=\"EVAL1\" class=\"col-sm-6\"></div><div id=\"EVAL2\" class=\"col-sm-6\"></div></div>"+
-										"<div class=\"row\"><div id=\"EVALF\" class=\"col-sm-6\"></div><div id=\"REPTEC\" class=\"col-sm-6\"></div></div>");
+										"<div class=\"row\"><div id=\"EVALF\" class=\"col-sm-6\"></div><div id=\"REPTEC\" class=\"col-sm-6\"></div></div>"+
+										"<div class=\"row\"><div id=\"LIB\" class=\"col-sm-6\"></div><div id=\"ANUE\" class=\"col-sm-6\"></div></div>");
 						
 										activaEliminar="";
 										if (JSON.parse(data)[0]["EVAL1"]!='') {	activaEliminar='S';}					
@@ -797,6 +800,17 @@ function cargarDatosPropuesta(tipo){
 										if (JSON.parse(data)[0]["REPTEC"]!='') {	activaEliminar='S';}					
 										dameSubirArchivoDrive("REPTEC","Reporte Técnico","reptec",'ADJRESIDENCIA','pdf',
 										'ID',usuario,'REPORTE TÉCNICO','eadjresidencia','alta',usuario+"_"+elciclo+"_REPTEC",JSON.parse(data)[0]["REPTEC"],activaEliminar);							
+
+										activaEliminar="";
+										if (JSON.parse(data)[0]["LIB"]!='') {	activaEliminar='S';}					
+										dameSubirArchivoDrive("LIB","Carta de Liberación","lib",'ADJRESIDENCIA','pdf',
+										'ID',usuario,'CARTA DE LIBERACIÓN','eadjresidencia','alta',usuario+"_"+elciclo+"_LIB",JSON.parse(data)[0]["LIB"],activaEliminar);							
+
+										activaEliminar="";
+										if (JSON.parse(data)[0]["ANUE"]!='') {	activaEliminar='S';}					
+										dameSubirArchivoDrive("ANUE","Carta de Anuencia","anue",'ADJRESIDENCIA','pdf',
+										'ID',usuario,'CARTA DE ANUENCIA','eadjresidencia','alta',usuario+"_"+elciclo+"_ANUE",JSON.parse(data)[0]["ANUE"],activaEliminar);							
+
 										
 									}
 								});		
