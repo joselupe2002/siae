@@ -13,7 +13,7 @@ if(DEBUG)
     ini_set('display_errors', '1');
 }
 $wsdl="../../wsdl/wsdl.xml";
-
+phpinfo();
 //Basados en la estructura del servicio armamos un array
 $params = Array(
    "folioSeguimiento" => Array(
@@ -24,7 +24,7 @@ $params = Array(
     ); 
 
     
-    //$params = Array("folioSeguimiento" => Array("nombre" => "JOSE", "apaterno" => "AGUILAR", "idTramite" =>"1001",  "folioSeguimiento" => "ITSM8480"));
+    $params = Array("folioSeguimiento" => Array("nombre" => "JOSE", "apaterno" => "AGUILAR", "idTramite" =>"1001",  "folioSeguimiento" => "ITSM8480"));
 
     $options = array(
 		'uri'=>'http://schemas.xmlsoap.org/soap/envelope/',
