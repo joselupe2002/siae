@@ -13,7 +13,7 @@ if(DEBUG)
     ini_set('display_errors', '1');
 }
 $wsdl="../../wsdl/wsdl.xml";
-phpinfo();
+
 //Basados en la estructura del servicio armamos un array
 $params = Array(
    "folioSeguimiento" => Array(
