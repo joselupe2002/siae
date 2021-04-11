@@ -46,18 +46,22 @@
 			      <div class="row" >	
 				         <div id="losciclos" class="col-sm-1">
 						</div> 	
-						<div id="losciclos2" class="col-sm-3"></div>  
+						
     				
+						<div class="col-sm-2" style="padding-top:14px;">
+							<button title="Ver historial de Líneas de Capturas generadas" onclick="cargarInformacion();" class="btn btn-white btn-warning btn-round" value="Agregar"> 
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small fontRoboto">Historial de Lin. Capt.</span>            
+							</button>
+						</div>
+					
+						<div id="losarticulos" class="col-sm-6"></div>  
 	
-						<div class="col-sm-6" style="padding-top:14px;">
+						<div class="col-sm-3" style="padding-top:14px;">
 						    <button title="Crear Línea de Captura" onclick="creaLinea();" class="btn btn-white btn-info btn-round" value="Agregar"> 
-								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small fontRoboto"> Ver Pagos</span>            
+								<i class="ace-icon red fa fa-barcode bigger-140"></i><span class="btn-small fontRoboto"> Generar Línea de Captura</span>            
 							</button>
 
-							<button title="Agregar un Nuevo Pago" onclick="nuevoPago();" class="btn btn-white btn-success btn-round" value="Agregar"> 
-								<i class="ace-icon pink fa fa-credit-card bigger-140"></i><span class="btn-small fontRoboto"> Agregar Pago</span>            
-							</button>
-						
+					
 																							 									
 						</div>
 		            </div> 
@@ -75,7 +79,7 @@
 							</div>
 				       </div>
 				       <div class="row">							   
-					       <div id="informacion" class="col-sm-12" style="overflow-x: auto; height:350px;" >    
+					       <div id="informacion" class="col-sm-12 sigeaPrin" style="overflow-x: auto; height:350px;" >    
 						   </div>
                        </div>
                     </div>

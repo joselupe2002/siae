@@ -21,8 +21,8 @@ var miciclo="";
 		$(".input-mask-numero").mask("99");
 
 
-		$("#losciclos2").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
-		addSELECT("selCiclo","losciclos2","PROPIO", "SELECT CICL_CLAVE, concat(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc order by CICL_CLAVE DESC", "","");  	
+		$("#losarticulos").append("<span class=\"label label-danger\">Conceptos de Pago</span>");
+		addSELECT("selArticulo","losarticulos","PROPIO", "SELECT CLAVE, DESCRIPCION, MONTO FROM finarticulos order by DESCRIPCION", "","");  	
 		
 
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
@@ -34,17 +34,14 @@ var miciclo="";
 	
 		 
 	function change_SELECT(elemento) {
-
-		if (elemento=='selCiclo') {miciclo=$("#selCiclo").val(); $("#elciclo").html($("#selCiclo").val());}
-		if (elemento=='selTiposPagos') {$("#larutapago").empty(); selPago(); }
 	}  
 
 
 
     function cargarInformacion(){
 		$("#informacion").empty();
-		mostrarEspera("esperaInf","grid_pa_mispagos","Cargando Datos...");
-		elsql="SELECT n.*, IFNULL((select RUTA from eadjreinsres h where h.ID=n.IDDET),'') AS RUTARES FROM vcotejarpagos n where MATRICULA='"+usuario+"' AND CICLO='"+$("#selCiclo").val()+"' ORDER BY IDDET DESC";
+		mostrarEspera("esperaInf","grid_finpagos","Cargando Datos...");
+		elsql="SELECT  * from finlincap h where MATRICULA='"+usuario+"' ORDER BY ID DESC";
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
@@ -69,7 +66,7 @@ var miciclo="";
 function generaTablaInformacion(grid_data){
 	c=0;
 
-	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
+	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \" fontRoboto table table-condensed table-bordered table-hover\" "+
 				">";
 	$("#informacion").empty();
 	$("#informacion").append(script);
@@ -78,18 +75,14 @@ function generaTablaInformacion(grid_data){
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 
 	$("#tabInformacion").append("<thead><tr id=\"headMaterias\">"+
-	"<th style=\"text-align: center;\">Elim</th>"+ 
 	"<th style=\"text-align: center;\">Id</th>"+ 
-	"<th style=\"text-align: center;\">Ciclo</th>"+ 
-	"<th style=\"text-align: center;\">Cve_Tipo</th>"+
-	"<th style=\"text-align: center;\">Tipo</th>"+
-	"<th style=\"text-align: center;\">Comprobante de Pago</th>"+
-	"<th style=\"text-align: center;\">Cotejado</th>"+
-	"<th style=\"text-align: center;\">Atendido</th>"+
-	"<th style=\"text-align: center;\">Respuesta</th>"+
-	"<th style=\"text-align: center;\">Observación Cotejo</th>"+
-	"<th style=\"text-align: center;\">Fecha Cotejo</th>"+
-	"<th style=\"text-align: center;\">Fecha Subida</th>"
+	"<th style=\"text-align: center;\">Descripción</th>"+ 
+	"<th style=\"text-align: center;\">Monto</th>"+
+	"<th style=\"text-align: center;\">Fecha Sol.</th>"+
+	"<th style=\"text-align: center;\">Vencimiento</th>"+
+	"<th style=\"text-align: center;\">STATUS</th>"+
+	"<th style=\"text-align: center;\">Linea</th>"+
+	"<th style=\"text-align: center;\">Folio</th>"
 	
 	); 
 
@@ -98,140 +91,148 @@ function generaTablaInformacion(grid_data){
 	 jQuery.each(grid_data, function(clave, valor) { 			
 		cadFile="";	
 
-		 btnElim="";
-		 if ((valor.COTEJADO=='N') && ((valor.RUTARES==''))) {
-		     btnElim="<i onclick=\"eliminarReg('"+valor.IDDET+"');\" class=\"ace-icon red fa fa-trash-o bigger-200\" style=\"cursor:pointer;\"></i>";
-		 }
 		
-		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.IDDET+"\">");   
-		 $("#row"+valor.IDDET).append("<td>"+btnElim+"</td>");   
-
-		 $("#row"+valor.IDDET).append("<td>"+valor.IDDET+"</td>");   	
-		 $("#row"+valor.IDDET).append("<td>"+valor.CICLO+"</td>");    
-		 $("#row"+valor.IDDET).append("<td>"+valor.TIPO+"</td>");         	    
-		 $("#row"+valor.IDDET).append("<td>"+valor.TIPOD+"</td>");
-		 $("#row"+valor.IDDET).append("<td><div style=\"width:200px;\" id=\"file"+valor.IDDET+"\"></div></td>");
-		 
-
-		 tit=""; cadCotejado="";
-
-		 if ((valor.COTEJADO=='N') && (valor.OBSCOTEJO=='' || valor.OBSCOTEJO==null)) {tit="En espera de ser cotejado"; cadCotejado="fa-retweet blue";}
-		 if ((valor.COTEJADO=='N') && (valor.OBSCOTEJO!='' && valor.OBSCOTEJO!=null)) { tit="El recibo de pago no fue aceptado tiene observaciones"; cadCotejado="fa-times red"; }
-		 if (valor.COTEJADO=='S') {tit="El pago ha sido cotejado correctamente"; cadCotejado="fa-check-square-o green";}
-		 $("#row"+valor.IDDET).append("<td><i title=\""+tit+"\" class=\"fa "+cadCotejado+" bigger-200\"></i></td>");
 		
-		 tit="En espera para ser atendido"; cadAten="fa-retweet blue";
-		 if (valor.ATENDIDO=='S') {tit="El servicio ya fue atendido"; cadAten="fa-check-square-o green";}
-		 $("#row"+valor.IDDET).append("<td><i title=\""+tit+"\" class=\"fa "+cadAten+" bigger-200\"></i></td>");
-
-		 $("#row"+valor.IDDET).append("<td><div id=\"respuesta"+valor.IDDET+"\"></div></td>");
-
-		 $("#row"+valor.IDDET).append("<td>"+valor.OBSCOTEJO+"</td>");
+		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">");   
 		 
-		 $("#row"+valor.IDDET).append("<td>"+valor.FECHACOTEJO+"</td>");
-		 $("#row"+valor.IDDET).append("<td>"+valor.FECHARUTA+"</td>");
-
+		 $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");   	
+		 $("#row"+valor.ID).append("<td>"+valor.DESCRIPCION+"</td>");    
+		 $("#row"+valor.ID).append("<td>"+valor.IMPORTE+"</td>");         	    
+		 $("#row"+valor.ID).append("<td>"+valor.FECHAUS+"</td>");
+		 $("#row"+valor.ID).append("<td>"+valor.FECHAVENCE+"</td>");
+		 $("#row"+valor.ID).append("<td>"+valor.STATUS+"</td>");
+		 $("#row"+valor.ID).append("<td>"+valor.LINEA+"</td>");
+		 $("#row"+valor.ID).append("<td>"+valor.FOLIOESTADO+"</td>");
 		 
-		$("#row"+valor.IDDET).append("</tr>");
+		$("#row"+valor.ID).append("</tr>");
 
-		if (valor.COTEJADO=='N') {
-			activaEliminar="N";
-			txtop=valor.TIPOD; idop=valor.TIPO;
-			dameSubirArchivoDrive("file"+valor.IDDET,"","recibo"+valor.IDDET,'RECIBOREINS','pdf',
-			'ID',valor.ID,'RECIBO DE PAGO '+txtop,'eadjreins','alta',usuario+"_"+miciclo+"_"+idop,valor.RUTA,activaEliminar);	
-		}
-
-		if (!(valor.RUTARES=='')) {
-			$("#respuesta"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
-			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:50px; height:50px;\"></a>");	
-		}
-
+		
 
 	 });
 	$('#dlgproceso').modal("hide"); 
 }	
 
 
-function nuevoPago(){
-	if ($("#selCiclo").val()>0) {
-		mostrarConfirm2("pagonew","grid_pa_mispagos","Pago Nuevo","<div id=\"contPago\" style=\"text-justify:left;\"></div>","Finalizar","cargarInformacionNew();");
-
-		$("#contPago").append("<div class=\"row\"><div id=\"lostipos\" class=\"col-sm-4\"></div>"+
-												 "<div id=\"larutapago\" class=\"col-sm-8\"><div>"+
-							   "</div>");
-		
-		$("#lostipos").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
-		addSELECT("selTiposPagos","lostipos","PROPIO", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOSPAGOS' and CATA_ACTIVO='S' order by CATA_DESCRIP", "","");  	
-	}
-	else {alert ("Por favor elija primero el ciclo escolar actual");}
-
-}
-
-function selPago (){
-    eltag=dameFecha("TAG");
-	txtop=$("#selTiposPagos option:selected").text();
-    idop=$("#selTiposPagos option:selected").val();
-	
-	activaEliminar="N";
-	dameSubirArchivoDrive("larutapago","Recibo: "+txtop,"reciboreins",'RECIBOREINS','pdf',
-	'ID',usuario+"_"+eltag,'RECIBO DE PAGO '+txtop,'eadjreins','alta',usuario+"_"+miciclo+"_"+idop,"",activaEliminar);	
-
-}
-
-function cargarInformacionNew(){
-
-	$("#pagonew").modal("hide");
-	cargarInformacion();
-};
 
 
 
 
-function eliminarReg(elid){
-	if (confirm("¿Seguro que desea eliminar el Registro de Pago No. "+elid)) {
-	
-		parametros={tabla:"eadjreins",
-					bd:"Mysql",					
-					campollave:"IDDET",
-					valorllave:elid};
-		$.ajax({
-			data:  parametros,
-			url:   '../base/eliminar.php',
-			type:  'post',          
-			success:  function (response) {
-				$('#dlgproceso').modal("hide");
-				cargarInformacion();
-	   }		
-	   }); 
 
-	}
-	
-};
+
+
+
+
 
 
 
 
 function creaLinea(){
-				
 
-						
-		var parametros = {
-			idTramite:"57",
-			nombre:"JUANITO",
-			apaterno:"PEREZ",
-			amaterno:"PEREZ",
-			curp:"AUHG791020HTCGRD05"     
-			};
-				
-		alert ("pase");
-		$.ajax({
-					data:  parametros,
-					url:   'genera.php',
-					type:  'get',                          
-					success:  function (response) {
-						alert (response) ;      
-					},
-					async: false, 
-					cache: false 
-			}); 
+	
+    if ($("#selArticulo").val()>0) {
+			mostrarEspera("esperaRep","grid_finpagos","Procesando Petición...");
+			elarticulo=$("#selArticulo").val();
+			elarticulod=$("#selArticulo option:selected").text();
+
+			elsql="SELECT ALUM_NOMBRE, ALUM_APEPAT, ALUM_APEMAT, CARR_DESCRIP, ALUM_CARRERAREG,"+
+			"getciclo() AS CICLO FROM falumnos n, ccarreras o where ALUM_MATRICULA='"+usuario+"' and ALUM_CARRERAREG=CARR_CLAVE";
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){   
+					alumno=JSON.parse(data);			
+					var hoy=new Date();		
+					
+					fechaexp=pad(hoy.getDate(),2,'0')+"-"+pad(hoy.getMonth()+1,2,'0')+"-"+hoy.getFullYear();
+					elfolio=usuario.concat(hoy.getDate()).concat((hoy.getMonth()+1)).concat(hoy.getFullYear()).concat(hoy.getHours()).concat(hoy.getMinutes()).concat(hoy.getSeconds());
+					
+
+					var parametrosF = {
+						idTramite:elarticulo,
+						nombre:alumno[0]["ALUM_NOMBRE"],
+						apaterno:alumno[0]["ALUM_APEPAT"],
+						amaterno:alumno[0]["ALUM_APEMAT"],
+						curp:alumno[0]["ALUM_CURP"],
+						folioSeguimiento:elfolio
+						};
+										
+					$.ajax({
+								data:  parametrosF,
+								url:   'genera.php',
+								type:  'POST',                          
+								success:  function (response) {							
+									respuesta=response.split("*");
+									if (respuesta[0]=="ERROR") {
+										alert ("OCURRIO EL SIGUIENTE ERROR: "+respuesta[1]+ " INTENTELO NUEVAMENTE");							
+									}
+									else {
+										fechaus=dameFecha("FECHAHORA");
+										parametros={tabla:"finlincap",
+										bd:"Mysql",
+										_INSTITUCION:"ITSM",
+										_CAMPUS:"0",
+										MATRICULA:usuario,
+										NOMBRE:alumno[0]["ALUM_NOMBRE"]+" "+alumno[0]["ALUM_APEPAT"]+" "+alumno[0]["ALUM_APEMAT"],
+										FOLIOSEG:elfolio,
+										FOLIOESTADO:respuesta[3],
+										LINEA:respuesta[2],
+										FECHAVENCE:respuesta[1],
+										IMPORTE:respuesta[4],
+										CARRERA:alumno[0]["ALUM_CARRERAREG"],
+										CARRERAD:alumno[0]["CARR_DESCRIP"],
+										IDARTICULO:elarticulo,
+										DESCRIPCION:elarticulod,
+										CICLO:alumno[0]["CICLO"],
+										USUARIO:usuario,
+										FECHAUS:fechaus
+									};
+										$.ajax({
+											type: "POST",
+											url:"../base/inserta.php",
+											data: parametros,
+											success: function(data){ 
+												if (data.substring(0,2)=='0:') { 
+													alert ("Ocurrio un error: "+data); console.log(data);
+													ocultarEspera("esperaRep");
+													}
+											
+												}
+											});
+
+										//Se imprime el reporte de linea de captura
+										enlace="nucleo/finpagos/reporte.php?linea="+respuesta[2]+"&fechavence="+respuesta[1]+
+										"&usuario="+usuario+"&nombre="+alumno[0]["ALUM_NOMBRE"]+" "+alumno[0]["ALUM_APEPAT"]+" "+alumno[0]["ALUM_APEMAT"]+
+										"&carrera="+alumno[0]["CARR_DESCRIP"]+"idarticulo="+elarticulo+"&descripcion="+elarticulod+
+										"&folioestado="+respuesta[3]+"&fechaexp="+fechaexp+"&importe="+respuesta[4];								
+										
+										abrirPesta(enlace,"Línea");
+
+										/*
+										var parametrosF = {FOLIOESTADO:respuesta[3]};																					
+										//Borramos los codigo de barras Generados 
+										$.ajax({
+											type: "POST",
+											url:"borraCod.php",
+											data: parametrosF,
+											success: function(data){ 
+												
+												}
+											});
+
+											*/
+
+										ocultarEspera("esperaRep");  
+									}												
+								},
+								async: false, 
+								cache: false 
+					}); 
+
+				}
+			}); 	
+	}
+	else { alert ("Debe elegir primero el concepto a Pagar")}			
+	
 }
