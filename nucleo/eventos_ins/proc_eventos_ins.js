@@ -116,6 +116,7 @@ function enviarMasivo(modulo,usuario,institucion, campus,essuper) {
 
 
 function insertarMasivo(modulo,usuario,institucion, campus,essuper){
+
 	table = $("#G_"+modulo).DataTable();
 	mostrarVentanaCierre ("vtnDatos","G_"+modulo, "Listado de Matricula", 
 	 "<div id=\"losEventos\" style=\"width:100%;\"></div>"+
@@ -126,7 +127,7 @@ function insertarMasivo(modulo,usuario,institucion, campus,essuper){
 }
 
 
-function insertarAsistenacia(valor, usuario, institucion, campus){
+function insertarAsistenacia( usuario, institucion, campus){
 	var lines = $('#lasmat').val().split('\n');
 	var matricula="";
 	$('#lasmat').val("");
