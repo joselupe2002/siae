@@ -63,18 +63,24 @@ var miciclo="";
 }
 
 
+function imprimirLinea(vlinea,vfechavence,vnombre,vcarrera,varticulo,vdescrip,vfolioestado,vfechaexp,vimporte){
+	enlace="nucleo/finpagos/reporte.php?linea="+vlinea+"&fechavence="+vfechavence+
+			"&usuario="+usuario+"&nombre="+vnombre+
+			"&carrera="+vcarrera+"&idarticulo="+varticulo+"&descripcion="+vdescrip+
+			"&folioestado="+vfolioestado+"&fechaexp="+vfechaexp+"&importe="+vimporte;								
+										
+	abrirPesta(enlace,"Línea");
+}
+
 function generaTablaInformacion(grid_data){
 	c=0;
-
-	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \" fontRoboto table table-condensed table-bordered table-hover\" "+
-				">";
+	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \" fontRoboto table table-condensed table-bordered table-hover\" "+">";
 	$("#informacion").empty();
-	$("#informacion").append(script);
-				
+	$("#informacion").append(script);				
 	$("#cuerpoInformacion").empty();
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
-
 	$("#tabInformacion").append("<thead><tr id=\"headMaterias\">"+
+	"<th style=\"text-align: center;\">Hoja</th>"+ 
 	"<th style=\"text-align: center;\">Id</th>"+ 
 	"<th style=\"text-align: center;\">Descripción</th>"+ 
 	"<th style=\"text-align: center;\">Monto</th>"+
@@ -83,19 +89,21 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">STATUS</th>"+
 	"<th style=\"text-align: center;\">Linea</th>"+
 	"<th style=\"text-align: center;\">Folio</th>"
-	
 	); 
 
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
-	
 	 jQuery.each(grid_data, function(clave, valor) { 			
 		cadFile="";	
+		
 
-		
-		
+		btn="<i onclick=\"imprimirLinea('"+valor.LINEA+"','"+valor.FECHAVENCE+"','"+valor.NOMBRE+
+		"','"+valor.CARRERAD+"','"+valor.IDARTICULO+"','"+valor.DESCRIPCION+"','"+valor.FOLIOESTADO+
+		"','"+valor.FECHAUS.split(" ")[0].replace('/// gi','-')+"','"+valor.IMPORTE+"');\" class=\"ace-icon blue fa fa-barcode bigger-200\" style=\"cursor:pointer;\"></i>";
+
 		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.ID+"\">");   
 		 
-		 $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");   	
+		 $("#row"+valor.ID).append("<td>"+valor.ID+"</td>");  
+		 $("#row"+valor.ID).append("<td>"+btn+"</td>");   	
 		 $("#row"+valor.ID).append("<td>"+valor.DESCRIPCION+"</td>");    
 		 $("#row"+valor.ID).append("<td>"+valor.IMPORTE+"</td>");         	    
 		 $("#row"+valor.ID).append("<td>"+valor.FECHAUS+"</td>");
