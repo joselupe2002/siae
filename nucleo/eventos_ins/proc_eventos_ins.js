@@ -115,6 +115,49 @@ function enviarMasivo(modulo,usuario,institucion, campus,essuper) {
 
 
 
+function insertarMasivo(modulo,usuario,institucion, campus,essuper){
+	table = $("#G_"+modulo).DataTable();
+	mostrarVentanaCierre ("vtnDatos","G_"+modulo, "Listado de Matricula", 
+	 "<div id=\"losEventos\" style=\"width:100%;\"></div>"+
+	 "<textarea id=\"lasmat\" style=\"width:100%; height:250px;\"></textarea>","Marcar", "insertarAsistenacia('"+usuario+"','"+institucion+"','"+campus+"');","modal-sm");
+
+	 $("#losEventos").append("<span class=\"label label-danger\">Evento</span>");
+	 addSELECT("selEventos","losEventos","PROPIO", "SELECT ID, DESCRIPCION  FROM eeventos WHERE STR_TO_DATE(FECHA,'%d/%m/%Y')>=DATE_SUB(NOW(), INTERVAL 7 DAY) order by ID DESC", "","BUSQUEDA");  	
+}
+
+
+function insertarAsistenacia(valor, usuario, institucion, campus){
+	var lines = $('#lasmat').val().split('\n');
+	var matricula="";
+	$('#lasmat').val("");
+	for(var i = 0;i < lines.length;i++){
+		matricula=lines[i];
+		parametros={
+			tabla:"eventos_ins",						    		    	      
+			bd:"Mysql",
+			PERSONA:lines[i],
+	    	EVENTO:$("#selEventos").val(),
+		    USUARIO:usuario,	
+			_INSTITUCION:institucion,
+			_CAMPUS:campus, 
+			ASISTIO:"S"
+		};
+		$.ajax({
+			type: "POST",
+			url:"../base/inserta.php",
+			data: parametros,
+			success: function(data){        			        	
+									 
+			}					     
+		}); 
+		$('#lasmat').val($('#lasmat').val()+"\n"+matricula+"-- HECHO"+i);	
+	}
+}
+
+
+
+
+
 function marcarAsistenciaGen(modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
 	mostrarVentanaCierre ("vtnDatos","G_"+modulo, "Listado de Matricula", 
@@ -122,7 +165,7 @@ function marcarAsistenciaGen(modulo,usuario,institucion, campus,essuper){
 	 "<textarea id=\"lasmat\" style=\"width:100%; height:250px;\"></textarea>","Marcar", "marcarAsistencia('S');","modal-sm");
 
 	 $("#losEventos").append("<span class=\"label label-danger\">Evento</span>");
-	 addSELECT("selEventos","losEventos","PROPIO", "SELECT ID, DESCRIPCION  FROM eeventos order by ID DESC", "","BUSQUEDA");  	
+	 addSELECT("selEventos","losEventos","PROPIO", "SELECT ID, DESCRIPCION  FROM eeventos WHERE STR_TO_DATE(FECHA,'%d/%m/%Y')>=DATE_SUB(NOW(), INTERVAL 7 DAY); order by ID DESC", "","BUSQUEDA");  	
 }
 
 function marcarAsistencia(valor){
