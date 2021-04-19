@@ -120,7 +120,7 @@ function insertarMasivo(modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
 	mostrarVentanaCierre ("vtnDatos","G_"+modulo, "Listado de Matricula", 
 	 "<div id=\"losEventos\" style=\"width:100%;\"></div>"+
-	 "<textarea id=\"lasmat\" style=\"width:100%; height:250px;\"></textarea>","Marcar", "insertarAsistenacia('"+usuario+"','"+institucion+"','"+campus+"');","modal-sm");
+	 "<textarea id=\"lasmat\" style=\"width:100%; height:250px;\"></textarea>","Insertar", "insertarAsistenacia('"+usuario+"','"+institucion+"','"+campus+"');","modal-sm");
 
 	 $("#losEventos").append("<span class=\"label label-danger\">Evento</span>");
 	 addSELECT("selEventos","losEventos","PROPIO", "SELECT ID, DESCRIPCION  FROM eeventos WHERE STR_TO_DATE(FECHA,'%d/%m/%Y')>=DATE_SUB(NOW(), INTERVAL 7 DAY) order by ID DESC", "","BUSQUEDA");  	
