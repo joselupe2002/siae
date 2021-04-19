@@ -146,7 +146,8 @@ function insertarAsistenacia(valor, usuario, institucion, campus){
 			type: "POST",
 			url:"../base/inserta.php",
 			data: parametros,
-			success: function(data){        			        	
+			success: function(data){  
+				console.log(data);      			        	
 									 
 			}					     
 		}); 
