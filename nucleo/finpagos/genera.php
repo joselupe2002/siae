@@ -24,7 +24,7 @@ $params = Array(
     ); 
 
     
-  //  $params = Array("folioSeguimiento" => Array("nombre" => "JOSE", "apaterno" => "AGUILAR", "idTramite" =>"1001",  "folioSeguimiento" => "ITSM8480"));
+    $params = Array("folioSeguimiento" => Array("nombre" => "JOSE", "apaterno" => "AGUILAR", "idTramite" =>"1001",  "folioSeguimiento" => "ITSM8480"));
 
     $options = array(
 		'uri'=>'http://schemas.xmlsoap.org/soap/envelope/',
