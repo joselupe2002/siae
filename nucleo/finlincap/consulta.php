@@ -23,7 +23,7 @@ $params = Array(
     ); 
 
     
-    $params = Array("folioSeguimiento" => Array("folioControlEstado" => "2021-105000", "folioSeguimiento" => "17E400951142021114825"));
+    //$params = Array("folioSeguimiento" => Array("folioControlEstado" => "2021-105000", "folioSeguimiento" => "17E400951142021114825"));
 
     $options = array(
 		'uri'=>'http://schemas.xmlsoap.org/soap/envelope/',
