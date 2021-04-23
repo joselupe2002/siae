@@ -250,7 +250,7 @@
         
         
 
-        $pdf->Image("../../imagenes/empresa/bancos.png",30,170,150,25);
+       // $pdf->Image("../../imagenes/empresa/bancos.png",30,170,150,25);
        // $pdf->Code128(70,150,$bancos,80,20);
 
         $pdf->setY(193);$pdf->setX(10);
@@ -259,7 +259,7 @@
         $pdf->SetFont('Montserrat-ExtraBold','B',12);
         $pdf->setY(198);$pdf->setX(10);
         $pdf->Cell(100,5,utf8_decode($oxxo),0,1,'C',false);
-        $pdf->Image("../../imagenes/empresa/oxxo.png",45,204,20,5);
+       // $pdf->Image("../../imagenes/empresa/oxxo.png",45,204,20,5);
        // $pdf->Code128(10,213,$oxxo,80,15);
 
 
