@@ -255,10 +255,12 @@
 
         $pdf->setY(193);$pdf->setX(10);
         $pdf->SetFont('Montserrat-ExtraBold','B',12);
+        $pdf->SetTextColor(170, 22, 37 );
         $pdf->Cell(100,5,utf8_decode("LINEA DE CAPTURA EXCLUSIVA DE OXXO"),0,1,'C',false);
         $pdf->SetFont('Montserrat-ExtraBold','B',12);
         $pdf->setY(198);$pdf->setX(10);
         $pdf->Cell(100,5,utf8_decode($oxxo),0,1,'C',false);
+        $pdf->SetTextColor(0);
         //$pdf->Image("../../imagenes/empresa/oxxo.png",45,204,20,5);
         $pdf->Code128(10,213,$oxxo,80,15);
 
