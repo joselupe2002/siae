@@ -249,21 +249,22 @@
        
         
 
-      
+      /*
        // $pdf->EAN13(90,40,"202137380227076267");
 
-        //barcode('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',$bancos, 20, 'horizontal', 'code128', true);		
-		//$pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',60,155,100,0,'PNG');
+        barcode('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',$bancos, 20, 'horizontal', 'code128', true);
+		
+		$pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',60,155,100,0,'PNG');
         $pdf->Image("../../imagenes/empresa/bancos.png",30,170,150,25);
 
         $pdf->setY(200);$pdf->setX(10);
         $pdf->SetFont('Montserrat-ExtraBold','B',12);
         $pdf->Cell(100,5,utf8_decode("LINEA DE CAPTURA EXCLUSIVA DE OXXO"),0,1,'C',false);
-        //$pdf->Image("../../imagenes/empresa/oxxo.png",45,207,20,5);
-        //barcode('../../imagenes/codBarras/'.$_GET["folioestado"]."_ox".'.png',$oxxo, 20, 'horizontal', 'code128', true);
-        //$pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'_ox'.'.png',10,215,100,0,'PNG');
+        $pdf->Image("../../imagenes/empresa/oxxo.png",45,207,20,5);
+        barcode('../../imagenes/codBarras/'.$_GET["folioestado"]."_ox".'.png',$oxxo, 20, 'horizontal', 'code128', true);
+        $pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'_ox'.'.png',10,215,100,0,'PNG');
 
-
+*/
         $pdf->setY(200);$pdf->setX(120);
         $pdf->SetFont('Montserrat-Medium','',8);
         $pdf->Cell(100,5,utf8_decode("CITIBANAMEX: SERVICIO EST 4630 GOB IMP TABASCO WS"),0,1,'L',false);
