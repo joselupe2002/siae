@@ -253,7 +253,7 @@
        // $pdf->EAN13(90,40,"202137380227076267");
 
         barcode('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',$bancos, 20, 'horizontal', 'code128', true);		
-		$pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',60,155,100,0,'PNG');
+	//	$pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',60,155,100,0,'PNG');
    /*
         $pdf->Image("../../imagenes/empresa/bancos.png",30,170,150,25);
 
