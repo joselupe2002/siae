@@ -1,7 +1,7 @@
 
 <?php session_start(); if (($_SESSION['inicio']==1)) {
 	header('Content-Type: text/html; charset='.$_SESSION['encode']);
-	require('../../fpdf/ean13.php');
+	require('../../fpdf/PDF_Code128.php');
     include("../.././includes/barcode.php");
 	include("../.././includes/Conexion.php");
 	include("../.././includes/UtilUser.php");
@@ -13,7 +13,7 @@
 
 	
 	
-	class PDF extends PDF_EAN13  {
+	class PDF extends PDF_Code128  {
        
         
         function parseVar($key='',$value='') {
@@ -248,23 +248,22 @@
         $pdf->Cell(0,5,utf8_decode($bancos),0,1,'C',false);
        
         
+        
 
-      
-        $pdf->EAN13(90,40,"20213");
-
-       // barcode('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',$bancos, 20, 'horizontal', 'code128', true);		
-	//	$pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'.png',60,155,100,0,'PNG');
-   /*
         $pdf->Image("../../imagenes/empresa/bancos.png",30,170,150,25);
+        $pdf->Code128(70,150,$bancos,80,20);
 
-        $pdf->setY(200);$pdf->setX(10);
+        $pdf->setY(193);$pdf->setX(10);
         $pdf->SetFont('Montserrat-ExtraBold','B',12);
         $pdf->Cell(100,5,utf8_decode("LINEA DE CAPTURA EXCLUSIVA DE OXXO"),0,1,'C',false);
-        $pdf->Image("../../imagenes/empresa/oxxo.png",45,207,20,5);
-        barcode('../../imagenes/codBarras/'.$_GET["folioestado"]."_ox".'.png',$oxxo, 20, 'horizontal', 'code128', true);
-        $pdf->Image('../../imagenes/codBarras/'.$_GET["folioestado"].'_ox'.'.png',10,215,100,0,'PNG');
+        $pdf->SetFont('Montserrat-ExtraBold','B',12);
+        $pdf->setY(198);$pdf->setX(10);
+        $pdf->Cell(100,5,utf8_decode($oxxo),0,1,'C',false);
+        $pdf->Image("../../imagenes/empresa/oxxo.png",45,204,20,5);
+        $pdf->Code128(10,213,$oxxo,80,15);
 
-*/
+
+    
         $pdf->setY(200);$pdf->setX(120);
         $pdf->SetFont('Montserrat-Medium','',8);
         $pdf->Cell(100,5,utf8_decode("CITIBANAMEX: SERVICIO EST 4630 GOB IMP TABASCO WS"),0,1,'L',false);
@@ -303,9 +302,7 @@
 
          $pdf->Output(); 
 
-        unlink('../../imagenes/codBarras/'.$_GET["folioestado"].'.png');
-        unlink('../../imagenes/codBarras/'.$_GET["folioestado"].'_ox'.'.png');
-
+       
 
 
 
