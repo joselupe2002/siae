@@ -3,6 +3,7 @@ var estaseriando=false;
 var matser="";
 contR=1;
 contMat=1;
+var lasiniciales="";
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -28,7 +29,8 @@ contMat=1;
 	           success: function(data){  
 				      			    
 				    if (inicial=JSON.parse(data)[0]["HAY"]>0) {
-						inicial=JSON.parse(data)[0]["INICIALES"];   
+						inicial=JSON.parse(data)[0]["INICIALES"];  
+						lasiniciales= JSON.parse(data)[0]["INICIALES"]; 
 						$("#lasauditorias").append("<span class=\"label label-warning\">Auditoria</span>");
 						addSELECT("selAuditorias","lasauditorias","PROPIO", "SELECT ID, concat(NOAUDIT,' ',DESCRIPCION) FROM iso_auditorias b where b.`AUDITORES` like '%"+inicial+"%'", "","");  			      
 
@@ -143,19 +145,20 @@ function grabarDatos(id,subtema) {
 
 	var losdatos=[];
 
+	lafecha=dameFecha("FECHAHORA");
 	cad=$("#selAuditorias").val()+"|"+$("#selAuditorias option:selected").text()+"|"+$("#selActividades").val()+"|"+
-	subtema+"|"+id+"|"+$("#tx"+id).val()+"|"+institucion+"|"+campus;	
+	subtema+"|"+id+"|"+$("#tx"+id).val()+"|"+institucion+"|"+campus+"|"+usuario+"|"+lasiniciales+"|"+lafecha;	
 	losdatos[0]=cad;                                                  
 
 
 	var loscampos = ["AUDITORIA","NUMAUDIT","ACTIVIDAD",
-	"REQUISITO","IDCRITERIO","OBS","_INSTITUCION","_CAMPUS"];
+	"REQUISITO","IDCRITERIO","OBS","_INSTITUCION","_CAMPUS", "AUDITOR", "AUDITOINI","FECHA"];
 
 	parametros={
 		tabla:"iso_entrevistas",
-		campollave:"CONCAT(AUDITORIA,ACTIVIDAD,REQUISITO,IDCRITERIO)",
+		campollave:"CONCAT(AUDITORIA,ACTIVIDAD,REQUISITO,IDCRITERIO,AUDITOR)",
 		bd:"Mysql",
-		valorllave:$("#selAuditorias").val()+$("#selActividades").val()+subtema+id,
+		valorllave:$("#selAuditorias").val()+$("#selActividades").val()+subtema+id+usuario,
 		eliminar: "S",
 		separador:"|",
 		campos: JSON.stringify(loscampos),
