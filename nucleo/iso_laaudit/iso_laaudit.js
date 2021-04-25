@@ -112,8 +112,8 @@ function cargarCriterios(subtema){
 
 	elsql2="SELECT a.*, "+
 	       "      IFNULL((select OBS from iso_entrevistas where "+
-		   "              CONCAT(AUDITORIA,ACTIVIDAD,REQUISITO,IDCRITERIO)="+
-		   "              concat('"+$("#selAuditorias").val()+$("#selActividades").val()+"',a.SUBTEMA,a.ID)),'') AS OBS "+
+		   "              CONCAT(AUDITORIA,ACTIVIDAD,REQUISITO,IDCRITERIO,AUDITOR)="+
+		   "              concat('"+$("#selAuditorias").val()+$("#selActividades").val()+"',a.SUBTEMA,a.ID,'"+usuario+"')),'') AS OBS "+
 		   "FROM iso_criterios a where SUBTEMA='"+subtema+"' ORDER BY ID";
 
 	parametros2={sql:elsql2,dato:sessionStorage.co,bd:"Mysql"}
@@ -152,7 +152,7 @@ function grabarDatos(id,subtema) {
 
 
 	var loscampos = ["AUDITORIA","NUMAUDIT","ACTIVIDAD",
-	"REQUISITO","IDCRITERIO","OBS","_INSTITUCION","_CAMPUS", "AUDITOR", "AUDITOINI","FECHA"];
+	"REQUISITO","IDCRITERIO","OBS","_INSTITUCION","_CAMPUS", "AUDITOR", "AUDITORINI","FECHA"];
 
 	parametros={
 		tabla:"iso_entrevistas",
