@@ -3905,3 +3905,4 @@ function addbtninfo(contenedor,titulo,tipo,valor,txt) {
 	"   <span class=\"line-height-1 smaller-60\">"+txt+"</span>"+
 	"</span>");
 }
+
