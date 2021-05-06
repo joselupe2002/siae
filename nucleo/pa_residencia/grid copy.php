@@ -133,44 +133,6 @@
 				<div class="col-sm-12" id="lacarta" style="text-align:center;">							
 				</div>
 			</div> 
-
-			<div class="tabbable fontRoboto">
-					<ul class="nav nav-tabs" id="myTab">
-						<li class="active">
-							<a data-toggle="tab" href="#pesReq"><i class="red ace-icon fa fa-check-square bigger-120"></i>Requisitos</a>
-						</li>
-						<li >
-							<a data-toggle="tab" href="#pesAnt"><i class="blue ace-icon fa fa-book bigger-120"></i>Anteproyecto</a>
-						</li>
-						<li >
-							<a data-toggle="tab" href="#pesSeg"><i class="green ace-icon fa fa-external-link bigger-120"></i>Seguimiento</a>
-						</li>
-						<li >
-							<a data-toggle="tab" href="#pesFin"><i class="green ace-icon fa fa-sign-out bigger-120"></i>Finales</a>
-						</li>
-						
-					</ul>
-
-					<div class="tab-content">
-			 		  	<div id="pesReq" class="tab-pane fade in active">					 					   
-					            <div id="panIni" class="row"> </div>
-					 	 </div>
-
-						<div id="pesAnt" class="tab-pane">					 					   
-					            <div id="panSeg" class="row"> </div>
-					 	</div>
-
-						<div id="pesSeg" class="tab-pane">					       					   
-					            <div id="panFin" class="row"> </div>
-					 	</div>
-
-						<div id="pesFin" class="tab-pane">					       					   
-					            <div id="panFin" class="row"> </div>
-					 	</div>
-
-					</div>
-				</div>,
-				
 			<div class="row"> 
 				<div class="col-sm-12" id="servicio" style="text-align:center;">							
 				</div>

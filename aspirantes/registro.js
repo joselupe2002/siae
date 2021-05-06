@@ -744,7 +744,21 @@ function cargarAdjuntos() {
 		success: function(data){    
 			$("#listaadj").empty();		
 			$("#listaadj").append(
+				               /*
+								"   <div class=\"row\" style=\"padding:0px;  margin:0px;\">"+
+								"   	<div class=\"col-sm-3\"  style=\"padding:0px; text-align:center; margin:0px;\">"+						
+								"   	</div>"+
+								"   	<div class=\"col-sm-3\" id=\"losarticulos\" style=\"padding:0px;  padding-bottom:10px; text-align:center; margin:0px;\">"+
+								"  			<span class=\"label label-danger\">Concepto de Pago para Línea de Captura</span>"+
+								"   	</div>"+
+								"   	<div class=\"col-sm-3\" style=\"padding-top:12px; padding-bottom:10px; text-align:left; margin:0px;\">"+
+								"  			<button class=\"btn btn-danger\" onclick=\"imprimirLinea();\">Imprimir Línea de Captura para Pago</button>"+
+								"   	</div>"+
+								"	</div>"+
+
+								*/
 				                "<div class=\"alert alert-danger\" style=\"padding:0px; margin:0px;\">"+
+								
 								"   <div class=\"row\" style=\"padding:0px;  margin:0px;\">"+								  
 			                      "    <div class=\"col-sm-1\" style=\"padding:0px; margin:0px;\" ></div>"+
 								  "    <div class=\"col-sm-8\" style=\"padding:0px; margin:0px;\">"+								  
@@ -782,6 +796,9 @@ function cargarAdjuntos() {
 								  "     </div>"+
 								  "</div>"+
 								"</div>"); 
+
+								addSELECTAsp("selArticulo","losarticulos","PROPIO", "SELECT CLAVE, DESCRIPCION, MONTO FROM finarticulos order by DESCRIPCION", "","");  	
+		
 
 			jQuery.each(JSON.parse(data), function(clave, valor) { 
 				   stElim="display:none; cursor:pointer;";
@@ -848,4 +865,88 @@ function cargarAdjuntos() {
 				   alert('ERROR: '+data);
 			   }
 	   });
+   }
+
+
+function imprimirLinea(){
+	if ($("#selArticulo").val()>0) {
+		mostrarEsperaAsp("esperaRep","grid_registro","Procesando Petición...");
+		elarticulo=$("#selArticulo").val();
+		elarticulod=$("#selArticulo option:selected").text();
+
+			
+		elusuario=$("#CURP").val().toString();
+		var hoy=new Date();						
+		fechaexp=pad(hoy.getDate(),2,'0')+"-"+pad(hoy.getMonth()+1,2,'0')+"-"+hoy.getFullYear();
+		elfolio=elusuario.concat(hoy.getDate()).concat((hoy.getMonth()+1)).concat(hoy.getFullYear()).concat(hoy.getHours()).concat(hoy.getMinutes()).concat(hoy.getSeconds());
+				
+
+		var parametrosF = {
+					idTramite:elarticulo,
+					nombre:$("#NOMBRE").val(),
+					apaterno:$("#APEPAT").val(),
+					amaterno:$("#APEMAT").val(),
+					curp:$("#CURP").val(),
+					folioSeguimiento:elfolio
+					};
+									
+		$.ajax({
+					data:  parametrosF,
+					url:   '../nucleo/finpagos/genera.php',
+					type:  'POST',                          
+					success:  function (response) {							
+						respuesta=response.split("*");
+						if (respuesta[0]=="ERROR") {
+							alert ("OCURRIO EL SIGUIENTE ERROR: "+respuesta[1]+ " INTENTELO NUEVAMENTE");							
+						}
+						else {
+							fechaus=dameFecha("FECHAHORA");
+							parametros={tabla:"finlincap",
+								bd:"Mysql",
+								_INSTITUCION:"ITSM",
+								_CAMPUS:"0",
+								MATRICULA:elusuario,
+								NOMBRE:$("#NOMBRE").val()+" "+$("#APEPAT").val()+" "+$("#APEMAT").val(),
+								FOLIOSEG:elfolio,
+								FOLIOESTADO:respuesta[3],
+								LINEA:respuesta[2],
+								FECHAVENCE:respuesta[1],
+								IMPORTE:respuesta[4],
+								CARRERA:$("#CARRERA").val(),
+								CARRERAD:$("#CARRERA option:selected").text(),
+								IDARTICULO:elarticulo,
+								DESCRIPCION:elarticulod,
+								CICLO:elciclo,
+								USUARIO:elusuario,
+								FECHAUS:fechaus
+							};
+						
+						$.ajax({
+							type: "POST",
+							url:"../nucleo/base/inserta.php",
+							data: parametros,
+							success: function(data){ 
+								if (data.substring(0,2)=='0:') { 
+									alert ("Ocurrio un error: "+data); console.log(data);
+									ocultarEspera("esperaRep");
+									}
+							
+								}
+							});
+
+							//Se imprime el reporte de linea de captura
+							enlace="../nucleo/finpagos/reporte.php?linea="+respuesta[2]+"&fechavence="+respuesta[1]+
+							"&usuario="+elusuario+"&nombre="+$("#NOMBRE").val()+" "+$("#APEPAT").val()+" "+$("#APEMAT").val()+
+							"&carrera="+$("#CARRERA option:selected").text()+"&idarticulo="+elarticulo+"&descripcion="+elarticulod+
+							"&folioestado="+respuesta[3]+"&fechaexp="+fechaexp+"&importe="+respuesta[4];								
+							
+							window.open(enlace,"_blank");
+
+							ocultarEspera("esperaRep");  
+					}
+				}
+
+		}); 	
+}
+else { alert ("Debe elegir primero el concepto a Pagar")}	
    }

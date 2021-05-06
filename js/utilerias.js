@@ -337,6 +337,24 @@ function mostrarEspera (nombre,contenedor, mensaje){
 	$('#'+nombre).modal({show:true, backdrop: 'static'});
 }
 
+function mostrarEsperaAsp (nombre,contenedor, mensaje){
+
+	script=    "<div class=\"modal fade\" id=\""+nombre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+	           "   <div class=\"modal-dialog modal-sm \" role=\"document\">"+
+               "         <div class=\"modal-content\">"+
+               "             <div class=\"modal-header bg-danger\" >"+
+    		   "                  <span><i class=\"menu-icon green fa-2x fa fa-spinner\"></i><span class=\"text-success lead \"> <strong>"+mensaje+"</strong></span></span>"+
+    		   "          </div>"+
+               "             <div class=\"modal-body\" style=\"text-align: center;\">"+
+               "                  <img src=\"../imagenes/menu/esperar.gif\" style=\"background: transparent; width: 100px; height: 80px\"/>	"+
+               "             </div>"+     
+               "         </div>"+
+               "   </div>"+
+               "</div>";
+	$("#"+contenedor).append(script);
+	$('#'+nombre).modal({show:true, backdrop: 'static'});
+}
+
 function mostrarConfirm (nombre,contenedor, titulo, mensajeInfo, mensajeConfirm,mensajebtn, eventoConfirm,tam){
 	$("#"+nombre).remove();
 	tamMsj="110";
@@ -934,6 +952,46 @@ function addSELECT(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
 		type: "POST",
 		data:parametros,
         url:  "../base/getdatossqlSeg.php",
+        success: function(data){
+       	       losdatos=JSON.parse(data);   
+       	       eltipo="";
+       	       if (tipoSelect=='BUSQUEDA') {eltipo="chosen-select";}
+       	       $("#"+contenedor).append("<select class=\" "+eltipo+" form-control text-success\"  id=\""+nombre+"\"> </select>");
+       	       $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
+               jQuery.each(JSON.parse(data), function(clave, valor) { 	
+	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  		
+	  				   	  }); 
+               if (tipoSelect=='BUSQUEDA') {               
+		         	   $('.chosen-select').chosen({allow_single_deselect:true}); 			
+			     	   $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+			     	   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+			  		   $("#"+nombre).trigger("chosen:updated");		}
+			   
+			
+				 $("#"+nombre).change(function(){change_SELECT(nombre);
+				
+				});
+				$("#laespera1").remove();                   	   
+              },
+        error: function(data) {	                  
+                   alert('ERROR: '+data);
+               }
+       });
+}
+
+
+function addSELECTAsp(nombre,contenedor,tipo, sql, otrascondiciones, tipoSelect) {
+
+	$("#"+contenedor).append("<img id=\"laespera1\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:50px;height:50px;\">");
+
+	elsql=getSQLTipo(tipo,otrascondiciones);
+	if (tipo=='PROPIO') {elsql=sql;}
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../nucleo/base/getdatossqlSeg.php",
         success: function(data){
        	       losdatos=JSON.parse(data);   
        	       eltipo="";
@@ -3357,6 +3415,282 @@ function setNotificacionalJefe(matricula,mensaje,enlace,tipo,institucion,campus)
 	}
   });
 }
+
+
+/*=========================SOLO PARA EL MODULO DE SERVICIO SOCIAL ===============================*/
+
+
+function cargarPestania(seccion,padre,carpeta, tabla, elusuario, elciclo){
+	var contFila=0;
+	var contDatos=1;
+		elsqlAdj="select IDDOC, VALIDADO, IFNULL(OBSVALIDADO,'') AS OBSVALIDADO, DOCUMENTO, ifnull(b.RUTA,'') as RUTA, CLAVE, TIPOADJ, '"+elciclo+"' "+
+		" AS CICLO from documaspirantes a "+
+		"LEFT OUTER JOIN  "+tabla+" b  on (b.AUX=concat('"+elusuario+"_','"+elciclo+"_',a.CLAVE))"+
+		" WHERE a.ENLINEA='S' and a.MODULO='"+seccion+"' order by TIPOADJ, DOCUMENTO";			
+		parametrosDoc={sql:elsqlAdj,dato:sessionStorage.co,bd:"Mysql"}
+
+		$.ajax({
+			type: "POST",
+			data:parametrosDoc,
+			url:  "../../nucleo/base/getdatossqlSeg.php",
+			success: function(dataDoc){  								
+				$("#"+padre).empty();		
+				jQuery.each(JSON.parse(dataDoc), function(clave, valor) { 
+				
+					if (valor.VALIDADO!='S') {
+							stElim="display:none; cursor:pointer;";
+							if (valor.RUTA.length>0) { stElim="cursor:pointer; display:block; ";} 
+							
+							cadFile="<div title=\""+valor.OBSVALIDADO+"\" class=\"col-sm-5\">"+											
+							"            <span class=\"text-primary\"><strong>"+utf8Decode(valor.DOCUMENTO)+"</strong></span>"+											
+							"            <input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.CLAVE+"\""+
+							"                   onchange=\"subirPDFDriveSave('file_"+valor.CLAVE+"','"+carpeta+"','pdf_"+
+														valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','S','ID','"+valor.CLAVE+
+														"',' DOCUMENTO  "+valor.DOCUMENTO+" ','"+tabla+"','alta','"+usuario+"_"+elciclo+"_"+valor.CLAVE+"');\">"+
+							"           <input  type=\"hidden\" value=\""+valor.RUTA+"\"  name=\"RUTA_"+valor.CLAVE+"\" id=\"RUTA_"+valor.CLAVE+"\"  placeholder=\"\" />"+
+							"        </div>"+
+							"        <div class=\"col-sm-1\" style=\"padding-top:5px;\">"+
+							"           <a target=\"_blank\" id=\"enlace_RUTA_"+valor.CLAVE+"\" href=\""+valor.RUTA+"\">"+
+							"                 <img class=\"imgadj\" cargado=\"S\" width=\"40px\" height=\"40px\" id=\"pdf_"+valor.CLAVE+"\" name=\"pdf_"+valor.CLAVE+"\" src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
+							"           </a>"+
+							"           <i style=\""+stElim+"\"  id=\"btnEli_RUTA_"+valor.CLAVE+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
+							"            onclick=\"eliminarEnlaceDrive('file_"+valor.CLAVE+"','"+carpeta+"',"+
+							"                      'pdf_"+valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','N','ID','"+valor.CLAVE+"','"+valor.DOCUMENTO+"-DOCUMENTO',"+
+							"                      '"+tabla+"','alta','');\"></i> "+              				                        
+							"      </div> ";
+
+
+							if ((contDatos % 2)==1) {contFila++; fila="<div class=\"row\" style=\"padding:0px;\" id=\"fila"+padre+contFila+"\"></div>"; }
+							else {fila="";}
+							
+							$("#"+padre).append(fila);
+							$("#fila"+padre+contFila).append(cadFile);
+							
+							contDatos++;	
+								
+							
+						if (valor.RUTA=='') { 
+							$('#enlace_RUTA'+valor.CLAVE).attr('disabled', 'disabled');					  
+							$('#enlace_RUTA'+valor.CLAVE).attr('href', '../../imagenes/menu/pdfno.png');
+							$('#pdf_'+valor.CLAVE).attr('src', "../../imagenes/menu/pdfno.png");
+							$('#pdf_'+valor.CLAVE).attr('cargado', 'N');		                    
+							}
+						
+							if (((valor.TIPOADJ.indexOf("png")>=0) || (valor.TIPOADJ.indexOf("bmp")>=0)) && !(valor.RUTA=='')) {			
+								$('#pdf_'+valor.CLAVE).attr('src', valor.RUTA);	
+							}
+					}
+					else {
+						$("#"+padre).append("<span class=\" label label-success\"><i class=\"fa fa-check white\"></i>"+valor.DOCUMENTO+"</span> <a title=\"Ver Archivo\" onclick=\"previewAdjunto('"+valor.RUTA+"');\">"+
+						"                  	<img src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
+						"           </a>");
+					} 																
+			});
+
+			$('.fileSigea').ace_file_input({
+				no_file:'Sin archivo ...',
+				btn_choose:'Buscar',
+				btn_change:'Cambiar',
+				droppable:false,
+				onchange:null,
+				thumbnail:false, //| true | large
+				whitelist:'pdf|jpg|png|bmp',
+				blacklist:'exe|php'
+				//onchange:''
+				//
+			});
+
+
+			}
+		});
+
+}
+
+
+
+function ss_mostrarAdjuntos(modulo,elusuario,institucion, campus,essuper,elciclo,elusuario,descrip,elid,padre, tabla, carpeta,modulos){
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+			script="<div class=\"modal fade sigeaPrin\" id=\""+padre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
+		       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
+			   "      <div class=\"modal-content\">"+
+			   "          <div class=\"modal-header widget-header  widget-color-green\">"+
+			   "             <span class=\"label label-lg label-primary arrowed arrowed-right\"> Documentos Adjuntados </span>"+
+			   "             <span class=\"label label-lg label-success arrowed arrowed-right\">"+descrip+"</span>"+			   
+			   "             <input type=\"hidden\" id=\"elid\" value=\""+elid+"\"></input>"+
+			   "             <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
+			   "                  <span aria-hidden=\"true\">&times;</span>"+
+			   "             </button>"+
+			   "          </div>"+  
+			   "          <div id=\"frmdescarga\" class=\"modal-body\" >"+					 
+			   "             <div class=\"row sigeaPrin\"   style=\"overflow-x: auto; overflow-y: auto; height:300px;\"> "+		
+		       "                  <table id=\"tabla"+padre+"\" class= \"table  table-condensed table-bordered table-hover\">"+
+		   	   "                         <thead>  "+
+			   "                               <tr>"+	
+			   "                                   <th>ID</th> "+
+			   "                                   <th>Documento</th> "+
+			   "                             	   <th>PDF</th> "+ 
+			   "                                   <th>VALIDAR</th>"+
+			   "                             	   <th>SUBIR PDF</th> "+ 
+			   "                               </tr> "+
+			   "                         </thead>" +
+			   "                   </table>"+	
+			   "             </div> "+ //div del row
+			   "             <div class=\"space-10\"></div>"+		   
+			   "          </div>"+ //div del modal-body		 
+		       "          </div>"+ //div del modal content		  
+			   "      </div>"+ //div del modal dialog
+			   "   </div>"+ //div del modal-fade
+			   "</div>";			
+	 		
+
+			$("#"+padre).remove();
+		    if (! ( $("#"+padre).length )) {$("#grid_"+modulo).append(script);}
+
+		    $('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+		    
+		    $("#"+padre).modal({show:true, backdrop: 'static'});
+
+	        sqlAsp="select IDDOC, TIPOADJ, IFNULL(RUTA,'') AS RUTA, IFNULL(VALIDADO,'N') AS VALIDADO, IFNULL(OBSVALIDADO,'') AS OBSVALIDADO, CLAVE, DOCUMENTO "+
+			"from  documaspirantes b left outer join eadjresidencia a on (a.AUX=concat(b.CLAVE,'_"+elusuario+"_"+elciclo+"')) where "+
+			"ENLINEA='S' AND MODULO IN ("+modulos+") order by IDDOC";
+			
+	
+			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
+		    $.ajax({
+				   type: "POST",
+				   data:parametros,
+		           url:  "../base/getdatossqlSeg.php",
+		           success: function(data){  					        
+							grid_data=JSON.parse(data);  
+						  	ladefault="..\\..\\imagenes\\menu\\pdf.png";
+							$("#cuerpo"+padre).empty();
+							$("#tabla"+padre).append("<tbody id=\"cuerpo"+padre+"\">");
+							c=0;	
+							globalUni=1; 					
+							
+							jQuery.each(grid_data, function(clave, valor) { 	
+										stElim="display:none; cursor:pointer;";
+										if ((valor.RUTA!='')&&(valor.RUTA!=null)) { stElim="cursor:pointer; display:block; ";}
+								
+										cadFile="<input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.CLAVE+"\""+
+											"                   onchange=\"subirPDFDriveSaveAsp_local('file_"+valor.CLAVE+"','"+carpeta+"','pdf"+
+																		c+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','N','ID','"+valor.CLAVE+
+																		"',' DOCUMENTO  "+valor.DOCUMENTO+" ','"+tabla+"','alta','"+valor.CLAVE+"_"+elusuario+"_"+elciclo+"','S');\">"+
+											"           <input  type=\"hidden\" value=\"../"+valor.RUTA+"\"  name=\"RUTA_"+valor.CLAVE+"\" id=\"RUTA_"+valor.CLAVE+"\"  placeholder=\"\" />"+
+											"        </div>"+
+											"        <div class=\"col-sm-1\" style=\"padding-top:5px;\">"+
+											"           <i style=\""+stElim+"\"  id=\"btnEli_RUTA_"+valor.CLAVE+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
+											"            onclick=\"eliminarEnlaceCarpeta('file_"+valor.CLAVE+"','"+carpeta+"',"+
+											"                      'pdf"+c+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','N','ID','"+valor.CLAVE+"','"+valor.DOCUMENTO+"-DOCUMENTO',"+
+											"                      '"+tabla+"','alta','"+valor.CLAVE+"_"+elusuario+"_"+elciclo+"','PDF');\"></i> ";
+
+									
+									$("#cuerpo"+padre).append("<tr id=\"rowAsp"+padre+c+"\"></tr>");
+									$("#rowAsp"+padre+c).append("<td>"+valor.IDDOC+"</td>");
+									$("#rowAsp"+padre+c).append("<td>"+valor.DOCUMENTO+"</td>");				
+									
+									cadEnc="<a title=\"Ver Archivo Adjunto\" target=\"_blank\" id=\"enlace_RUTA_"+valor.CLAVE+"\" href=\"../"+valor.RUTA+"\">"+
+														" <img width=\"40px\" height=\"40px\" id=\"pdf"+c+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
+														" </a>";		
+										
+									$("#rowAsp"+padre+c).append("<td style=\"text-align: center; vertical-align: middle;\">"+cadEnc+"</td>");					
+										
+									if (valor.VALIDADO=='S') {cadValor='N'; mensajebtn="No Validar"; } else {cadValor='S'; mensajebtn="Validar";}									
+									evento="ss_validaradj('"+valor.CLAVE+"','"+elciclo+"','"+elusuario+"','"+valor.OBSVALIDADO+"','"+valor.DOCUMENTO+"','"+padre+"');";
+									$("#rowAsp"+padre+c).append( "<td><button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" "+
+																"onclick=\""+evento+"\"><strong>"+mensajebtn+"</strong></button></td>");	
+
+									$("#rowAsp"+padre+c).append("<td>"+cadFile+"</td>");	
+									
+									if ((valor.RUTA=='')||(valor.RUTA==null)) { 				    
+											$('#enlace_RUTA_'+valor.CLAVE).attr('disabled', 'disabled');
+											$('#enlace_RUTA_'+valor.CLAVE).attr('href', '..\\..\\imagenes\\menu\\pdfno.png');
+											$('#pdf'+c).attr('src', "..\\..\\imagenes\\menu\\pdfno.png");   
+										}
+
+										c++;
+										globalUni=c;										
+									});
+
+							$('.fileSigea').ace_file_input({
+								no_file:'Sin archivo ...',
+								btn_choose:'Buscar',
+								btn_change:'Cambiar',
+								droppable:false,
+								onchange:null,
+								thumbnail:false, //| true | large
+								whitelist:'pdf',
+								blacklist:'exe|php'
+								//onchange:''
+								//
+							});					       		        	        		        	    
+		                 },
+		           error: function(data) {	                  
+		                      alert('ERROR: '+data);
+		                  }
+		   });					    
+	}
+	else {
+		alert ("Debe seleccionar un Registro");
+		return 0;
+
+		}
+	
+}
+
+
+
+
+function ss_validaradj(tipo,ciclo,matricula,obs, reporte, padre){
+	 $("#confVal").empty();
+	 mostrarConfirm("confVal", padre,  "Proceso de Cotejo",
+	 "<span class=\"label label-success\">Observaciones "+reporte+"</span>"+
+	 "     <textarea id=\"ss_obsValidado\" style=\"width:100%; height:100%; resize: none;\">"+obs+"</textarea>",
+	 "¿Marcar como Validado? "+
+	 "<SELECT id=\"ss_validado\"><OPTION value=\"S\">SI</OPTION><OPTION value=\"N\">NO</OPTION></SELECT>"
+	 ,"Finalizar Proceso", "ss_btnValidarAdj('"+ciclo+"','"+matricula+"','"+tipo+"','"+reporte+"','"+padre+"');","modal-sm");
+}
+
+
+function ss_btnValidarAdj(ciclo,matricula,tipo, reporte,padre){
+
+	   parametros={
+		   tabla:"eadjresidencia",
+		   campollave:"AUX",
+		   bd:"Mysql",
+		   valorllave:tipo+"_"+matricula+"_"+ciclo,
+		   VALIDADO: $("#ss_validado").val(),
+		   OBSVALIDADO:$("#ss_obsValidado").val()
+		};
+
+	
+
+	   $.ajax({
+	   type: "POST",
+	   url:"actualiza.php",
+	   data: parametros,
+	   success: function(data){
+		
+		   $('#dlgproceso').modal("hide"); 
+		   status="<span style=\"color:red\"><b>NO VALIDADO</b></span>"; 
+		   cadObs="<b>Favor de Revisar la siguiente Observación:<b><br>"+$("#ss_obsValidado").val();
+		   if ($("#ss_validado").val()=='S') {status="<span style=\"color:green\"><b> VALIDADO</b></span>"; cadObs="";}
+
+		   correoalAlum(matricula, "<html>Servicio Social: "+reporte+" "+status+
+								"</b></span>."+cadObs
+								,"STATUS DE SOLICITUD SERVICIO SOCIAL "+matricula);
+			$("#"+padre).modal("hide");
+			$("#confVal").modal("hide");
+			
+			
+			//ss_mostrarAdjuntos("vss_alumnos","","","","",ciclo,matricula);
+
+	   		}					     
+	   });    	
+}
+/*===================================================================================*/
+
 
 
 /*=========================SOLO PARA EL MODULO DE RESIDENCIAS ===============================*/

@@ -158,8 +158,8 @@
                 $this->Cell(0,2,utf8_decode("ESTO ES UN PAGO REFERENCIADO A FAVOR DEL GOBIERNO DEL ESTADO DE TABASCO"),0,1,'C',false);
                 $this->SetFont('Montserrat-Medium','B',8);
                 $this->setY(-42);
-                $this->MultiCell(0,2,utf8_decode("Ante cualquier duda, favor de comunicarse al Centro de Atención Telefónica de la SF ".
-                "al 993-310-40-10 donde con gusto le atenderemos de Lunes a Viernes en horario de 8 a 15 horas, escríbanos al correo catspf@tabasco.gob.mx"),0,'C',false);
+                $this->MultiCell(0,3,utf8_decode("Ante cualquier duda, favor de comunicarse al Instituto Tecnológico Superior de Macuspana ".
+                "al  (936) 362-33-30/(936) 362-33-23 donde con gusto le atenderemos de Lunes a Viernes en horario de 9 a 15 horas."),0,'C',false);
 
                 
 
@@ -181,9 +181,7 @@
         $miutil = new UtilUser();
 
         $pdf->SetFont('Montserrat-ExtraBold','B',10);
-        $pdf->Cell(0,5,'GOBIERNO DEL ESTADO DE TABASCO',0,1,'C',false);
-        $pdf->Cell(0,5,'SECRETARIA DE FINANZAS',0,1,'C',false);
-        $pdf->Cell(0,5,'ESTADO DE CUENTA',0,1,'C',false);
+      
         $pdf->Ln(5);
 
         $pdf->SetTextColor(22, 77, 138);
@@ -225,7 +223,7 @@
         $pdf->Cell(0,5,utf8_decode('TOTAL A PAGAR $ '.$_GET["importe"]),0,0,'C',false);
         $pdf->SetFont('Montserrat-ExtraBold','B',10);
        
-        $pdf->Ln(5);
+        $pdf->Ln(15);
         $pdf->SetFont('Montserrat-Medium','',7);
         $pdf->MultiCell(0,3,utf8_decode("En caso de que el instrumento de pago sea CHEQUE nominativo distinto al banco donde presentará su pago, el vencimiento de la línea de captura tendrá un día hábil ".
         "menos del citado en este documento. Lo anterior, se debe a políticas bancarias. Si usted es contribuyente del Impuesto Especial Sobre Producción y Servicios (IEPS),".

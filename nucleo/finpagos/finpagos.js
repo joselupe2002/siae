@@ -128,15 +128,7 @@ function generaTablaInformacion(grid_data){
 
 
 
-
-
-
-
-
-
 function creaLinea(){
-
-	
     if ($("#selArticulo").val()>0) {
 			mostrarEspera("esperaRep","grid_finpagos","Procesando Petición...");
 			elarticulo=$("#selArticulo").val();
@@ -212,24 +204,10 @@ function creaLinea(){
 										//Se imprime el reporte de linea de captura
 										enlace="nucleo/finpagos/reporte.php?linea="+respuesta[2]+"&fechavence="+respuesta[1]+
 										"&usuario="+usuario+"&nombre="+alumno[0]["ALUM_NOMBRE"]+" "+alumno[0]["ALUM_APEPAT"]+" "+alumno[0]["ALUM_APEMAT"]+
-										"&carrera="+alumno[0]["CARR_DESCRIP"]+"idarticulo="+elarticulo+"&descripcion="+elarticulod+
+										"&carrera="+alumno[0]["CARR_DESCRIP"]+"&idarticulo="+elarticulo+"&descripcion="+elarticulod+
 										"&folioestado="+respuesta[3]+"&fechaexp="+fechaexp+"&importe="+respuesta[4];								
 										
 										abrirPesta(enlace,"Línea");
-
-										/*
-										var parametrosF = {FOLIOESTADO:respuesta[3]};																					
-										//Borramos los codigo de barras Generados 
-										$.ajax({
-											type: "POST",
-											url:"borraCod.php",
-											data: parametrosF,
-											success: function(data){ 
-												
-												}
-											});
-
-											*/
 
 										ocultarEspera("esperaRep");  
 									}												
@@ -241,6 +219,5 @@ function creaLinea(){
 				}
 			}); 	
 	}
-	else { alert ("Debe elegir primero el concepto a Pagar")}			
-	
+	else { alert ("Debe elegir primero el concepto a Pagar")}				
 }
