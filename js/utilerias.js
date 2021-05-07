@@ -3553,9 +3553,10 @@ function ss_mostrarAdjuntosDin(modulo,elusuario,institucion, campus,essuper,elci
 		    $("#"+padre).modal({show:true, backdrop: 'static'});
 
 	        sqlAsp="select IDDOC, TIPOADJ, IFNULL(RUTA,'') AS RUTA, IFNULL(VALIDADO,'N') AS VALIDADO, IFNULL(OBSVALIDADO,'') AS OBSVALIDADO, CLAVE, DOCUMENTO "+
-			"from  documaspirantes b left outer join eadjresidencia a on (a.AUX=concat('"+elusuario+"_"+elciclo+"_',b.CLAVE)) where "+
+			"from  documaspirantes b left outer join "+tabla+" a on (a.AUX=concat('"+elusuario+"_"+elciclo+"_',b.CLAVE)) where "+
 			"ENLINEA='S' AND MODULO IN ("+modulos+") order by IDDOC";
 			
+	
 	
 			parametros={sql:sqlAsp,dato:sessionStorage.co,bd:"Mysql"}
 		    $.ajax({
@@ -3600,7 +3601,7 @@ function ss_mostrarAdjuntosDin(modulo,elusuario,institucion, campus,essuper,elci
 									$("#rowAsp"+padre+c).append("<td style=\"text-align: center; vertical-align: middle;\">"+cadEnc+"</td>");					
 										
 									if (valor.VALIDADO=='S') {cadValor='N'; mensajebtn="Validado"; laclase="btn-danger"; } else {cadValor='S'; mensajebtn="Validar"; laclase="btn-primary";}									
-									evento="ss_validaradjDin('"+valor.CLAVE+"','"+elciclo+"','"+elusuario+"','"+valor.OBSVALIDADO+"','"+valor.DOCUMENTO+"','"+padre+"');";
+									evento="ss_validaradjDin('"+valor.CLAVE+"','"+elciclo+"','"+elusuario+"','"+valor.OBSVALIDADO+"','"+valor.DOCUMENTO+"','"+padre+"','"+tabla+"');";
 									$("#rowAsp"+padre+c).append( "<td><button id=\"btnVal"+valor.CLAVE+"\" type=\"button\" class=\"btn btn-white  "+laclase+" btn-round\" "+
 																"onclick=\""+evento+"\"><strong>"+mensajebtn+"</strong></button></td>");	
 
@@ -3645,21 +3646,21 @@ function ss_mostrarAdjuntosDin(modulo,elusuario,institucion, campus,essuper,elci
 
 
 
-function ss_validaradjDin(tipo,ciclo,matricula,obs, reporte, padre){
+function ss_validaradjDin(tipo,ciclo,matricula,obs, reporte, padre,tabla){
 	 $("#confVal").empty();
 	 mostrarConfirm("confVal", padre,  "Proceso de Cotejo",
 	 "<span class=\"label label-success\">Observaciones "+reporte+"</span>"+
 	 "     <textarea id=\"ss_obsValidado\" style=\"width:100%; height:100%; resize: none;\">"+obs+"</textarea>",
 	 "¿Marcar como Validado? "+
 	 "<SELECT id=\"ss_validado\"><OPTION value=\"S\">SI</OPTION><OPTION value=\"N\">NO</OPTION></SELECT>"
-	 ,"Finalizar Proceso", "ss_btnValidarAdjDin('"+ciclo+"','"+matricula+"','"+tipo+"','"+reporte+"','"+padre+"');","modal-sm");
+	 ,"Finalizar Proceso", "ss_btnValidarAdjDin('"+ciclo+"','"+matricula+"','"+tipo+"','"+reporte+"','"+padre+"','"+tabla+"');","modal-sm");
 }
 
 
-function ss_btnValidarAdjDin(ciclo,matricula,tipo, reporte,padre){
+function ss_btnValidarAdjDin(ciclo,matricula,tipo, reporte,padre,tabla){
 
 	   parametros={
-		   tabla:"eadjresidencia",
+		   tabla:tabla,
 		   campollave:"AUX",
 		   bd:"Mysql",
 		   valorllave:matricula+"_"+ciclo+"_"+tipo,

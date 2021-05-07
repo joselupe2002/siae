@@ -439,7 +439,7 @@
 		function modificar(){
 			
 
-			ruta="../base/editaReg.php?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo "N";?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=S&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca m�s abajo este debe ser siempre el ultimo parametros
+			ruta="../base/editaReg.php?restr=&modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo "N";?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=S&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";//El valor llave se coloca m�s abajo este debe ser siempre el ultimo parametros
 		   <?php                  
 	             if (file_exists("../".$_GET["modulo"]."/editaReg.php")) {?>
 	                 ruta="<?php echo "../".$_GET["modulo"]."/editaReg.php"?>?modulo=<?php echo $_GET["modulo"]?>&bd=<?php echo $_GET['bd']?>&limitar=<?php echo "N";?>&automatico=<?php echo $_GET['automatico']?>&nombre=<?php echo $_GET["nombre"]?>&tablagraba=<?php echo $laTablaGraba;?>&tabla=<?php echo $laTabla;?>&campollave=<?php echo $campoLlave; ?>&gridpropio=S&loscamposf="+loscamposf+"&losdatosf="+losdatosf+"&valorllave=";  //El valor llave se coloca m�s abajo este debe ser siempre el ultimo parametros
@@ -493,7 +493,7 @@
 		function insertar() {
 			  $('#dlgproceso').modal({backdrop: 'static', keyboard: false});	
                <?php                  
-               $url="../base/nuevoReg.php?modulo=".$_GET["modulo"]."&bd=".$_GET["bd"]."&limitar=N"."&automatico=".$_GET["automatico"]."&nombre=".$_GET["nombre"]."&tablagraba=".$laTablaGraba."&tabla=".$laTabla."&loscamposf=".$loscamposf."&losdatosf=".$losdatosf."&gridpropio=S";
+               $url="../base/nuevoReg.php?restr=&modulo=".$_GET["modulo"]."&bd=".$_GET["bd"]."&limitar=N"."&automatico=".$_GET["automatico"]."&nombre=".$_GET["nombre"]."&tablagraba=".$laTablaGraba."&tabla=".$laTabla."&loscamposf=".$loscamposf."&losdatosf=".$losdatosf."&gridpropio=S";
                if (file_exists("../".$_GET["modulo"]."/nuevoReg.php")) {$url="../".$_GET["modulo"]."/nuevoReg.php?modulo=".$_GET["modulo"]."&bd=".$_GET["bd"]."&limitar=N"."&automatico=".$_GET["automatico"]."&loscamposf=".$loscamposf."&losdatosf=".$losdatosf."gridpropio=S";}?>
                  location.href="<?php echo $url;?>";       
                        

@@ -499,3 +499,30 @@ function procesoTitulado(matricula, valortit,valorcic){
 	}					     
 });    
 }
+
+
+
+
+
+
+
+
+function titadjuntos  (modulo,usuario,institucion, campus,essuper){
+
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+	
+		ss_mostrarAdjuntosDin(modulo,usuario,institucion, campus,essuper,
+			table.rows('.selected').data()[0]["CICLO"],
+			table.rows('.selected').data()[0]["MATRICULA"],
+			table.rows('.selected').data()[0]["PASANTE"],
+			table.rows('.selected').data()[0]["MATRICULA"],
+			"modAdjuntos","eadjtitulacion","ADJTITULACION","'TITULA_ESCOLARES','TITULA_TIT'");
+	}
+	else {
+		alert ("Debe seleccionar un Registro");
+		return 0;
+
+		}
+
+}

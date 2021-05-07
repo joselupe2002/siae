@@ -36,14 +36,13 @@ var tramini=false;
 			});
 
 
-			elsqlc='SELECT getciclo() from dual';
+			elsqlc="SELECT IFNULL(max(CICLO),getciclo()) FROM tit_pasantes a where a.MATRICULA='"+usuario+"'";
 			parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
 					type: "POST",
 					data:parametros,
 					url:  "../base/getdatossqlSeg.php",
-					success: function(data){ 
-						
+					success: function(data){ 						
 						losdatos=JSON.parse(data); 
 						miciclo=losdatos[0][0];
 						$("#elciclo").html(losdatos[0][0]);
@@ -117,12 +116,7 @@ var tramini=false;
 						if ((porcReal>=50)) {
 										
 							$("#servicio").empty();
-							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
-							"    <div class=\"col-sm-12\"> "+
-							"     <div id=\"panel1\" class=\"col-sm-12\" ></div>"+										
-							"    </div>"+
-							"</div>");
-
+							$("#panel1").empty();
 							OpcionesTitulacion();			
 							
 						}	
@@ -141,6 +135,13 @@ var tramini=false;
 
 
    function OpcionesTitulacion(){
+	
+	//Cargamos datos adjuntos 
+
+	cargarPestania("TITULA_ESCOLARES","panEsc","ADJTITULACION","eadjtitulacion",usuario,miciclo);
+	cargarPestania("TITULA_TIT","panTit","ADJTITULACION","eadjtitulacion",usuario,miciclo);
+							
+
 	var abierto=false;
 	elsql="select a.*, count(*) as N from vtit_pasantes a where MATRICULA='"+usuario+"'";
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -171,6 +172,9 @@ var tramini=false;
 
 
 			if (tramini) {
+
+				$("#pestas").removeClass("hidden");
+
 				$("#btn2").append("<button  style=\"width:100%\" onclick=\"impSolTit();\" class=\"btn  btn-white btn-primary\">"+
 				"     <i class=\"ace-icon blue fa fa-edit bigger-130\"></i><span>Solicitud de Titulación</span>"+
 				"</button></div></div>");

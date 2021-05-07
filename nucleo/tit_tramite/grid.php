@@ -105,13 +105,46 @@
 			</div>
 		</div>
 
-		<div class="col-sm-7">   
+		<div class="col-sm-7"> 
 			<div class="row"> 
-				<div class="col-sm-12" id="servicio" style="text-align:center;">
-				
+				<div class="col-sm-12" id="lacarta" style="text-align:center;">							
+				</div>
+			</div> 
+
+			<div class="row"> 
+				<div class="col-sm-12" id="servicio" style="text-align:center;">							
 				</div>
 			</div>
-		</div>
+
+			<div class="tabbable fontRoboto hidden" id="pestas">
+					<ul class="nav nav-tabs" id="myTab">
+						<li class="active">
+							<a data-toggle="tab" href="#pesEsc"><i class="red ace-icon fa fa-check-square bigger-120"></i>Escolares</a>
+						</li>
+						<li >
+							<a data-toggle="tab" href="#pesTit"><i class="blue ace-icon fa fa-book bigger-120"></i>Titulación</a>
+						</li>						
+					</ul>
+
+					<div class="tab-content">
+			 		  	<div id="pesEsc" class="tab-pane fade in active">					 					   
+					            <div id="panEsc" class="row"> </div>
+					 	 </div>
+
+						<div id="pesTit" class="tab-pane">					 					   
+					            <div id="panTit" class="row"> </div>
+					 	</div>
+
+					</div>
+			</div>					
+	
+
+			<div class="row" style="text-align:left;">
+			   <div class="col-sm-12"> 
+				    <div id="panel1" class="col-sm-12" ></div>								
+				</div>
+			</div>
+
 	</div>
 
 	
