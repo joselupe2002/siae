@@ -3601,7 +3601,7 @@ function ss_mostrarAdjuntosDin(modulo,elusuario,institucion, campus,essuper,elci
 										
 									if (valor.VALIDADO=='S') {cadValor='N'; mensajebtn="No Validar"; } else {cadValor='S'; mensajebtn="Validar";}									
 									evento="ss_validaradjDin('"+valor.CLAVE+"','"+elciclo+"','"+elusuario+"','"+valor.OBSVALIDADO+"','"+valor.DOCUMENTO+"','"+padre+"');";
-									$("#rowAsp"+padre+c).append( "<td><button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" "+
+									$("#rowAsp"+padre+c).append( "<td><button id=\"btnVal"+valor.CLAVE+"\" type=\"button\" class=\"btn btn-white  btn-primary btn-round\" "+
 																"onclick=\""+evento+"\"><strong>"+mensajebtn+"</strong></button></td>");	
 
 									$("#rowAsp"+padre+c).append("<td>"+cadFile+"</td>");	
@@ -3680,11 +3680,14 @@ function ss_btnValidarAdjDin(ciclo,matricula,tipo, reporte,padre){
 		   cadObs="<b>Favor de Revisar la siguiente Observación:<b><br>"+$("#ss_obsValidado").val();
 		   if ($("#ss_validado").val()=='S') {status="<span style=\"color:green\"><b> VALIDADO</b></span>"; cadObs="";}
 
-		   correoalAlum(matricula, "<html>Servicio Social: "+reporte+" "+status+
+		   correoalAlum(matricula, "<html>"+reporte+" "+status+
 								"</b></span>."+cadObs
-								,"STATUS DE SOLICITUD SERVICIO SOCIAL "+matricula);
-			$("#"+padre).modal("hide");
+								,"STATUS DE DOCUMENTO "+matricula);
+			//$("#"+padre).modal("hide");
 			$("#confVal").modal("hide");
+			msjBtn="No Validar"; if ($("#ss_validado").val()=='N') {msjBtn="Validar";}
+		    $("#btnVal"+tipo).html("<strong>"+msjBtn+"</strong>");
+
 
 	   		}					     
 	   });    	
