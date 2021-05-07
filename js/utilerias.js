@@ -3599,9 +3599,9 @@ function ss_mostrarAdjuntosDin(modulo,elusuario,institucion, campus,essuper,elci
 										
 									$("#rowAsp"+padre+c).append("<td style=\"text-align: center; vertical-align: middle;\">"+cadEnc+"</td>");					
 										
-									if (valor.VALIDADO=='S') {cadValor='N'; mensajebtn="No Validar"; } else {cadValor='S'; mensajebtn="Validar";}									
+									if (valor.VALIDADO=='S') {cadValor='N'; mensajebtn="Validado"; laclase="btn-danger"; } else {cadValor='S'; mensajebtn="Validar"; laclase="btn-primary";}									
 									evento="ss_validaradjDin('"+valor.CLAVE+"','"+elciclo+"','"+elusuario+"','"+valor.OBSVALIDADO+"','"+valor.DOCUMENTO+"','"+padre+"');";
-									$("#rowAsp"+padre+c).append( "<td><button id=\"btnVal"+valor.CLAVE+"\" type=\"button\" class=\"btn btn-white  btn-primary btn-round\" "+
+									$("#rowAsp"+padre+c).append( "<td><button id=\"btnVal"+valor.CLAVE+"\" type=\"button\" class=\"btn btn-white  "+laclase+" btn-round\" "+
 																"onclick=\""+evento+"\"><strong>"+mensajebtn+"</strong></button></td>");	
 
 									$("#rowAsp"+padre+c).append("<td>"+cadFile+"</td>");	
@@ -3682,11 +3682,16 @@ function ss_btnValidarAdjDin(ciclo,matricula,tipo, reporte,padre){
 
 		   correoalAlum(matricula, "<html>"+reporte+" "+status+
 								"</b></span>."+cadObs
-								,"STATUS DE DOCUMENTO "+matricula);
+								,"STATUS DE DOCUMENTOS "+matricula);
 			//$("#"+padre).modal("hide");
 			$("#confVal").modal("hide");
-			msjBtn="No Validar"; if ($("#ss_validado").val()=='N') {msjBtn="Validar";}
+			laclase="btn-danger"; msjBtn="Validado"; if ($("#ss_validado").val()=='N') {msjBtn="Validar"; laclase="btn-primary";}
 		    $("#btnVal"+tipo).html("<strong>"+msjBtn+"</strong>");
+			$("#btnVal"+tipo).removeClass("btn-primary");
+			$("#btnVal"+tipo).removeClass("btn-danger");
+			$("#btnVal"+tipo).addClass(laclase);
+
+			
 
 
 	   		}					     
