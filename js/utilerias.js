@@ -3417,7 +3417,7 @@ function setNotificacionalJefe(matricula,mensaje,enlace,tipo,institucion,campus)
 }
 
 
-/*=========================SOLO PARA EL MODULO DE SERVICIO SOCIAL ===============================*/
+/*=========================SOLO PARA EL MODULO DE SUBIDA Y VALIDACION DE DOC CONFIGURABLES ===============================*/
 
 
 function cargarPestania(seccion,padre,carpeta, tabla, elusuario, elciclo){
@@ -3455,8 +3455,8 @@ function cargarPestania(seccion,padre,carpeta, tabla, elusuario, elciclo){
 							"           </a>"+
 							"           <i style=\""+stElim+"\"  id=\"btnEli_RUTA_"+valor.CLAVE+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
 							"            onclick=\"eliminarEnlaceDrive('file_"+valor.CLAVE+"','"+carpeta+"',"+
-							"                      'pdf_"+valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','N','ID','"+valor.CLAVE+"','"+valor.DOCUMENTO+"-DOCUMENTO',"+
-							"                      '"+tabla+"','alta','');\"></i> "+              				                        
+							"                      'pdf_"+valor.CLAVE+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','S','ID','"+valor.CLAVE+"','"+valor.DOCUMENTO+"-DOCUMENTO',"+
+							"                      '"+tabla+"','alta','"+usuario+"_"+elciclo+"_"+valor.CLAVE+"');\"></i> "+              				                        
 							"      </div> ";
 
 
@@ -3508,7 +3508,8 @@ function cargarPestania(seccion,padre,carpeta, tabla, elusuario, elciclo){
 
 
 
-function ss_mostrarAdjuntos(modulo,elusuario,institucion, campus,essuper,elciclo,elusuario,descrip,elid,padre, tabla, carpeta,modulos){
+function ss_mostrarAdjuntosDin(modulo,elusuario,institucion, campus,essuper,elciclo,elusuario,descrip,elid,padre, tabla, carpeta,modulos){
+
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
 			script="<div class=\"modal fade sigeaPrin\" id=\""+padre+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
@@ -3552,7 +3553,7 @@ function ss_mostrarAdjuntos(modulo,elusuario,institucion, campus,essuper,elciclo
 		    $("#"+padre).modal({show:true, backdrop: 'static'});
 
 	        sqlAsp="select IDDOC, TIPOADJ, IFNULL(RUTA,'') AS RUTA, IFNULL(VALIDADO,'N') AS VALIDADO, IFNULL(OBSVALIDADO,'') AS OBSVALIDADO, CLAVE, DOCUMENTO "+
-			"from  documaspirantes b left outer join eadjresidencia a on (a.AUX=concat(b.CLAVE,'_"+elusuario+"_"+elciclo+"')) where "+
+			"from  documaspirantes b left outer join eadjresidencia a on (a.AUX=concat('"+elusuario+"_"+elciclo+"_',b.CLAVE)) where "+
 			"ENLINEA='S' AND MODULO IN ("+modulos+") order by IDDOC";
 			
 	
@@ -3574,30 +3575,32 @@ function ss_mostrarAdjuntos(modulo,elusuario,institucion, campus,essuper,elciclo
 										if ((valor.RUTA!='')&&(valor.RUTA!=null)) { stElim="cursor:pointer; display:block; ";}
 								
 										cadFile="<input class=\"fileSigea\" type=\"file\" id=\"file_"+valor.CLAVE+"\""+
-											"                   onchange=\"subirPDFDriveSaveAsp_local('file_"+valor.CLAVE+"','"+carpeta+"','pdf"+
+											"                   onchange=\"subirPDFDriveSave('file_"+valor.CLAVE+"','"+carpeta+"','pdf"+
 																		c+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','N','ID','"+valor.CLAVE+
-																		"',' DOCUMENTO  "+valor.DOCUMENTO+" ','"+tabla+"','alta','"+valor.CLAVE+"_"+elusuario+"_"+elciclo+"','S');\">"+
+																		"',' DOCUMENTO  "+valor.DOCUMENTO+" ','"+tabla+"','alta','"+elusuario+"_"+elciclo+"_"+valor.CLAVE+"');\">"+
 											"           <input  type=\"hidden\" value=\"../"+valor.RUTA+"\"  name=\"RUTA_"+valor.CLAVE+"\" id=\"RUTA_"+valor.CLAVE+"\"  placeholder=\"\" />"+
 											"        </div>"+
 											"        <div class=\"col-sm-1\" style=\"padding-top:5px;\">"+
 											"           <i style=\""+stElim+"\"  id=\"btnEli_RUTA_"+valor.CLAVE+"\" title=\"Eliminar el PDF que se ha subido anteriormente\" class=\"ace-icon glyphicon red glyphicon-trash \" "+
-											"            onclick=\"eliminarEnlaceCarpeta('file_"+valor.CLAVE+"','"+carpeta+"',"+
+											"            onclick=\"eliminarEnlaceDrive('file_"+valor.CLAVE+"','"+carpeta+"',"+
 											"                      'pdf"+c+"','RUTA_"+valor.CLAVE+"','"+valor.TIPOADJ+"','N','ID','"+valor.CLAVE+"','"+valor.DOCUMENTO+"-DOCUMENTO',"+
-											"                      '"+tabla+"','alta','"+valor.CLAVE+"_"+elusuario+"_"+elciclo+"','PDF');\"></i> ";
+											"                      '"+tabla+"','alta','"+elusuario+"_"+elciclo+"_"+valor.CLAVE+"');\"></i> ";
 
 									
 									$("#cuerpo"+padre).append("<tr id=\"rowAsp"+padre+c+"\"></tr>");
 									$("#rowAsp"+padre+c).append("<td>"+valor.IDDOC+"</td>");
 									$("#rowAsp"+padre+c).append("<td>"+valor.DOCUMENTO+"</td>");				
 									
-									cadEnc="<a title=\"Ver Archivo Adjunto\" target=\"_blank\" id=\"enlace_RUTA_"+valor.CLAVE+"\" href=\"../"+valor.RUTA+"\">"+
+									cadEnc="<a title=\"Ver Archivo Adjunto\" target=\"_blank\" id=\"enlace_RUTA_"+valor.CLAVE+"\" href=\""+valor.RUTA+"\">"+
 														" <img width=\"40px\" height=\"40px\" id=\"pdf"+c+"\" src=\""+ladefault+"\" width=\"50px\" height=\"50px\">"+
-														" </a>";		
+														" </a>";	
+														
+								
 										
 									$("#rowAsp"+padre+c).append("<td style=\"text-align: center; vertical-align: middle;\">"+cadEnc+"</td>");					
 										
 									if (valor.VALIDADO=='S') {cadValor='N'; mensajebtn="No Validar"; } else {cadValor='S'; mensajebtn="Validar";}									
-									evento="ss_validaradj('"+valor.CLAVE+"','"+elciclo+"','"+elusuario+"','"+valor.OBSVALIDADO+"','"+valor.DOCUMENTO+"','"+padre+"');";
+									evento="ss_validaradjDin('"+valor.CLAVE+"','"+elciclo+"','"+elusuario+"','"+valor.OBSVALIDADO+"','"+valor.DOCUMENTO+"','"+padre+"');";
 									$("#rowAsp"+padre+c).append( "<td><button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" "+
 																"onclick=\""+evento+"\"><strong>"+mensajebtn+"</strong></button></td>");	
 
@@ -3642,24 +3645,24 @@ function ss_mostrarAdjuntos(modulo,elusuario,institucion, campus,essuper,elciclo
 
 
 
-function ss_validaradj(tipo,ciclo,matricula,obs, reporte, padre){
+function ss_validaradjDin(tipo,ciclo,matricula,obs, reporte, padre){
 	 $("#confVal").empty();
 	 mostrarConfirm("confVal", padre,  "Proceso de Cotejo",
 	 "<span class=\"label label-success\">Observaciones "+reporte+"</span>"+
 	 "     <textarea id=\"ss_obsValidado\" style=\"width:100%; height:100%; resize: none;\">"+obs+"</textarea>",
 	 "¿Marcar como Validado? "+
 	 "<SELECT id=\"ss_validado\"><OPTION value=\"S\">SI</OPTION><OPTION value=\"N\">NO</OPTION></SELECT>"
-	 ,"Finalizar Proceso", "ss_btnValidarAdj('"+ciclo+"','"+matricula+"','"+tipo+"','"+reporte+"','"+padre+"');","modal-sm");
+	 ,"Finalizar Proceso", "ss_btnValidarAdjDin('"+ciclo+"','"+matricula+"','"+tipo+"','"+reporte+"','"+padre+"');","modal-sm");
 }
 
 
-function ss_btnValidarAdj(ciclo,matricula,tipo, reporte,padre){
+function ss_btnValidarAdjDin(ciclo,matricula,tipo, reporte,padre){
 
 	   parametros={
 		   tabla:"eadjresidencia",
 		   campollave:"AUX",
 		   bd:"Mysql",
-		   valorllave:tipo+"_"+matricula+"_"+ciclo,
+		   valorllave:matricula+"_"+ciclo+"_"+tipo,
 		   VALIDADO: $("#ss_validado").val(),
 		   OBSVALIDADO:$("#ss_obsValidado").val()
 		};
@@ -3682,9 +3685,6 @@ function ss_btnValidarAdj(ciclo,matricula,tipo, reporte,padre){
 								,"STATUS DE SOLICITUD SERVICIO SOCIAL "+matricula);
 			$("#"+padre).modal("hide");
 			$("#confVal").modal("hide");
-			
-			
-			//ss_mostrarAdjuntos("vss_alumnos","","","","",ciclo,matricula);
 
 	   		}					     
 	   });    	
@@ -4176,6 +4176,8 @@ function ss_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper,miciclo
    });		
 
 }
+
+
 
 function ss_validaradj(tipo,ciclo,matricula,valor,obs, reporte){
 $("#confVal").empty();

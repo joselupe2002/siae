@@ -66,7 +66,7 @@ function liberacionRes(modulo,usuario,institucion, campus,essuper){
 
 
 
-
+/*
 function verAdjRes  (modulo,usuario,institucion, campus,essuper){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {
@@ -77,7 +77,30 @@ function verAdjRes  (modulo,usuario,institucion, campus,essuper){
 		return 0;
 
 		}
+}*/
+
+
+
+function verAdjRes  (modulo,usuario,institucion, campus,essuper){
+
+	table = $("#G_"+modulo).DataTable();
+	if (table.rows('.selected').data().length>0) {
+	
+		ss_mostrarAdjuntosDin(modulo,usuario,institucion, campus,essuper,
+			table.rows('.selected').data()[0]["CICLO"],
+			table.rows('.selected').data()[0]["MATRICULA"],
+			table.rows('.selected').data()[0]["NOMBRE"],
+			table.rows('.selected').data()[0]["ID"],
+			"modAdjuntos","eadjresidencia","ADJRESIDENCIA","'RESIDEN_REQ','RESIDEN_ANT','RESIDEN_SEG','RESIDEN_FIN'");
+	}
+	else {
+		alert ("Debe seleccionar un Registro");
+		return 0;
+
+		}
+
 }
+
 
 
 
