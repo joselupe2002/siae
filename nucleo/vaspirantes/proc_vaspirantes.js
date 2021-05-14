@@ -324,6 +324,7 @@ function marcarPagadoIns(modulo,usuario,essuper){
 }
 
 function btnMarcarPagadoIns(id){
+	enviarCorreoAsp('vaspirantes',$("#pagado").val(),$("#obsPagado").val(),"PAGO DE INSCRIPCIÓN");
 	setPagadoIns(id,$("#pagado").val(),$("#obsPagado").val());
 }
 
@@ -354,6 +355,47 @@ function setCotejado(id,valor,obs){
 
 
 
+function enviarCorreoAsp(modulo,cotejado, obs, tipo){
+
+	table = $("#G_"+modulo).DataTable();
+	elcorreo=table.rows('.selected').data()[0]["CORREO"];
+	eltipo=tipo;
+
+	mensaje="<html>Tu pago "+tipo+" ha sido <span style=\"color:blue\"><b> VALIDADO </b></span> por el &aacute;rea de Contabilidad, "+
+	" se continuará con el tramite correspondiente. <html>";
+	if (cotejado=='N') {mensaje="<html> Tu pago <span style=\"color:red\"> <b> NO SE HA VALIDADO </b></span> por el &aacute;rea de Contabilidad, "+
+	                      "presenta las siguientes observaciones: <br/><html>"+obs;}
+
+	//=================para las pruebas ==================
+	//elcorreo='mecatronica@macuspana.tecnm.mx';
+   //========================================================
+    var parametros = {
+		"MENSAJE": mensaje,
+		"ADJSERVER": 'N',
+		"ASUNTO": 'ITSM: STATUS DE PAGO DE '+eltipo,
+		"CORREO" :  elcorreo,
+		"NOMBRE" :  table.rows('.selected').data()[0]["NOMBRE"],
+		"ADJUNTO":''
+    };
+
+    $.ajax({
+        data:  parametros,
+        type: "POST",
+        url: "../base/enviaCorreo.php",
+        success: function(response)
+        {
+           console.log("ALUMNO: "+response);
+        },
+        error : function(error) {
+            console.log(error);
+            alert ("Error en ajax "+error.toString()+"\n");
+        }
+	});
+
+}
+
+
+
 function marcarPagado(modulo,usuario,essuper){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data()[0]["FINALIZADO"]=='S') {
@@ -369,8 +411,9 @@ function marcarPagado(modulo,usuario,essuper){
 }
 
 function btnMarcarPagado(id){
-	
-	setPagado(id,$("#pagado").val(),$("#obsPagado").val());
+	enviarCorreoAsp('vaspirantes',$("#pagado").val(),$("#obsPagado").val(),"PAGO DE FICHA DE EXAMEN");
+	if ($("#pagado").val()=='N') {setFinalizado(id,"N");}
+	setPagado(id,$("#pagado").val(),$("#obsPagado").val());	
 }
 
 
@@ -389,6 +432,8 @@ function marcarCotejado(modulo,usuario,essuper){
 }
 
 function btnMarcarCotejado(id){
+	enviarCorreoAsp('vaspirantes',$("#cotejado").val(),$("#obsCotejado").val(),"DOCUMENTOS DE PRE-INSCRIPCIÓN");
+	if ($("#cotejado").val()=='N') {setFinalizado(id,"N");}
 	setCotejado(id,$("#cotejado").val(),$("#obsCotejado").val());
 }
 
@@ -468,8 +513,6 @@ function agregarDialog(modulo){
     });
 	$('#resul').val("");
 }
-
-
 
 
 
