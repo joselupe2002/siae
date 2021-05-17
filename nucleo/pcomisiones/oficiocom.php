@@ -152,7 +152,7 @@
 		$laetfecha ='del '.$fechaini.' al '.$fechafin; 
 		if ($fechaini==$fechafin) {$laetfecha="el ".$fechaini;}
 
-		if ($data[0]["COMI_LUGAR"]=='NA') {$ellugar=', favor de presentarse en '.utf8_decode($data[0]["COMI_LUGAR"]); } 
+		if ($data[0]["COMI_LUGAR"]!='NA') {$ellugar=', favor de presentarse en '.utf8_decode($data[0]["COMI_LUGAR"]); } 
 		else {$ellugar='';}
 
 		if ($data[0]["COMI_HORAINI"]!='') {$lahora=', en horario de '.utf8_decode($data[0]["COMI_HORAINI"]).' a '.$data[0]["COMI_HORAFIN"]."."; } 
