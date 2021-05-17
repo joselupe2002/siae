@@ -161,7 +161,7 @@
 
 
 		$pdf->MultiCell(0,8,utf8_decode('Por medio de la presente, le informó a usted que ha sido comisionado para la siguiente actividad: "').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
-		utf8_decode('", la cual se llevará a cabo ').$laetfecha.$ellugar.$lahora,0,'J', false);
+		utf8_decode('". Dicha Actividad la llevará a cabo ').$laetfecha.$ellugar.$lahora,0,'J', false);
 		$pdf->Ln(5);
 		$pdf->Ln(5);
 		$pdf->MultiCell(0,8,utf8_decode('Sin más por el momento aprovecho para enviarle un cordial saludo.'),0,'J', false);
