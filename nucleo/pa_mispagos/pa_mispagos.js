@@ -141,13 +141,13 @@ function generaTablaInformacion(grid_data){
 			'ID',valor.ID,'RECIBO DE PAGO '+txtop,'eadjreins','alta',usuario+"_"+miciclo+"_"+idop,valor.RUTA,activaEliminar);	
 		}
 		else {
-			$("#recibo"+valor.IDDET).html("<a href=\""+valor.RUTA+"\" target=\"_blank\" >"+
+			$("#file"+valor.IDDET).html("<a href=\""+valor.RUTA+"\" target=\"_blank\" >"+
 			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:50px; height:50px;\"></a>");
 
 		}
 
 		if (!(valor.RUTARES=='')) {
-			$("#file"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
+			$("#respuesta"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
 			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:50px; height:50px;\"></a>");	
 		}
 
