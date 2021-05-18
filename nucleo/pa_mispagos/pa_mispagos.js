@@ -140,6 +140,11 @@ function generaTablaInformacion(grid_data){
 			dameSubirArchivoDrive("file"+valor.IDDET,"","recibo"+valor.IDDET,'RECIBOREINS','pdf',
 			'ID',valor.ID,'RECIBO DE PAGO '+txtop,'eadjreins','alta',usuario+"_"+miciclo+"_"+idop,valor.RUTA,activaEliminar);	
 		}
+		else {
+			$("#recibo"+valor.IDDET).html("<a href=\""+valor.RUTA+"\" target=\"_blank\" >"+
+			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:50px; height:50px;\"></a>");
+
+		}
 
 		if (!(valor.RUTARES=='')) {
 			$("#respuesta"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
