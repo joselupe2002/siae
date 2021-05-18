@@ -147,7 +147,7 @@ function generaTablaInformacion(grid_data){
 		}
 
 		if (!(valor.RUTARES=='')) {
-			$("#respuesta"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
+			$("#file"+valor.IDDET).html("<a href=\""+valor.RUTARES+"\" target=\"_blank\" >"+
 			"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:50px; height:50px;\"></a>");	
 		}
 
