@@ -49,15 +49,27 @@
 						</div>       			 
 						<div id="losplanes" class="col-sm-3" >
 						</div>
-						<div id="losperiodos" class="col-sm-2" >
+						<div id="losperiodos" class="col-sm-1" >
 						</div>
-						<div class="col-sm-3" style="padding-top:14px;">
+						<div id="accion" class="col-sm-1" >
+							<div class="checkbox" style="padding:0px; margin: 0px;">
+								<label>
+								<input id="activos" type="checkbox" class="ace ace-switch ace-switch-6" />
+								<span class="lbl"> Activos</span>										
+							</div>
+						</div>
+						<div class="col-sm34" style="padding-top:14px;">
+							
+
 						    <button title="Buscar Registros" onclick="cargarAvances();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small"></span>            
 							</button>	
 							<button title="Exportar a Excel" onclick="convertirDataTable('tabAvances');" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon orange fa fa-wrench bigger-120"></i><span class="btn-small"></span>            
-							</button>										
+							</button>
+
+							
+
 						</div>
 		            </div> 
 		      </div>

@@ -89,10 +89,11 @@ contMat=1;
 		   $("#losAvances").empty();
 		   $("#losAvances").append(script);
 				
+		cadAct=""; if ($("#activos").prop("checked")) {cadAct=" and ALUM_ACTIVO=1";} 
 		elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE,"+
 		" getPeriodos(ALUM_MATRICULA,'"+$("#elciclo").html()+"') as PERIODOS, ALUM_ACTIVO  FROM "+
 		" falumnos b where 1=1"+
-		cadPeriodo+
+		cadPeriodo+cadAct+
 		" and b.ALUM_CARRERAREG="+$("#selCarreras").val()+" and b.ALUM_MAPA='"+$("#selPlanes").val()+"' ORDER BY ALUM_MATRICULA";
 		mostrarEspera("esperahor","grid_avancegral","Cargando Datos...");
 
