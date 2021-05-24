@@ -10,8 +10,8 @@
           $_POST["MENSAJE"],$_POST["ADJUNTO"]);
      }
      else {
-          $resCorreo=$miUtil->enviarCorreo($_POST["CORREO"],$_POST["ASUNTO"],
-          $_POST["MENSAJE"],$_POST["ADJUNTO"]);
+          $resCorreo=$miUtil->enviarCorreo($_POST["CORREO"],utf8decode($_POST["ASUNTO"]),
+          utf8decode($_POST["MENSAJE"]),$_POST["ADJUNTO"]);
      }
   
      echo "Se envió correo a ".$_POST["NOMBRE"]." CORREO: ".$_POST["CORREO"];						
