@@ -3016,8 +3016,8 @@ function procEnvioCorreo(modulo,colcorreo,ec_elReg){
     var parametros = {
 		"MENSAJE": mensaje,
 		"ADJSERVER": 'S',
-		"ASUNTO": $("#elasunto").val(),
-		"CORREO" : elcorreo,
+		"ASUNTO": utf8Decode($("#elasunto").val()),
+		"CORREO" : utf8Decode(elcorreo),
 		"NOMBRE":"",
 		"ADJUNTO":''
     };
