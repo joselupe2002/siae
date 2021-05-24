@@ -36,7 +36,7 @@ class UtilUser {
 		$mail->Username = $emisor;
 		$mail->Password = $clave;
 		$mail->SetFrom($emisor,$asunto);
-		$mail->Subject = $asunto;
+		$mail->Subject = "=?ISO-8859-1?B?".base64_encode($asunto)."=?=";;
 		$mail->Body =$cuerpo;
 		$mail->AddAddress($receptor);
 		$mail->CharSet = 'ISO-8859-1';
