@@ -36,8 +36,8 @@ class UtilUser {
 		$mail->Username = $emisor;
 		$mail->Password = $clave;
 		$mail->SetFrom($emisor,$asunto);
-		$mail->Subject = $asunto;
-		$mail->Body =$cuerpo;
+		$mail->Subject = utf8decode($asunto);
+		$mail->Body =utf8decode($cuerpo);
 		$mail->AddAddress($receptor);
 		$mail->CharSet = 'UTF-8';
 		
