@@ -39,7 +39,7 @@ class UtilUser {
 		$mail->Subject = utf8decode($asunto);
 		$mail->Body =utf8decode($cuerpo);
 		$mail->AddAddress($receptor);
-		$mail->CharSet = 'UTF-8';
+		$mail->CharSet = 'ISO-8859-1';
 		
 		if (!($adj1=="")) {
 			 $mail->AddStringAttachment($adj1, 'documento.pdf', 'base64', 'application/pdf');
