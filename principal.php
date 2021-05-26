@@ -446,7 +446,7 @@
 	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=N"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;
 	    	      	   }
 	    	      	  		
-	    	          var content = '<iframe scrolling = "auto" frameborder="0" id="FR'+modulo+'" src="'+url+'" style="overflow-x:hidden;overflow-y:hidden;width:100%;height:'+alto+';" class="sigeaPrin sigeaFrame"></iframe>';	
+	    	         var content = '<iframe scrolling = "auto" frameborder="0" id="FR'+modulo+'" src="'+url+'" style="overflow-x:hidden;overflow-y:hidden;width:100%;height:'+alto+';" class="sigeaPrin sigeaFrame"></iframe>';	
 				     $('#myTab').tabs('add',{
 				    	    title:nombre,
 				    	   // href:"nucleo/grid.php?modulo="+modulo,

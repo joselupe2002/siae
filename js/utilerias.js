@@ -937,6 +937,7 @@ function getSQLTipo(tipo,otrascondiciones){
 	elsql="";
 	if (tipo=='CICLOS') {elsql="SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) from ciclosesc where 1=1 "+otrascondiciones+ " order by CICL_CLAVE DESC";}
 	if (tipo=='MATERIAS') {elsql="SELECT MATE_CLAVE, CONCAT(MATE_CLAVE,' ',MATE_DESCRIP) from cmaterias where 1=1 "+otrascondiciones+ " order by MATE_DESCRIP";}
+	if (tipo=='SINO') {elsql="SELECT 'SI','SI' from dual union SELECT 'NO','NO' from dual ";}
 	return elsql;
 }
 
@@ -1077,12 +1078,9 @@ function addSELECTMULT_CONVALOR(nombre,contenedor,tipo, sql, otrascondiciones, t
 			   estasel="";
                jQuery.each(JSON.parse(data), function(clave, valor) {
 						 estasel="";
-					
-						 if (valorDato.indexOf(losdatos[clave][0])>=0) {estasel="selected=\"true\"";} 						
+					     if (valorDato!=null) {if (valorDato.indexOf(losdatos[clave][0])>=0) {estasel="selected=\"true\"";} } 						
 	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\""+ estasel +">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  									   						
 						}); 
-
-				
 	
                if (tipoSelect=='BUSQUEDA') {               
 		         	   $('.chosen-select').chosen({allow_single_deselect:true}); 			
@@ -4251,3 +4249,185 @@ function addbtninfo(contenedor,titulo,tipo,valor,txt) {
 	"</span>");
 }
 
+/*=================UTILERIAS PARA ELEMENTOS DE FORMULARIOS PERSONALIZADOS ====================*/
+
+function addElementPes(tipo,contenedor,tabla,campok,valork,nombre,etiqueta,tiposel,sql,tipoSelect,misdatos){
+	if (tipo=='INPUT') {
+		$("#"+contenedor).append(
+			"<label class=\"fontRobotoB\">"+etiqueta+"</label>"+
+			"<input class=\"form-control\" value=\""+misdatos[0][nombre]+"\" onchange=\"grabaDatoPes('"+tipo+"','"+tabla+"','"+campok+"','"+valork+"','"+nombre+"');\"  id=\""+nombre+"\"></input>");
+	}
+
+
+	if (tipo=='INPUTMON') {
+		$("#"+contenedor).append(
+			"<label class=\"fontRobotoB\">"+etiqueta+"</label>"+
+			"<div class=\"input-group\"><span class=\"input-group-addon\">"+
+			"<i class=\"ace-icon fa fa-dollar\"></i></span>"+
+			"<input class=\"form-control input-mask-moneda\" onchange=\"grabaDatoPes('"+tipo+"','"+tabla+"','"+campok+"','"+valork+"','"+nombre+"');\" value=\""+misdatos[0][nombre]+"\" type=\"text\" id=\""+nombre+"\" />"+
+			"</div>");
+			$('.input-mask-moneda').mask('9999999999');
+	}
+
+	
+
+
+	if (tipo=='SELECT') {
+		$("#"+contenedor).append("<div id=\""+contenedor+nombre+"\"><label class=\"fontRobotoB\">"+etiqueta+"</label></div>");
+		addSELECTPes(nombre,contenedor,tiposel,sql,tipoSelect,tipo,tabla, campok, valork, misdatos);
+	}
+
+	if (tipo=='SELECTMULT') {
+		$("#"+contenedor).append("<div id=\""+contenedor+nombre+"\"><label class=\"fontRobotoB\">"+etiqueta+"</label></div>");
+		addSELECTMULT_CONVALORPes(nombre,contenedor+nombre,"PROPIO",sql,"BUSQUEDA",tipo,tabla,campok,valork,misdatos[0][nombre]);
+		//addSELECTMULT_CONVALOR("DISCAPACIDAD2","i4","CICLOS",elsql,"","BUSQUEDA","");
+	}
+	
+
+	
+
+	if (tipo=='SELECTNUM') {
+		$("#"+contenedor).append("<div id=\""+contenedor+nombre+"\"><label class=\"fontRobotoB\">"+etiqueta+"</label></div>");
+		addSELECTNUMPes(nombre,contenedor,tiposel,sql,tipoSelect,tipo,tabla, campok, valork, misdatos);
+	}
+
+	if (tipo=='SINO') {
+		$("#"+contenedor).append("<div class=\"checkbox\" style=\"padding:0px; margin: 0px;\">"+
+		"<label> "+
+		   "<input id=\""+nombre+"\" onclick=\"grabaDatoPes('"+tipo+"','"+tabla+"','"+campok+"','"+valork+"','"+nombre+"');\" type=\"checkbox\" "+
+		   "class=\"selMateria ace ace-switch ace-switch-6\" />"+
+		   "<span class=\"fontRobotoB lbl\">"+etiqueta+"</span>"+
+		 "</label> "+
+		 "</div> ");
+		 if (misdatos[0][nombre]=='S') {$("#"+nombre).prop("checked",true);}	
+	}
+	
+
+}
+
+function grabaDatoPes(tipo,tabla,campok,valork,nombre){
+	elvalor=$("#"+nombre).val();
+	if (tipo=="SINO") {elvalor="N"; if ($("#"+nombre).prop("checked")) {elvalor="S";} }
+	if (tipo=="SELECTMULT") { if ($("#"+nombre).val()!=null) {elvalor=$("#"+nombre).val().toString();}}
+
+    parametros={
+		tabla:tabla,
+		campollave:campok,
+		valorllave:valork,
+		nombreCampo:nombre,
+		valorCampo:elvalor,
+		bd:"Mysql"};
+
+
+	$('#dlgproceso').modal({backdrop: 'static', keyboard: false});	         
+	   $.ajax({
+		        type: "POST",
+		        url:"../base/actualizaDin.php",
+		    	data: parametros,
+		    	success: function(data){
+					console.log(data);		    				       					           
+		           }					     
+		      }); 
+}
+
+
+
+
+function addSELECTPes(nombre,contenedor,tipoSel, sql, tipoSelect,tipo,tabla,campok,valork,misdatos) {
+
+	$("#"+contenedor+nombre).append("<img id=\"laespera1\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:50px;height:50px;\">");
+
+	elsql=getSQLTipo(tipoSel,'');
+	if (tipoSel=='PROPIO') {elsql=sql;}
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
+        success: function(data){
+
+       	       losdatos=JSON.parse(data);   
+       	       eltipo="";
+			   mult=""; if (tipoSelect=='MULTIPLE') {eltipo=""; mult="multiple=\"multiple\"";}
+       	       if (tipoSelect=='BUSQUEDA') {eltipo="chosen-select";}
+
+			   evento=" onchange=\"grabaDatoPes('"+tipo+"','"+tabla+"','"+campok+"','"+valork+"','"+nombre+"');\"";
+
+       	       $("#"+contenedor+nombre).append("<select "+mult+evento+" class=\" "+eltipo+" form-control text-success\"  id=\""+nombre+"\"> </select>");
+       	       $("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
+               jQuery.each(JSON.parse(data), function(clave, valor) { 
+						sele=""; if (misdatos[0][nombre]==losdatos[clave][0]) {sele="selected";}	
+	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\" "+sele+" >"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  		
+	  				   	  }); 
+               if (tipoSelect=='BUSQUEDA') {               
+		         	   $('.chosen-select').chosen({allow_single_deselect:true}); 			
+			     	   $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+			     	   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+			  		   $("#"+nombre).trigger("chosen:updated");		}				
+							 
+				$("#laespera1").remove();                   	   
+              },
+        error: function(data) {	                  
+                   alert('ERROR: '+data);
+               }
+       });
+}
+
+
+function addSELECTNUMPes(nombre,contenedor,tipoSel, sql, tipoSelect,tipo,tabla,campok,valork,misdatos) {
+	
+	$("#"+contenedor+nombre).append("<img id=\"laespera1\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:50px;height:50px;\">");
+	ini=sql.split(":")[0];
+	fin=sql.split(":")[1];
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}   	     
+	evento=" onchange=\"grabaDatoPes('"+tipo+"','"+tabla+"','"+campok+"','"+valork+"','"+nombre+"');\"";
+	$("#"+contenedor+nombre).append("<select  "+evento+" class=\"form-control text-success\"  id=\""+nombre+"\"> </select>");
+	$("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
+	for (x=ini;x<=fin;x++) {
+		sele=""; if (misdatos[0][nombre]==x) {sele="selected";}
+		$("#"+nombre).append("<option value=\""+x+"\" "+sele+" >"+x+"</option>");			  				     			  		
+	}
+	$("#laespera1").remove(); 
+    
+}
+            
+
+
+
+function addSELECTMULT_CONVALORPes(nombre,contenedor,tipo, sql, tipoSelect, tipo,tabla,campok,valork,valorDato) {
+
+	if (tipo=='PROPIO') {elsql=sql;}
+
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
+        success: function(data){
+       	       losdatos=JSON.parse(data);   
+       	       eltipo="";
+				evento=" onchange=\"grabaDatoPes('"+tipo+"','"+tabla+"','"+campok+"','"+valork+"','"+nombre+"');\"";
+       	       if (tipoSelect=='BUSQUEDA') {eltipo="chosen-select";}
+       	       $("#"+contenedor).append("<select "+evento+" multiple=\"\" class=\" "+eltipo+" form-control text-success\"  id=\""+nombre+"\"> </select>");
+				$("#"+nombre).append("<option value=\"0\">"+"Seleccione una opci&oacute;n"+"</option>");
+			   estasel="";
+               jQuery.each(JSON.parse(data), function(clave, valor) {
+						 estasel="";
+					     if (valorDato!=null) {if (valorDato.indexOf(losdatos[clave][0])>=0) {estasel="selected=\"true\"";} } 						
+	  				     $("#"+nombre).append("<option value=\""+losdatos[clave][0]+"\""+ estasel +">"+utf8Decode(losdatos[clave][1])+"</option>");			  				     			  									   						
+						}); 
+	
+               if (tipoSelect=='BUSQUEDA') {               
+		         	   $('.chosen-select').chosen({allow_single_deselect:true}); 			
+			     	   $(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+			     	   $(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+			  		   $("#"+nombre).trigger("chosen:updated");		}
+			   	  	              	   
+              },
+        error: function(data) {	                  
+                   alert('ERROR: '+data);
+               }
+       });
+}
