@@ -150,8 +150,11 @@ function cargarElementos(){
     addElementPes("INPUTMON","g3","estudiosoc","MATRICULA",elusuario,"GASTO_INTERNET","¿Internet?","","","",misdatos);
     addElementPes("INPUTMON","g3","estudiosoc","MATRICULA",elusuario,"GASTO_STREAMING","¿Servicios de streming?","","","",misdatos);
     addElementPes("INPUTMON","g3","estudiosoc","MATRICULA",elusuario,"GASTO_OTROS","Otros Gastos","","","",misdatos);
-
+   
     $("#g2").append("<div style=\"padding-top:20px;\"><button onclick=\"captIntegrantes();\" class=\"btn btn-white btn-info btn-bold\"><i class=\"ace-icon fa fa-home bigger-120 blue\"></i>Capturar Integrantes del Hogar</button></div>");
+
+    elsql="SELECT ID_PARIENTE, PARIENTE FROM cat_pariente order BY ID_PARIENTE";
+    addElementPes("SELECT","g3","estudiosoc","MATRICULA",elusuario,"DEPENDE","¿De quien dependes economicamente?","PROPIO",elsql,"",misdatos);
 
    
     $("#comunidad").append("<br><div class=\"alert alert-success\"><span class=\"fontRobotoB bigger-160\">Indica los servicios con los que dispone la comunidad donde vives</span></div><div class=\"row\"><div id=\"co1\" class=\"col-sm-4\"></div><div id=\"co2\" class=\"col-sm-4\"></div><div id=\"co3\" class=\"col-sm-4\"></div></div>");
@@ -171,13 +174,15 @@ function cargarElementos(){
     $("#enfermedades").append("<br>");
     addElementPes("SINO","enfermedades","estudiosoc","MATRICULA",elusuario,"FAMI_PROSPERA","Marca Si ¿Alguno de tus familiares pertenece al programa PROSPERA?","","","",misdatos);   
 
-
-    
-
 }
 
 
 function captIntegrantes(){
     enlace="nucleo/base/grid.php?modulo=est_integrantes&nombre=&padre=SIGEA&limitar=S&automatico=S&bd=Mysql&restr=";	    	      	 					  
     abrirPesta(enlace,"Integrantes");
+}
+
+function imprimirEstudio(){
+    enlace="nucleo/pa_estudiosoc/reporte_soc.php?mat="+elusuario;	    	      	 					  
+    abrirPesta(enlace,"Estudio");
 }

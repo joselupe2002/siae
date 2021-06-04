@@ -134,6 +134,15 @@
 														</a>
 													</li>	
 
+													<li>
+														<a data-toggle="tab" href="#pesadd">
+														<i class="red ace-icon fa fa-road bigger-120"></i>
+															Otros													
+														</a>
+													</li>	
+
+													
+
 											</ul>	
 											
 											<div class="tab-content">
@@ -390,7 +399,24 @@
 														</div>
 														
 													</div>
-												</div>
+												</div><!--  Del contenido del QUINTO tab -->
+
+												<div id="pesadd" class="tab-pane fade">
+													<div class="profile-user-info profile-user-info-striped">		
+
+														<div class="profile-info-row"><div class="profile-info-name">Tipo Sangre</div>
+															<div class="input-group" id="lasangre">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-heart red"></i></span>																	
+															</div>
+														</div>
+
+														<div class="profile-info-row"><div class="profile-info-name">Preparatoria</div>
+															<div class="input-group" id="laprepa">
+																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+															</div>
+														</div>																												
+													</div>
+												</div><!--  Del contenido del EXTO tab -->
 											</div> <!--  Deltab content -->
 
 										 <div class="space-20"></div>
@@ -529,7 +555,7 @@
 	
 	
 
-		elsql="SELECT alum_matricula, getPeriodos(ALUM_MATRICULA,getciclo()) as PERIODOS, alum_foto,concat(alum_nombre,' ',alum_apepat,' ',alum_apemat) as alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
+		elsql="SELECT alum_tiposangre, ALUM_ESCPROV,alum_matricula, getPeriodos(ALUM_MATRICULA,getciclo()) as PERIODOS, alum_foto,concat(alum_nombre,' ',alum_apepat,' ',alum_apemat) as alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
 		             " ALUM_EDONAC, ALUM_ESTADO, ALUM_MUNINAC, ALUM_MUNICIPIO, ALUM_LOCALIDAD, ALUM_PADRE, ALUM_MADRE, ALUM_PADREVIVE, ALUM_MADREVIVE,"+
 					 "ALUM_TUTOR, ALUM_TUTORESTADO, ALUM_TUTORMUNICIPIO, ALUM_TUTORDIR, ALUM_TUTORLOC, ALUM_TUTORCP, ALUM_TUTORCOL, ALUM_TUTORDIR, ALUM_TUTORTRABAJO, ALUM_TUTORTEL, ALUM_TUTORCORREO,"+
 					 " ALUM_COLONIA, ALUM_NOSEGURO, LENIND, GPOIND, CARR_DESCRIP AS alum_carreraregd, alum_cicloins, getcuatrialum(alum_matricula, getciclo()) AS CUAT,"+
@@ -603,11 +629,20 @@
 						  elsql="SELECT id_estado, estado from cat_estado order by estado";
 						  addSELECT_CONVALOR("ALUM_TUTORESTADO","elestadotut","PROPIO",elsql, "","BUSQUEDA",valor.ALUM_TUTORESTADO);  	
 
-						  elsql="SELECT id_municipio, municipio from cat_municipio where id_estado='"+valor.ALUM_ESTADO+"' order by municipio";
+						  elsql="SELECT id_municipio, municipio from cat_municipio where id_estado='"+valor.ALUM_TUTORESTADO+"' order by municipio";
 						  addSELECT_CONVALOR("ALUM_TUTORMUNICIPIO","elmunitut","PROPIO",elsql, "","BUSQUEDA",valor.ALUM_TUTORMUNICIPIO); 
 
 						  elsql="SELECT id_localidad, localidad from cat_localidad where id_estado='"+valor.ALUM_TUTORESTADO+"' and id_municipio='"+valor.ALUM_TUTORMUNICIPIO+"' order by localidad";
 						  addSELECT_CONVALOR("ALUM_TUTORLOC","lalocalidadtut","PROPIO",elsql, "","BUSQUEDA",valor.ALUM_TUTORLOC); 
+
+					
+						  elsql="SELECT CATA_CLAVE, CATA_DESCRIP from scatalogos where CATA_TIPO='TIPOSANGRE' order by CATA_DESCRIP";
+						  addSELECT_CONVALOR("ALUM_TIPOSANGRE","lasangre","PROPIO",elsql, "","NORMAL",valor.alum_tiposangre); 
+
+						  
+
+						  elsql="SELECT ESCCVE,ESCNOM FROM descue order by ESCNOM";
+						  addSELECT_CONVALOR("ALUM_ESCPROV","laprepa","PROPIO",elsql, "","BUSQUEDA",valor.ALUM_ESCPROV); 
 
 
 						  $('#ALUM_TUTOR').val(valor.ALUM_TUTOR);
@@ -666,9 +701,18 @@ function change_SELECT(elemento) {
 		elsql="SELECT id_municipio, municipio from cat_municipio where id_estado='"+$("#ALUM_ESTADO").val()+"' order by municipio";
 		actualizaSelect("ALUM_MUNICIPIO",elsql,"BUSQUEDA","");}
 	
-	if (elemento=='ALUM_LOCALIDAD') {
-		elsql="SELECT id_localidad, localidad from cat_localidad where id_estado='"+valor.ALUM_ESTADO+"' and id_municipio='"+valor.ALUM_MUNICIPIO+"' order by localidad";
+	if (elemento=='ALUM_MUNICIPIO') {
+		elsql="SELECT id_localidad, localidad from cat_localidad where id_estado='"+$("#ALUM_ESTADO").val()+"' and id_municipio='"+$("#ALUM_MUNICIPIO").val()+"' order by localidad";
+	
 		actualizaSelect("ALUM_LOCALIDAD",elsql,"BUSQUEDA","");}	
+	
+	if (elemento=='ALUM_TUTORESTADO') {
+		elsql="SELECT id_municipio, municipio from cat_municipio where id_estado='"+$("#ALUM_TUTORESTADO").val()+"' order by municipio";
+		actualizaSelect("ALUM_TUTORMUNICIPIO",elsql,"BUSQUEDA","");}
+
+	if (elemento=='ALUM_TUTORMUNICIPIO') {
+		elsql="SELECT id_localidad, localidad from cat_localidad where id_estado='"+$("#ALUM_TUTORESTADO").val()+"' and id_municipio='"+$("#ALUM_TUTORMUNICIPIO").val()+"' order by localidad";
+		actualizaSelect("ALUM_TUTORLOC",elsql,"BUSQUEDA","");}	
 }  
 
 function guardar(){
@@ -712,6 +756,9 @@ function guardar(){
 				ALUM_TUTORTEL:$("#ALUM_TUTORTEL").val(),
 				ALUM_TUTORCORREO:$("#ALUM_TUTORCORREO").val(),
 				ALUM_TUTORTRABAJO:$("#ALUM_TUTORTRABAJO").val(),
+
+				ALUM_TIPOSANGRE:$("#ALUM_TIPOSANGRE").val(),
+				ALUM_ESCPROV:$("#ALUM_ESCPROV").val(),
 		    	
 		      };
 		    		

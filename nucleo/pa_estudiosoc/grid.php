@@ -73,10 +73,16 @@
 				<span id="carrera" class="text-danger fontRobotoB bigger-120"></span> <br> 
 				<span id="correo" class="text-primary fontRobotoB bigger-120"></span>    			
 			</div>
-			<div class="col-sm-8" style="text-align:center;">
+			<div class="col-sm-6" style="text-align:center;">
 				<span id="nombre" class="fontRobotoB bigger-200">ESTUDIO SOCIO-ECONÓMICO</span>  <br> 
-				<span id="carrera" class="text-danger fontRobotoB bigger-200">ITSM</span> <br> 
-				
+				<span id="carrera" class="text-danger fontRobotoB bigger-200">ITSM</span> <br> 				
+			</div>
+			<div class="col-sm-2" style="text-align:center;">
+			    <div style="padding-top:20px;">
+					<button onclick="imprimirEstudio();" class="btn btn-white btn-info btn-bold">
+						<i class="ace-icon fa fa-print bigger-120 pink"></i>Reporte
+					</button>	
+				</div>
 			</div>
 		</div>
 
