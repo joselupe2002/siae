@@ -72,7 +72,7 @@
 							   <div class="col-xs-12 col-sm-9">
 								    <div class="center">
 								         <span class="btn btn-app btn-sm btn-light no-hover">
-								             <span id="periodos" class="line-height-1 bigger-170 blue">3</span>
+								             <span id="periodos" class="line-height-1 bigger-170 blue"></span>
 								             <br />
 										     <span class="line-height-1 smaller-90"> Periodo </span>
 										 </span>
@@ -529,7 +529,7 @@
 	
 	
 
-		elsql="SELECT alum_matricula, alum_foto,concat(alum_nombre,' ',alum_apepat,' ',alum_apemat) as alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
+		elsql="SELECT alum_matricula, getPeriodos(ALUM_MATRICULA,getciclo()) as PERIODOS, alum_foto,concat(alum_nombre,' ',alum_apepat,' ',alum_apemat) as alum_nombrec,alum_direccion, alum_telefono, alum_correo, "+
 		             " ALUM_EDONAC, ALUM_ESTADO, ALUM_MUNINAC, ALUM_MUNICIPIO, ALUM_LOCALIDAD, ALUM_PADRE, ALUM_MADRE, ALUM_PADREVIVE, ALUM_MADREVIVE,"+
 					 "ALUM_TUTOR, ALUM_TUTORESTADO, ALUM_TUTORMUNICIPIO, ALUM_TUTORDIR, ALUM_TUTORLOC, ALUM_TUTORCP, ALUM_TUTORCOL, ALUM_TUTORDIR, ALUM_TUTORTRABAJO, ALUM_TUTORTEL, ALUM_TUTORCORREO,"+
 					 " ALUM_COLONIA, ALUM_NOSEGURO, LENIND, GPOIND, CARR_DESCRIP AS alum_carreraregd, alum_cicloins, getcuatrialum(alum_matricula, getciclo()) AS CUAT,"+
@@ -549,9 +549,9 @@
 		    	  	    $('#ALUM_CICLOINS').html(valor.alum_cicloins);
 
 		    	  	    $('#promedio').html(valor.PROM_SR);
+						$('#periodos').html(valor.PERIODOS);
 		    	  	    $('#reprobadas').html(valor.NUMREP);
-		    	  	   
-		    	
+		    	  	   		    	
 						  
 						$('#direccion').val(valor.alum_direccion);
 		    	  	    $('#telefono').val(valor.alum_telefono);
