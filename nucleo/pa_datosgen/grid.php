@@ -136,7 +136,7 @@
 
 													<li>
 														<a data-toggle="tab" href="#pesadd">
-														<i class="red ace-icon fa fa-road bigger-120"></i>
+														<i class="green ace-icon fa fa-road bigger-120"></i>
 															Otros													
 														</a>
 													</li>	
@@ -164,14 +164,14 @@
 
 														<div class="profile-info-row"><div class="profile-info-name">Estado Nac.</div>
 															<div class="input-group" id="elestadonac">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-globe  green"></i></span>
 																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Municipio Nac.</div>
 															<div class="input-group" id="elmuninac">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span class="input-group-addon"><i class="ace-icon fa fa-thumb-tack red"></i></span>																	
 															</div>
 														</div>
 														
@@ -179,7 +179,7 @@
 
 														<div class="profile-info-row"><div class="profile-info-name">e-mail</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-envelope pink"></i></span>
 																	<input class="form-control" name="correo" id="correo" type="text" />
 															</div>
 														</div>
@@ -204,25 +204,25 @@
 													<div class="profile-user-info profile-user-info-striped">
 														<div class="profile-info-row"><div class="profile-info-name">Estado Res.</div>
 															<div class="input-group" id="elestadores">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span class="input-group-addon"><i class="ace-icon fa fa-globe green"></i></span>																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Municipio Res.</div>
 															<div class="input-group" id="elmunires">
-																	<span title="Municipio donde resides" class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span title="Municipio donde resides" class="input-group-addon"><i class="ace-icon fa fa-thumb-tack blue"></i></span>																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Localidad Res.</div>
 															<div class="input-group" id="lalocalidadres">
-																	<span title="" class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span title="" class="input-group-addon"><i class="ace-icon fa fa-map-marker pink"></i></span>																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Colonia</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-crosshairs purple"></i></span>
 																	<input class="form-control" name="ALUM_COLONIA" id="ALUM_COLONIA" type="text" />
 															</div>
 														</div>
@@ -231,7 +231,7 @@
 
 														<div class="profile-info-row"><div class="profile-info-name">Direcci&oacute;n</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-road blue"></i></span>
 																	<input class="form-control" name="direccion" id="direccion" type="text" />
 															</div>
 														</div>
@@ -239,7 +239,7 @@
 
 														<div class="profile-info-row"><div class="profile-info-name">Tel&eacute;fono</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-phone red"></i></span>
 																	<input class="form-control input-mask-phone" name="telefono" id="telefono" type="text" id="form-field-mask-2" />
 															</div>
 														</div>		
@@ -251,20 +251,20 @@
 													<div class="profile-user-info profile-user-info-striped">
 														<div class="profile-info-row"><div class="profile-info-name">Gpo Indigena</div>
 															<div class="input-group" id="elgrupo">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span class="input-group-addon"><i class="ace-icon fa fa-group red"></i></span>																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Lengua Indig</div>
 															<div class="input-group" id="lalengua">
-																	<span title="Municipio donde resides" class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span title="Municipio donde resides" class="input-group-addon"><i class="ace-icon fa fa-comment pink"></i></span>																	
 															</div>
 														</div>
 
 														
 														<div class="profile-info-row"><div class="profile-info-name">No. IMSS</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-user-md blue"></i></span>
 																	<input class="form-control" name="ALUM_NOSEGURO" id="ALUM_NOSEGURO" type="text" />
 															</div>
 														</div>
@@ -283,14 +283,14 @@
 
 														<div class="profile-info-row"><div class="profile-info-name">Nombre Padre</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-male blue"></i></span>
 																	<input class="form-control" name="ALUM_PADRE" id="ALUM_PADRE" type="text" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Nombre Madre</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-female pink"></i></span>
 																	<input class="form-control" name="ALUM_MADRE" id="ALUM_MADRE" type="text" />
 															</div>
 														</div>
@@ -304,67 +304,67 @@
 													<div class="profile-user-info profile-user-info-striped">
 														<div class="profile-info-row"><div class="profile-info-name">Nombre Tutor</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-male blue"></i></span>
 																	<input class="form-control" name="ALUM_TUTOR" id="ALUM_TUTOR" type="text" />
 															</div>
 														</div>
 													
 														<div class="profile-info-row"><div class="profile-info-name">Estado Res.</div>
 															<div class="input-group" id="elestadotut">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span class="input-group-addon"><i class="ace-icon fa fa-globe green"></i></span>																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Municipio Res.</div>
 															<div class="input-group" id="elmunitut">
-																	<span title="Municipio donde resides" class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span title="Municipio donde resides" class="input-group-addon"><i class="ace-icon fa fa-thumb-tack blue"></i></span>																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Localidad Res.</div>
 															<div class="input-group" id="lalocalidadtut">
-																	<span title="" class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span title="" class="input-group-addon"><i class="ace-icon fa fa-map-marker red"></i></span>																	
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Dirección</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-road purple"></i></span>
 																	<input class="form-control" name="ALUM_TUTORDIR" id="ALUM_TUTORDIR" type="text" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Cod. Postal</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-inbox green"></i></span>
 																	<input class="form-control" name="ALUM_TUTORCP" id="ALUM_TUTORCP" type="text" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Colonia</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-crosshairs blue"></i></span>
 																	<input class="form-control" name="ALUM_TUTORCOL" id="ALUM_TUTORCOL" type="text" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Teléfono</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-phone red"></i></span>
 																	<input class="form-control" name="ALUM_TUTORTEL" id="ALUM_TUTORTEL" type="text" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Correo</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-envelope green"></i></span>
 																	<input class="form-control" name="ALUM_TUTORCORREO" id="ALUM_TUTORCORREO" type="text" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Centro Trabajo</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-briefcase red"></i></span>
 																	<input class="form-control" name="ALUM_TUTORTRABAJO" id="ALUM_TUTORTRABAJO" type="text" />
 															</div>
 														</div>
@@ -379,21 +379,21 @@
 
 														<div class="profile-info-row"><div class="profile-info-name">Trabajo</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-briefcase blue"></i></span>
 																	<input class="form-control" name="trabajo" id="trabajo" type="text" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Tel. Trabajo</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span class="input-group-addon"><i class="ace-icon fa fa-phone green"></i></span>																	
 																	<input class="form-control input-mask-phone" name="teltrabajo" id="teltrabajo" type="text" id="form-field-mask-2" />
 															</div>
 														</div>
 
 														<div class="profile-info-row"><div class="profile-info-name">Dirección</div>
 															<div class="input-group">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>
+																	<span class="input-group-addon"><i class="ace-icon fa fa-road red"></i></span>
 																	<input class="form-control" name="dirtrabajo" id="dirtrabajo" type="text" />
 															</div>
 														</div>
@@ -412,7 +412,7 @@
 
 														<div class="profile-info-row"><div class="profile-info-name">Preparatoria</div>
 															<div class="input-group" id="laprepa">
-																	<span class="input-group-addon"><i class="ace-icon fa fa-pencil red"></i></span>																	
+																	<span class="input-group-addon"><i class="ace-icon fa fa-home blue"></i></span>																	
 															</div>
 														</div>																												
 													</div>
