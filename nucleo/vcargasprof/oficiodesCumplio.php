@@ -183,7 +183,7 @@
 			$pdf->Cell(0,0,'OFICIO No. '.utf8_decode($dataof[0]["CONT_NUMOFI"]),0,1,'R');
 			$pdf->Ln(5);
 		    $pdf->SetFont('Montserrat-ExtraBold','B',9);
-			$pdf->Cell(0,0,utf8_decode('ASUNTO: DESCARGA ACADÉMICA.'),0,1,'R');
+			$pdf->Cell(0,0,utf8_decode('ASUNTO: LIBERACIÓN DE ACT. DESCARGA'),0,1,'R');
 			$pdf->SetFont('Montserrat-ExtraBold','B',9);
 			$pdf->Ln(20);
 			$pdf->Cell(0,0,utf8_decode($dataEmpl[0]["EMPL_ABREVIA"])." ".utf8_decode($dataEmpl[0]["EMPL_NOMBREC"]),0,1,'L');
@@ -192,7 +192,7 @@
 			$pdf->Ln(10);
 			
 			$pdf->SetFont('Montserrat-SemiBold','',10);
-			$pdf->MultiCell(0,8,utf8_decode("Por este medio me permito informarle a usted, que HA CUMPLIDO con las Actividades asignadas en su carga horaria correspondiente al semestre ".
+			$pdf->MultiCell(0,8,utf8_decode("Por este medio me permito informarle a usted, que HA CUMPLIDO Y LIBERADO  las Actividades asignadas en su carga horaria correspondiente al semestre ".
 					$_GET["ciclo"]." ".$_GET["ciclod"]. ", las cuáles son:"),0,'J', false);
 			$pdf->Ln(5);			
 			$headerdes = array('CVE',utf8_decode('ACTIVIDAD'),utf8_decode('DESCRIPCIÓN/ENTREGABLE'),'HRS');
