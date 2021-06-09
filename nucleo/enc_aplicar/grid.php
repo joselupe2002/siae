@@ -49,7 +49,8 @@
 					    <tr style="background-color: #9F5906; color: white;">					        
 					        <th style="text-align: center;">ID</th> 
 					        <th style="text-align: center;">Encuesta</th> 					       
-					        <th style="text-align: center;">Aplicar</th> 					        
+					        <th style="text-align: center;">Aplicar</th> 	
+							<th style="text-align: center;">Comprobante</th> 				        
 					     </tr> 
 					     <?php $misNoti=$miUtil->getEncuestas($_SESSION['usuario'],$_SESSION['super'],true);
 				               $noti=0;
@@ -66,6 +67,7 @@
 						               	    }
 						            else {
 						            	    echo "<td style= \"text-align: center;\" ><span class=\"label label-danger label-white middle\">Encuesta Enviada Gracias!</span></td>";
+											echo "<td style= \"text-align: center;\" ><button onclick=\"comprobante(".$row["ID"].");\" class=\"btn btn-white btn-info btn-bold\"><i class=\"ace-icon fa fa-building bigger-120 blue\"></i></button></td>";
 						            }
 						            echo "     </tr>";
 				               	    $noti++;
@@ -175,6 +177,11 @@ function verEncuesta(id,descrip,objetivo){
 	 window.location="../base/aplicarEncuesta.php?ciclo="+$("#elciclo").html()+"&gridpropio=S&id="+id+"&descrip="+descrip+"&objetivo="+objetivo+"&modulo=<?php echo $_GET["modulo"];?>&nombre=<?php echo $_GET["nombre"];?>";
 }
 
+
+function comprobante (id){
+	enlace="nucleo/enc_aplicar/comprobante.php?id="+id+"&matricula=<?php echo $_SESSION["usuario"]; ?>";
+	abrirPesta(enlace,"Comprobante");
+}
 
     
 		</script>

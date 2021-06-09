@@ -3,6 +3,8 @@ var estaseriando=false;
 var matser="";
 contR=1;
 contMat=1;
+var total=0;
+var tagCarreras="";
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -21,7 +23,8 @@ contMat=1;
 			url:  "../base/getSesion.php?bd=Mysql&campo=carrera",
 			success: function(data){  
 				addSELECT("selCarreras","lascarreras","PROPIO", "SELECT CARR_CLAVE, CARR_DESCRIP FROM ccarreras where CARR_ACTIVO='S'"+
-				" and CARR_CLAVE IN ("+data+")", "",""); 
+				" and CARR_CLAVE IN ("+data+") UNION (SELECT '%', 'TODAS LAS CARRERAS' FROM DUAL)", "",""); 
+				miscarreras=data;
 				},
 			error: function(data) {	                  
 					   alert('ERROR: '+data);
@@ -70,13 +73,18 @@ $("#botonestabInformacion").empty();
 		   $("#informacion").empty();
 		   $("#informacion").append(script);
 
-				
+
+		   tagCarreras="="+$("#selCarreras").val();
+		   if ($("#selCarreras").val()=='%') {tagCarreras=" IN ("+miscarreras+")";}
+		
+		   
 		elsql="select distinct ALUCTR AS MATRICULA, CONCAT(b.ALUM_NOMBRE, ' ', b.ALUM_APEPAT, ' ',b.ALUM_APEMAT) AS NOMBRE,"+
 		" ALUM_CARRERAREG from dlista a, falumnos b  where a.PDOCVE='"+$("#selCiclosAnt").val()+"'"+
-		" and a.ALUCTR=b.ALUM_MATRICULA and b.ALUM_CARRERAREG='"+$("#selCarreras").val()+"'"+
+		" and a.ALUCTR=b.ALUM_MATRICULA and b.ALUM_CARRERAREG "+tagCarreras+
 		" AND a.ALUCTR NOT IN (SELECT ALUCTR FROM dlista t WHERE t.PDOCVE='"+$("#selCiclosAct").val()+"' AND t.ALUCTR=ALUM_MATRICULA)";
 		//" AND getAvanceMatCiclo(ALUM_MATRICULA,'"+$("#selCiclosAnt").val()+"')<100";
 
+		
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	  
@@ -104,6 +112,22 @@ $("#botonestabInformacion").empty();
 function generaTablaInformacion(grid_data){
 	totegr=0;totdes=0;
 	contR=1;
+
+	//numero de alumnos ciclo anterior 
+	elsql="select count(distinct(MATRICULA)) as MAT FROM vdlista_cred where CICLO='"+$("#selCiclosAnt").val()+"'"+
+	" and CARRERA "+tagCarreras;
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+			   type: "POST",
+			   data:parametros,
+			   url:  "../base/getdatossqlSeg.php",
+	           success: function(data){  
+					total=JSON.parse(data)[0]["MAT"];
+				
+			   }
+	});
+
+
 	$("#cuerpoInformacion").empty();
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 	//$("#btnfiltrar").attr("disabled","disabled");
@@ -136,13 +160,13 @@ function generaTablaInformacion(grid_data){
 							 $("#Mat_"+valor.MATRICULA).removeClass("badge-danger");	
 							 $("#Mat_"+valor.MATRICULA).addClass("badge-primary");							 
 							 totegr++;	
-							 $("#captotegr").html(totegr);
+							 $("#captotegr").html(totegr+" / "+total);
 							}  
 						else {
 						 	 $("#Mat_"+valor.MATRICULA).html(valorAv.AVANCE);					 
 							 $("#Egr_"+valor.MATRICULA).html(egresado);
 							 totdes++;				
-							 $("#captotdes").html(totdes);
+							 $("#captotdes").html(totdes+" / "+total);
 						}
 					});																														
 			    },
@@ -152,9 +176,10 @@ function generaTablaInformacion(grid_data){
 	    });	      
 
 	});	
+	$("#pie").empty();
 	$("#pie").append("<div class=\"row\">"+
-					 "   <div class=\"col-sm-2\"><class=\"text-primary\">Egresados: </span><span id=\"captotegr\" class=\"badge badge-success\">"+totegr+"</span></div>"+
-					 "   <div class=\"col-sm-2\"><class=\"text-primary\">Desertores: </span><span id=\"captotdes\" class=\"badge badge-danger\">"+totegr+"</span></div>"+
+					 "   <div class=\"col-sm-4\"><class=\"text-primary\">Egresados: </span><span id=\"captotegr\" class=\"badge badge-success\">"+totegr+" / "+total+"</span></div>"+
+					 "   <div class=\"col-sm-4\"><class=\"text-primary\">Desertores: </span><span id=\"captotdes\" class=\"badge badge-danger\">"+totegr+" / "+total+"</span></div>"+
 					 "</div>"
 	);
 	
