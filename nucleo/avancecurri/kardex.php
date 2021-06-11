@@ -431,6 +431,7 @@
         $cursadas=0;
         $materiasaprobadas=0;
         $matTotales=0;
+        $curProm=0;
         foreach($data as $row) {
             $lacal=$row["CAL"];
             if (($row["CAL"]<70) && ($row["CAL"]!='AC')) {$lacal='NA'; } else {$materiasaprobadas++;}
@@ -449,7 +450,7 @@
             $matTotales++;
             $n++;
             $cursadas++; 
-            if (is_numeric($row["CAL"]) && ($row["TIPOMAT"]!='SS') ) {$sumacursadas+=$row["CAL"]; }
+            if (is_numeric($row["CAL"]) && ($row["TIPOMAT"]!='SS') ) {$sumacursadas+=$row["CAL"]; $curProm++; }
             
         }
         
@@ -457,7 +458,7 @@
             $pdf->parseVar('{matapr}',$materiasaprobadas); // convertimos la variable.
         }
         else {$pdf->parseVar('{matapr}'," ");}
-        $pdf->parseVar('{promreprobadas}',round($sumacursadas/($cursadas),0)); // Sacamos el promedio con materias reprobadas
+        $pdf->parseVar('{promreprobadas}',round($sumacursadas/($curProm),0)); // Sacamos el promedio con materias reprobadas
         $pdf->parseVar('{matcursadas}',$cursadas); // convertimos la variable de materias cursadas
  
 
