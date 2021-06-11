@@ -1,7 +1,7 @@
 
 <?php session_start(); if (($_SESSION['inicio']==1)) {
 	header('Content-Type: text/html; charset='.$_SESSION['encode']);
-	require('../../fpdf/fpdf.php');
+    require('../../fpdf/PDF_WriteTag.php');
 	include("../.././includes/Conexion.php");
 	include("../.././includes/UtilUser.php");
 	$miConex = new Conexion();
@@ -12,7 +12,7 @@
 
 	
 	
-	class PDF extends FPDF {
+	class PDF extends PDF_WriteTag {
        
         
         function parseVar($key='',$value='') {
@@ -209,9 +209,22 @@
 		header("Content-Type: text/html; charset=UTF-8");
 		
 		$pdf->SetFont('Arial','',8);
-		$pdf->SetMargins(10, 20 , 35);
+		$pdf->SetMargins(10, 20 , 32);
 		$pdf->SetAutoPageBreak(true,20); 
         $pdf->AddPage();
+
+        $pdf->AddFont('Montserrat-Black','B','Montserrat-Black.php');
+		$pdf->AddFont('Montserrat-Black','','Montserrat-Black.php');
+		$pdf->AddFont('Montserrat-Medium','B','Montserrat-Medium.php');
+		$pdf->AddFont('Montserrat-Medium','','Montserrat-Medium.php');
+		$pdf->AddFont('Montserrat-SemiBold','','Montserrat-SemiBold.php');
+		$pdf->AddFont('Montserrat-SemiBold','B','Montserrat-SemiBold.php');
+		$pdf->AddFont('Montserrat-ExtraBold','B','Montserrat-ExtraBold.php');
+		$pdf->AddFont('Montserrat-ExtraBold','','Montserrat-ExtraBold.php');
+		$pdf->AddFont('Montserrat-ExtraBold','I','Montserrat-ExtraBold.php');
+		$pdf->AddFont('Montserrat-ExtraLight','I','Montserrat-ExtraLight.php');
+		$pdf->AddFont('Montserrat-ExtraLight','','Montserrat-ExtraLight.php');
+
 
         $margeniz=50;
       		 
@@ -223,6 +236,11 @@
         $nombre=$miutil->getJefe('101');//Nombre del puesto DIRECTOR GENERAL
         $nombreEsc=$miutil->getJefe('303');//Nombre del puesto ESCOLARES
 
+        $pdf->SetStyle("p","Montserrat-Medium","",10,"0,0,0");
+        $pdf->SetStyle("vs","Montserrat-Medium","U",10,"0,0,0");
+		$pdf->SetStyle("vsb","Montserrat-ExtraBold","UB",10,"0,0,0");
+        $pdf->SetStyle("vb","Montserrat-ExtraBold","B",10,"0,0,0");
+
         
         $iniCiclo=$miutil->formatFecha($dataCer[0]["FECHAINICIO"]);
         $cadInicio=strtoupper($miutil->getMesLetra(date("m", strtotime($iniCiclo))). " DE ".date("Y", strtotime($iniCiclo)));
@@ -230,36 +248,43 @@
         $finCiclo=$miutil->formatFecha($dataCer[0]["FECHAINICIO"]);
         $cadfin=strtoupper($miutil->getMesLetra(date("m", strtotime($finCiclo))). " DE ".date("Y", strtotime($finCiclo)));
 
-		
+        $pdf->setY(25);
+        $pdf->WriteTag(0,3,"<p>FOLIO: <vsb>".$dataCer[0]["FOLIO"]."</vsb><p>",0,'R');
+    
+
+		$pdf->setY(35);
         $pdf->setX($margeniz);
-        $pdf->MultiCell(0,3,utf8_decode("EL C. ".$nombre." DIRECTOR GENERA DEL ". $data2[0]["inst_razon"].
-        " CLAVE ". $data2[0]["inst_claveof"].", CERTIFICA, QUE SEGÚN CONSTANCIAS QUE EXISTEN EN EL ARCHIVO ESCOLAR, EL C. ".
+        $pdf->WriteTag(135,3,utf8_decode("<p>EL C. ".$nombre." DIRECTOR GENERAL DEL <vb>". $data2[0]["inst_razon"].
+        "</vb> CLAVE ". $data2[0]["inst_claveof"].", CERTIFICA, QUE SEGÚN CONSTANCIAS QUE EXISTEN EN EL ARCHIVO ESCOLAR, EL C. ".
         $dataAlum[0]["NOMBRE"]." CURSO LAS ASIGNATURAS QUE INTEGRAN EL PLAN DE ESTUDIOS DE ".$dataAlum[0]["CARRERAD"].
         "(".$dataAlum[0]["MAPA"]."-".$dataAlum[0]["PLACRED"].") DE ". $cadInicio." A ".$finCiclo.
-        ", CON LOS RESULTADOS QUE A CONTINUACIÓN SE ENLISTAN") ,0,'J');
+        ", CON LOS RESULTADOS QUE A CONTINUACIÓN SE ENLISTAN</p>") ,0,'J');
         $pdf->Ln();
 
-        $pdf->setY(25);
+        $pdf->setY(45);
+        $pdf->SetFont('Montserrat-ExtraBold','',8);
         $pdf->Cell(10,5,'',0,0,'C');$pdf->Cell(20,5,'MATRICULA',1,1,'C');
+        $pdf->SetFont('Montserrat-Medium','',8);
         $pdf->Cell(10,5,'',0,0,'C');$pdf->Cell(20,5,$dataCer[0]["MATRICULA"],1,0,'C');
 
+       
         $pdf->setX($margeniz);
-        $pdf->setY(50);
-        $pdf->SetFont('Arial','B',6);
+        $pdf->setY(65);
+        $pdf->SetFillColor(231,230,227);
+        $pdf->SetFont('Montserrat-Black','',6);
         $pdf->Cell(40,5,'',0,0,'C');
-        $pdf->Cell(87,5,'MATERIA','TBL',0,'L');
-        $pdf->Cell(15,5,'CALIF.','TBR',0,'C');
-        $pdf->SetFont('Arial','B',5);
-        $pdf->Cell(25,5,'OBSERVACIONES',1,0,'C');
-        $pdf->SetFont('Arial','B',6);
+        $pdf->Cell(87,5,'MATERIA','TBL',0,'L',true);
+        $pdf->Cell(15,5,'CALIF.','LTBR',0,'C',true);    
+        $pdf->Cell(25,5,'OBSERVACIONES',1,0,'C',true);
         $pdf->Cell(8,5,'CR',1,0,'C');
+        $pdf->SetFont('Montserrat-Medium','',7,true);
 
         /*=======================colacamos las calificaciones ==========================*/
         $pdf->Ln();
-        $pdf->SetFont('Arial','',6);
+        $pdf->SetFont('Montserrat-Medium','',7);
         $pdf->SetWidths(array(40,87, 15,25,8));
         $pdf->SetAligns(array('L','L', 'C','J','C'));
-        $pdf->SetBorder(array('','L', '','L','LR'));
+        $pdf->SetBorder(array('','L', 'L','L','LR'));
         
         $n=0;
         $sumacal=0;
@@ -284,7 +309,7 @@
         //echo $pdf->getY();
         
         while ($pdf->getY()<=280) {
-            $pdf->SetBorder(array('','L', '','L','LR'));
+            $pdf->SetBorder(array('','L', 'L','L','LR'));
             $pdf->SetFondo(array(false,false, false,false,false));
             $pdf->Row(array("", "","","",""));
         }
@@ -292,10 +317,10 @@
         /*=======================colacamos el promedio ==========================*/
         $promedio=round($sumacal/($n));
         $pdf->SetWidths(array(40,87, 15,25,8));
-        $pdf->SetBorder(array('','TBL', 'TBR','1','1'));
+        $pdf->SetBorder(array('','TBL', '1','1','1'));
         $pdf->SetAligns(array('L','L', 'R','J','C'));
         $pdf->SetFillColor(231,230,227);
-        $pdf->SetFont('Arial','B',6);
+        $pdf->SetFont('Montserrat-Black','',8);
         $pdf->SetFondo(array(false,true, true,true,true));
         $pdf->Row(array("", "PROMEDIO",$promedio,"",""));
 
@@ -307,18 +332,22 @@
       
         $pdf->Ln(5);
 
-        $pdf->SetFont('Arial','',8);
+        $pdf->SetFont('Montserrat-Medium','',8);
         $pdf->Ln();
         $pdf->setX($margeniz);
-        $pdf->MultiCell(0,3,utf8_decode("SE EXTIENDE EL PRESENTE CERTIFICADO QUE AMPARA ".$totcred.
-        " CRÉDITOS DE UN TOTAL DE ".$dataAlum[0]["PLACRED"]." QUE INTEGRAN EL PLAN DE ESTUDIO CLAVE ".
-        $dataAlum[0]["MAPA"].", EN MACUSPANA TABASCO A LOS ".strtoupper($fechadecexp) ) ,0,'J');
+        $pdf->WriteTag(0,3,utf8_decode("<p>SE EXTIENDE EL PRESENTE CERTIFICADO QUE AMPARA <vsb>".$totcred.
+        "</vsb> CRÉDITOS DE UN TOTAL DE <vsb>".$dataAlum[0]["PLACRED"]."</vsb> QUE INTEGRAN EL PLAN DE ESTUDIO CLAVE <vsb>".
+        $dataAlum[0]["MAPA"]."</vsb>, EN MACUSPANA TABASCO A LOS ".strtoupper($fechadecexp)."</p>" ) ,0,'J');
         $pdf->Ln(10);
+
+
+
 
         $pdf->setX($margeniz);
         $pdf->Cell(0,0,"DIRECTOR GENERAL",0,1,'C');
         $pdf->Ln(10);
         $pdf->setX($margeniz);
+        $pdf->Line(80,320,150,320);
         $pdf->Cell(0,0,utf8_decode($nombre),0,1,'C');
 
 
@@ -347,9 +376,9 @@
         $pdf->Cell(10,2,'',0,0,'C');$pdf->MultiCell(28,2,$nombreEsc,0,'C',false);
 
 /*=========================COLOCAMOS LAS OBSERVACIONES ===============================*/
-        $pdf->setY(56);
+        $pdf->setY(56);$pdf->setY(75);
         $pdf->Cell(142,0,"",0,0,'C');
-        $pdf->MultiCell(25,2,$dataCer[0]["OBS"],0,'J',false);
+        $pdf->MultiCell(25,2,utf8_decode($dataCer[0]["OBS"]),0,'J',false);
      
       
 
