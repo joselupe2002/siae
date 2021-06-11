@@ -562,7 +562,7 @@
                 $pdf->parseVar('{matcur}',$n-1); // convertimos la variable.
                 
             }
-            echo $matTotales;
+            //echo $matTotales;
             $pdf->parseVar('{mattotales}',$matTotales); // convertimos la variable de materias totales
 
         $cadena= "FECHA:".str_replace("/","",$fecha)."|".str_replace(" ","|",$dataAlum[0]["ALUM_MATRICULA"]).
