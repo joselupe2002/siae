@@ -792,7 +792,7 @@ function verMaterias(tipo){
 					   } 
 	   elsql="SELECT a.MATCVE, b.MATE_DESCRIP, a.PDOCVE,a.LISCAL, a.PDOCVE, CONCAT(c.EMPL_NOMBRE,' ',c.EMPL_APEPAT,' ',c.EMPL_APEMAT) as PROFESORD "+
                 " FROM dlista a, cmaterias b, pempleados c "+
-     		   " where IFNULL(MATE_TIPO,'0') NOT IN ('T','I','AC') AND a.MATCVE=b.MATE_CLAVE and  a.LISTC15=c.EMPL_NUMERO and a.ALUCTR='<?php echo $_SESSION["usuario"];?>'"+eltipo+
+     		   " where IFNULL(MATE_TIPO,'0') NOT IN ('T','I','AC') AND BAJA='N' a.MATCVE=b.MATE_CLAVE and  a.LISTC15=c.EMPL_NUMERO and a.ALUCTR='<?php echo $_SESSION["usuario"];?>'"+eltipo+
 				" order by a.PDOCVE";
 	   
        parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
