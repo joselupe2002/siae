@@ -282,22 +282,23 @@
                 $this->SetX(125);
                 $this->Cell(0,5,"NPRDO: NUMERO DE PERIODO ACTUAL",'',1,'L');
 
-
-				$this->SetX(10);$this->SetY(-35);
-                $this->SetFont('Montserrat-ExtraBold','B',8);
-                $this->Cell(80,5,$nombre,'T',0,'L');
+                if (!(isset($_GET["esalumno"]))) {
+                    $this->SetX(10);$this->SetY(-35);
+                    $this->SetFont('Montserrat-ExtraBold','B',8);
+                    $this->Cell(80,5,$nombre,'T',0,'L');                
                 
-                $this->SetFont('Montserrat-Medium','',6);
-                $this->Cell(120,5,"LAS CALIFICACIONES QUE AMPARA EL PRESENTE DOCUMENTO,",'',0,'C'); 
+                    $this->SetFont('Montserrat-Medium','',6);
+                    $this->Cell(120,5,"LAS CALIFICACIONES QUE AMPARA EL PRESENTE DOCUMENTO,",'',0,'C'); 
                 
+
+                    $this->SetX(10);$this->SetY(-32);
+                    $this->SetFont('Montserrat-ExtraBold','B',8);
+                    $this->Cell(80,5,'JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES','',0,'L');
                 
-                $this->SetX(10);$this->SetY(-32);
-                $this->SetFont('Montserrat-ExtraBold','B',8);
-                $this->Cell(80,5,'JEFE DEL DEPARTAMENTO DE SERVICIOS ESCOLARES','',0,'L');
-
-                $this->SetFont('Montserrat-Medium','',6);
-                $this->Cell(120,5,"SERAN VALIDAS, PREVIO COTEJO DE LAS ACTAS CORRESPONDIENTES",'',0,'C'); 
-
+                    $this->SetFont('Montserrat-Medium','',6);
+                    $this->Cell(120,5,"SERAN VALIDAS, PREVIO COTEJO DE LAS ACTAS CORRESPONDIENTES",'',0,'C'); 
+                
+                }
 								
 			}
 			
@@ -573,6 +574,15 @@
                  
         $pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',160,205,35,35);         
      
+
+        if (isset($_GET["esalumno"])) {
+            $pdf->Ln();
+            $pdf->SetTextColor(255);
+            $pdf->Cell(0,5,utf8_decode('Nota: Este Reporte solo es válido para los trámites internos avalados '.
+            'por la Dirección General del ITSM y para uso personal de alumno.'),0,0,'J',true);
+            $pdf->SetTextColor(0);
+        }
+
 
             $pdf->Output(); 
 

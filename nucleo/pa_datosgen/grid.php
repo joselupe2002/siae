@@ -833,7 +833,7 @@ function verMaterias(tipo){
 
 
 	function mikardex(){
-		enlace="nucleo/pa_datosgen/kardex.php?matricula=<?php echo $_SESSION["usuario"];?>";
+		enlace="nucleo/avancecurri/kardex.php?esalumno=S&matricula=<?php echo $_SESSION["usuario"];?>";
 		var content = '<iframe frameborder="0" id="FRNoti" src="'+enlace+'" style="overflow-x:hidden;width:100%;height:100%;"></iframe></div>';	
 		$('#parentPrice', window.parent.document).html();
 		window.parent.$("#myTab").tabs('add',{
