@@ -102,7 +102,7 @@ function colocarEncuesta(matricula){
 				   datos=JSON.parse(data);			
 				   if (datos[0]["HAY"]<=0){					
 					$("#bodymodAdjuntos").append("<span  onclick=\"comprobante();\" class=\"fontRobotoB badge badge-danger\">"+
-					"     <i class= \"ace-icon fa fa-times bigger-130\"></i>"+
+					"     <i class= \"ace-icon fa fa-times bigger-140\"></i>"+
 					"     No ha contestado Encuesta de Egresados"+
 					"</span> ");
 				   }
