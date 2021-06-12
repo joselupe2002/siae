@@ -161,11 +161,12 @@
 					 	</div>
 
 						<div id="pesSeg" class="tab-pane">					       					   
-					            <div id="panFin" class="row"> </div>
+					            <div id="pesSeg" class="row"> </div>								
 					 	</div>
 
 						<div id="pesFin" class="tab-pane">					       					   
 					            <div id="panFin" class="row"> </div>
+								<div id="panEncuesta" class="row" style="text-align:center;"> </div>
 					 	</div>
 
 					</div>

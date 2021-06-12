@@ -3521,7 +3521,7 @@ function ss_mostrarAdjuntosDin(modulo,elusuario,institucion, campus,essuper,elci
 			   "                  <span aria-hidden=\"true\">&times;</span>"+
 			   "             </button>"+
 			   "          </div>"+  
-			   "          <div id=\"frmdescarga\" class=\"modal-body\" >"+					 
+			   "          <div id=\"body"+padre+"\" class=\"modal-body\" >"+					 
 			   "             <div class=\"row sigeaPrin\"   style=\"overflow-x: auto; overflow-y: auto; height:300px;\"> "+		
 		       "                  <table id=\"tabla"+padre+"\" class= \"table  table-condensed table-bordered table-hover\">"+
 		   	   "                         <thead>  "+

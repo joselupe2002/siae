@@ -1,5 +1,5 @@
 
-<?php session_start(); if (($_SESSION['inicio']==1)  && (strpos($_SESSION['permisos'],$_GET["modulo"])) ){ 
+<?php session_start(); if (($_SESSION['inicio']==1) ){ 
 	header('Content-Type: text/html; charset='.$_SESSION['encode']);
 	include("../.././includes/Conexion.php");
 	include("../.././includes/UtilUser.php");
@@ -322,8 +322,12 @@
 				                		
 			                	$('#dlgproceso').modal("hide");  			                                	                      
 				                if (!(data.substring(0,1)=="0"))	
-					                 { 					                	 			                  
-                                         location.href="<?php echo $antes;?>grid.php?modulo=<?php echo $_GET['modulo']?>&bd=<?php echo $_SESSION['bd']?>&nombre=<?php echo $_GET['nombre']?>&limitar=S&automatico=S&loscamposf=&losdatosf=";                                   
+					                 { 	<?php if (isset($_GET["fuera"])){
+									        echo "location.href=\"".$antes."comprobante.php?id=".$_GET['id']."&matricula=".$_SESSION['usuario']."\";"; 
+									     }
+									 	else {
+											 echo "location.href=\"".$antes."grid.php?modulo=".$_GET['modulo']."&bd=".$_SESSION['bd']."&nombre=".$_GET['nombre']."&limitar=S&automatico=S&loscamposf=&losdatosf=\";"; 
+										 }?>				                	 			                                                                                             
 					                  }	
 				                else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
 			                }					     

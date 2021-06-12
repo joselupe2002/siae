@@ -77,6 +77,9 @@ function verAdjRes  (modulo,usuario,institucion, campus,essuper){
 			table.rows('.selected').data()[0]["NOMBRE"],
 			table.rows('.selected').data()[0]["ID"],
 			"modAdjuntos","eadjresidencia","ADJRESIDENCIA","'RESIDEN_REQ','RESIDEN_ANT','RESIDEN_SEG','RESIDEN_FIN'");
+
+			colocarEncuesta(table.rows('.selected').data()[0]["MATRICULA"]);
+
 	}
 	else {
 		alert ("Debe seleccionar un Registro");
@@ -88,6 +91,36 @@ function verAdjRes  (modulo,usuario,institucion, campus,essuper){
 
 
 
+function colocarEncuesta(matricula){
+	 elsql="select count(*) AS HAY from encrespuestas b where b.IDENC=2 and b.IDRESPONDE='"+matricula+"'";
+	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}	 
+	  $.ajax({
+			  type: "POST",
+			  data:parametros,
+			  url:  "../base/getdatossqlSeg.php",
+			  success: function(data){			
+				   datos=JSON.parse(data);			
+				   if (datos[0]["HAY"]<=0){					
+					$("#bodymodAdjuntos").append("<span  onclick=\"comprobante();\" class=\"fontRobotoB badge badge-danger\">"+
+					"     <i class= \"ace-icon fa fa-times bigger-130\"></i>"+
+					"     No ha contestado Encuesta de Egresados"+
+					"</span> ");
+				   }
+				   else {
+					$("#bodymodAdjuntos").append("<span style=\"cursor:pointer;\" onclick=\"comprobante('"+matricula+"');\" class=\"fontRobotoB badge badge-primary\">"+
+					"     <i class= \"ace-icon fa fa-check bigger-130\"></i>"+
+					"     Encuesta de egresados Realizada"+
+					"</span> ");
+				   }
+			  }
+		  });
+}
+
+
+function comprobante (usuario){
+	enlace="nucleo/enc_aplicar/comprobante.php?id=2&matricula="+usuario;
+	abrirPesta(enlace,"Comprobante");
+}
 
 
 function verLibTit  (modulo,usuario,institucion, campus,essuper){

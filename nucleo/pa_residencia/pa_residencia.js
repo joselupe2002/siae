@@ -777,8 +777,11 @@ function cargarDatosPropuesta(tipo){
 								$("#peval").addClass("fa fa-check green bigger-260");
 								
 								cargarPestania("RESIDEN_SEG","pesSeg","ADJRESIDENCIA","eadjresidencia",usuario,miciclo);
-								cargarPestania("RESIDEN_FIN","pesFin","ADJRESIDENCIA","eadjresidencia",usuario,miciclo);
+								cargarPestania("RESIDEN_FIN","panFin","ADJRESIDENCIA","eadjresidencia",usuario,miciclo);
 							
+								colocarEncuesta();
+								
+								
 								
 								} //DEL SI ESTA ABIERO 
 								else {		
@@ -798,3 +801,62 @@ function cargarDatosPropuesta(tipo){
 
 			}
 	
+
+function verEncuesta(){
+
+  elsql="select a.ID, a.DESCRIP, a.OBJETIVO, ifnull(b.IDRESPONDE,'N') AS IDRESPONDE from encuestas a "+
+  "left outer join encrespuestas b on (a.ID=b.IDENC and b.IDRESPONDE='"+usuario+"') where a.ID=2";
+
+   parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+   
+	$.ajax({
+			type: "POST",
+			data:parametros,
+			url:  "../base/getdatossqlSeg.php",
+			success: function(data){			
+				 datos=JSON.parse(data);			
+				 if (datos[0]["IDRESPONDE"]=='N'){					
+				 	enlace="nucleo/base/aplicarEncuesta.php?ciclo="+elciclo+"&gridpropio=S&id=2&descrip="+datos[0]["DESCRIP"]+"&objetivo="+datos[0]["OBJETIVO"]+"&modulo=enc_aplicar&nombre=Encuesta&fuera=S";			
+				 	abrirPesta(enlace,"Encuesta");
+				 } else {
+					enlace="nucleo/enc_aplicar/comprobante.php?id=2&matricula="+usuario;
+					abrirPesta(enlace,"Comprobante");
+				 }
+			}
+		});
+
+   
+
+}
+
+
+function colocarEncuesta(){
+	elsql="select count(*) AS HAY from encrespuestas b where b.IDENC=2 and b.IDRESPONDE='"+usuario+"'";
+	 parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	 
+	  $.ajax({
+			  type: "POST",
+			  data:parametros,
+			  url:  "../base/getdatossqlSeg.php",
+			  success: function(data){			
+				   datos=JSON.parse(data);			
+				   if (datos[0]["HAY"]<=0){					
+					$("#panEncuesta").append("<button  onclick=\"verEncuesta();\" class=\"fontRobotoB btn btn-white btn-danger btn-bold bigger-200\">"+
+					"     <i class= \"ace-icon fa fa-th-large bigger-200 blue\"></i>"+
+					"     <span class=\"text-danger\">Responder Encuesta Egresado</span>"+
+					"</button> ");
+				   }
+				   else {
+					$("#panEncuesta").append("<button  onclick=\"comprobante();\" class=\"fontRobotoB btn btn-white btn-info btn-bold bigger-200\">"+
+					"     <i class= \"ace-icon fa fa-check bigger-200 blue\"></i>"+
+					"     <span class=\"text-success\">Ver Comprobante Encuesta</span>"+
+					"</button> ");
+				   }
+			  }
+		  });
+}
+
+function comprobante (id){
+	enlace="nucleo/enc_aplicar/comprobante.php?id=2&matricula="+usuario;
+	abrirPesta(enlace,"Comprobante");
+}
