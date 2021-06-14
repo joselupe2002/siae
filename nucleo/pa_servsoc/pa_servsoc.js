@@ -31,7 +31,7 @@ var miciclo="";
 			}).css('color', barColor);
 			});
 
-		elsql="select CICL_CLAVE, CICL_DESCRIP from ciclosesc where CICL_CLAVE=getciclo()";	
+		elsql="select ifnull(MAX(CICLO),getciclo()), COUNT(*) from ss_alumnos where MATRICULA='"+usuario+"'";	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 				type: "POST",
