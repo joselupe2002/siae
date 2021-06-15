@@ -294,8 +294,10 @@
 
 			$miutil = new UtilUser();
 		
+		
 			$lafirmaE=$miutil->getDatoEmpl($_GET["profesor"],"EMPL_FIRMA");	
-			$pdf->Image($lafirmaE,30,215,40);
+			if ($lafirmaE!="") {$pdf->Image($lafirmaE,30,215,40);}
+			
 			
 		}
 		
