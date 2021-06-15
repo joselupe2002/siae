@@ -337,10 +337,10 @@
         $pdf->SetFont('Montserrat-Medium','',8);
         $pdf->Ln();
         $pdf->setX($margeniz);
-        if $dataAlum[0]["PLACRED"]
+
         $pdf->WriteTag(0,3,utf8_decode("<p>SE EXTIENDE EL PRESENTE CERTIFICADO QUE AMPARA <vsb>".$totcred.
         "</vsb> CRÉDITOS DE UN TOTAL DE <vsb>".$dataAlum[0]["PLACRED"]."</vsb> QUE INTEGRAN EL PLAN DE ESTUDIO CLAVE <vsb>".
-        $dataAlum[0]["MAPA"]."</vsb>, EN MACUSPANA TABASCO A LOS ".strtoupper($fechadecexp)."</p>" ) ,0,'J');
+        $dataAlum[0]["MAPA"]."</vsb>, EN MACUSPANA, TABASCO A LOS ".strtoupper($fechadecexp)."</p>" ) ,0,'J');
         $pdf->Ln(10);
 
 
