@@ -75,6 +75,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 	function cargaPestanias(){
 		cargaDescarga();
 		cargaComisiones();
+		cargaEventos();
 	}
 
     
@@ -177,10 +178,10 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 
 
 
-function cargaComisiones() {
+function cargaComisiones() {	
 	$('#con2').append("<img id=\"esperarcon2\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
 	
-	cadSql3="select YEAR(NOW()) as ANIO, COMI_HORAINI, COMI_HORAFIN, DATEDIFF(STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y'),now()) AS DIF, "+
+	cadSql3="select YEAR(NOW()) as ANIO, COMI_ID, COMI_HORAINI, COMI_HORAFIN, DATEDIFF(STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y'),now()) AS DIF, "+
 	"COMI_ID, COMI_ACTIVIDAD, COMI_CUMPLIDA,COMI_FECHAINI,  COMI_FECHAFIN, COMI_LUGAR "+
     " from vpcomisiones a, ciclosesc b  where a.`COMI_PROFESOR`='"+$("#selProfesores").val()+"' and CICL_CLAVE='"+$("#selCiclo").val()+"'"+
     " AND  STR_TO_DATE(a.COMI_FECHAINI,'%d/%m/%Y') between STR_TO_DATE(CICL_INICIO,'%d/%m/%Y') AND STR_TO_DATE(CICL_FIN,'%d/%m/%Y')"+
@@ -219,11 +220,16 @@ function generaComisiones(grid_data){
 
 		if ((valor.DIF<0) && (valor.COMI_CUMPLIDA=='N')) {laimagen="red fa-times"; leyendatxt="No Cumplio";}
 		if ((valor.DIF>=0) && (valor.COMI_CUMPLIDA=='N')) {laimagen="blue fa-retweet";  leyendatxt="En Proceso";}
-		if (valor.COMI_CUMPLIDA=='S') {laimagen="green fa-check";  leyendatxt="Actividad Cumplida";}
+	
+		of1="<a style=\"cursor:pointer;\" onclick=\"abrirPesta('nucleo/pcomisiones/oficionocumple.php?tipo=1&ID="+valor.COMI_ID+"','comision');\">";
+		if (valor.COMI_CUMPLIDA=='S') {
+			of1="<a style=\"cursor:pointer;\" onclick=\"abrirPesta('nucleo/pcomisiones/oficiocumple.php?tipo=1&ID="+valor.COMI_ID+"','comision');\">";
+			laimagen="green fa-check";  leyendatxt="Actividad Cumplida";
+		}
 		
 		$("#con2").append("<div  class=\"profile-activity clearfix\"> "+
 		                       "      <div>"+
-							   "         <div class=\"fontRobotoB col-sm-6 bigger-80 text-success\">"+valor.COMI_ACTIVIDAD+"<br>"+
+							   "         <div class=\"fontRobotoB col-sm-6 bigger-80 text-success\"><a style=\"cursor:pointer;\" onclick=\"abrirPesta('nucleo/pcomisiones/oficiocom.php?tipo=1&ID="+valor.COMI_ID+"','comision');\">"+valor.COMI_ACTIVIDAD+"</a><br>"+
 							   "             <span class=\"fontRoboto bigger-50 text-primary\">"+valor.COMI_LUGAR+"</span>"+"<br>"+
 							   "             <span title=\"Fecha de inicio de la Actividad\" class=\"badge badge-success fontRoboto bigger-50 \">"+valor.COMI_HORAINI+"</span>"+
 							   "             <span title=\"Fecha de termino de la Actividad\"  class=\"badge badge-warning fontRoboto bigger-50 \">"+valor.COMI_HORAFIN+"</span><br>"+
@@ -236,11 +242,90 @@ function generaComisiones(grid_data){
 							   "               <span class=\""+laclase+"\">"+leyendaday+"</span>"+
 							   "         </div>"+
 							   "         <div class=\"col-sm-2 fontRobotoB col-sm-8 bigger-80 text-success\">"+
-							   "               <i class=\"fa bigger-160 "+laimagen+"\"> </i><br>"+
-							   "               <span class=\"fontRoboto text-info\">"+leyendatxt+"</spann>"+
+							   "               "+of1+"<i class=\"fa bigger-200 "+laimagen+"\"> </i></a><br>"+
+							   "               "+of1+"<span class=\"fontRoboto text-info\">"+leyendatxt+"</spann></a>"+
 							   "         </div>"+			                    
 							   "     </div>"+
 							   "</div>");
 		contAlum++;     
 	});	
 } 
+
+
+
+/*====================================EVENTOS =================================*/
+
+
+function cargaEventos() {
+	$('#con3').append("<img id=\"esperarcon2\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
+	
+	cadSql3=" select * from veventos_ins a, ciclosesc b where a.PERSONA='"+$("#selProfesores").val()+"'"+
+	" AND STR_TO_DATE(FECHA,'%d/%m/%Y') between STR_TO_DATE(CICL_INICIO,'%d/%m/%Y') AND STR_TO_DATE(CICL_FIN,'%d/%m/%Y')"+
+	" order by ID DESC";
+
+	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){   	
+			datos3=JSON.parse(data3);
+			generaEventos(datos3);
+			$("#esperarcon2").remove();
+		}  
+	});
+}
+
+
+function generaEventos(grid_data){	
+	contAlum=1;
+	$("#con3").empty();
+	cont=1;
+	jQuery.each(grid_data, function(clave, valor) { 
+
+		laclase="badge badge-success";
+		leyendaday="Días restan";
+		
+		etasistio="Asistió al evento";
+		asistio="<i class=\"fa fa-check blue bigger-200\"></i>";
+		if (valor.ASISTIO=='N') {etasistio="No se ha marcado como que asistió al evento"; asistio="<i class=\"fa fa-times red bigger-200\"></i>";}
+
+		etconstancia="";constancia="";
+		etautorizada="La constancia NO se ha autorizado"; 
+		autorizada="<i class=\"fa fa-thumbs-o-down red bigger-200\"></i>";
+		
+		if (valor.AUTORIZADO=='S') {
+			etautorizada="La constancia se encuentra autorizada"; 
+			autorizada="<i class=\"fa fa-thumbs-o-up green bigger-200\"></i>";
+			etconstancia="Descargue su constancia de participación";
+			constancia="<button class=\"btn btn-white btn-info btn-bold\" onclick=\"verConstancia("+valor.ID+");\">"+
+			                "<i class=\"ace-icon fa fa-check-square-o bigger-120 blue\"></i>Ver Constancia</button>";
+		}
+		lafecha=fechaLetra(valor.FECHA);
+
+		lafoto=valor.FOTOACTIVIDAD;
+		if  (valor.FOTOACTIVIDAD=='') {lafoto="../../imagenes/menu/default.png";}
+
+		$("#con3").append("<div style=\"border-bottom:1px dotted; border-color:#14418A;\"> "+
+							   "      <div class=\"row\" >"+
+							   "        <div class=\"fontRobotoB col-sm-1\">"+
+							   "                  <img  class=\"ma_foto\" src=\""+lafoto+"\"/>"+							   
+							   "         </div>"+
+							   "         <div class=\"fontRobotoB col-sm-6 bigger-80 text-success\">"+
+							   "             <span class=\"fontRoboto bigger-150 text-primary\">"+valor.EVENTOD+"</span>"+"<br>"+
+							   "             <span title=\"Fecha en la que se llevará acabo el evento\" class=\"badge badge-success fontRoboto bigger-50 \">"+lafecha+"</span><br>"+
+							   "             <span title=\"Hora en la que se realizará el evento\"  class=\"badge badge-warning fontRoboto bigger-50 \">"+valor.HORA+"</span><br>"+							   
+							   "         </div>"+
+							   "         <div class=\"col-sm-1\" title=\""+etasistio+"\">"+asistio+"</div>"+	
+							   "         <div class=\"col-sm-1\" title=\""+etautorizada+"\">"+autorizada+"</div>"+
+							   "         <div class=\"col-sm-1\" title=\""+etconstancia+"\">"+constancia+"</div>"+							   
+							   "     </div>"+
+							   "</div><br>");
+		contAlum++;     
+	});	
+} 
+
+function verConstancia(id){		
+	enlace=("nucleo/eventos_ins/constancia.php?id="+id+"&tipo=1");
+	abrirPesta(enlace,"Constancia");
+}

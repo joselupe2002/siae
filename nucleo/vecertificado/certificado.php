@@ -162,7 +162,7 @@
             function LoadDatosAlumnos()
 			{				
                 $miConex = new Conexion();
-                $sql="select ALUM_MATRICULA, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, ".
+                $sql="select ALUM_MATRICULA, ALUM_SEXO, CONCAT(ALUM_NOMBRE, ' ',ALUM_APEPAT, ' ',ALUM_APEMAT) AS NOMBRE, ".
                 " ALUM_CARRERAREG AS CARRERA, ALUM_ACTIVO AS SITUACION, ALUM_CICLOTER AS CICLOTER, ".
                 " ALUM_CICLOINS AS CICLOINS, CARR_DESCRIP AS CARRERAD, ".
                 " PLACRED, PLAMAT,  c.CLAVEOF AS ESPECIALIDAD, ALUM_MAPA AS MAPA,".
@@ -245,19 +245,21 @@
         $iniCiclo=$miutil->formatFecha($dataCer[0]["FECHAINICIO"]);
         $cadInicio=strtoupper($miutil->getMesLetra(date("m", strtotime($iniCiclo))). " DE ".date("Y", strtotime($iniCiclo)));
 
-        $finCiclo=$miutil->formatFecha($dataCer[0]["FECHAINICIO"]);
+        $finCiclo=$miutil->formatFecha($dataCer[0]["FECHAFIN"]);
         $cadfin=strtoupper($miutil->getMesLetra(date("m", strtotime($finCiclo))). " DE ".date("Y", strtotime($finCiclo)));
 
         $pdf->setY(25);
         $pdf->WriteTag(0,3,"<p>FOLIO: <vsb>".$dataCer[0]["FOLIO"]."</vsb><p>",0,'R');
     
+        $etgen="EL";
+        if ($dataAlum[0]["ALUM_SEXO"]=='2') {$etgen="LA";}
 
 		$pdf->setY(35);
         $pdf->setX($margeniz);
         $pdf->WriteTag(135,3,utf8_decode("<p>EL C. ".$nombre." DIRECTOR GENERAL DEL <vb>". $data2[0]["inst_razon"].
-        "</vb> CLAVE ". $data2[0]["inst_claveof"].", CERTIFICA, QUE SEGÚN CONSTANCIAS QUE EXISTEN EN EL ARCHIVO ESCOLAR, EL C. ".
-        $dataAlum[0]["NOMBRE"]." CURSO LAS ASIGNATURAS QUE INTEGRAN EL PLAN DE ESTUDIOS DE ".$dataAlum[0]["CARRERAD"].
-        "(".$dataAlum[0]["MAPA"]."-".$dataAlum[0]["PLACRED"].") DE ". $cadInicio." A ".$finCiclo.
+        "</vb> CLAVE ". $data2[0]["inst_claveof"].", CERTIFICA, QUE SEGÚN CONSTANCIAS QUE EXISTEN EN EL ARCHIVO ESCOLAR, EL <vsb>".$etgen.
+        $dataAlum[0]["NOMBRE"]."</vsb> CURSO LAS ASIGNATURAS QUE INTEGRAN EL PLAN DE ESTUDIOS DE <vsb>".$dataAlum[0]["CARRERAD"]."</vsb>".
+        "(PLAN-CREDITOS) DE <vsb>". $cadInicio."</vsb> A <vsb>".$cadfin."</vsb>".
         ", CON LOS RESULTADOS QUE A CONTINUACIÓN SE ENLISTAN</p>") ,0,'J');
         $pdf->Ln();
 
@@ -276,7 +278,7 @@
         $pdf->Cell(87,5,'MATERIA','TBL',0,'L',true);
         $pdf->Cell(15,5,'CALIF.','LTBR',0,'C',true);    
         $pdf->Cell(25,5,'OBSERVACIONES',1,0,'C',true);
-        $pdf->Cell(8,5,'CR',1,0,'C');
+        $pdf->Cell(8,5,'CR',1,0,'C',true);
         $pdf->SetFont('Montserrat-Medium','',7,true);
 
         /*=======================colacamos las calificaciones ==========================*/
@@ -335,6 +337,7 @@
         $pdf->SetFont('Montserrat-Medium','',8);
         $pdf->Ln();
         $pdf->setX($margeniz);
+        if $dataAlum[0]["PLACRED"]
         $pdf->WriteTag(0,3,utf8_decode("<p>SE EXTIENDE EL PRESENTE CERTIFICADO QUE AMPARA <vsb>".$totcred.
         "</vsb> CRÉDITOS DE UN TOTAL DE <vsb>".$dataAlum[0]["PLACRED"]."</vsb> QUE INTEGRAN EL PLAN DE ESTUDIO CLAVE <vsb>".
         $dataAlum[0]["MAPA"]."</vsb>, EN MACUSPANA TABASCO A LOS ".strtoupper($fechadecexp)."</p>" ) ,0,'J');
