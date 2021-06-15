@@ -154,7 +154,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 									"       "+enl1+"<span class=\"fontRobotoB text-primary\">"+valor2.PLAN_ACTIVIDAD+"</span>"+enl2+
 									"    </div>"+
 									"   <div class=\"col-sm-1\" style=\"padding-left:100px;\">"+
-									"       <span class=\"fontRobotoB text-sucess pull-right\">"+valor2.PLAN_FECHA+"</span>"+
+									"       <span class=\"fontRobotoB text-sucess pull-right\">"+valor2.PLAN_FECHAENTREGA+"</span>"+
 									"    </div>"+
 									"   <div class=\"col-sm-2\" style=\"padding-left:100px;\">"+
 									"       <span class=\"fontRobotoB text-danger pull-right\">"+valor2.FECHARUTA+"</span>"+
