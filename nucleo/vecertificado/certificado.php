@@ -257,7 +257,7 @@
 		$pdf->setY(35);
         $pdf->setX($margeniz);
         $pdf->WriteTag(135,3,utf8_decode("<p>EL C. ".$nombre." DIRECTOR GENERAL DEL <vb>". $data2[0]["inst_razon"].
-        "</vb> CLAVE ". $data2[0]["inst_claveof"].", CERTIFICA, QUE SEGÚN CONSTANCIAS QUE EXISTEN EN EL ARCHIVO ESCOLAR, ".$etgen." <vsb>C.".
+        "</vb> CLAVE ". $data2[0]["inst_claveof"].", CERTIFICA, QUE SEGÚN CONSTANCIAS QUE EXISTEN EN EL ARCHIVO ESCOLAR, ".$etgen." C. <vsb>".
         $dataAlum[0]["NOMBRE"]."</vsb> CURSO LAS ASIGNATURAS QUE INTEGRAN EL PLAN DE ESTUDIOS DE <vsb>".$dataAlum[0]["CARRERAD"]."</vsb>".
         "(PLAN-CREDITOS) DE <vsb>". $cadInicio."</vsb> A <vsb>".$cadfin."</vsb>".
         ", CON LOS RESULTADOS QUE A CONTINUACIÓN SE ENLISTAN</p>") ,0,'J');
