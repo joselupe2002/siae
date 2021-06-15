@@ -218,3 +218,22 @@ SCROLLBAR-DARKSHADOW-COLOR: #000000;
 .sigeaPrin::-webkit-scrollbar-track {
   border-radius: 10px;  
 }
+
+/*============================INDICADORES ==============================*/
+.indNumero {
+  color:#0C0868; 
+  font-size:45px; 
+  margin:0px; 
+  padding:0px;
+}
+.indVertical {
+  color:#0C0868; 
+  font-size:10px; 
+  margin:0px; 
+  padding:0px; 
+  writing-mode: vertical-lr;
+}
+.centrarVertical {
+  display: flex; 
+  align-items: center;
+}

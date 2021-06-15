@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
 		<link rel="stylesheet"  href="<?php echo $nivel; ?>js/morris/morris.css">
-		<link rel="stylesheet" href="../../css/sigea.css" />
+		<link rel="stylesheet" href="../../css/sigea.css?v=<?php echo date('YmdHis'); ?>" />
 
         
 

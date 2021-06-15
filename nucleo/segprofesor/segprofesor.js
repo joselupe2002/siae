@@ -76,6 +76,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		cargaDescarga();
 		cargaComisiones();
 		cargaEventos();
+		cargaIndicadores();
 	}
 
     
@@ -328,4 +329,102 @@ function generaEventos(grid_data){
 function verConstancia(id){		
 	enlace=("nucleo/eventos_ins/constancia.php?id="+id+"&tipo=1");
 	abrirPesta(enlace,"Constancia");
+}
+
+
+/*======================================indicadores ==========================*/
+
+
+function cargaIndicadores() {
+	$('#con3').append("<img id=\"esperarcon2\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
+	
+	cadSql3=" SELECT a.IDDETALLE, a.SIE, a.MATERIA, a.MATERIAD, a.SEMESTRE, a.CARRERAD,"+
+	"(select count(*) from dlista b where b.IDGRUPO=a.IDDETALLE AND BAJA='N') AS NUMALUM,"+
+	"(select count(*) from dlista b where b.IDGRUPO=a.IDDETALLE AND BAJA='S') AS NUMBAJA,"+
+	"(select count(*) from dlista b where b.IDGRUPO=a.IDDETALLE AND BAJA='N' AND LISCAL>70) AS NUMAPR"+
+	" FROM vedgrupos a where a.PROFESOR='"+$("#selProfesores").val()+"' and a.CICLO='"+$("#selCiclo").val()+"'";
+
+
+	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){   
+				
+			datos3=JSON.parse(data3);
+			generaIndicadores(datos3);
+			$("#esperarcon2").remove();
+		}  
+	});
+}
+
+function generaIndicadores(grid_data){	
+	contAlum=1;
+	$("#con4").empty();
+	cont=1;
+	jQuery.each(grid_data, function(clave, valor) { 
+		papr=Math.round((valor.NUMAPR/valor.NUMALUM)*100);
+		$("#con4").append("<div style=\"border-bottom:1px dotted; border-color:#14418A;\"> "+
+							   "      <div class=\"row\" >"+
+							   "           <div class=\"col-sm-5\" style=\"padding-left:50px;\">"+
+							   "                <div class=\"row fontRobotoB text-primary\">"+	
+							   "                   <span class=\"fontRobotoB\" style=\"font-size:18px;\">"+ valor.MATERIAD+"</span>"+					   
+							   "                </div>"+
+							   "                <div class=\"row fontRobotoB text-primary\">"+	
+							   "                   <span class=\"fontRobotoB badge badge-success\"> Sem:"+ valor.SEMESTRE+"</span>"+	
+							   "                   <span class=\"fontRobotoB badge badge-danger\"> Gpo:"+ valor.SIE+"</span>"+					   
+							   "                </div>"+	
+							   "           </div>"+	
+							   "           <div class=\"col-sm-1 centrarVertical\">"+
+							   "                   <span class=\"fontRobotoB indVertical\" style=\"color:black;\">ALUMNOS</span>"+					   
+							   "                   <span class=\"fontRobotoB indNumero\" style=\"color:black;\">"+ valor.NUMALUM+"</span>"+					   
+							   "           </div>"+	
+							   "           <div class=\"col-sm-1 centrarVertical\">"+							   
+							   "                   <span class=\"fontRobotoB indNumero\" style=\"color:#790909;\">"+ valor.NUMBAJA+"</span>"+					   
+							   "                   <span class=\"fontRobotoB indVertical\" style=\"color:#790909;\">BAJAS</span>"+					   
+							   "           </div>"+		
+							   "           <div class=\"col-sm-1 centrarVertical\">"+							   
+							   "                   <span class=\"fontRobotoB indVertical\">APROBADOS</span>"+
+							   "                   <span class=\"fontRobotoB indNumero\">"+ valor.NUMAPR+"</span>"+					   							   					   
+							   "           </div>"+	
+							   "           <div class=\"col-sm-1 centrarVertical\">"+	
+							   "                <div class=\"infobox-progress\" title=\"Porcentaje de Aprobación\">"+
+						       "                   <div class=\"easy-pie-chart percentage\" data-color=\"green\" data-percent=\""+papr+"\" data-size=\"70\">"+
+							   "                       <span class=\"percent\">"+papr+"</span>%"+
+						       "                  </div>"+
+					           "               </div>"+
+							   "           </div>"+	
+							   "           <div class=\"col-sm-1 centrarVertical\">"+							   
+							   "                  <a style=\"cursor:pointer;\" onclick=\"verBoleta('"+valor.SIE+"','"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.IDDETALLE+"','"+valor.SEMESTRE+"');\">"+
+							   "                  <img src=\"../../imagenes/menu/pdf.png\"  style=\"width:50px; height:60px; \"></i></a>"+				   
+							   "           </div>"+					 
+							   "     </div>"+
+							   "</div><br>");
+		contAlum++;     
+	});	
+
+	$('.easy-pie-chart.percentage').each(function(){
+		var barColor = $(this).data('color') || '#2979FF';
+		var trackColor = '#E2E2E2';
+		var size = parseInt($(this).data('size')) || 72;
+		$(this).easyPieChart({
+			barColor: barColor,
+			trackColor: trackColor,
+			scaleColor: false,
+			lineCap: 'butt',
+			lineWidth: parseInt(size/5),
+			animate:false,
+			size: size
+		}).css('color', barColor);
+		});
+
+
+} 
+
+function verBoleta(grupo,materia,materiad,id,semestre){		
+	tit='Boleta';
+	abrirPesta("nucleo/cierreCal/boleta.php?tipo=0&grupo="+grupo+"&ciclo="+$("#selCiclo").val()+"&profesor="+$("#selProfesores").val()+"&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre,tit);
+	abrirPesta(enlace,tit);
 }
