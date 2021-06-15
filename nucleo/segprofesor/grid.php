@@ -52,7 +52,7 @@
 						<div id="losprofesores" class="col-sm-4"></div>
 								
 						<div class="col-sm-2" style="padding-top:14px;">
-						    <button title="Ver Indicadores" onclick="cargaDescarga();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+						    <button title="Ver Indicadores" onclick="cargaPestanias();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small fontRoboto">Seguimiento</span>            
 							</button>													 									
 						</div>
@@ -67,16 +67,16 @@
 								<div class="tabbable fontRoboto" >
 										<ul class="nav nav-tabs">
 											<li class="active">
-												<a data-toggle="tab" href="#p1" onclick="evento('p1');"><i class="green ace-icon fa fa-home bigger-120"></i>Descargas</a>
+												<a data-toggle="tab" href="#p1" ><i class="green ace-icon fa fa-briefcase bigger-120"></i>Descargas</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p2" onclick="evento('p2');"><i class="red ace-icon fa fa-thumbs-down bigger-120"></i>Comisiones</a>
+												<a data-toggle="tab" href="#p2" ><i class="red ace-icon fa fa-pencil bigger-120"></i>Comisiones</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p3" onclick="evento('p3');"><i class="blue ace-icon fa fa-user bigger-120"></i>Eventos</a>
+												<a data-toggle="tab" href="#p3" ><i class="blue ace-icon fa fa-flag bigger-120"></i>Eventos</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p4" onclick="evento('p4');" ><i class="purple ace-icon fa fa-certificate bigger-120"></i>Reprobación</a>
+												<a data-toggle="tab" href="#p4"  ><i class="purple ace-icon fa fa-tasks bigger-120"></i>Reprobación</a>
 											</li>										
 								
 										</ul>

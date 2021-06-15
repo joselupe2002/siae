@@ -281,7 +281,7 @@
 
         /*=======================colacamos las calificaciones ==========================*/
         $pdf->Ln();
-        $pdf->SetFont('Montserrat-Medium','',7);
+        $pdf->SetFont('Montserrat-Medium','',6);
         $pdf->SetWidths(array(40,87, 15,25,8));
         $pdf->SetAligns(array('L','L', 'C','J','C'));
         $pdf->SetBorder(array('','L', 'L','L','LR'));

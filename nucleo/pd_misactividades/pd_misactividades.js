@@ -49,6 +49,8 @@ function generaTabla(grid_data){
 	
 		laclase="badge badge-success";
 		leyendaday="Días restan";
+		leyendatxt="";
+		laimagen="";
 
 		if (valor.DIF==0) {laclase="badge badge-warning"; leyendaday="Vence hoy"; }
 		if (valor.DIF==1) {laclase="badge badge-pink"; leyendaday="Vence 1 día";}

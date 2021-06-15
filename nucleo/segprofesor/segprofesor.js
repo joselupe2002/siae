@@ -58,7 +58,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		if (elemento=='selCarreras') {
 			micarrera=$("#selCarreras").val();
 			
-			elql="SELECT EMPL_NUMERO, CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE  FROM pempleados where EMPL_DEPTO='"+$("#selCarreras").val()+"' order by EMPL_NOMBRE, EMPL_APEPAT, EMPL_APEMAT";
+			elql="SELECT EMPL_NUMERO, CONCAT(EMPL_NUMERO, ' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS NOMBRE  FROM pempleados where EMPL_DEPTO='"+$("#selCarreras").val()+"' order by EMPL_NOMBRE, EMPL_APEPAT, EMPL_APEMAT";
 			actualizaSelect("selProfesores", elql, "BUSQUEDA","");  	
 		}
 		
@@ -72,11 +72,9 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 	}
 
 
-	function evento(pes){
-		if (pes=="p2") {cargaDescarga();}
-		if (pes=="p3") {cargaComisiones();}
-		if (pes=="p4") {cargaEventos("primary");}
-		if (pes=="p5") {cargaReprobacion("primary");}
+	function cargaPestanias(){
+		cargaDescarga();
+		cargaComisiones();
 	}
 
     
@@ -104,6 +102,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 	function generaDescarga(data){
 		var losid = [];
 		var c=0;
+		$("#accordion").empty();
 		jQuery.each(JSON.parse(data), function(clave, valor) { 	
 			$("#accordion").append(
 				"<div class=\"panel panel-default\">"+
@@ -175,3 +174,73 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 			
 }
 	
+
+
+
+function cargaComisiones() {
+	$('#con2').append("<img id=\"esperarcon2\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
+	
+	cadSql3="select YEAR(NOW()) as ANIO, COMI_HORAINI, COMI_HORAFIN, DATEDIFF(STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y'),now()) AS DIF, "+
+	"COMI_ID, COMI_ACTIVIDAD, COMI_CUMPLIDA,COMI_FECHAINI,  COMI_FECHAFIN, COMI_LUGAR "+
+    " from vpcomisiones a, ciclosesc b  where a.`COMI_PROFESOR`='"+$("#selProfesores").val()+"' and CICL_CLAVE='"+$("#selCiclo").val()+"'"+
+    " AND  STR_TO_DATE(a.COMI_FECHAINI,'%d/%m/%Y') between STR_TO_DATE(CICL_INICIO,'%d/%m/%Y') AND STR_TO_DATE(CICL_FIN,'%d/%m/%Y')"+
+    " order by STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y') ";
+	
+	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){   	
+			datos3=JSON.parse(data3);
+			generaComisiones(datos3);
+			$("#esperarcon2").remove();
+		}  
+	});
+
+}
+
+
+function generaComisiones(grid_data){
+	contAlum=1;
+	$("#con2").empty();
+	cont=1;
+	jQuery.each(grid_data, function(clave, valor) { 
+
+		laclase="badge badge-success";
+		leyendaday="Días restan";
+		leyendatxt="";
+		laimagen="";
+
+		if (valor.DIF==0) {laclase="badge badge-warning"; leyendaday="Vence hoy"; }
+		if (valor.DIF==1) {laclase="badge badge-pink"; leyendaday="Vence 1 día";}
+		if (valor.DIF<0) {laclase="badge badge-danger"; leyendaday="Vencida"; }
+		if (valor.DIF>1) {laclase="badge badge-success"; leyendaday="Vence "+valor.DIF+" días";}
+
+		if ((valor.DIF<0) && (valor.COMI_CUMPLIDA=='N')) {laimagen="red fa-times"; leyendatxt="No Cumplio";}
+		if ((valor.DIF>=0) && (valor.COMI_CUMPLIDA=='N')) {laimagen="blue fa-retweet";  leyendatxt="En Proceso";}
+		if (valor.COMI_CUMPLIDA=='S') {laimagen="green fa-check";  leyendatxt="Actividad Cumplida";}
+		
+		$("#con2").append("<div  class=\"profile-activity clearfix\"> "+
+		                       "      <div>"+
+							   "         <div class=\"fontRobotoB col-sm-6 bigger-80 text-success\">"+valor.COMI_ACTIVIDAD+"<br>"+
+							   "             <span class=\"fontRoboto bigger-50 text-primary\">"+valor.COMI_LUGAR+"</span>"+"<br>"+
+							   "             <span title=\"Fecha de inicio de la Actividad\" class=\"badge badge-success fontRoboto bigger-50 \">"+valor.COMI_HORAINI+"</span>"+
+							   "             <span title=\"Fecha de termino de la Actividad\"  class=\"badge badge-warning fontRoboto bigger-50 \">"+valor.COMI_HORAFIN+"</span><br>"+
+							   "         </div>"+
+							   "         <div class=\"col-sm-2\">"+
+							   "             <span class=\"label label-white middle fontRoboto bigger-60  label-primary\">"+valor.COMI_FECHAINI+"</span>"+"<br><br>"+
+							   "             <span class=\"label label-white middle fontRoboto bigger-60  label-danger\">"+valor.COMI_FECHAFIN+"</span>"+
+							   "         </div>"+
+							   "         <div class=\"col-sm-2 fontRobotoB col-sm-8 bigger-80 text-success\">"+
+							   "               <span class=\""+laclase+"\">"+leyendaday+"</span>"+
+							   "         </div>"+
+							   "         <div class=\"col-sm-2 fontRobotoB col-sm-8 bigger-80 text-success\">"+
+							   "               <i class=\"fa bigger-160 "+laimagen+"\"> </i><br>"+
+							   "               <span class=\"fontRoboto text-info\">"+leyendatxt+"</spann>"+
+							   "         </div>"+			                    
+							   "     </div>"+
+							   "</div>");
+		contAlum++;     
+	});	
+} 
