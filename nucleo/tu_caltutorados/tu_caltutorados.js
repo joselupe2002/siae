@@ -19,9 +19,14 @@ var elalumno="";
 
 		if (!ext) {
 
+
+		$("#losciclos2").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
+		addSELECT("selCiclos","losciclos2","PROPIO","SELECT CICL_CLAVE, CONCAT(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc ORDER BY CICL_CLAVE DESC" , "","");  	
+
+
 		$("#lasmaterias").append("<span class=\"label label-danger\">Materia Tutoría</span>");
 		addSELECT("selMateria","lasmaterias","PROPIO", "SELECT a.ID, CONCAT(a.MATERIA,'|',a.MATERIAD,'|',a.SIE) FROM vcargasprof a where a.CICLO="+
-		"getciclo() and a.TIPOMAT IN ('T') AND a.PROFESOR='"+usuario+"'", "","");  	
+		"1 and a.TIPOMAT IN ('T') AND a.PROFESOR='"+usuario+"'", "","");  	
 		
 		$("#losalumnos").append("<span class=\"label label-warning\">Alumno</span>");
 		addSELECT("selAlumnos","losalumnos","PROPIO", "SELECT ALUM_MATRICULA, CONCAT(ALUM_MATRICULA,' ',ALUM_NOMBRE, ' ',ALUM_APEPAT,' ',ALUM_APEMAT) "+
@@ -45,6 +50,13 @@ var elalumno="";
 	
 		 
 	function change_SELECT(elemento) {
+
+		if (elemento=='selCiclos') {			
+			sqlMat="SELECT a.ID, CONCAT(a.MATERIA,'|',a.MATERIAD,'|',a.SIE) FROM vcargasprof a where a.CICLO='"+
+			$("#selCiclos").val()+"' and a.TIPOMAT IN ('T') AND a.PROFESOR='"+usuario+"'";
+		
+			actualizaSelect("selMateria",sqlMat,"BUSQUEDA","");		
+		}
 		if (elemento=='selMateria') {	
 			
 			actualizaSelect("selAlumnos","SELECT ALUM_MATRICULA, CONCAT(ALUM_APEPAT,' ',ALUM_APEMAT,' ',ALUM_NOMBRE) AS NOMBRE "+
@@ -62,7 +74,7 @@ var elalumno="";
 		mostrarEspera("esperaInf","grid_tu_caltutorados","Cargando Datos...");
 		elsql="SELECT MAX((select count(*) from eunidades l where "+
 		"l.UNID_MATERIA=e.MATCVE and UNID_PRED='')) AS N from dlista e  where  "+
-		"e.ALUCTR='"+elalumno+"' and PDOCVE=getciclo()";
+		"e.ALUCTR='"+elalumno+"' and PDOCVE='"+$("#selCiclos").val()+"'";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 		type: "POST",
@@ -73,7 +85,7 @@ var elalumno="";
 					maxuni=valor.N;
 					});
 
-				cadCiclo=' and PDOCVE=getciclo()';
+				cadCiclo=" and PDOCVE='"+$("#selCiclos").val()+"'";
 				if ( $('#vertodos').prop('checked')) {cadCiclo="";}
 				sqlMat="select e.ID, e.ALUCTR as MATRICULA,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
 							"ifnull(LISCAL,0) as LISCAL,ifnull(LISPA1,0)  as LISPA1,ifnull(LISPA2,0) AS LISPA2,ifnull(LISPA3,0) as LISPA3,"+

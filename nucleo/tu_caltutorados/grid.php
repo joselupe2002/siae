@@ -45,9 +45,11 @@
 			      <div class="row" >	
 				         <div id="losciclos" class="col-sm-1">
 						</div> 	
-						<div id="lasmaterias" class="col-sm-3" >
+						<div id="losciclos2" class="col-sm-2">
+						</div> 	
+						<div id="lasmaterias" class="col-sm-2" >
 						</div>                    				
-						<div id="losalumnos" class="col-sm-4">
+						<div id="losalumnos" class="col-sm-3">
 						</div>    
 						<div  class="col-sm-2">
 							<div class="checkbox" style="padding:10px; margin: 0px; text-align:center;">
