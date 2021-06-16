@@ -76,7 +76,10 @@
 												<a data-toggle="tab" href="#p3" ><i class="blue ace-icon fa fa-flag bigger-120"></i>Eventos</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p4"  ><i class="purple ace-icon fa fa-tasks bigger-120"></i>Reprobación</a>
+												<a data-toggle="tab" href="#p4"  ><i class="purple ace-icon fa fa-tasks bigger-120"></i>Boletas</a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#p5"  ><i class="red ace-icon fa fa-bar-chart-o bigger-120"></i>Indicadores</a>
 											</li>										
 								
 										</ul>
@@ -98,7 +101,11 @@
 
 											<div id="p4" class="tab-pane">
 												<div class="row" id="con4"></div>
-											</div>									
+											</div>	
+											
+											<div id="p5" class="tab-pane">
+												<div class="row" id="con5">sdsdsds</div>
+											</div>
 
 										</div>
 									</div>				        

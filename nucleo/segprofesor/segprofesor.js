@@ -77,6 +77,7 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		cargaComisiones();
 		cargaEventos();
 		cargaIndicadores();
+		generaIndicGen();
 	}
 
     
@@ -363,6 +364,8 @@ function generaIndicadores(grid_data){
 	contAlum=1;
 	$("#con4").empty();
 	cont=1;
+
+
 	jQuery.each(grid_data, function(clave, valor) { 
 		papr=Math.round((valor.NUMAPR/valor.NUMALUM)*100);
 		$("#con4").append("<div style=\"border-bottom:1px dotted; border-color:#14418A;\"> "+
@@ -428,3 +431,101 @@ function verBoleta(grupo,materia,materiad,id,semestre){
 								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre,tit);
 	abrirPesta(enlace,tit);
 }
+
+/*=================================EVALUACION DOCENTES ===============================*/
+
+function generaIndicGen(){
+	$('#con5').append("<img id=\"esperarcon5\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
+	
+	cadSql3="select ALUM_FOTO AS FOTO, ALUM_MATRICULA AS MATRICULA, CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE,"+
+	" MATERIAD,DESCRIP, d.FECHA from ed_respuestasv2 d, ed_observa a, vedgrupos b, falumnos c where a.IDGRUPO=b.IDDETALLE"+
+	" and b.CICLO='"+$("#selCiclo").val()+"' and b.PROFESOR='"+$("#selProfesores").val()+"'"+
+	" AND DESCRIP<>'' and d.IDDETALLE=a.IDDETALLE"+
+	" and d.MATRICULA=c.ALUM_MATRICULA ORDER BY IDOBS";
+
+
+	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){   
+
+			datos3=JSON.parse(data3);
+			generaObs(datos3);
+			$("#esperarcon5").remove();
+		}  
+	});
+}
+
+function generaObs(grid_data){	
+	$("#con5").empty();
+	contAlum=1;
+	cont=1;
+	$("#con5").append("<div class=\"row\">"+
+	"                      <div class=\"col-sm-6\" style=\"text-align:center;\">"+
+	"                           <button class=\"btn btn-white btn-info btn-bold\" onclick=\"verEvalDoc();\">"+
+	"                               <i class=\"ace-icon fa fa-table bigger-180 purple\"></i>"+
+	"                               <span class=\"fontRobotoB bigger-180\">Ver Resultados de Encuesta Docente</span>"+
+	"                           </button>"+
+	"                     </div>"+
+	"                     <div class=\"col-sm-6\">"+
+	"                         <div class=\"widget-box\">"+
+	"	                          <div class=\"widget-header\">"+
+	"		                           <h4 class=\"widget-title lighter smaller\">"+
+	"			                            <i class=\"ace-icon fa fa-comment blue\"></i>"+
+	"			                           Comentarios"+
+	"		                           </h4>"+
+	"	                          </div>"+
+	"                             <div class=\"widget-body\">"+
+	"		                           <div class=\"widget-main no-padding\" >"+
+	"                                       <div class=\"dialogs\" id=\"obsitem\">"+
+	"	                                    </div>"+
+	"	                               </div>"+
+	"	                          </div>"+
+	"	                      </div>"+
+	"	                  </div>"+
+	"	             </div>"
+	);
+
+	jQuery.each(grid_data, function(clave, valor) { 
+		$("#obsitem").append("	  <div class=\"itemdiv dialogdiv\">"+
+					  "				  <div class=\"user\">"+
+					  "					  <img alt=\""+valor.NOMBRE+"\" src=\""+valor.FOTO+"\" />"+
+					  "				  </div>"+					  
+					  "				  <div class=\"body\">"+
+					  "					  <div class=\"time\">"+
+					  "						  <i class=\"ace-icon fa fa-clock-o\"></i>"+
+					  "						  <span class=\"green\">"+valor.FECHA+"</span>"+
+					  "					  </div>"+
+					  "						  <div class=\"name\">"+
+					  "							  <a href=\"#\">"+valor.NOMBRE+"</a>"+
+					  "						  </div>"+
+					  "						  <div class=\"text\">"+valor.DESCRIP+"</div>"+
+					  "						  <div class=\"tools\">"+
+					  "						      <a onclick=\"verBoletaAl('"+valor.MATRICULA+"');\"  class=\"btn btn-minier btn-info\" style=\"cursor:pointer;\">"+
+					  "							      <i class=\"icon-only ace-icon fa fa-share\"></i>"+
+					  "						      </a>"+
+					  "					      </div>"+
+					  "				  </div>"+
+					  "			  </div>");
+	});
+
+}
+
+
+
+function verEvalDoc(){		
+	tit='Evaluación';
+	abrirPesta("nucleo/resEvalDocv2/reporte.php?ciclo="+$("#selCiclo").val()+"&profesor="+$("#selProfesores").val()+"&profesord="+
+	$("#selProfesores option:selected").text()+"&deptod="+$("#selCarrera option:selected").text(),tit);
+	abrirPesta(enlace,tit);
+}
+
+function verBoletaAl(matricula){		
+	tit='Boleta';
+	abrirPesta("nucleo/econstancias/boleta.php?matricula="+matricula+"&ciclo="+$("#selCiclo").val(),tit);
+}
+
+
+
