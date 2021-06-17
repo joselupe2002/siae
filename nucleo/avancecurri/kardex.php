@@ -204,7 +204,7 @@
                 " getavanceCred('".$_GET["matricula"]."') as AVANCE, ".
                 " getPromedio('".$_GET["matricula"]."','N') as PROMEDIO_SR,".
                 " getPromedio('".$_GET["matricula"]."','S') as PROMEDIO_CR, ".
-                " getPeriodos('".$_GET["matricula"]."',getciclo()) AS PERIODOS,".
+                " getPeriodos('".$_GET["matricula"]."',ifnull(ALUM_CICLOTER,getciclo())) AS PERIODOS,".
                 " (select SUM(a.CREDITO) from kardexcursadas a where a.CICLO=getciclo() and CERRADO='N' and a.MATRICULA='".$_GET["matricula"]."') AS CRECUR, ".
                 " (select SUM(a.CREDITO) from kardexcursadas a where CERRADO='S' and a.cal>=70 and a.MATRICULA='".$_GET["matricula"]."') AS CREDACUM ".
                 " from falumnos a LEFT outer JOIN especialidad c on (a.ALUM_ESPECIALIDAD=c.ID), ccarreras b, mapas d where ".
