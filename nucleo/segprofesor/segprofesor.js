@@ -622,8 +622,8 @@ function generaObs(grid_data){
 
 	//Número de asesorias
 
-	cadSql3="select ASES_TIPO AS TIPO,COUNT(*)+100 AS NUM from vasesorias a where a.ASES_CICLO='"+$("#selCiclo").val()+"'"+
-	"and ASES_PROFESOR='"+$("#selProfesores").val()+"' GROUP BY ASES_PROFESOR";
+	cadSql3="select ASES_TIPO AS TIPO,COUNT(*) AS NUM from vasesorias a where a.ASES_CICLO='"+$("#selCiclo").val()+"'"+
+	"and ASES_PROFESOR='"+$("#selProfesores").val()+"' GROUP BY ASES_TIPO";
 
 	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
