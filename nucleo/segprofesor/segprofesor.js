@@ -437,10 +437,10 @@ function verBoleta(grupo,materia,materiad,id,semestre){
 function generaIndicGen(){
 	$('#con5').append("<img id=\"esperarcon5\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
 	
-	cadSql3="select ALUM_FOTO AS FOTO, ALUM_MATRICULA AS MATRICULA, CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE,"+
-	" MATERIAD,DESCRIP, d.FECHA from ed_respuestasv2 d, ed_observa a, vedgrupos b, falumnos c where a.IDGRUPO=b.IDDETALLE"+
+	cadSql3="select ALUM_FOTO AS FOTO, f.CARR_DESCRIP AS CARRERAD,ALUM_MATRICULA AS MATRICULA, CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE,"+
+	" MATERIAD,DESCRIP, d.FECHA from ed_respuestasv2 d, ed_observa a, vedgrupos b, falumnos c, ccarreras f where a.IDGRUPO=b.IDDETALLE"+
 	" and b.CICLO='"+$("#selCiclo").val()+"' and b.PROFESOR='"+$("#selProfesores").val()+"'"+
-	" AND DESCRIP<>'' and d.IDDETALLE=a.IDDETALLE"+
+	" AND DESCRIP<>'' and d.IDDETALLE=a.IDDETALLE and c.ALUM_CARRERAREG=f.CARR_CLAVE"+
 	" and d.MATRICULA=c.ALUM_MATRICULA ORDER BY IDOBS";
 
 
@@ -464,11 +464,66 @@ function generaObs(grid_data){
 	cont=1;
 	$("#con5").append("<div class=\"row\">"+
 	"                      <div class=\"col-sm-6\" style=\"text-align:center;\">"+
-	"                           <button class=\"btn btn-white btn-info btn-bold\" onclick=\"verEvalDoc();\">"+
-	"                               <i class=\"ace-icon fa fa-table bigger-180 purple\"></i>"+
-	"                               <span class=\"fontRobotoB bigger-180\">Ver Resultados de Encuesta Docente</span>"+
-	"                           </button>"+
-	"                     </div>"+
+	"                           <div class=\"row\">"+
+	"                                <div class=\"col-sm-12\">"+
+	"                                     <button class=\"btn btn-white btn-info btn-bold\" onclick=\"verEvalDoc();\">"+
+	"                                         <i class=\"ace-icon fa fa-table bigger-180 purple\"></i>"+
+	"                                         <span class=\"fontRobotoB bigger-180\">Ver Resultados de Encuesta Docente</span>"+
+	"                                     </button>"+
+	"                                 </div>"+
+	"                            </div><hr>"+
+	"                           <div class=\"row\">"+
+	"                               <div class=\"col-sm-3 centrarVertical\">"+							   
+	"                                    <span class=\"fontRobotoB indVertical\" style=\"color:black;\">ALUMNOS</span>"+
+	"                                    <span class=\"fontRobotoB indNumero\" id=\"totAlum\" style=\"color:black;\"></span>"+					   							   					   
+	"                               </div>"+	
+	"                               <div class=\"col-sm-3 centrarVertical\">"+							   
+	"                                    <span class=\"fontRobotoB indVertical\" style=\"color:red;\">BAJAS</span>"+
+	"                                    <span class=\"fontRobotoB indNumero\" id=\"totBajas\" style=\"color:red;\"></span>"+					   							   					   
+	"                               </div>"+	
+	"                               <div class=\"col-sm-3 centrarVertical\">"+							   
+	"                                    <span class=\"fontRobotoB indVertical\">APROBADOS</span>"+
+	"                                    <span class=\"fontRobotoB indNumero\" id=\"totApr\"></span>"+					   							   					   
+	"                               </div>"+	
+	"           					<div class=\"col-sm-3 centrarVertical\">"+	
+	"                					<div class=\"infobox-progress\" title=\"Porcentaje de Aprobación\">"+
+	"                   					<div id=\"gaprgen\" class=\"easy-pie-chart percentage\" data-color=\"blue\" data-percent=\"\" data-size=\"70\">"+
+	"                      				 	<span class=\"percent\" id=\"aprgen\"></span>%"+
+	"                  					</div>"+
+	"           					</div>"+	
+	"           			    </div>"+
+	"                           </div><hr>"+	
+	"                           <div class=\"row infobox-container\">"+
+	"								<div class=\"infobox infobox-blue infobox-small infobox-dark\">"+
+	"										<div class=\"infobox-data\">"+
+	"											<div id=\"aac\" class=\"infobox-content bigger-180\"></div>"+
+	"										</div>"+
+	"										<div class=\"infobox-data\">"+
+	"											<div class=\"infobox-content\">Asesorías</div>"+
+	"											<div class=\"infobox-content\">Académicas</div>"+
+	"										</div>"+
+	"								</div>"+
+	"								<div class=\"infobox infobox-green infobox-small infobox-dark\">"+
+	"										<div class=\"infobox-data\">"+
+	"											<div id=\"are\" class=\"infobox-content bigger-180\"></div>"+	
+	"										</div>"+
+	"										<div class=\"infobox-data\">"+
+	"											<div class=\"infobox-content\">Asesorías</div>"+
+	"											<div class=\"infobox-content\">Residencia</div>"+
+	"										</div>"+
+	"								</div>"+	
+	"								<div class=\"infobox infobox-orange infobox-small infobox-dark\">"+
+	"										<div class=\"infobox-data\">"+
+	"											<div id=\"aco\" class=\"infobox-content bigger-180\"></div>"+	
+	"										</div>"+
+	"										<div class=\"infobox-data\">"+
+	"											<div class=\"infobox-content\">Asesorías</div>"+
+	"											<div class=\"infobox-content\">Complem.</div>"+
+	"										</div>"+
+	"								</div>"+		
+		
+	"                     	    </div>"+
+	"                     	 </div>"+
 	"                     <div class=\"col-sm-6\">"+
 	"                         <div class=\"widget-box\">"+
 	"	                          <div class=\"widget-header\">"+
@@ -479,7 +534,7 @@ function generaObs(grid_data){
 	"	                          </div>"+
 	"                             <div class=\"widget-body\">"+
 	"		                           <div class=\"widget-main no-padding\" >"+
-	"                                       <div class=\"dialogs\" id=\"obsitem\">"+
+	"                                       <div class=\"dialogs\" id=\"obsitem\" >"+
 	"	                                    </div>"+
 	"	                               </div>"+
 	"	                          </div>"+
@@ -487,6 +542,33 @@ function generaObs(grid_data){
 	"	                  </div>"+
 	"	             </div>"
 	);
+
+	$('.easy-pie-chart.percentage').each(function(){
+		var barColor = $(this).data('color') || '#2979FF';
+		var trackColor = '#E2E2E2';
+		var size = parseInt($(this).data('size')) || 72;
+		$(this).easyPieChart({
+			barColor: barColor,
+			trackColor: trackColor,
+			scaleColor: false,
+			lineCap: 'butt',
+			lineWidth: parseInt(size/5),
+			animate:false,
+			size: size
+		}).css('color', barColor);
+		});
+
+		$('.sparkline').each(function(){
+			var $box = $(this).closest('.infobox');
+			var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
+			$(this).sparkline('html',
+							 {
+								tagValuesAttribute:'data-values',
+								type: 'bar',
+								barColor: barColor ,
+								chartRangeMin:$(this).data('min') || 0
+							 });
+		});
 
 	jQuery.each(grid_data, function(clave, valor) { 
 		$("#obsitem").append("	  <div class=\"itemdiv dialogdiv\">"+
@@ -498,9 +580,10 @@ function generaObs(grid_data){
 					  "						  <i class=\"ace-icon fa fa-clock-o\"></i>"+
 					  "						  <span class=\"green\">"+valor.FECHA+"</span>"+
 					  "					  </div>"+
-					  "						  <div class=\"name\">"+
-					  "							  <a href=\"#\">"+valor.NOMBRE+"</a>"+
+					  "						  <div class=\"fontRobotoB name\">"+
+					  "							  <a onclick=\"verBoletaAl('"+valor.MATRICULA+"');\"  style=\"cursor:pointer;\">"+valor.NOMBRE+"</a>"+
 					  "						  </div>"+
+					  "						  <div class=\"fontRoboto text-danger\" >"+valor.CARRERAD+"</div>"+
 					  "						  <div class=\"text\">"+valor.DESCRIP+"</div>"+
 					  "						  <div class=\"tools\">"+
 					  "						      <a onclick=\"verBoletaAl('"+valor.MATRICULA+"');\"  class=\"btn btn-minier btn-info\" style=\"cursor:pointer;\">"+
@@ -511,9 +594,59 @@ function generaObs(grid_data){
 					  "			  </div>");
 	});
 
+	//Número de alumnos total 
+
+	cadSql3="SELECT SUM((select count(*) from dlista b where b.IDGRUPO=a.IDDETALLE AND BAJA='N')) AS NUMALUM,"+
+	"sum((select count(*) from dlista b where b.IDGRUPO=a.IDDETALLE AND BAJA='S')) AS NUMBAJA,"+
+	"sum((select count(*) from dlista b where b.IDGRUPO=a.IDDETALLE AND BAJA='N' AND LISCAL>70)) AS NUMAPR"+
+	" FROM vedgrupos a where a.PROFESOR='"+$("#selProfesores").val()+"' and a.CICLO='"+$("#selCiclo").val()+"'";
+
+	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){   
+			datos3=JSON.parse(data3);
+			$("#totAlum").html(datos3[0]["NUMALUM"]);
+			$("#totBajas").html(datos3[0]["NUMBAJA"]);
+			$("#totApr").html(datos3[0]["NUMAPR"]);
+			$("#totApr").html(datos3[0]["NUMAPR"]);
+			papr=Math.round((datos3[0]["NUMAPR"]/datos3[0]["NUMALUM"])*100);
+			$("#aprgen").html(papr);
+			$('#gaprgen').data('easyPieChart').update(papr);
+			
+		}  
+	});
+
+
+	//Número de asesorias
+
+	cadSql3="select ASES_TIPO AS TIPO,COUNT(*)+100 AS NUM from vasesorias a where a.ASES_CICLO='"+$("#selCiclo").val()+"'"+
+	"and ASES_PROFESOR='"+$("#selProfesores").val()+"' GROUP BY ASES_PROFESOR";
+
+	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
+	$.ajax({
+		type: "POST",
+		data:parametros3,
+		url:  "../base/getdatossqlSeg.php",
+		success: function(data3){   
+			grid_data=JSON.parse(data3);
+			$("#aac").html("0");
+			$("#are").html("0");
+			$("#aco").html("0");
+			jQuery.each(grid_data, function(clave, valor) { 
+				
+				if (valor.TIPO=='AA') {$("#aac").html(valor.NUM);}
+				if (valor.TIPO=='AC') {$("#aco").html(valor.NUM);}
+				if (valor.TIPO=='AR') {$("#are").html(valor.NUM);}
+			});
+			
+			
+		}  
+	});
+
 }
-
-
 
 function verEvalDoc(){		
 	tit='Evaluación';

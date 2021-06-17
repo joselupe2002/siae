@@ -152,6 +152,7 @@
 <script src="<?php echo $nivel; ?>js/mask.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/bootstrap-tag.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/bootstrap-select.js"></script>
+<script src="<?php echo $nivel; ?>assets/js/jquery.sparkline.index.min.js"></script>
 
 <!-- -------------------ultimos ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
