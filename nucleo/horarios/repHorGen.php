@@ -207,24 +207,12 @@
 					$fill = false;
 					$this->SetFont('Montserrat-Medium','',6);
 					$suma=0;
+					$lin=0;
 					$elsem=$data[0]["SEMESTRE"];
 					foreach($data as $row)
 					{
-						$horasMat=$this->dameHoras($row);
-						$this->Cell($w[0],4,utf8_decode($row[0]),'LR',0,'J',$fill);
-						$this->Cell($w[1],4,$row[1],'LR',0,'L',$fill);
-						$this->Cell($w[2],4,$row[2],'LR',0,'L',$fill);
-						$this->Cell($w[3],4,$row[3],'LR',0,'L',$fill);
-						$this->Cell($w[4],4,$row[4],'LR',0,'L',$fill);
-						$this->Cell($w[5],4,$row[5],'LR',0,'L',$fill);
-					    $this->Cell($w[6],4,$row[6],'LR',0,'L',$fill);
-					    $this->Cell($w[7],4,$row[7],'LR',0,'L',$fill);
-					    $this->Cell($w[8],4,$row[8],'LR',0,'L',$fill);
-					    $this->Cell($w[9],4,$row[9],'LR',0,'L',$fill);
-					    $this->Cell($w[10],4,$horasMat,'LR',0,'C',$fill);
-						$suma+=$horasMat;	
-				
-						if ($elsem!=$row["SEMESTRE"]) { 
+
+						if (($elsem!=$row["SEMESTRE"])&&($lin>0)) { 
 							$this->Ln();
 							$this->Cell(array_sum($w),0,'','T');
 							$this->Ln();
@@ -251,12 +239,38 @@
 							$this->Cell(254,0,"",'T',0,'L',$fill); 
 							$this->ln();
 						}
-						else {$this->Ln(); }				
+						else {if ($lin>0) $this->Ln(); }
+
+						$horasMat=$this->dameHoras($row);
+						$this->Cell($w[0],4,utf8_decode($row[0]),'LR',0,'J',$fill);
+						$this->Cell($w[1],4,$row[1],'LR',0,'L',$fill);
+						$this->Cell($w[2],4,$row[2],'LR',0,'L',$fill);
+						$this->Cell($w[3],4,$row[3],'LR',0,'L',$fill);
+						$this->Cell($w[4],4,$row[4],'LR',0,'L',$fill);
+						$this->Cell($w[5],4,$row[5],'LR',0,'L',$fill);
+					    $this->Cell($w[6],4,$row[6],'LR',0,'L',$fill);
+					    $this->Cell($w[7],4,$row[7],'LR',0,'L',$fill);
+					    $this->Cell($w[8],4,$row[8],'LR',0,'L',$fill);
+					    $this->Cell($w[9],4,$row[9],'LR',0,'L',$fill);
+					    $this->Cell($w[10],4,$horasMat,'LR',0,'C',$fill);
+						$suma+=$horasMat;	
+						$lin++;
+										
 											
 						$fill = !$fill;
 					}		
 					
 					// L�nea de cierre
+							$this->Ln();
+							$this->Cell(array_sum($w),0,'','T');
+							$this->Ln();
+							$this->SetFont('Montserrat-ExtraBold','B',8);
+							$this->Cell(array_sum($w)-10,4,'Suma de Horas','LR',0,'R',$fill);
+							$this->Cell(10,4,$suma,'LR',0,'C',$fill);
+							$this->Ln();
+							$this->Cell(array_sum($w),0,'','T');
+							$suma=0;	
+							$this->SetFont('Montserrat-Medium','B',6);
 			}
 			
 			
