@@ -171,8 +171,10 @@ function obtenerHorarios(id,elciclo,linea){
 		
 			   for (x=3; x<=9; x++) { 
 				if (!($("#c_"+linea+"_"+x).val()==null) && !($("#c_"+linea+"_"+x).val()==''))  {
+					if ($("#c_"+linea+"_"+x+"B").val()!="VIR") {
 					cadFin+=validaCruceHorario("AULA",x+9,$("#c_"+linea+"_"+x+"B").val(),$("#c_"+linea+"_"+x+"B option:selected").text(),
-										JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}   	      				 	
+										JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}
+									}   	      				 	
 			   }
 			   cadFin+="\n";
 			   if (cadFin.trim().length>0) {alert (cadFin); res=false; return false;}			
