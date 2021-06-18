@@ -63,7 +63,7 @@
               <div class="widget-body">
 				   <div class="widget-main">
 				       <div class="row">	
-					       <div id="loshorarios" class="col-sm-12" style="overflow-x: scroll; height:320px;" >    
+					       <div id="loshorarios" class="sigeaPrin col-sm-12" style="overflow-x: scroll; height:320px;" >    
 						   </div>
                        </div>
                     </div>
