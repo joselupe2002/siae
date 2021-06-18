@@ -176,6 +176,14 @@ function obtenerHorarios(id,elciclo,linea){
 										JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}
 									}   	      				 	
 			   }
+
+			   for (x=3; x<=9; x++) { 
+				if (!($("#c_"+linea+"_"+x).val()==null) && !($("#c_"+linea+"_"+x).val()==''))  {
+					cadFin+=validaCruceHorario("GRUPO",4,$("#c_"+linea+"_"+x+"B").val(),$("#c_"+linea+"_"+x+"B option:selected").text(),
+										JSON.parse(data),x+2,$("#c_"+linea+"_"+x).val(),linea);}
+	      				 	
+			   }
+
 			   cadFin+="\n";
 			   if (cadFin.trim().length>0) {alert (cadFin); res=false; return false;}			
 		 },
