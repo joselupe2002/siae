@@ -50,7 +50,7 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 		   "                                 </div>"+		   
 		   "                           </div>"+  //div del row
 		   "                           <div class=\"space-10\"></div>"+
-		   "                           <div class=\"row\" style=\"overflow-x: auto; overflow-y: auto; height:100%;\">" +
+		   "                           <div class=\"row\" class=\"sigeaPrin\" style=\"overflow-x: auto; overflow-y: auto; height:100%;\">" +
 		   "                                <div class=\"col-sm-8\"> "+
 	       "                                    <table id=\"tabHorarios\" class= \"table table-condensed table-bordered table-hover\">"+
 	   	   "                                        <thead>  "+
@@ -76,7 +76,7 @@ function addDescarga(modulo,usuario,institucion, campus,essuper){
 		   "                       </div> "+ //div contenedor de la tabla y combo
 		   "                   </div> "+ //div del tab de descarga academica
 		   "                   <div id=\"tabCla\" class=\"tab-pane fade\">"+
-		   "                           <div class=\"row\" style=\"overflow-x: auto; overflow-y: auto; height:100%;\">" +
+		   "                           <div class=\"row\" class=\"sigeaPrin\"  style=\"overflow-x: auto; overflow-y: auto; height:100%;\">" +
 		   "                                <div class=\"col-sm-8\" style=\"padding:0px; margin-left:20px;\"> "+	       
 		   "                                   <table id=\"tabHorariosB\" class= \"table table-condensed table-bordered table-hover\">"+
 	   	   "                                     <thead>  "+
