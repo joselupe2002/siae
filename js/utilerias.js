@@ -4146,7 +4146,9 @@ function ss_mostrarAdjuntos  (modulo,usuario,institucion, campus,essuper,miciclo
 							
 									if (valorAdj.VALIDADO=='S') {cadValor='N'; mensajebtn="No Validar"; } else {cadValor='S'; mensajebtn="Validar";}
 
-									evento="ss_validaradj('"+valor.TIPO+"','"+miciclo+"','"+matricula+"','"+cadValor+"','"+valorAdj.OBSVALIDADO+"','"+valor.REPORTE+"');";
+									var eltexto = valorAdj.OBSVALIDADO.replace(/\n|\r/g, " ");
+
+									evento="ss_validaradj('"+valor.TIPO+"','"+miciclo+"','"+matricula+"','"+cadValor+"','"+eltexto+"','"+valor.REPORTE+"');";
 									$("#rowAsp"+c).append( "<td><button type=\"button\" class=\"btn btn-white  btn-primary btn-round\" "+
 														"onclick=\""+evento+"\"><strong>"+mensajebtn+"</strong></button><td>");		
 										
