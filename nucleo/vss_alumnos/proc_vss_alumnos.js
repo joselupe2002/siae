@@ -119,10 +119,12 @@ function setValidado(id,valor,obs,user){
 function validarSol (modulo,usuario,essuper){
 table = $("#G_"+modulo).DataTable();
 $("#confirmCotejado").empty();
+var eltexto = table.rows('.selected').data()[0]["OBS"].replace(/\n|\r/g, " ");
+
 mostrarConfirm("confirmCotejado", "grid_vss_alumnos",  "Proceso de Cotejo",
 "<span class=\"label label-success\">Observaciones</span>"+
-"     <textarea id=\"obsCotejado\" style=\"width:100%; height:100%; resize: none;\">"+table.rows('.selected').data()[0]["OBS"]+"</textarea>",
-"¿Marcar como Validado? "+
+"     <textarea id=\"obsCotejado\" style=\"width:100%; height:100%; resize: none;\">"+eltexto+"</textarea>",
+"¿Marcar como VALIDADO? "+
 "<SELECT id=\"cotejado\"><OPTION value=\"S\">SI</OPTION><OPTION value=\"N\">NO</OPTION></SELECT>"
 ,"Finalizar Proceso", "btnMarcarValidado('"+table.rows('.selected').data()[0]["MATRICULA"]+"','"+table.rows('.selected').data()[0]["ID"]+"','"+modulo+"','"+usuario+"');","modal-sm");
 }
