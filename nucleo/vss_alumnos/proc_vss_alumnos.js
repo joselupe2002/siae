@@ -119,10 +119,8 @@ function setValidado(id,valor,obs,user){
 function validarSol (modulo,usuario,essuper){
 table = $("#G_"+modulo).DataTable();
 $("#confirmCotejado").empty();
-alert ("entre");
 var eltexto = table.rows('.selected').data()[0]["OBS"].replace(/\n|\r/g, " ");
 
-alert (eltexto);
 mostrarConfirm("confirmCotejado", "grid_vss_alumnos",  "Proceso de Cotejo",
 "<span class=\"label label-success\">Observaciones</span>"+
 "     <textarea id=\"obsCotejado\" style=\"width:100%; height:100%; resize: none;\">"+eltexto+"</textarea>",
