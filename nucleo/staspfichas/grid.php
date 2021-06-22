@@ -61,10 +61,10 @@
 								<div class="tabbable fontRoboto" >
 										<ul class="nav nav-tabs">
 											<li class="active">
-												<a data-toggle="tab" href="#p1" ><i class="green ace-icon fa fa-briefcase bigger-120"></i>Fichas</a>
+												<a data-toggle="tab" href="#p1" onclick="evento('p1');"><i class="green ace-icon fa fa-briefcase bigger-120"></i>Fichas</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p2" ><i class="red ace-icon fa fa-pencil bigger-120"></i>Gráficas</a>
+												<a data-toggle="tab" href="#p2" onclick="evento('p1');" ><i class="red ace-icon fa fa-pencil bigger-120"></i>Gráficas</a>
 											</li>																												
 										</ul>
 
@@ -92,11 +92,20 @@
                                                                     <div class="badge badge-success" id="solicitudesFinPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
                                                                 </div>
 
+                                                                <div class="infobox infobox-green">
+                                                                    <div class="infobox-icon"><i class="ace-icon fa fa fa-dollar"></i></div>
+                                                                    <div class="infobox-data">
+                                                                        <span class="infobox-data-number" id="solicitudesCotPag">0</span>
+                                                                            <div class="infobox-content">Sol. Cot. Pago</div>
+                                                                    </div>
+                                                                    <div class="badge badge-danger" id="solicitudesCotPagPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
+                                                                </div>
+
                                                                 <div class="infobox infobox-pink">
                                                                     <div class="infobox-icon"><i class="ace-icon fa fa-eye"></i></div>
                                                                     <div class="infobox-data">
                                                                         <span class="infobox-data-number" id="solicitudesCot">0</span>
-                                                                            <div class="infobox-content">Sol. Cotejadas</div>
+                                                                            <div class="infobox-content">Sol. Cot. Escolar</div>
                                                                     </div>
                                                                     <div class="badge badge-danger" id="solicitudesCotPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
                                                                 </div>
@@ -109,7 +118,8 @@
                                                                     </div>
                                                                     <div class="badge badge-primary" id="solicitudesAcPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
                                                                 </div>
-                                                                
+
+                                                              
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-8">
@@ -118,6 +128,11 @@
                                                             <div class="space-6"></div>
                                                             <span class="text-primary lead"><i class="ace-icon fa fa-check bigger-120 green"></i> <strong> Solicitudes Finalizadas</strong></span>
                                                             <div  id="lascarrerasFin"></div>
+                                                            <div class="space-6"></div>
+                                                            <span class="text-primary lead"><i class="ace-icon fa fa-question-circle bigger-120 red"></i> <strong> Solicitudes problemas Pago Ficha</strong></span>
+                                                            <div  id="lascarrerasCot"></div>
+
+                                                            
                                                         </div>
                                                     </div>
 												</div>											
@@ -232,6 +247,12 @@
 	}  
 
 
+    function evento(pes){
+		if (pes=="p1") {generaAspirantes();}
+		if (pes=="p2") {cargaHistMat("warning");}
+	}
+
+
 
   function cargaPestanias() { 
        var Body = $('body'); 
@@ -299,6 +320,22 @@
                                 }
                             });  
 
+                             //Cargamos las solicitudes que se han cotejado en el pago 
+                             $("#solicitudesFin").html(ladefault);
+                            elsqlSolCotPag="SELECT count(*) from aspirantes where CICLO='"+elciclo+"' and PAGAGO='S'";
+                            parametros={sql:elsqlSolCot,dato:sessionStorage.co,bd:"Mysql"}
+                            $.ajax({
+                                type: "POST",
+                                data:parametros,
+                                url:  "../base/getdatossqlSeg.php",
+                                success: function(dataSolCotPag){   
+
+                                    solcotpag=parseInt(JSON.parse(dataSolCotPag)[0][0]);  
+                                    $("#solicitudesCotPag").html(solcot);                      
+                                    $("#solicitudesCotPagPor").html(Math.round(solcotpag/parseInt($("#solicitudes").html())*100,2)+"%");	    
+                                }
+                            }); 
+
                             //Cargamos las solicitudes que se han aceptado
                             $("#solicitudesFin").html(ladefault);
                             elsqlSolAc="SELECT count(*) from aspirantes where CICLO='"+elciclo+"' and ACEPTADO='S'";
@@ -343,11 +380,13 @@
                                    
                                 }
                             });  
+
                      //Cargamos datos de las carreras aspirantes finalizadas
                             colorbtn=["btn-yellow","btn-light","btn-pink","btn-grey","btn-success","btn-info","btn-warning","btn-danger","btn-primary"];                            
                             elsqlSolCarFin="SELECT a.CARR_DESCRIP AS CARRERA, a.CARR_DESCORTA AS CARRERACOR,"+
-                                       "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"' and FINALIZADO='S' "+
-                                       " and CARRERA=CARR_CLAVE) AS NUM FROM ccarreras a WHERE a.CARR_OFERTAR='S' order by CARR_DESCRIP";                                                       
+                                       "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"' and FINALIZADO='S' and CARRERA=CARR_CLAVE) AS NUM, "+
+                                       "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"' and FINALIZADO='N' AND LENGTH(OBSPAGO)>0 and CARRERA=CARR_CLAVE) AS NUM_COT"+
+                                       " FROM ccarreras a WHERE a.CARR_OFERTAR='S' order by CARR_DESCRIP";                                                       
                             c2=0;
                             parametros={sql:elsqlSolCarFin,dato:sessionStorage.co,bd:"Mysql"}
                             $.ajax({
@@ -358,6 +397,11 @@
                                     jQuery.each(JSON.parse(dataCarFin), function(clave, valor) {
                                          $("#lascarrerasFin").append("<span title=\""+valor.CARRERA+"\" class=\"btn btn-app btn-sm "+colorbtn[c2]+" no-hover\">"+
 													              "   <span class=\"line-height-1 bigger-170\">"+valor.NUM+"</span>"+
+                                                                  "   <br /> "+
+													              "   <span class=\"line-height-1 smaller-60\"> "+valor.CARRERACOR+" </span>"+
+                                                                  "</span>");
+                                        $("#lascarrerasCot").append("<span title=\""+valor.CARRERA+"\" class=\"btn btn-app btn-sm "+colorbtn[c2]+" no-hover\">"+
+													              "   <span class=\"line-height-1 bigger-170\">"+valor.NUM_COT+"</span>"+
                                                                   "   <br /> "+
 													              "   <span class=\"line-height-1 smaller-60\"> "+valor.CARRERACOR+" </span>"+
                                                                   "</span>");
@@ -409,6 +453,9 @@
                             else {return '#000';}
                         }
                         });
+
+                        graficaCarrera.redraw();
+				        $(window).trigger('resize');
 
                         $( "#chartdiv svg rect" ).on("click", function(data) {    			     
                             detalle($(".morris-hover-row-label").html(),'','','');    			     
