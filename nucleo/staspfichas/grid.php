@@ -37,74 +37,123 @@
 <body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white; width:98%;" class="sigeaPrin">
     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
     
-<div class="row">
-    <div class="col-sm-4">
-        <div class="space-6"></div>
-        <div class="col-sm-7 infobox-container">
-            <div class="infobox infobox-green">
-                <div class="infobox-icon"> <i class="ace-icon fa fa-keyboard-o"></i></div>
-                <div class="infobox-data">
-                    <span class="infobox-data-number" id="solicitudes">0</span>
-                    <div class="infobox-content">Sol. capturadas</div>
-                </div>                
-            </div>
 
-            <div class="infobox infobox-blue">
-                <div class="infobox-icon"><i class="ace-icon fa fa-check"></i></div>
-                <div class="infobox-data">
-                    <span class="infobox-data-number" id="solicitudesFin">0</span>
-                    <div class="infobox-content">Sol. Finalizadas</div>
-                </div>
-                <div class="badge badge-success" id="solicitudesFinPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
-            </div>
+    <div class="widget-box widget-color-purple" id="principal">
+			  <div class="widget-header widget-header-small" style="padding:0px;">
+			      <div class="row" >	
+				         <div id="losciclos" class="col-sm-1">
+						</div> 	
+						<div id="losciclos2" class="col-sm-3"></div>  
+								
+						<div class="col-sm-2" style="padding-top:14px;">
+						    <button title="Ver Indicadores" onclick="cargaPestanias();" class="btn btn-white btn-info btn-round" value="Agregar"> 
+								<i class="ace-icon green fa fa-search bigger-140"></i><span class="btn-small fontRoboto">Indicadores</span>            
+							</button>													 									
+						</div>
+						
+		            </div> 
+		      </div>
 
-            <div class="infobox infobox-pink">
-                <div class="infobox-icon"><i class="ace-icon fa fa-eye"></i></div>
-                <div class="infobox-data">
-					<span class="infobox-data-number" id="solicitudesCot">0</span>
-						<div class="infobox-content">Sol. Cotejadas</div>
-				</div>
-				<div class="badge badge-danger" id="solicitudesCotPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
-            </div>
-            
-            <div class="infobox infobox-red">
-                <div class="infobox-icon"><i class="ace-icon fa fa-hand-o-right"></i></div>
-                <div class="infobox-data">
-					<span class="infobox-data-number" id="solicitudesAc">0</span>
-						<div class="infobox-content">Sol. Aceptadas</div>
-				</div>
-				<div class="badge badge-primary" id="solicitudesAcPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
-            </div>
-            
-        </div>
-    </div>
-    <div class="col-sm-8">
-        <span class="text-success lead"><i class="ace-icon fa fa-keyboard-o bigger-120 blue"></i> <strong> Solicitudes Capturadas</strong></span>
-        <div  id="lascarreras"></div>
-        <div class="space-6"></div>
-        <span class="text-primary lead"><i class="ace-icon fa fa-check bigger-120 green"></i> <strong> Solicitudes Finalizadas</strong></span>
-        <div  id="lascarrerasFin"></div>
-    </div>
-</div>
-<div class="space-12"></div>
-<div class="row">
-    <div class="col-sm-8">
-         <div class="widget-box">
-              <div class="widget-header widget-header-flat widget-header-small"  >
-                    <div class="row"> 
-                        <div class="col-sm-12"> 
-                            <h5 class="widget-title"><i class="ace-icon green fa fa-group"></i> Registros de aspirantes en Página</h5>
-                        </div>                       
-                    </div> <!--  del row del titula de la grafica-->
-                </div><!--  del widget header-->
-                <div class="widget-body">
-                    <div class="widget-main"> 
-                        <div id="graphfichas" class="graph"></div>
+              <div class="widget-body" >
+				   <div class="widget-main">
+				   		<div class="row">							   
+					       <div id="informacion" class="col-sm-12 sigeaPrin" style="overflow-y: auto; height:450px;" >    												   		
+								<div class="tabbable fontRoboto" >
+										<ul class="nav nav-tabs">
+											<li class="active">
+												<a data-toggle="tab" href="#p1" ><i class="green ace-icon fa fa-briefcase bigger-120"></i>Fichas</a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#p2" ><i class="red ace-icon fa fa-pencil bigger-120"></i>Gráficas</a>
+											</li>																												
+										</ul>
+
+										<div class="tab-content">
+											<div id="p1" class="tab-pane fade in active">	
+												<div class="row" id="con1">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="space-6"></div>
+                                                            <div class="col-sm-7 infobox-container">
+                                                                <div class="infobox infobox-green">
+                                                                    <div class="infobox-icon"> <i class="ace-icon fa fa-keyboard-o"></i></div>
+                                                                    <div class="infobox-data">
+                                                                        <span class="infobox-data-number" id="solicitudes">0</span>
+                                                                        <div class="infobox-content">Sol. capturadas</div>
+                                                                    </div>                
+                                                                </div>
+
+                                                                <div class="infobox infobox-blue">
+                                                                    <div class="infobox-icon"><i class="ace-icon fa fa-check"></i></div>
+                                                                    <div class="infobox-data">
+                                                                        <span class="infobox-data-number" id="solicitudesFin">0</span>
+                                                                        <div class="infobox-content">Sol. Finalizadas</div>
+                                                                    </div>
+                                                                    <div class="badge badge-success" id="solicitudesFinPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
+                                                                </div>
+
+                                                                <div class="infobox infobox-pink">
+                                                                    <div class="infobox-icon"><i class="ace-icon fa fa-eye"></i></div>
+                                                                    <div class="infobox-data">
+                                                                        <span class="infobox-data-number" id="solicitudesCot">0</span>
+                                                                            <div class="infobox-content">Sol. Cotejadas</div>
+                                                                    </div>
+                                                                    <div class="badge badge-danger" id="solicitudesCotPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
+                                                                </div>
+                                                                
+                                                                <div class="infobox infobox-red">
+                                                                    <div class="infobox-icon"><i class="ace-icon fa fa-hand-o-right"></i></div>
+                                                                    <div class="infobox-data">
+                                                                        <span class="infobox-data-number" id="solicitudesAc">0</span>
+                                                                            <div class="infobox-content">Sol. Aceptadas</div>
+                                                                    </div>
+                                                                    <div class="badge badge-primary" id="solicitudesAcPor">0%<i class="ace-icon fa fa-arrow-up"></i></div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <span class="text-success lead"><i class="ace-icon fa fa-keyboard-o bigger-120 blue"></i> <strong> Solicitudes Capturadas</strong></span>
+                                                            <div  id="lascarreras"></div>
+                                                            <div class="space-6"></div>
+                                                            <span class="text-primary lead"><i class="ace-icon fa fa-check bigger-120 green"></i> <strong> Solicitudes Finalizadas</strong></span>
+                                                            <div  id="lascarrerasFin"></div>
+                                                        </div>
+                                                    </div>
+												</div>											
+											</div>				       	
+									
+											<div id="p2" class="tab-pane ">
+                                                <div class="row">
+                                                    <div class="col-sm-8">
+                                                        <div class="widget-box">
+                                                            <div class="widget-header widget-header-flat widget-header-small"  >
+                                                                    <div class="row"> 
+                                                                        <div class="col-sm-12"> 
+                                                                            <h5 class="widget-title"><i class="ace-icon green fa fa-group"></i> Registros de aspirantes en Página</h5>
+                                                                        </div>                       
+                                                                    </div> <!--  del row del titula de la grafica-->
+                                                                </div><!--  del widget header-->
+                                                                <div class="widget-body">
+                                                                    <div class="widget-main"> 
+                                                                        <div id="graphfichas" class="graph"></div>
+                                                                    </div>
+                                                                </div>                                         
+                                                        </div><!--  del widget box-->
+                                                    </div>  <!-- Del col de de la grafica -->  
+                                                </div><!-- Del row de de la grafica -->  
+											</div>										
+										</div>
+									</div>				        
+						   </div>
+                       </div>
                     </div>
-                </div>                                         
-        </div><!--  del widget box-->
-    </div>  <!-- Del col de de la grafica -->  
-</div><!-- Del row de de la grafica -->  
+			   </div>
+		</div>
+
+
+
+
     
 
 <script src="<?php echo $nivel; ?>assets/js/jquery-2.1.4.min.js"></script>
@@ -142,6 +191,7 @@
 <script src="<?php echo $nivel; ?>js/morris/raphael-min.js"></script>
 <script src="<?php echo $nivel; ?>js/morris/morris.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 
 
 
@@ -161,7 +211,29 @@
    var ladefault="<img src=\"../../imagenes/menu/esperar.gif\"> </img>";
    colorbtn=["btn-yellow","btn-light","btn-pink","btn-grey","btn-success","btn-info","btn-warning","btn-danger","btn-primary"];                            
 
-   $(document).ready(function($) { 
+
+   jQuery(function($) { 
+		
+		$(".input-mask-hora").mask("99:99");
+		$(".input-mask-horario").mask("99:99-99:99");
+		$(".input-mask-numero").mask("99");
+
+		$("#losciclos2").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
+		addSELECT("selCiclo","losciclos2","PROPIO", "SELECT CICL_CLAVE, concat(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc order by CICL_CLAVE DESC", "","");  	
+		
+		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
+		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
+		colocarCiclo("elciclo","CLAVE");        
+		
+	});
+	
+    function change_SELECT(elemento) {
+		
+	}  
+
+
+
+  function cargaPestanias() { 
        var Body = $('body'); 
        Body.addClass('preloader-site');
        elsqlCiclo="SELECT CICL_CLAVE FROM ciclosesc where CICL_REGISTROLINEA='S' order by CICL_ORDEN DESC";
@@ -172,10 +244,20 @@
 			url:  "../base/getdatossqlSeg.php",
 			success: function(data){	
 		 
-                   jQuery.each(JSON.parse(data), function(clave, valor) {elciclo=valor.CICL_CLAVE;	 });
+                   jQuery.each(JSON.parse(data), function(clave, valor) {elciclo=$("#selCiclo").val();	 });
                    generaAspirantes();	
                   
                     //Cargamos las solicitudes que se han capturado
+                    $("#solicitudes").empty();
+                    $("#solicitudesFin").empty();
+                    $("#solicitudesFinPor").empty();
+                    $("#solicitudesCot").empty();
+                    $("#solicitudesCotPor").empty();
+                    $("#solicitudesAc").empty();
+                    $("#solicitudesAcPor").empty();
+
+                    
+
                     $("#solicitudes").html(ladefault);
                     elsqlSol="SELECT count(*) from aspirantes where CICLO='"+elciclo+"'";
                     parametros={sql:elsqlSol,dato:sessionStorage.co,bd:"Mysql"}
@@ -237,6 +319,9 @@
 
                     //Cargamos datos de las carreras aspirantes 
                          
+                    $("#lascarreras").empty();
+                    $("#lascarrerasFin").empty();
+                    
                             elsqlSolCar="SELECT a.CARR_DESCRIP AS CARRERA, a.CARR_DESCORTA AS CARRERACOR,"+
                                        "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"'"+
                                        " and CARRERA=CARR_CLAVE) AS NUM FROM ccarreras a WHERE a.CARR_OFERTAR='S' order by CARR_DESCRIP";                                                       
@@ -280,11 +365,7 @@
                                      });
                                    
                                 }
-                            });
-
-                     
-                    
-                    
+                            });            
                     
 				  },
 			error: function(data) {	                  
@@ -292,9 +373,9 @@
 				   }
            });
 
-        
+ }
            
-    });
+    
 
    $(window).load(function() {$('.preloader-wrapper').fadeOut();$('body').removeClass('preloader-site');});
 

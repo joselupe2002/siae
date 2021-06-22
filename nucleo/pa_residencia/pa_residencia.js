@@ -35,7 +35,7 @@ var miciclo="";
 
 	
 
-			elsqlc="select ifnull(MAX(PDOCVE),getciclo()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
+			elsqlc="select ifnull(MAX(PDOCVE),getcicloRes()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
 			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP'";
 
 			parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
@@ -60,7 +60,7 @@ var miciclo="";
 	
 
 	function verCartaPresentacion(){
-		elsqlc="select ifnull(MAX(PDOCVE),getciclo()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
+		elsqlc="select ifnull(MAX(PDOCVE),getcicloRes()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
 			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP'";
 
 		parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
