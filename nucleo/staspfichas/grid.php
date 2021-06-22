@@ -61,10 +61,10 @@
 								<div class="tabbable fontRoboto" >
 										<ul class="nav nav-tabs">
 											<li class="active">
-												<a data-toggle="tab" href="#p1" onclick="evento('p1');"><i class="green ace-icon fa fa-briefcase bigger-120"></i>Fichas</a>
+												<a data-toggle="tab" href="#p1" onclick="evento('p1');"><i class="green ace-icon fa fa-user bigger-120"></i>Fichas</a>
 											</li>
 											<li>
-												<a data-toggle="tab" href="#p2" onclick="evento('p1');" ><i class="red ace-icon fa fa-pencil bigger-120"></i>Gráficas</a>
+												<a data-toggle="tab" href="#p2" onclick="evento('p1');" ><i class="red ace-icon fa fa-bar-chart-o bigger-120"></i>Gráficas</a>
 											</li>																												
 										</ul>
 
@@ -358,6 +358,7 @@
                          
                     $("#lascarreras").empty();
                     $("#lascarrerasFin").empty();
+                    $("#lascarrerasCot").empty();
                     
                             elsqlSolCar="SELECT a.CARR_DESCRIP AS CARRERA, a.CARR_DESCORTA AS CARRERACOR,"+
                                        "(SELECT COUNT(*) FROM aspirantes where CICLO='"+elciclo+"'"+
