@@ -55,6 +55,7 @@
 						  <th style="text-align: center;">Evaluar</th> 
 						  <th style="text-align: center;">Promediar</th> 
 						  <th style="text-align: center;">Reporte</th> 	
+						  <th style="text-align: center;">Asesorias</th> 
                                                             	   	  
 					   </tr> 
 			     </thead> 
@@ -167,7 +168,12 @@
     	    	                              " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon green fa fa-print bigger-140\"></i></button></td>");								  
     	    
 			
-
+			//Boton de asesorias
+			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Reporte de asesorias\" onclick=\"imprimirRepAses('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
+    	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"','"+valor.SEM+"');\""+
+    	    	                              " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon pink fa fa-lightbulb-o bigger-140\"></i></button></td>");								  
+    	    
+			
         });
 }		
 
@@ -244,6 +250,13 @@ function imprimirBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre)
 }
 
 	
+
+function imprimirRepAses(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
+	enlace="nucleo/pd_captcal/repAses.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor=<?php echo $_SESSION["usuario"];?>&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre;
+	abrirPesta(enlace,"Rep.Uni.");
+
+}
 
 
 		</script>
