@@ -469,7 +469,7 @@ var miciclo="";
 				else { console.log("No hay proceso abierto");
 						$("#servicio").append("<div class=\"row\">"+
 						"    <div class=\"col-sm-12\"> "+
-						"          <div class=\"alert alert-danger\">No se encuentra abierto el proceso de  Servicio Social para este Ciclo</div> "+
+						"          <div class=\"alert alert-danger\">No se encuentra abierto el proceso de Solicitud Carta de Servicio Social para este Ciclo</div> "+
 						"    </div>");
 				}
 				
