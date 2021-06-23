@@ -31,7 +31,7 @@ var miciclo="";
 			}).css('color', barColor);
 			});
 
-		elsql="select ifnull(MAX(CICLO),getciclo()), COUNT(*) from ss_alumnos where MATRICULA='"+usuario+"'";	
+		elsql="select ifnull(MAX(CICLO),getcicloSS()), COUNT(*) from ss_alumnos where MATRICULA='"+usuario+"'";	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 				type: "POST",
@@ -54,7 +54,7 @@ var miciclo="";
 	function verCartaPresentacionSS(){
 		
 
-		elsqlc="select ifnull(MAX(CICLO),getciclo()), COUNT(*) from ss_alumnos where MATRICULA='"+usuario+"'";
+		elsqlc="select ifnull(MAX(CICLO),getcicloSS()), COUNT(*) from ss_alumnos where MATRICULA='"+usuario+"'";
 
 		parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
