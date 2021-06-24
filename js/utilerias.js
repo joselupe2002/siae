@@ -307,7 +307,7 @@ function dameVentana(nombre,contenedor,titulo,tam,colorfondohead,imaico, alto){
 	"             </button>"+
 	"             <span><i class=\"menu-icon "+imaico+"\"></i><span class=\"text-success lead \"> <strong>"+titulo+"</strong></span></span>"+	   
 	"          </div>"+
-	"          <div id=\"body_"+nombre+"\" class=\"modal-body\"  style=\"height:"+alto+"px; overflow-y: auto;\">"+	
+	"          <div id=\"body_"+nombre+"\" class=\"modal-body sigeaPrin\"  style=\"height:"+alto+"px; overflow-y: auto;\">"+	
 	"          </div>"+
 	"      </div>"+
 	"   </div>"+

@@ -23,6 +23,12 @@ var miciclo="";
 		$("#losciclos2").append("<span class=\"label label-danger\">Ciclo Escolar</span>");
 		addSELECT("selCiclo","losciclos2","PROPIO", "SELECT CICL_CLAVE, concat(CICL_CLAVE,' ',CICL_DESCRIP) FROM ciclosesc order by CICL_CLAVE DESC", "","");  	
 		
+		$("#lasfechas").append("<span class=\"label label-danger\">Fecha</span>");
+		addSELECT("selFecha","lasfechas","PROPIO", "SELECT '','' FROM dual", "","");  	
+
+		$("#lashoras").append("<span class=\"label label-danger\">Hora</span>");
+		addSELECT("selHora","lashoras","PROPIO", "SELECT '','' FROM dual", "","");
+	
 
 		$("#losciclos").append("<i class=\" fa white fa-level-down bigger-180\"></i> ");
 		$("#losciclos").append("<strong><span id=\"elciclo\" class=\"text-white bigger-40\"></span></strong>");
@@ -33,9 +39,25 @@ var miciclo="";
 	
 		 
 	function change_SELECT(elemento) {
+		cadex=""; if ($("#atendidos").prop("checked")) {cadex="  ASES_STATUS='S'";} else {cadex+="  ASES_STATUS='N'";} 
+		if (elemento=='selCiclo') {
+			miciclo=$("#selCiclo").val(); $("#elciclo").html($("#selCiclo").val());
+			
+			elsql="select distinct(ASES_FECHA), ASES_FECHA from propasesorias, falumnos, cmaterias, ccarreras, pempleados where ASES_MATRICULA=ALUM_MATRICULA "+
+		    "and ASES_ASIGNATURA=MATE_CLAVE  and ALUM_CARRERAREG=CARR_CLAVE and ASES_PROFESOR='"+usuario+"' and "+cadex+
+		    " and ASES_PROFESOR=EMPL_NUMERO";
+			actualizaSelect("selFecha",elsql, "","");
 
-		if (elemento=='selCiclo') {miciclo=$("#selCiclo").val(); $("#elciclo").html($("#selCiclo").val());}
-		if (elemento=='selTiposPagos') {$("#larutapago").empty(); selPago(); }
+		}
+
+		if (elemento=='selFecha') {						
+			elsql="select distinct(ASES_HORA), ASES_HORA from propasesorias, falumnos, cmaterias, ccarreras, pempleados where ASES_MATRICULA=ALUM_MATRICULA "+
+		    "and ASES_ASIGNATURA=MATE_CLAVE  and ALUM_CARRERAREG=CARR_CLAVE and ASES_PROFESOR='"+usuario+"' and "+cadex+
+		    " and ASES_PROFESOR=EMPL_NUMERO and ASES_FECHA='"+$("#selFecha").val()+"'";
+			actualizaSelect("selHora",elsql, "","");
+
+		}
+
 	}  
 
 
@@ -47,11 +69,14 @@ var miciclo="";
 		cadex="";
 		if ($("#atendidos").prop("checked")) {cadex="  ASES_STATUS='S'";} else {cadex+="  ASES_STATUS='N'";} 
 
+		cadFecha=""; if ($("#selFecha").val().length>1) {cadFecha=" and ASES_FECHA='"+$("#selFecha").val()+"'";}
+		cadHora=""; if ($("#selHora").val().length>1) {cadFecha=" and ASES_HORA='"+$("#selHora").val()+"'";}
 	
 		elsql="select ASES_ID,ASES_CICLO, EMPL_LUGARAS, ASES_PROFESOR, ASES_TEMA,ASES_FECHA, ASES_HORA, ASES_MATRICULA AS MATRICULA,ASES_STATUS, "+
 		"CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, CARR_DESCRIP AS CARRERAD,"+
 		"ASES_ASIGNATURA AS MATERIA, MATE_DESCRIP AS MATERIAD from propasesorias, falumnos, cmaterias, ccarreras, pempleados where ASES_MATRICULA=ALUM_MATRICULA "+
 		"and ASES_ASIGNATURA=MATE_CLAVE  and ALUM_CARRERAREG=CARR_CLAVE and ASES_PROFESOR='"+usuario+"' and "+cadex+
+		cadFecha+cadHora
 		" and ASES_PROFESOR=EMPL_NUMERO";			
 	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}

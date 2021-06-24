@@ -81,7 +81,8 @@
 												<tr>
 													<th style="text-align: center;">No.</th> 
 													<th style="text-align: center;">No.</th> 
-													<th style="text-align: center;">Profesor</th> 	
+													<th style="text-align: center;">Profesor</th>
+													<th style="text-align: center;">Semanal</th>  	
 													<th style="text-align: center;">Lunes</th> 		                          
 													<th style="text-align: center;">Martes</th> 
 													<th style="text-align: center;">Miercoles</th> 
@@ -297,6 +298,7 @@ function cargarAsesorias(){
 		btnMat="";
 			btnMat="<span title=\"Ver Asignaturas que puede asesorar el maestro "+valor.PROFESORD+"\" onclick=\"verMaterias('"+valor.EMPL_EXPASIG+"','"+valor.DESC_PROFESORD+"','"+valor.EMPL_LUGARAS+"');\" style=\"cursor:pointer;\"><i class=\"ace-icon green fa fa-book bigger-140\"></i></span>";
 
+			btnsem="<span title=\"Programar asesorías semanales\" onclick=\"programarSem('"+valor.DESC_PROFESOR+"','"+valor.DESC_PROFESORD+"','0','SEMANAL','','"+valor.DESC_CICLO+"','"+valor.EMPL_LUGARAS+"');\" style=\"cursor:pointer;\"><i class=\"ace-icon purple fa fa-calendar bigger-240\"></i></span>";
 			btnl=""; if (valor.LUNES!='') {btnl="<span title=\"Programar asesorías para el dia "+valor.LUNES+"\" onclick=\"programar('"+valor.DESC_PROFESOR+"','"+valor.DESC_PROFESORD+"','1','LUNES','"+valor.LUNES+"','"+valor.DESC_CICLO+"','"+valor.EMPL_LUGARAS+"');\" style=\"cursor:pointer;\"><i class=\"ace-icon blue fa fa-calendar bigger-140\"></i></span>";}
 			btnm=""; if (valor.MARTES!='') {btnm="<span title=\"Programar asesorías para el dia "+valor.MARTES+"\" onclick=\"programar('"+valor.DESC_PROFESOR+"','"+valor.DESC_PROFESORD+"','2','MARTES','"+valor.MARTES+"','"+valor.DESC_CICLO+"','"+valor.EMPL_LUGARAS+"');\" style=\"cursor:pointer;\"><i class=\"ace-icon blue fa fa-calendar bigger-140\"></i></span>";}
 			btnmi=""; if (valor.MIERCOLES!='') {btnmi="<span title=\"Programar asesorías para el dia "+valor.MIERCOLES+"\" onclick=\"programar('"+valor.DESC_PROFESOR+"','"+valor.DESC_PROFESORD+"','3','MIERCOLES','"+valor.MIERCOLES+"','"+valor.DESC_CICLO+"','"+valor.EMPL_LUGARAS+"');\" style=\"cursor:pointer;\"><i class=\"ace-icon blue fa fa-calendar bigger-140\"></i></span>";}
@@ -312,6 +314,7 @@ function cargarAsesorias(){
     	    $("#row"+c).append("<td>"+c+"</td>");
     	    $("#row"+c).append("<td>"+valor.DESC_PROFESOR+"</td>");
 			$("#row"+c).append("<td>"+btnMat+"&nbsp&nbsp"+valor.DESC_PROFESORD+"<br>"+enlace+"</td>");
+			$("#row"+c).append("<td style=\"text-align:center;\">&nbsp&nbsp"+btnsem+"</td>");
 		    $("#row"+c).append("<td>"+valor.LUNES+"&nbsp&nbsp"+btnl+"</td>");
 		    $("#row"+c).append("<td>"+valor.MARTES+"&nbsp&nbsp"+btnm+"</td>");
 			$("#row"+c).append("<td>"+valor.MIERCOLES+"&nbsp&nbsp"+btnmi+"</td>");
@@ -358,7 +361,8 @@ function cargarAsesorias(){
 
 
 	function programar (prof, profd, dia, diad, horario,ciclo,lugar) {
-
+		$("#vagendar").empty();
+		$("#vagendarSem").empty();
 		elsql="select CICL_INICIOR, CICL_FINR from ciclosesc where CICL_CLAVE='"+ciclo+"'";
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
@@ -392,7 +396,7 @@ function cargarAsesorias(){
 						"<div class=\"row fontRoboto\"> "+
 						"    <div class=\"col-sm-4\"></div>"+
 						"    <div class=\"col-sm-4\" style=\"text-align:center;\">"+
-						"         <button onclick=\"guardarAsesorias('"+prof+"','"+profd+"','"+dia+"','"+horario+"','"+ciclo+"','"+lugar+"')\" class=\"btn btn-white btn-info btn-bold\">"+
+						"         <button onclick=\"guardarAsesorias('0','"+prof+"','"+profd+"','"+dia+"','"+horario+"','"+ciclo+"','"+lugar+"')\" class=\"btn btn-white btn-info btn-bold\">"+
 						"                 <i class=\"ace-icon fa fa-floppy-o bigger-120 blue\"></i>Agendar Asesoria"+										
 						"         </button>"+
 						"    </div>"+					
@@ -403,10 +407,9 @@ function cargarAsesorias(){
 					var hasta = moment(fechaJava(termina));
 					diasEntreFechas(desde, hasta, dia,"fecha");
 
-					sqas="SELECT CICL_MATERIA, CICL_MATERIAD FROM veciclmate, falumnos "+
+					sqas="SELECT CICL_MATERIA, concat(CICL_MATERIA,' ',CICL_MATERIAD)  FROM veciclmate, falumnos "+
 					"where ALUM_MATRICULA='"+usuario+"' AND CICL_MAPA=ALUM_MAPA AND IFNULL(TIPOMAT,'0') NOT IN "+
-					"('T','AC','OC','I','RP') order by CICL_MATERIAD";
-		
+					"('T','AC','OC','I','RP') order by CICL_MATERIAD";				
 					actualizaSelect("asignatura",sqas, "",""); 
 					
 					sqas2="SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='MOTIVASESORIA' ORDER BY CATA_DESCRIP";
@@ -414,6 +417,81 @@ function cargarAsesorias(){
 	        	}
 			});			
 	}
+
+
+	function programarSem (prof, profd, dia, diad, horario,ciclo,lugar) {
+		$("#vagendar").empty();
+		$("#vagendarSem").empty();	
+			dameVentana("vagendarSem", "grid_alumasesorias","<span class=\"fontRobotoB\">"+
+			"Agendar con "+profd+"</span>&nbsp;<span class=\"badge badge-warning\">"+diad+"</span>&nbsp;<span class=\"badge badge-success\">"+horario+"</span>","lg","bg-successs","fa fa-book blue bigger-180","250");
+			$("#body_vagendarSem").append(
+				"<div class=\"row fontRoboto\"> "+
+				"    <div class=\"col-sm-6\">"+
+				"			<label class=\"fontRobotoB\">Fecha de la asesoria</label>"+
+				" 			<div class=\"input-group\"><input  class=\"form-control captProy date-picker\" id=\"fecha\" "+
+				" 			type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
+				" 			<span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
+				"    </div>"+
+				"    <div class=\"col-sm-6\">"+
+				"			<label class=\"fontRobotoB\">Hora de la asesoria</label>"+
+              	"			<input  autocomplete=\"off\" id=\"hora\" class= \"small form-control input-mask-horario\" type=\"text\">"+
+				"    </div>"+	
+				"</div>"+
+				"<div class=\"row fontRoboto\"> "+
+				"    <div class=\"col-sm-6\">"+
+				"		<label>Asignatura</label><select onchange=\"checatipoas();\" class=\"form-control\" id=\"asignatura\"></select>"+
+				"    </div>"+										
+				"    <div class=\"col-sm-6\">"+
+				"		<label>¿Que te motivo a buscar asesoria?</label><select class=\"form-control\" id=\"motivo\"></select>"+
+				"    </div>"+	
+				"</div>"+
+				"<div class=\"row fontRoboto\"> "+
+				"    <div class=\"col-sm-6\">"+
+				"		<label>Tipo Asesoría</label><select class=\"form-control\" id=\"tipoas\"></select>"+
+				"    </div>"+
+				"    <div class=\"col-sm-6\">"+
+				"		<label>Tema a tratar</label><input class=\"form-control\" id=\"tema\"></input>"+
+				"    </div>"+				
+				"</div><br>"+
+				"<div class=\"row fontRoboto\"> "+
+				"    <div class=\"col-sm-4\"></div>"+
+				"    <div class=\"col-sm-4\" style=\"text-align:center;\">"+
+				"         <button onclick=\"guardarAsesorias('SEM','"+prof+"','"+profd+"','"+dia+"','','"+ciclo+"','"+lugar+"')\" class=\"btn btn-white btn-info btn-bold\">"+
+				"                 <i class=\"ace-icon fa fa-floppy-o bigger-120 blue\"></i>Agendar Asesoria"+										
+				"         </button>"+
+				"    </div>"+					
+				"</div>"
+			);
+			$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+			$(".input-mask-horario").mask("99:99");	
+
+			sqas="SELECT CICL_MATERIA, concat(CICL_MATERIA,' ',CICL_MATERIAD,'|',IFNULL(TIPOMAT,'')) FROM veciclmate, falumnos "+
+			"where ALUM_MATRICULA='"+usuario+"' AND CICL_MAPA=ALUM_MAPA order by CICL_MATERIAD";
+			actualizaSelect("asignatura",sqas, "",""); 
+
+			sqas3="SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOASESORIAS' ORDER BY CATA_DESCRIP";
+			actualizaSelect("tipoas",sqas3, "",""); 				
+			
+			sqas2="SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='MOTIVASESORIA' ORDER BY CATA_DESCRIP";
+			actualizaSelectMarcar("motivo",sqas2, "","","ASS"); 		
+			$("#motivo option[value=\"ASS\"]").attr("selected",true);
+		
+}
+
+
+function checatipoas(){
+	
+	if ($("#asignatura option:selected").text().split("|")[1]=='AC') {
+		$("#tipoas option[value=\"AC\"]").attr("selected",true);
+	} 
+	if ($("#asignatura option:selected").text().split("|")[1]=='RP') {
+		$("#tipoas option[value=\"AR\"]").attr("selected",true);
+	} 
+	if (($("#asignatura option:selected").text().split("|")[1]!='AC') ||
+	    ($("#asignatura option:selected").text().split("|")[1]!='RP')) {
+		$("#tipoas option[value=\"AA\"]").attr("selected",true);
+	} 
+}
 
 
 	function cargarAsesores(){
@@ -434,19 +512,19 @@ function cargarAsesorias(){
 	}
 
 
-		function guardarAsesorias (prof, profd, dia, horario,ciclo,lugar){
+		function guardarAsesorias (tipo,prof, profd, dia, horario,ciclo,lugar){
 
 			if (($("#asignatura").val()!='0') && ($("#tema").val()!='') && ($("#motivo").val()!='') ) {
 			lafecha=dameFecha("FECHAHORA");
-
+			if (tipo==0) {lahora=horario.substr(0,5); eltipo="AA";} else {lahora=$("#hora").val(); eltipo=$("#tipoas").val();}
 			parametros={
 					tabla:"propasesorias",
 					bd:"Mysql",			
 					ASES_PROFESOR:prof,
 					ASES_MATRICULA:usuario,			 
 					ASES_FECHA:$("#fecha").val(),
-					ASES_HORA:horario.substr(0,5),
-					ASES_TIPO:"AA",
+					ASES_HORA:lahora,
+					ASES_TIPO:eltipo,
 					ASES_ASIGNATURA:$("#asignatura").val(),
 					ASES_MOTIVO:$("#motivo").val(),
 					ASES_TEMA:$("#tema").val(),
@@ -464,9 +542,9 @@ function cargarAsesorias(){
 				url:"../base/inserta.php",
 				data: parametros,
 				success: function(data){		
-					console.log(data);                                	                      
-
-					$("#vagendar").modal("hide");
+					console.log(data);      
+					if (tipo==0) {$("#vagendar").modal("hide");} else {$("#vagendarSem").modal("hide");}                          	                      
+							
 					correoalProf(prof, "<html>El alumno <span style=\"color:green\"><b>"+usuario+" "+nombreuser+
 								"</b></span> ha agendado una asesoria , para el d&iacute;a  "+$("#fecha").val()+" a las "+horario.substr(0,5)+" horas <br/>"+
 								"Lugar: "+"<a href=\""+lugar+"\">"+lugar+"</a>","ITSM: SOLICITUD DE ASESORIAS "+usuario+" "+nombreuser);			

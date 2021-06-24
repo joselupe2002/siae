@@ -26,21 +26,21 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
         
 
         <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }</style>
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" style="background-color: white;">
+	<body id="grid_<?php echo $_GET['modulo']; ?>"  style="background-color: white;" class="sigeaPrin">
        
 	     <div class="preloader-wrapper"><div class="preloader"><img src="<?php echo $nivel; ?>imagenes/menu/preloader.gif"></div></div>
 
 
       <h3 class="header smaller lighter text-warning"><strong>Calificaciones Parciales <i class="ace-icon fa fa-angle-double-right"></i> <small id="elciclo"></small> <small id="elciclod"></small></strong></h3>
-	     <div  class="table-responsive" style="height:400px;overflow: auto; ">
-		     <table id=tabHorarios class= "display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
+	     <div  class="table-responsive"  style="height:400px;overflow: auto;" class="sigeaPrin">
+		     <table id=tabHorarios class= "sigeaPrin fontRobotoB display table-condensed table-striped table-sm table-bordered table-hover nowrap " style="overflow-y: auto;">
 			 </table>	
 		</div>
 
@@ -139,8 +139,8 @@ var maxuni=0;
             $("#cuerpo").empty();
             caduni="";
     
-            for (i=1; i<=maxuni;i++) {caduni+="<th title=\"Calificaci&oacute;n parcial "+i+"\"style=\"text-align: center;\">CP"+i+"</th>";}
-            $("#tabHorarios").append("<thead><tr id=\"titulo\"><th style=\"text-align: center;\">Clave</th>"+ 
+            for (i=1; i<=maxuni;i++) {caduni+="<th  title=\"Calificaci&oacute;n parcial "+i+"\"style=\"text-align: center;\">CP"+i+"</th>";}
+            $("#tabHorarios").append("<thead><tr id=\"titulo\"><th>Ciclo</th><th style=\"text-align: center;\">Clave</th>"+ 
             "<th style=\"text-align: center;\">Materia</th><th style=\"text-align: center;\">Profesor</th>"+
             "<th title=\"Semestre de la asignatura\" style=\"text-align: center;\">SEM</th>"+
             "<th title=\"N&uacute;mero de Unidades de la asignatura\" style=\"text-align: center;\">NU</th>"+
@@ -149,22 +149,23 @@ var maxuni=0;
      	    $("#tabHorarios").append("<tbody id=\"cuerpo\">");
      	   
             jQuery.each(grid_data, function(clave, valor) { 	
-             	    
-         	    $("#cuerpo").append("<tr id=\"row"+valor.MATERIA+"\">");    	   
-         	    $("#row"+valor.MATERIA).append("<td>"+valor.MATERIA+"</td>");         	    
-         	    $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
-         	    $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");
-         	   $("#row"+valor.MATERIA).append("<td>"+valor.SEM+"</td>");
-         	    $("#row"+valor.MATERIA).append("<td>"+valor.NUMUNI+"</td>");
-         	    $("#row"+valor.MATERIA).append("<td>"+valor.LISCAL+"</td>");
+				
+         	    $("#cuerpo").append("<tr id=\"row"+valor.MATERIA+valor.CICLO+"\">");   
+				$("#row"+valor.MATERIA+valor.CICLO).append("<td>"+valor.CICLO+"</td>");  	   
+         	    $("#row"+valor.MATERIA+valor.CICLO).append("<td>"+valor.MATERIA+"</td>");         	    
+         	    $("#row"+valor.MATERIA+valor.CICLO).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
+         	    $("#row"+valor.MATERIA+valor.CICLO).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");
+         	   $("#row"+valor.MATERIA+valor.CICLO).append("<td>"+valor.SEM+"</td>");
+         	    $("#row"+valor.MATERIA+valor.CICLO).append("<td>"+valor.NUMUNI+"</td>");
+         	    $("#row"+valor.MATERIA+valor.CICLO).append("<td>"+valor.LISCAL+"</td>");
          	   
          	    for (i=1; i<=maxuni;i++) {
              	     cal=grid_data[clave]["LISPA"+i];
              	     caltxt="<span class=\"pull-right badge badge-danger\">"+cal+"</span>";
              	     if (cal>=70) { caltxt="<span class=\"pull-right badge badge-info\">"+cal+"</span>";}
-         	    	$("#row"+valor.MATERIA).append("<td>"+caltxt+"</td>"); 
+         	    	$("#row"+valor.MATERIA+valor.CICLO).append("<td>"+caltxt+"</td>"); 
              	    }
-         	   $("#row"+valor.MATERIA).append("</tr>");
+         	   $("#row"+valor.MATERIA+valor.CICLO).append("</tr>");
              });
             $('#dlgproceso').modal("hide"); 
      }		

@@ -46,7 +46,11 @@
 			      <div class="row" >	
 				         <div id="losciclos" class="col-sm-1">
 						</div> 	
-						<div id="losciclos2" class="col-sm-3"></div>  
+						<div id="losciclos2" class="col-sm-2"></div>  
+
+						<div id="lasfechas" class="col-sm-2"></div>  
+						<div id="lashoras" class="col-sm-2"></div>  
+
 				
 						<div class="col-sm-2" style="padding-top:14px;">
 
