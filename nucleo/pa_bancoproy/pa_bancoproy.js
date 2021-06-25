@@ -49,10 +49,10 @@ function generaTabla(grid_data){
 		                       "      <div>"+
 							   "         <div class=\"fontRobotoB col-sm-10 bigger-120 text-success\"><span class=\"badge badge-primary\">"+valor.ID+"</span>"+valor.PROYECTO+"<br>"+
 							   "             <span class=\"fontRoboto bigger-60  text-warning\">"+valor.DESCRIPCION+"</span><br>"+
-							   "             <span class=\"fontRobotoB bigger-60  text-primary\">Empresa: "+valor.EMPRESAD+"</span><br>"+
-							   "             <span class=\"fontRobotoB bigger-60 text-muted\">Contacto: "+valor.CONTACTO+"</span><br>"+
-							   "             <span class=\"label label-white middle fontRoboto bigger-60  label-primary\">Correo: "+valor.CORREO+"</span>"+"<br>"+
-							   "             <span class=\"label label-white middle fontRoboto bigger-60  label-danger\">Telefono: "+valor.TELEFONO+"</span>"+
+							   "             <span class=\"fontRobotoB bigger-60  text-primary pull-right\">Empresa: "+valor.EMPRESAD+"</span><br>"+
+							   "             <span class=\"fontRobotoB bigger-60 text-muted pull-right\">Contacto: "+valor.CONTACTO+"</span><br>"+
+							   "             <span class=\"fontRoboto bigger-60 text-muted pull-right \">e-mail:"+valor.CORREO+"</span>"+
+							   "             <span class=\"fontRoboto bigger-60  text-muted pull-right \">Cel:"+valor.TELEFONO+"&nbsp;&nbsp;</span>"+
 							   
 							   "         </div>"+
 							   "         <div class=\"col-sm-2\">"+

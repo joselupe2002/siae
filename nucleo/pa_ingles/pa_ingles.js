@@ -172,10 +172,15 @@ var miid=0;
 
 									$("#documentos").append("<div class=\"alert alert-danger\" style=\"text-align:justify;\"><i class=\"fa fa-info blue bigger-150\"/>  "+
 									"Si Ingresaste en el 2015 en adelante debes subir Certificado de Inglés<br><br>"+
+									"<b>Por disposición del Tecnológico Nacional de México a través de la Secretaria de Extensión y Vinculación "+
+									"y La Coordinación Nacional de Lenguas Extranjeras, en la reunión realizada con la Región 8, donde participó "+
+									"La Coordinación de Lengua Extranjera Macuspana y que tuvo lugar el 18 de febrero del 2021, se determinaron y "+
+									"homologaron los requisitos con los que debe contar el Certificado o Constancia presentado por el estudiante, "+
+									"para la obtención de la liberación del idioma inglés.<br>"+
 									"<b>REQUISITOS DEL CERTIFICADO O CONSTANCIA EN EL IDIOMA INGLÉS:<b><br><br>"+
 									"<span class=\"text-primary\">MANUAL DE LINEAMIENTOS ACADÉMICO-ADMINISTRATIVOS DEL TECNOLÓGICO NACIONAL DE MÉXICO, CAPÍTULO 14. LINEAMIENTO PARA LA TITULACIÓN INTEGRAL, 14.4 POLÍTICAS DE OPERACIÓN, NUMERAL 14.4.1.2:</span><br><br>"+
-									"<span class=\"text-success\"><b> a)	El certificado o constancia debe ser emitida por una Institución u Organismo Nacional o Internacional con validez oficial.</span><br>"+
-									"<span class=\"text-success\"> b)	El certificado o constancia debe validar la capacidad de ENTENDER (Escuchar, Leer), ELABORAR Y COMUNICAR DE MANERA ORAL Y ESCRITA (Hablar y Escribir) nociones estándar en el ámbito personal, así como profesional, de acuerdo al Nivel B1 del Marco Común Europeo de Referencia (MCER) para el caso del idioma inglés.</span><br><br></b>"+
+									"<span class=\"text-success\"><b> a) El certificado o constancia debe ser emitida por una Institución u Organismo Nacional o Internacional con validez oficial.</span><br>"+
+									"<span class=\"text-success\"> b) El certificado o constancia debe validar la capacidad de ENTENDER (Escuchar, Leer), ELABORAR Y COMUNICAR DE MANERA ORAL Y ESCRITA (Hablar, Escribir) nociones estándar en el ámbito personal, así como profesional, de acuerdo al Nivel B1 del Marco Común Europeo de Referencia (MCER) para el caso del idioma inglés.</span><br><br></b>"+
 									"</div>");
 
 
