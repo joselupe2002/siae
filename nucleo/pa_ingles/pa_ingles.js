@@ -142,7 +142,7 @@ var miid=0;
 												"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a><br/>");
 					}
 					
-					$("#documentos").append("<div class=\"alert alert-danger\"><i class=\"fa fa-info blue bigger-150\"/>  Si Ingresaste en el 2015 en adelante debes subir Certificado de Inglés</div>");
+					
 
 					elsql="SELECT RUTA,RESPUESTA,VALIDADO,count(*) FROM eadjlibing where AUX LIKE '"+usuario+"_"+miciclo+"_CERING'";
 					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -169,6 +169,15 @@ var miid=0;
 														"<img src=\"../../imagenes/menu/pdf.png\" style=\"width:25px; height:25px;\"></a><br/>");
 									}
 									
+
+									$("#documentos").append("<div class=\"alert alert-danger\" style=\"text-align:justify;\"><i class=\"fa fa-info blue bigger-150\"/>  "+
+									"Si Ingresaste en el 2015 en adelante debes subir Certificado de Inglés<br><br>"+
+									"<b>REQUISITOS DEL CERTIFICADO O CONSTANCIA EN EL IDIOMA INGLÉS:<b><br><br>"+
+									"<span class=\"text-primary\">MANUAL DE LINEAMIENTOS ACADÉMICO-ADMINISTRATIVOS DEL TECNOLÓGICO NACIONAL DE MÉXICO, CAPÍTULO 14. LINEAMIENTO PARA LA TITULACIÓN INTEGRAL, 14.4 POLÍTICAS DE OPERACIÓN, NUMERAL 14.4.1.2:</span><br><br>"+
+									"<span class=\"text-success\"><b> a)	El certificado o constancia debe ser emitida por una Institución u Organismo Nacional o Internacional con validez oficial.</span><br>"+
+									"<span class=\"text-success\"> b)	El certificado o constancia debe validar la capacidad de ENTENDER (Escuchar, Leer), ELABORAR Y COMUNICAR DE MANERA ORAL Y ESCRITA (Hablar y Escribir) nociones estándar en el ámbito personal, así como profesional, de acuerdo al Nivel B1 del Marco Común Europeo de Referencia (MCER) para el caso del idioma inglés.</span><br><br></b>"+
+									"</div>");
+
 
 									//Checamos si ya hay respuesta de PDF
 									elsql="SELECT RUTA FROM eadjreinsres where AUX="+miid;
