@@ -75,12 +75,12 @@ var miciclo="";
 								losdatos=JSON.parse(data); 						
 								btn1="";btn2="";		
 								if ((losdatos[0]["HAY"]>0) && (losdatos[0]["RUTA"]!="")) {							
-									btn1="<a  href=\""+losdatos[0]["RUTA"]+"\" class=\"btn  btn-bold btn-danger\">"+
+									btn1="<a  href=\""+losdatos[0]["RUTA"]+"\" target=\"_blank\" class=\"btn  btn-bold btn-danger\">"+
 										 "     <i class=\"ace-icon white fa fa-file-text bigger-200\"></i><span class=\"fontRobotoB text-white\">Ver Carta Presentación</span>"+
 										 "</a>";							
 									}	
 									if ((losdatos[0]["HAY"]>0) && (losdatos[0]["RUTALIB"]!="")) {							
-										btn2="<a  href=\""+losdatos[0]["RUTALIB"]+"\"  class=\"btn  btn-bold btn-success\" >"+
+										btn2="<a  href=\""+losdatos[0]["RUTALIB"]+"\"  target=\"_blank\"  class=\"btn  btn-bold btn-success\" >"+
 										 "     <i class=\"ace-icon white fa fa-file-text bigger-200\"></i><span class=\"fontRobotoB text-white\">Ver Liberación</span>"+
 										 "</a>";							
 										}	
