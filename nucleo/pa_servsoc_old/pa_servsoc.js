@@ -31,7 +31,7 @@ var miciclo="";
 			}).css('color', barColor);
 			});
 
-		elsql="select ifnull(MAX(CICLO),getcicloSS()), COUNT(*) from ss_alumnos where MATRICULA='"+usuario+"'";
+		elsql="select ifnull(MAX(CICLO),getcicloSS()), COUNT(*) from ss_alumnos where MATRICULA='"+usuario+"'";	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 				type: "POST",
@@ -64,7 +64,7 @@ var miciclo="";
 			success: function(dataCic2){ 
 				losdatosCic=JSON.parse( dataCic2); 
 				elciclo=losdatosCic[0][0];
-				elsql="select ifnull(RUTA,'') as RUTA, ifnull(RUTALIB,'') as RUTALIB, count(*) as HAY FROM ss_alumnos a where MATRICULA='"+usuario+"' and CICLO='"+elciclo+"'";
+				elsql="select ifnull(RUTA,'') as RUTA, count(*) as HAY FROM ss_alumnos a where MATRICULA='"+usuario+"' and CICLO='"+elciclo+"'";
 				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		
 				$.ajax({
@@ -72,28 +72,23 @@ var miciclo="";
 							data:parametros,
 							url:  "../base/getdatossqlSeg.php",
 							success: function(data){	
-								losdatos=JSON.parse(data); 						
-								btn1="";btn2="";		
+								losdatos=JSON.parse(data); 				
 								if ((losdatos[0]["HAY"]>0) && (losdatos[0]["RUTA"]!="")) {							
-									btn1="<a  href=\""+losdatos[0]["RUTA"]+"\" class=\"btn  btn-bold btn-danger\">"+
-										 "     <i class=\"ace-icon white fa fa-file-text bigger-200\"></i><span class=\"fontRobotoB text-white\">Ver Carta Presentación</span>"+
-										 "</a>";							
-									}	
-									if ((losdatos[0]["HAY"]>0) && (losdatos[0]["RUTALIB"]!="")) {							
-										btn2="<a  href=\""+losdatos[0]["RUTALIB"]+"\"  class=\"btn  btn-bold btn-success\" >"+
-										 "     <i class=\"ace-icon white fa fa-file-text bigger-200\"></i><span class=\"fontRobotoB text-white\">Ver Liberación</span>"+
-										 "</a>";							
-										}	
-								$("#lacarta").append("<div class=\"row\">"+"<div class=\"col-sm-6\">"+btn2+	
-																			"<div class=\"col-sm-6\">"+btn1+"</div></div>");						 
+									$("#lacarta").append(
+										"<div class=\"row\">"+
+											"<div class=\"row\">"+
+												"<button  onclick=\"abrirPesta('"+losdatos[0]["RUTA"]+"','Carta');\" class=\"btn  btn-bold btn-danger\" value=\"Agregar\">"+
+												"     <i class=\"ace-icon white fa fa-file-text bigger-200\"></i><span class=\"fontRobotoB text-white\">Ver Carta Presentación</span>"+
+												"</button>"+
+											"<div>"+
+										"</div>");							
+									}									 
 							}
 					});
 			}
 		});
 	}
 		 
-
-
 
 		 
 	function cargarAvance() {
@@ -189,27 +184,26 @@ var miciclo="";
 									success: function(data){ 
 										losdatos=JSON.parse(data); 						
 										if ((porcProyectado>=70) && (losdatos[0][0]<=0)) {
-											$("#panIni").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
+											$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 															   "  Podrías cursar el Servicio Social, si llegas a cursar todas las asignaturas de el semestre no cerrado"+
 															   "</div>");
 											// OpcionesServicio();			   
 										}
 										if ((porcProyectado<70) && (losdatos[0][0]<=0)) {
-											$("#panIni").html("<div class=\"alert alert-danger\" style=\"width:100%;\">"+ 									        
+											$("#servicio").html("<div class=\"alert alert-danger\" style=\"width:100%;\">"+ 									        
 															   "    Todavía no cumples los créditos necesarios para inscribir el Servicio Social "+
 															   "</div>");
 										}
 										if (losdatos[0][0]>=1) {
-											$("#panIni").html("<div class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
+											$("#servicio").html("<div class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
 															   "   Ya cursaste el Servicio Social "+
 															   "</div>");
 										}
 										if ((porcReal>=70) && (losdatos[0][0]<=0)) {
-											$("#panIni").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
+											$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 															   "    Ya puede cursar el Servicio Social"+
 															   "</div>");
 
-										console.log("Abrir Opciones de Servicio");
 													
 											OpcionesServicio();
 										}
@@ -228,19 +222,17 @@ var miciclo="";
 
 
    function agregaPDF(contenedor,mensaje,ruta) {
-	$("#"+contenedor).append("<span class=\" label label-success\">"+mensaje+"</span> <a title=\"Ver Archivo\" onclick=\"previewAdjunto('"+ruta+"');\">"+
+	$("#"+contenedor).append("<span class=\" label label-success\"><i class=\"icon fa fa-check white bigger-120\"> </i>"+mensaje+"</span> <a title=\"Ver Archivo\" onclick=\"previewAdjunto('"+ruta+"');\">"+
 	"                  		<img src=\"..\\..\\imagenes\\menu\\pdf.png\" width=\"50px\" height=\"50px\">"+
 	"           </a>");
    }
   
 
 
-
    function OpcionesServicio(){
-	console.log("Opciones de Servicio");
 
 	var abierto=false;
-	$("#panIni").empty();
+	$("#servicio").empty();
 
 	elsql="select ID, count(*) as HAY from ss_alumnos a where  CICLO='"+miciclo+"' and MATRICULA='"+usuario+"'";
 
@@ -250,16 +242,154 @@ var miciclo="";
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
 		success: function(data){
-			if (JSON.parse(data)[0]["HAY"]>0) {
-				cargarPestania("SERVSOC_INI","panIni","SERVSOC","eadjresidencia",usuario,miciclo);
-				cargarPestania("SERVSOC_SEG","panSeg","SERVSOC","eadjresidencia",usuario,miciclo);
-				cargarPestania("SERVSOC_FIN","panFin","SERVSOC","eadjresidencia",usuario,miciclo);
+	
+			if (JSON.parse(data)[0]["HAY"]>0) {				
+					elsql="select CLAVE, DOCGEN_RUTA FROM edocgen where CLAVE IN ('SOLSS','CARCOMSS') ORDER BY CLAVE";
+					parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+					$.ajax({
+						type: "POST",
+						data:parametros,
+						url:  "../base/getdatossqlSeg.php",
+						success: function(data){ 
+							losdatos=JSON.parse(data); 
 				
-				
-			}
 
-			else { console.log("No hay proceso abierto");
-						$("#panIni").append("<div class=\"row\">"+
+							$("#servicio").append("<div class=\"row\" style=\"text-align:left;\">"+
+												"    <div class=\"col-sm-12\"> "+
+												"     <div id=\"documentos\" class=\"col-sm-12\" ></div>"+
+												"    </div>"+
+												"</div>");
+
+							$("#documentos").append("<div class=\"row\"><div id=\"cont_sscartapres\" class=\"col-sm-6\"></div>"+
+													"                   <div id=\"cont_sscartaacep\" class=\"col-sm-6\"></div></div>"+
+													"<div class=\"row\"><div id=\"cont_sssol\" class=\"col-sm-6\"></div>"+
+													"                   <div id=\"cont_sscartacom\" class=\"col-sm-6\"></div></div>"+
+													"<div class=\"row\"><div id=\"cont_ssplan\" class=\"col-sm-6\"></div>"+
+													"                   <div id=\"cont_sslibre\" class=\"col-sm-6\"></div></div>"+
+													"<div class=\"row\"><div id=\"cont_ssbim1\" class=\"col-sm-6\"></div>"+
+													"                   <div id=\"cont_ssbim2\" class=\"col-sm-6\"></div></div>"+
+													"<div class=\"row\"><div id=\"cont_ssbim3\" class=\"col-sm-6\"></div>"+
+													"                   <div id=\"cont_ssfinal\" class=\"col-sm-6\"></div>"+
+													"</div>");
+
+
+							elsql="SELECT IFNULL((select concat(VALIDADO,'|',RUTA) from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSSOLSS'),'|') AS RUTA_SSSOLSS, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSCARTACOM'),'|') AS RUTA_SSCARTACOM, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSCARTAPRES'),'|') AS RUTA_SSCARTAPRES, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSCARTAACEP'),'|') AS RUTA_SSCARTAACEP, "+
+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSPLAN'),'|') AS RUTA_SSPLAN, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSBIM1'),'|') AS RUTA_SSBIM1, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSBIM2'),'|') AS RUTA_SSBIM2, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSBIM3'),'|') AS RUTA_SSBIM3, "+
+							" IFNULL((select concat(VALIDADO,'|',RUTA)  from eadjresidencia where  AUX='"+usuario+"_"+miciclo+"_SSFINAL'),'|') AS RUTA_SSFINAL "+
+							" FROM DUAL"; 
+	
+							parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+							$.ajax({
+								type: "POST",
+								data:parametros,
+								url:  "../base/getdatossqlSeg.php",
+								success: function(data){
+					
+									
+									activaEliminar="";							
+									if ((JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[0]!='S') {
+										dameSubirArchivoDrive("cont_sscartapres","Carta Presentación Sellada","sscartapres",'SERVSOC','pdf',
+										'ID',usuario,'CARTA PRESENTACIÓN SELLADA','eadjresidencia','alta',usuario+"_"+miciclo+"_SSCARTAPRES",JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[1],activaEliminar);										
+									} else {
+										agregaPDF("cont_sssol","Carta Presentación Sellada",JSON.parse(data)[0]["RUTA_SSCARTAPRES"].split("|")[1]);
+									}
+
+
+									activaEliminar="";							
+									if ((JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[0]!='S') {
+										dameSubirArchivoDrive("cont_sscartaacep","Carta Aceptación Sellada","sscartaacep",'SERVSOC','pdf',
+										'ID',usuario,'CARTA ACEPTACIÓN SELLADA','eadjresidencia','alta',usuario+"_"+miciclo+"_SSCARTAACEP",JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[1],activaEliminar);										
+									} else {
+										agregaPDF("cont_sssol","Carta Aceptación Sellada",JSON.parse(data)[0]["RUTA_SSCARTAACEP"].split("|")[1]);
+									}
+									
+
+
+									activaEliminar="";							
+
+									if ((JSON.parse(data)[0]["RUTA_SSSOLSS"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSSOLSS"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSSOLSS"].split("|")[0]!='S') {
+										dameSubirArchivoDrive("cont_sssol","Solicitud Firmada","sssol",'SERVSOC','pdf',
+										'ID',usuario,'SOLICITUD FIRMADA','eadjresidencia','alta',usuario+"_"+miciclo+"_SSSOLSS",JSON.parse(data)[0]["RUTA_SSSOLSS"].split("|")[1],activaEliminar);										
+									} else {
+										agregaPDF("cont_sssol","Solicitud Firmada",JSON.parse(data)[0]["RUTA_SSSOLSS"].split("|")[1]);
+									}
+
+									
+
+									activaEliminar="";
+									if ((JSON.parse(data)[0]["RUTA_SSCARTACOM"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSCARTACOM"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSCARTACOM"].split("|")[0]!='S') {				
+										dameSubirArchivoDrive("cont_sscartacom","Carta Compromiso","sscartacom",'SERVSOC','pdf',
+										'ID',usuario,'CARTA COMPROMISO','eadjresidencia','alta',usuario+"_"+miciclo+"_SSCARTACOM",JSON.parse(data)[0]["RUTA_SSCARTACOM"].split("|")[1],activaEliminar);
+									} else {
+										agregaPDF("cont_sscartacom","Carta Compromiso",JSON.parse(data)[0]["RUTA_SSCARTACOM"].split("|")[1]);
+									}
+
+
+									activaEliminar="";
+									if ((JSON.parse(data)[0]["RUTA_SSPLAN"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSPLAN"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSPLAN"].split("|")[0]!='S') {				
+										dameSubirArchivoDrive("cont_ssplan","Plan de Trabajo","ssplan",'SERVSOC','pdf',
+										'ID',usuario,'PLAN DE TRABAJO','eadjresidencia','alta',usuario+"_"+miciclo+"_SSPLAN",JSON.parse(data)[0]["RUTA_SSPLAN"].split("|")[1],activaEliminar);
+									} else {
+										agregaPDF("cont_ssplan","Plan de Trabajo",JSON.parse(data)[0]["RUTA_SSPLAN"].split("|")[1]);
+									}
+
+
+									activaEliminar="";
+									if ((JSON.parse(data)[0]["RUTA_SSBIM1"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSBIM1"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSBIM1"].split("|")[0]!='S') {				
+										dameSubirArchivoDrive("cont_ssbim1","Reportes Bimestre 1","ssbim1",'SERVSOC','pdf',
+										'ID',usuario,'REPORTES BIMESTRE 1','eadjresidencia','alta',usuario+"_"+miciclo+"_SSBIM1",JSON.parse(data)[0]["RUTA_SSBIM1"].split("|")[1],activaEliminar);
+									}else {
+										agregaPDF("cont_ssbim1","Reportes Bimestre 1",JSON.parse(data)[0]["RUTA_SSBIM1"].split("|")[1]);
+									}
+
+									activaEliminar="";
+									if ((JSON.parse(data)[0]["RUTA_SSBIM2"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSBIM2"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSBIM2"].split("|")[0]!='S') {														
+										dameSubirArchivoDrive("cont_ssbim2","Reportes Bimestre 2","ssbim2",'SERVSOC','pdf',
+										'ID',usuario,'REPORTES BIMESTRE 2','eadjresidencia','alta',usuario+"_"+miciclo+"_SSBIM2",JSON.parse(data)[0]["RUTA_SSBIM2"].split("|")[1],activaEliminar);
+									}else {
+										agregaPDF("cont_ssbim2","Reportes Bimestre 2",JSON.parse(data)[0]["RUTA_SSBIM2"].split("|")[1]);
+									}
+
+									activaEliminar="";
+									if ((JSON.parse(data)[0]["RUTA_SSBIM3"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSBIM3"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSBIM3"].split("|")[0]!='S') {					
+										dameSubirArchivoDrive("cont_ssbim3","Reportes Bimestre 3","ssbim3",'SERVSOC','pdf',
+										'ID',usuario,'REPORTES BIMESTRE 3','eadjresidencia','alta',usuario+"_"+miciclo+"_SSBIM3",JSON.parse(data)[0]["RUTA_SSBIM3"].split("|")[1],activaEliminar);
+									}else {
+										agregaPDF("cont_ssbim3","Reportes Bimestre 3",JSON.parse(data)[0]["RUTA_SSBIM3"].split("|")[1]);
+									}
+
+									activaEliminar="";
+									if ((JSON.parse(data)[0]["RUTA_SSFINAL"].split("|")[1]!='') && (JSON.parse(data)[0]["RUTA_SSFINAL"].split("|")[0]!='S'))  {	activaEliminar='S';}					
+									if (JSON.parse(data)[0]["RUTA_SSFINAL"].split("|")[0]!='S') {					
+										dameSubirArchivoDrive("cont_ssfinal","Documentos Finales","ssfinal",'SERVSOC','pdf',
+										'ID',usuario,'DOCUMENTOS FINALES','eadjresidencia','alta',usuario+"_"+miciclo+"_SSFINAL",JSON.parse(data)[0]["RUTA_SSFINAL"].split("|")[1],activaEliminar);
+									}else {
+										agregaPDF("cont_ssfinal","Documentos Finales",JSON.parse(data)[0]["RUTA_SSFINAL"].split("|")[1]);
+									}
+
+								}
+							});
+
+						}
+					});
+				} //DEL SI ESTA ABIERO 
+				else { console.log("No hay proceso abierto");
+						$("#servicio").append("<div class=\"row\">"+
 						"    <div class=\"col-sm-12\"> "+
 						"          <div class=\"alert alert-danger\">No se ha realizado Solicitud de Servicio Social para este Ciclo</div> "+
 						"    </div>");
@@ -267,7 +397,7 @@ var miciclo="";
 			}
 		}); //del ajax de busqueda de corte abierto 
 
-		$("#panIni").append("<div class=\"fontRobotoB\" id=\"pcapt\" style=\"text-align:left;\"></div>");
+		$("#servicio").append("<div class=\"fontRobotoB\" id=\"pcapt\" style=\"text-align:left;\"></div>");
 		abrirCaptura();
 
 	}
@@ -276,7 +406,6 @@ var miciclo="";
 
 	function abrirCaptura(){
 
-		$("#pcapt").empty();
 		var abierto=false;
 		elsql="select count(*) as N from ecortescal where  CICLO='"+miciclo+"'"+
 		" and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
@@ -284,7 +413,6 @@ var miciclo="";
 		" AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='SOLSERSOC' "+
 		" order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
 
-		console.log("Abrir Captura");
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
@@ -303,24 +431,34 @@ var miciclo="";
 						data:parametros,
 						url:  "../base/getdatossqlSeg.php",
 						success: function(data){
-
+							
+							
 							bt1="<button  onclick=\"capturaProyecto();\" class=\"btn btn-white btn-info btn-bold\">"+
-							"     <i class=\"ace-icon green glyphicon glyphicon-book\"></i>1. Capturar Solicitud"+
+							"     <i class=\"ace-icon green glyphicon glyphicon-book\"></i>1. Capturar Sol.."+
 							"</button> &nbsp;  &nbsp; ";
 							bt2="<button  onclick=\"verProyecto();\" class=\"btn btn-white btn-success btn-bold\">"+
-							"     <i class=\"ace-icon pink glyphicon glyphicon-print\"></i>2. Imprimir Solicitud"+
+							"     <i class=\"ace-icon pink glyphicon glyphicon-print\"></i>2. Imprimir Sol."+
 							"</button>  &nbsp;  &nbsp; ";
 							bt3="<button  onclick=\"verCartaCom();\" class=\"btn btn-white btn-warning btn-bold\">"+
 							"     <i class=\"ace-icon pink glyphicon glyphicon-print\"></i>3. Carta Compromiso"+
 							"</button>  &nbsp;  &nbsp; ";
 							bt4="<button  onclick=\"enviarSol();\" class=\"btn btn-white btn-danger btn-bold\">"+
 							"     <i class=\"ace-icon blue  fa  fa-share-square-o\"></i>4. Enviar"+
+							"</button> &nbsp;  &nbsp;";
+							bt5="<button  onclick=\"captPlan();\" class=\"btn btn-white btn-warning btn-bold\">"+
+							"     <i class=\"ace-icon blue  fa fa-list-ul\"></i>5. Plan"+
 							"</button>";
+							
 
 							if (JSON.parse(data)[0]["ENVIADA"]=='S') { bt4=''; bt1="";}	
 
+			
+
 								//Si esta abierto aparecemos la opción de capturar Proyecto.
-							$("#pcapt").append(bt1+bt2+bt3+bt4);
+							$("#pcapt").append(bt1+bt2+bt3+bt4+ //bt5+
+							"</div>"+"<hr><div style=\"text-align:center;\">");
+
+							
 
 							
 						}
@@ -329,9 +467,9 @@ var miciclo="";
 
 				}
 				else { console.log("No hay proceso abierto");
-						$("#panIni").append("<div class=\"row\">"+
+						$("#servicio").append("<div class=\"row\">"+
 						"    <div class=\"col-sm-12\"> "+
-						"          <div class=\"alert alert-danger\">No se encuentra abierto el proceso de  Servicio Social para este Ciclo</div> "+
+						"          <div class=\"alert alert-danger\">No se encuentra abierto el proceso de Solicitud Carta de Servicio Social para este Ciclo</div> "+
 						"    </div>");
 				}
 				
@@ -343,16 +481,12 @@ var miciclo="";
 	
 	function capturaProyecto(){
 
-		console.log("Captura de Datos Pres");
-
 		elsql="select ifnull(ID,'0') as ID,ifnull( MATRICULA,'') AS MATRICULA,ifnull( CICLO,'') AS CICLO,ifnull( INICIO,'') AS INICIO,"+
 		"ifnull( PROGRAMA,'') AS PROYECTO,ifnull( TERMINO,'') AS TERMINO,ifnull( EMPRESA,'') AS EMPRESA,"+
-		"ifnull( REPRESENTANTE,'') AS REPRESENTANTE,ifnull( PUESTO,'') AS PUESTO,ifnull(PROGRAMA,'') AS PROGRAMA,"+
-		"ifnull( RESPONSABLEPROG,'') AS RESPONSABLEPROG,ifnull( MODALIDAD,'') AS MODALIDAD,ifnull( ACTIVIDADES,'') AS ACTIVIDADES,ifnull( DIRECCION,'') AS DIRECCION,"+
-		"ifnull( TIPOPROG,'') AS TIPOPROG,ifnull(ENVIADA,'') AS ENVIADA, ifnull( TIPOPROGADD,'') AS TIPOPROGADD,ifnull(AYUDA,'') AS AYUDA, ifnull(MONTO,'') AS MONTO, ifnull( FECHACOM,'') AS FECHACOM, VALIDADO AS VALIDADO,"+
-		"ifnull( CARGORESPPROG,'') AS CARGORESPPROG,ifnull( ESTADO,'') AS ESTADO,ifnull(MUNICIPIO,'') AS MUNICIPIO, ifnull( SECTOR,'') AS SECTOR, ifnull( TAMANIO,'') AS TAMANIO,"+
-		"ifnull( TELSUPSS,'') AS TELSUPSS,ifnull(TELEMPRESA,'') AS TELEMPRESA, ifnull( CORREOSUPSS,'') AS CORREOSUPSS,ifnull( HORARIO,'') AS HORARIO,"+
-		"ifnull( ADICIONAL1,'') AS ADICIONAL1,ifnull(ADICIONAL2,'') AS ADICIONAL2,"+
+		"ifnull( REPRESENTANTE,'') AS REPRESENTANTE,ifnull( TELEMPRESA,'') AS TELEMPRESA,ifnull( PUESTO,'') AS PUESTO,ifnull(PROGRAMA,'') AS PROGRAMA,"+
+		"ifnull( MODALIDAD,'') AS MODALIDAD,ifnull( ACTIVIDADES,'') AS ACTIVIDADES,ifnull( DIRECCION,'') AS DIRECCION,"+
+		"ifnull( RESPPROG,'') AS RESPPROG,ifnull( PSTORESPPROG,'') AS PSTORESPPROG,ifnull(AYUDA,'') AS AYUDA, ifnull(MONTO,'') AS MONTO, "+
+		"ifnull( TIPOPROG,'') AS TIPOPROG,ifnull(ENVIADA,'') AS ENVIADA, ifnull( TIPOPROGADD,'') AS TIPOPROGADD, ifnull( FECHACOM,'') AS FECHACOM, VALIDADO AS VALIDADO,"+
 		"count(*) as HAY from ss_alumnos a where  CICLO='"+miciclo+"'"+
 		" and MATRICULA='"+usuario+"'";
 
@@ -367,7 +501,7 @@ var miciclo="";
 
 				if (misdatos[0]["HAY"]>0) {proceso="actualizaDatos("+misdatos[0]["ID"]+");"; } else {proceso="grabarDatos();";}
 				mostrarConfirm2("infoError","grid_pa_servsoc","Captura de Solicitud",
-				"<div class=\"ventanaSC sigeaPrin\" style=\"text-align:justify; width:99%; height:250px; overflow-y:auto; overflow-x:hidden;\">"+
+				"<div class=\"ventanaSC\" style=\"text-align:justify; width:99%; height:250px; overflow-y:auto; overflow-x:hidden;\">"+
 					"<div class=\"row\">"+
 						"<div class=\"col-sm-6\">"+
 							"<label class=\"fontRobotoB\">Dependencia Oficial</label><input class=\"form-control captProy\" id=\"empresa\" value=\""+misdatos[0]["EMPRESA"]+"\"></input>"+
@@ -394,54 +528,30 @@ var miciclo="";
 						"</div>"+	
 					"</div>"+
 					"<div class=\"row\">"+
-						"<div class=\"col-sm-12\">"+						
+						"<div class=\"col-sm-8\">"+
 							"<label class=\"fontRobotoB\">Domicilio Empresa: </label><input class=\"form-control captProy\" value=\""+misdatos[0]["DIRECCION"]+"\" id=\"direccion\"></input>"+
+						"</div>"+	
+						"<div class=\"col-sm-4\">"+
+							"<label class=\"fontRobotoB\">Teléfono: </label><input class=\"form-control captProy\" value=\""+misdatos[0]["TELEMPRESA"]+"\" id=\"telempresa\"></input>"+
 						"</div>"+						
 					"</div>"+
 					"<div class=\"row\">"+
-						"<div class=\"col-sm-3\">"+
-						     "<label class=\"fontRobotoB\">Estado</label><select onchange=\"eligeMuni('"+misdatos[0]["MUNICIPIO"]+"');\" class=\"form-control captProy\"  id=\"estado\"></select>"+							
-						"</div>"+	
-						"<div class=\"col-sm-3\">"+
-							"<label class=\"fontRobotoB\">Municipio</label><select class=\"form-control captProy\"  id=\"municipio\"></select>"+	
-						"</div>"+	
-						"<div class=\"col-sm-3\">"+
-							"<label class=\"fontRobotoB\">Sector</label><select class=\"form-control captProy\"  id=\"sector\"></select>"+	
-						"</div>"+
-						"<div class=\"col-sm-3\">"+
-							"<label class=\"fontRobotoB\">Tamaño</label><select class=\"form-control captProy\"  id=\"tamanio\"></select>"+	
-						"</div>"+					
-					"</div>"+
-					"<div class=\"row\">"+
-						"<div class=\"col-sm-4\">"+
+						"<div class=\"col-sm-9\">"+
 							"<label class=\"fontRobotoB\">Nombre del Programa </label><input class=\"form-control captProy\" value=\""+misdatos[0]["PROGRAMA"]+"\" id=\"programa\"></input>"+
 						"</div>"+
-						"<div class=\"col-sm-4\">"+
-							"<label class=\"fontRobotoB\">Supervisor del SS. </label><input class=\"form-control captProy\" value=\""+misdatos[0]["RESPONSABLEPROG"]+"\" id=\"responsableprog\"></input>"+
-						"</div>"+
-						"<div class=\"col-sm-4\">"+
-							"<label class=\"fontRobotoB\">Cargo del Supervisor del SS. </label><input class=\"form-control captProy\" value=\""+misdatos[0]["CARGORESPPROG"]+"\" id=\"cargorespprog\"></input>"+
-						"</div>"+
-										
-					"</div>"+
-
-					"<div class=\"row\">"+
-
 						"<div class=\"col-sm-3\">"+
 							"<label class=\"fontRobotoB\">Modalidad</label><select class=\"form-control captProy\"  id=\"modalidad\"></select>"+
-						"</div>"+	
-
-						"<div class=\"col-sm-3\">"+
-							"<label class=\"fontRobotoB\">Telefono Dependencia </label><input class=\"form-control captProy\" value=\""+misdatos[0]["TELEMPRESA"]+"\" id=\"telempresa\"></input>"+
-						"</div>"+
-						"<div class=\"col-sm-3\">"+
-							"<label class=\"fontRobotoB\">Teléfono Supervisor SS. </label><input class=\"form-control captProy\" value=\""+misdatos[0]["TELSUPSS"]+"\" id=\"telsupss\"></input>"+
-						"</div>"+
-						"<div class=\"col-sm-3\">"+
-						"<label class=\"fontRobotoB\">Teléfono Supervisor SS. </label><input class=\"form-control captProy\" value=\""+misdatos[0]["CORREOSUPSS"]+"\" id=\"correosupss\"></input>"+
 						"</div>"+					
 					"</div>"+
 
+					"<div class=\"row\">"+
+						"<div class=\"col-sm-6\">"+
+							"<label class=\"fontRobotoB\">Nombre Responsable Programa</label><input class=\"form-control captProy\" value=\""+misdatos[0]["RESPPROG"]+"\" id=\"respprog\"></input>"+
+						"</div>"+
+						"<div class=\"col-sm-6\">"+
+							"<label class=\"fontRobotoB\">Puesto del Responsable</label><input class=\"form-control captProy\" value=\""+misdatos[0]["PSTORESPPROG"]+"\" id=\"pstorespprog\"></input>"+
+						"</div>"+				
+					"</div>"+
 
 					"<div class=\"row\">"+
 						"<div class=\"col-sm-12\">"+
@@ -450,18 +560,14 @@ var miciclo="";
 					"</div>"+
 
 					"<div class=\"row\">"+
-						"<div class=\"col-sm-4\">"+
+						"<div class=\"col-sm-6\">"+
 							"<label class=\"fontRobotoB\">Tipo de Programa</label><select class=\"form-control captProy\"  id=\"tipoprog\"></select>"+
 						"</div>"+	
-						"<div class=\"col-sm-4\">"+
+						"<div class=\"col-sm-6\">"+
 							"<label class=\"fontRobotoB\">Otro, especifique</label><input class=\"form-control captProyOP\" value=\""+misdatos[0]["TIPOPROGADD"]+"\" id=\"tipoprogadd\"></input>"+
-						"</div>"+	
-						"<div class=\"col-sm-4\">"+
-							"<label class=\"fontRobotoB\">Tipo Asistencia</label><select class=\"form-control captProy\"  id=\"horario\"></select>"+
-						"</div>"+
-								
+						"</div>"+			
 					"</div>"+
-
+					
 					"<div class=\"row\">"+
 						"<div class=\"col-sm-6\">"+
 							"<label class=\"fontRobotoB\">Recibe Ayuda Económica</label><select class=\"form-control captProy\"  id=\"ayuda\"></select>"+
@@ -471,33 +577,20 @@ var miciclo="";
 						"</div>"+			
 					"</div>"+
 
-
 					"<div class=\"row\">"+
-						"<div class=\"col-sm-4\">"+
+						"<div class=\"col-sm-3\">"+
 							"<label class=\"fontRobotoB\">Fecha Firma de Compromiso</label>"+
 							" <div class=\"input-group\"><input  class=\"form-control captProy date-picker\" value=\""+misdatos[0]["FECHACOM"]+"\" id=\"fechacom\" "+
 							" type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" /> "+
 							" <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div>"+
-						"</div>"+	
-						"<div class=\"col-sm-4\">"+
-							"<label class=\"fontRobotoB\">Adicional 1</label><input class=\"form-control captProyOP\" value=\""+misdatos[0]["ADICIONAL1"]+"\" id=\"adicional1\"></input>"+
-						"</div>"+
-						"<div class=\"col-sm-4\">"+
-							"<label class=\"fontRobotoB\">Adicional 2</label><input class=\"form-control captProyOP\" value=\""+misdatos[0]["ADICIONAL2"]+"\" id=\"adicional2\"></input>"+
-						"</div>"+	
+						"</div>"+		
 					"</div>"+					
 				"</div>"
 				,"Grabar Datos",proceso,"modal-lg");
 
 				actualizaSelectMarcar("modalidad", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='SSMODALIDAD'", "","",misdatos[0]["MODALIDAD"]); 
 				actualizaSelectMarcar("tipoprog", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='SSTIPOPROG'", "","",misdatos[0]["TIPOPROG"]); 
-				actualizaSelectMarcar("estado", "SELECT ID_ESTADO, ESTADO FROM cat_estado order by ID_ESTADO", "","",misdatos[0]["ESTADO"]); 
-				actualizaSelectMarcar("sector", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='REGIMENEMPRESAS'", "","",misdatos[0]["SECTOR"]); 
-				actualizaSelectMarcar("tamanio", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TAMANIOEMP'", "","",misdatos[0]["TAMANIO"]); 
-				actualizaSelectMarcar("municipio", "SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+misdatos[0]["ESTADO"]+"' order by MUNICIPIO", "","",misdatos[0]["MUNICIPIO"]);
-				actualizaSelectMarcar("horario", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPASISSS'", "","",misdatos[0]["HORARIO"]); 
 				actualizaSelectMarcar("ayuda", "SELECT 'S','SI' FROM DUAL UNION SELECT 'N','NO' FROM DUAL", "","",misdatos[0]["AYUDA"]); 
-				
 				$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
 				
 			
@@ -510,9 +603,6 @@ var miciclo="";
 	}
 
 
-	function eligeMuni(municipio){
-		actualizaSelectMarcar("municipio", "SELECT ID_MUNICIPIO, MUNICIPIO FROM cat_municipio where ID_ESTADO='"+$("#estado").val()+"' order by MUNICIPIO", "","",municipio);
-	}
 	
 	function grabarDatos(){
 		vacios=false;
@@ -530,35 +620,26 @@ var miciclo="";
 					bd:"Mysql",
 					MATRICULA:usuario,
 					CICLO:miciclo,
-					INICIO:$("#inicio").val(),
-					HORARIO:$("#horario").val(),
-					HORAS:"500",
-					TERMINO:$("#termino").val(),
-					EMPRESA:$("#empresa").val().toUpperCase(),
-					MODALIDAD:$("#modalidad").val(),
-					PUESTO:$("#puesto").val().toUpperCase(),
-					RESPONSABLEPROG:$("#responsableprog").val().toUpperCase(),
-					CARGORESPPROG:$("#cargorespprog").val().toUpperCase(),
-					REPRESENTANTE:$("#representante").val().toUpperCase(),
-					PROGRAMA:$("#programa").val(),
-					TIPOPROG:$("#tipoprog").val(),
-					DIRECCION:$("#direccion").val().toUpperCase(),
-					FECHACOM:$("#fechacom").val(),
-					TIPOPROGADD:$("#tipoprogadd").val().toUpperCase(),
-					ACTIVIDADES:$("#actividades").val().toUpperCase(),
-					ESTADO:$("#estado").val().toUpperCase(),
-					MUNICIPIO:$("#municipio").val().toUpperCase(),
-					SECTOR:$("#sector").val().toUpperCase(),
-					TAMANIO:$("#tamanio").val().toUpperCase(),
-					TELSUPSS:$("#telsupss").val().toUpperCase(),
-					TELEMPRESA:$("#telempresa").val().toUpperCase(),
-					CORREOSUPSS:$("#correosupss").val().toUpperCase(),
-					ADICIONAL1:$("#adicional1").val().toUpperCase(),
-					ADICIONAL2:$("#adicional2").val().toUpperCase(),
-					ADICIONAL2:$("#adicional2").val().toUpperCase(),
-					ADICIONAL2:$("#adicional2").val().toUpperCase(),
+					AVANCE:porcReal,
+					RESPPROG:$("#respprog").val(),
+					PSTORESPPROG:$("#pstorespprog").val(),
+					TELEMPRESA:$("#telempresa").val(),
 					AYUDA:$("#ayuda").val(),
 					MONTO:$("#monto").val(),
+					INICIO:$("#inicio").val(),
+					HORARIO:"LUNES A VIERNES 08:00 - 16:00",
+					HORAS:"500",
+					TERMINO:$("#termino").val(),
+					EMPRESA:$("#empresa").val(),
+					MODALIDAD:$("#modalidad").val(),
+					PUESTO:$("#puesto").val(),
+					REPRESENTANTE:$("#representante").val(),
+					PROGRAMA:$("#programa").val(),
+					TIPOPROG:$("#tipoprog").val(),
+					DIRECCION:$("#direccion").val(),
+					FECHACOM:$("#fechacom").val(),
+					TIPOPROGADD:$("#tipoprogadd").val(),
+					ACTIVIDADES:$("#actividades").val(),
 					USUARIO:usuario,
 					FECHAUS:fecha,
 					_INSTITUCION: lainstitucion, 
@@ -598,16 +679,18 @@ var miciclo="";
 					campollave:"ID",
 					valorllave:elid,
 					MATRICULA:usuario,
+					AVANCE:porcReal,
+					RESPPROG:$("#respprog").val(),
+					PSTORESPPROG:$("#pstorespprog").val(),
+					TELEMPRESA:$("#telempresa").val(),
+					AYUDA:$("#ayuda").val(),
+					MONTO:$("#monto").val(),
 					CICLO:miciclo,
 					INICIO:$("#inicio").val(),
 					TERMINO:$("#termino").val(),
 					EMPRESA:$("#empresa").val(),
 					PUESTO:$("#puesto").val(),
-					AYUDA:$("#ayuda").val(),
-					MONTO:$("#monto").val(),
-					RESPONSABLEPROG:$("#responsableprog").val().toUpperCase(),
-					CARGORESPPROG:$("#cargorespprog").val().toUpperCase(),
-					HORARIO:$("#horario").val(),
+					HORARIO:"LUNES A VIERNES 08:00 - 16:00",
 					HORAS:"500",
 					REPRESENTANTE:$("#representante").val(),
 					PROGRAMA:$("#programa").val(),
@@ -617,16 +700,6 @@ var miciclo="";
 					FECHACOM:$("#fechacom").val(),
 					TIPOPROGADD:$("#tipoprogadd").val(),
 					ACTIVIDADES:$("#actividades").val(),
-					ESTADO:$("#estado").val().toUpperCase(),
-					MUNICIPIO:$("#municipio").val().toUpperCase(),
-					SECTOR:$("#sector").val().toUpperCase(),
-					TAMANIO:$("#tamanio").val().toUpperCase(),
-					TELSUPSS:$("#telsupss").val().toUpperCase(),
-					TELEMPRESA:$("#telempresa").val().toUpperCase(),
-					CORREOSUPSS:$("#correosupss").val().toUpperCase(),
-					ADICIONAL1:$("#adicional1").val().toUpperCase(),
-					ADICIONAL2:$("#adicional2").val().toUpperCase(),
-
 					USUARIO:usuario,
 					FECHAUS:fecha,
 					_INSTITUCION: lainstitucion, 
@@ -722,7 +795,7 @@ var miciclo="";
 						url:"../base/actualiza.php",
 						data: parametros,
 						success: function(data){ 
-							$("#panIni").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
+							$("#servicio").html("<div class=\"alert alert-warning\" style=\"width:100%;\">"+ 									        
 							"    Tu Solicitud ya fue enviada"+
 							"</div>");	
 							

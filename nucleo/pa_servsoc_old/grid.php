@@ -117,52 +117,22 @@
 			</div>
 		</div>
 
-		<div class="col-sm-8"> 
+		<div class="col-sm-7"> 
 			<div class="row"> 
 				<div class="col-sm-12" id="lacarta" style="text-align:center;">							
 				</div>
 			</div> 
-
-			<div class="row"> 
-				<div class="col-sm-12" id="pcapt" style="text-align:center;">							
-				</div>
-			</div> 
-
 			<div class="space-10"> </div>
 			<div class="row"> 
-				<div class="tabbable fontRoboto">
-					<ul class="nav nav-tabs" id="myTab">
-						<li class="active">
-							<a data-toggle="tab" href="#pesInicio"><i class="red ace-icon fa fa-check-square bigger-120"></i>Inicio</a>
-						</li>
-						<li >
-							<a data-toggle="tab" href="#pesSegui"><i class="blue ace-icon fa fa-external-link-square bigger-120"></i>Seguimiento</a>
-						</li>
-						<li >
-							<a data-toggle="tab" href="#pesFin"><i class="green ace-icon fa fa-sign-out bigger-120"></i>Finales</a>
-						</li>
-						
-					</ul>
-					<div class="tab-content">
-			 		  	<div id="pesInicio" class="tab-pane fade in active">					 					   
-					            <div id="panIni" class="row"> </div>
-					 	 </div>
-
-						<div id="pesSegui" class="tab-pane">					 					   
-					            <div id="panSeg" class="row"> </div>
-					 	</div>
-
-						<div id="pesFin" class="tab-pane">					       					   
-					            <div id="panFin" class="row"> </div>
-					 	</div>
-
-					</div>
+				<div class="col-sm-12" id="servicio" style="text-align:center;">							
 				</div>
-
 			</div>
 		</div>
+		
 
 	</div>
+
+	
 
 <!-- ============================================================================================================-->			
 		 							
@@ -217,8 +187,6 @@
 <!-- -------------------Exportación de tabla a excel----------------------->
 <script src="<?php echo $nivel; ?>js/FileSaver.min.js"></script>
 <script src="<?php echo $nivel; ?>js/tableexport.js"></script>
-
-<script src="<?php echo $nivel; ?>js/utilerias.js?v=<?php echo date('YmdHis'); ?>"></script>
 
 
 

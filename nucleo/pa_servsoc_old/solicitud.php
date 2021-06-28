@@ -297,12 +297,12 @@
 		$pdf->SetFont('Times','B',10);
 		$pdf->Cell(50,5,utf8_decode("Responsable del Programa:"),"L",0,'L',false);
 		$pdf->SetFont('Times','',10);
-		$pdf->Cell(120,5,utf8_decode($data[0]["RESPONSABLEPROG"]),"BR",1,'L',false);
+		$pdf->Cell(120,5,utf8_decode($data[0]["RESPPROG"]),"BR",1,'L',false);
 
 		$pdf->SetFont('Times','B',10);
 		$pdf->Cell(50,5,utf8_decode("Puesto:"),"L",0,'L',false);
 		$pdf->SetFont('Times','',10);
-		$pdf->Cell(120,5,utf8_decode($data[0]["CARGORESPPROG"]),"BR",1,'L',false);
+		$pdf->Cell(120,5,utf8_decode($data[0]["PSTORESPPROG"]),"BR",1,'L',false);
 
 
 		$pdf->SetFont('Times','B',10);
