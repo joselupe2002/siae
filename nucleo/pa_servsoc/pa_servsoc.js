@@ -194,7 +194,7 @@ var miciclo="";
 															   "    Todavía no cumples los créditos necesarios para inscribir el Servicio Social "+
 															   "</div>");
 										}
-										if (losdatos[0][0]>1) {
+										if (losdatos[0][0]>=1) {
 											$("#servicio").html("<div class=\"alert alert-success\" style=\"width:100%;\">"+ 									        
 															   "   Ya cursaste el Servicio Social "+
 															   "</div>");
