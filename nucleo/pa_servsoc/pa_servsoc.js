@@ -80,7 +80,7 @@ var miciclo="";
 										 "</a>";							
 									}	
 									if ((losdatos[0]["HAY"]>0) && (losdatos[0]["RUTALIB"]!="")) {							
-										btn2="&nbsp;&nbsp;&nbsp;<a  href=\""+losdatos[0]["RUTALIB"]+"\"  target=\"_blank\"  class=\"btn  btn-bold btn-success\" >"+
+										btn2="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a  href=\""+losdatos[0]["RUTALIB"]+"\"  target=\"_blank\"  class=\"btn  btn-bold btn-success\" >"+
 										 "     <i class=\"ace-icon white fa fa-file-text bigger-200\"></i><span class=\"fontRobotoB text-white\">Ver Liberación</span>"+
 										 "</a>";							
 										}	
