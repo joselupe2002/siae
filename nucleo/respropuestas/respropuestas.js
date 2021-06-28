@@ -49,10 +49,10 @@ var miciclo="";
 		if ($("#atendidos").prop("checked")) {cadex="  AUTORIZADA='S'";} else {cadex+="  AUTORIZADA='N'";} 
 
 		if (essuper=="S") {
-			elsql="SELECT * FROM vrespropuestas n where "+cadex+" ORDER BY ID DESC";
+			elsql="SELECT * FROM vrespropuestas n where "+cadex+" AND CICLO='"+$("#selCiclo").val()+"' ORDER BY ID DESC";
 		}
 		else {
-			elsql="SELECT * FROM vrespropuestas n where "+cadex+" and CARRERA in ("+carrera+") ORDER BY ID DESC"			
+			elsql="SELECT * FROM vrespropuestas n where "+cadex+" and CARRERA in ("+carrera+") AND CICLO='"+$("#selCiclo").val()+"' ORDER BY ID DESC"			
 		}
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
