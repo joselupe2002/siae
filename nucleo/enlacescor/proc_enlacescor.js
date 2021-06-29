@@ -4,7 +4,7 @@ function verEnlace(modulo,id,tipo){
 	table = $("#G_"+modulo).DataTable();
 	if (table.rows('.selected').data().length>0) {				
 				elid=table.rows('.selected').data()[0][0];							
-				enlace="http://"+location.host+"/sigea/wb.php?w="+elid;
+				enlace="http://"+location.host+"/wb.php?w="+elid;
 				grabarEnlace(elid,enlace);
 				alert (enlace);
 				return false;			
