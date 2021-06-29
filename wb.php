@@ -52,7 +52,8 @@
 	
 	<?php 
 		$miConex = new Conexion();
-		$resultado=$miConex->getConsulta("Mysql","SELECT ENLACE from eeventos where ID='".$_GET["w"]."'");
+		$resultado=$miConex->getConsulta("Mysql","SELECT ENLACE FROM enlacescor where ID='".$_GET["w"]."'");
+		echo "SELECT ENLACE FROM enlacescor where ID='".$_GET["w"]."'";
 		foreach ($resultado as $row) {$enlace= $row["ENLACE"]; }	
 		echo $enlace;	
 		echo "<script type=\"text/javascript\">";
