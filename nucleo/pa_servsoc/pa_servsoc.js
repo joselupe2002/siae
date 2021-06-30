@@ -254,7 +254,7 @@ var miciclo="";
 				cargarPestania("SERVSOC_INI","panIni","SERVSOC","eadjresidencia",usuario,miciclo);
 				cargarPestania("SERVSOC_SEG","panSeg","SERVSOC","eadjresidencia",usuario,miciclo);
 				cargarPestania("SERVSOC_FIN","panFin","SERVSOC","eadjresidencia",usuario,miciclo);
-				
+				console.log("prueba");
 				
 			}
 
