@@ -78,7 +78,7 @@
 			{
 				$miConex = new Conexion();
 				$resultado=$miConex->getConsulta($_SESSION['bd'],
-						"select  EMPL_NUMERO, CONCAT(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) as NOMBRE, EMPL_CORREOINS ".
+						"select  EMPL_NUMERO, CONCAT(EMPL_ABREVIA,' ',EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) as NOMBRE, EMPL_CORREOINS ".
 						"from pempleados where EMPL_NUMERO='".$matricula."'");
 				foreach ($resultado as $row) {
 					$data[] = $row;
