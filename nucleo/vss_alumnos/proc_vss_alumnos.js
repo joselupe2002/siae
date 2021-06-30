@@ -176,7 +176,7 @@ function veradjss  (modulo,usuario,institucion, campus,essuper){
 			table.rows('.selected').data()[0]["MATRICULA"],
 			table.rows('.selected').data()[0]["NOMBRE"],
 			table.rows('.selected').data()[0]["ID"],
-			"modAdjuntos","eadjresidencia","servicioSocial","'SERVSOC_INI','SERVSOC_SEG','SERVSOC_FIN'");
+			"modAdjuntos","eadjresidencia","SERVSOC","'SERVSOC_INI','SERVSOC_SEG','SERVSOC_FIN'");
 
 		//ss_mostrarAdjuntos(modulo,usuario,institucion, campus,essuper,table.rows('.selected').data()[0]["CICLO"],table.rows('.selected').data()[0]["MATRICULA"]);
 	}
