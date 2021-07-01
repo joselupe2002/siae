@@ -204,12 +204,12 @@
  
 				$this->SetFont('Times','B',10);
                 $this->setY(-40);
-				$this->Cell(100,5,utf8_decode($this->elresp),0,0,'C');
+				//$this->Cell(100,5,utf8_decode($this->elresp),0,0,'C');
 				$this->setX(149);
 				$this->Cell(100,5,utf8_decode($this->elrespm),0,0,'C');
 
                 $this->setY(-35);
-				$this->Cell(100,5,utf8_decode($this->elresp_p),0,0,'C');
+				//$this->Cell(100,5,utf8_decode($this->elresp_p),0,0,'C');
 				$this->setX(149);
 				$this->Cell(100,5,utf8_decode($this->elrespm_p),0,0,'C');
 
