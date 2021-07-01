@@ -122,7 +122,7 @@
 				
 				$miConex = new Conexion();
 				$resultado=$miConex->getConsulta($_SESSION['bd'],"select * from vdpactividades where MES='".$_GET["mes"].
-				"' and ANIO='".$_GET["anio"]."' and META='".$_GET["meta"]."'");				
+				"' and ANIO='".$_GET["anio"]."' and META='".$_GET["meta"]."' AND REVISADO='S'");				
 				foreach ($resultado as $row) {
 					$data[] = $row;
 				}
@@ -215,7 +215,7 @@
 
 				$this->SetFont('Times','',8);
 				$this->setY(-30);
-				$this->Cell(100,5,utf8_decode("Nombre y firma del responsable del seguimiento"),0,0,'C');
+				$this->Cell(100,5,utf8_decode("Firma(s) responsable(s) del seguimiento"),0,0,'C');
 				$this->setX(149);
 				$this->Cell(100,5,utf8_decode("Firma del responsable de la meta"),0,0,'C');
         
