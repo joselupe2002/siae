@@ -96,15 +96,14 @@ function cargamosActividades() {
 	elsql="SELECT * FROM cal_fechas where EXTRACT(YEAR FROM NOW())=EXTRACT(YEAR FROM STR_TO_DATE(INICIA,'%d/%m/%Y')) and ACTIVO='S'";
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	mostrarEspera("esperahor","grid_cal_calendario","Cargando Datos...");
+	
 	$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
-		success: function(data){  
-				mostrarEspera("esperahor","grid_ci_vercitas","Cargando Datos...");
+		success: function(data){  				
 				jQuery.each(JSON.parse(data), function(clave, valor) {
-					
+					mostrarEspera("esperahor","grid_cal_calendario","Cargando Datos...");
 					ini=fechaJava(valor.INICIA);
 					fin=fechaJava(valor.TERMINA)+" 23:00:00";
 							
