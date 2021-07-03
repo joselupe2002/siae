@@ -147,7 +147,7 @@ function cargamosComisiones() {
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
 		success: function(data){  
-				mostrarEspera("esperahor","grid_ci_vercitas","Cargando Datos...");
+		
 				jQuery.each(JSON.parse(data), function(clave, valor) {
 					
 					ini=fechaJava(valor.COMI_FECHAINI);
