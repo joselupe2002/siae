@@ -93,7 +93,7 @@ function cargamosActividades() {
 	$('#calendar').fullCalendar('refresh');
 	$('#calendar').fullCalendar('removeEvents');
 
-	elsql="SELECT * FROM cal_fechas where EXTRACT(YEAR FROM NOW())=EXTRACT(YEAR FROM STR_TO_DATE(INICIA,'%d/%m/%Y'))";
+	elsql="SELECT * FROM cal_fechas where EXTRACT(YEAR FROM NOW())=EXTRACT(YEAR FROM STR_TO_DATE(INICIA,'%d/%m/%Y')) and ACTIVO='S'";
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	mostrarEspera("esperahor","grid_pa_citas","Cargando Datos...");
