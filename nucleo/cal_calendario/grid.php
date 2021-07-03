@@ -41,7 +41,7 @@
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" class="sigeaPrin" style="background-color: white; width:50%;">
+	<body id="grid_<?php echo $_GET['modulo']; ?>" class="sigeaPrin" style="background-color: white; width:98%;">
 	   
 	<div class="row" >
 									<div class="col-sm-11">
