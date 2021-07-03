@@ -96,7 +96,7 @@ function cargamosActividades() {
 	elsql="SELECT * FROM cal_fechas where EXTRACT(YEAR FROM NOW())=EXTRACT(YEAR FROM STR_TO_DATE(INICIA,'%d/%m/%Y')) and ACTIVO='S'";
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	mostrarEspera("esperahor","grid_pa_citas","Cargando Datos...");
+	mostrarEspera("esperahor","grid_cal_calendario","Cargando Datos...");
 	$.ajax({
 		type: "POST",
 		data:parametros,
@@ -142,7 +142,7 @@ function cargamosComisiones() {
 
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	mostrarEspera("esperahor","grid_pa_citas","Cargando Datos...");
+	mostrarEspera("esperahor","grid_cal_calendario","Cargando Datos...");
 	$.ajax({
 		type: "POST",
 		data:parametros,
@@ -188,7 +188,7 @@ function cargamosEventos() {
 	
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	mostrarEspera("esperahor","grid_pa_citas","Cargando Datos...");
+	mostrarEspera("esperahor","grid_cal_calendario","Cargando Datos...");
 	$.ajax({
 		type: "POST",
 		data:parametros,
