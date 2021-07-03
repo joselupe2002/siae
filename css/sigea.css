@@ -245,7 +245,7 @@ SCROLLBAR-DARKSHADOW-COLOR: #000000;
   padding:0px; 
   margin:0px; 
   position:fixed; 
-  right:900px;
+  left:200px;
   bottom: 0 !importante;
   bottom: -1px;
   height: 40px;
@@ -264,5 +264,5 @@ SCROLLBAR-DARKSHADOW-COLOR: #000000;
   cursor: pointer;
 }
 
-.sticky i:hover{color:rgb(255, 255, 255); }
-.sticky i{color:rgb(0, 0, 0); }
+.sticky i:hover{color:rgb(7, 85, 59); }
+.sticky i{color:rgb(20, 12, 63); }
