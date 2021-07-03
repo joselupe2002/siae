@@ -245,8 +245,10 @@ SCROLLBAR-DARKSHADOW-COLOR: #000000;
   padding:0px; 
   margin:0px; 
   position:fixed; 
-  right:300px;
-  top:10px; 
+  right:900px;
+  bottom: 0 !importante;
+  bottom: -1px;
+  height: 40px;
   z-index: 1100; 
 }
 
