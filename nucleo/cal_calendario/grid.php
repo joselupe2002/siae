@@ -41,11 +41,11 @@
 	</head>
 
 
-	<body id="grid_<?php echo $_GET['modulo']; ?>" class="sigeaPrin" style="background-color: white; width:98%;">
+	<body id="grid_<?php echo $_GET['modulo']; ?>" class="sigeaPrin" style="background-color: white; width:50%;">
 	   
-	<div class="row">
+	<div class="row" >
 									<div class="col-sm-11">
-										<div class="space"></div>
+
 										<div id="calendar"></div>
 									</div>
 							</div>	
