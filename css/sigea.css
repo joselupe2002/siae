@@ -237,3 +237,30 @@ SCROLLBAR-DARKSHADOW-COLOR: #000000;
   display: flex; 
   align-items: center;
 }
+
+
+
+/*================MENU LATERAL ============================== */
+.sticky-container{ 
+  padding:0px; 
+  margin:0px; 
+  position:fixed; 
+  right:300px;
+  top:10px; 
+  z-index: 1100; 
+}
+
+/*.sticky-container:hover{ right:-135px;}*/
+.sticky li{
+  padding-left:3px;
+  padding-right:3px;
+  list-style-type: none;
+  display:inline;
+  background-color: transparent;
+  color: #efefef;
+  height: 43px;
+  cursor: pointer;
+}
+
+.sticky i:hover{color:rgb(255, 255, 255); }
+.sticky i{color:rgb(0, 0, 0); }
