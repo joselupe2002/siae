@@ -106,7 +106,7 @@ function cargamosActividades() {
 				jQuery.each(JSON.parse(data), function(clave, valor) {
 					
 					ini=fechaJava(valor.INICIA);
-					fin=fechaJava(valor.TERMINA);
+					fin=fechaJava(valor.TERMINA)+" 23:00:00";
 							
 					var my_events = {
 						events: [
