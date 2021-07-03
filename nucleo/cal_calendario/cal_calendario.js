@@ -142,7 +142,7 @@ function cargamosComisiones() {
 
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	mostrarEspera("esperahor","grid_cal_calendario","Cargando Datos...");
+
 	$.ajax({
 		type: "POST",
 		data:parametros,
@@ -171,7 +171,7 @@ function cargamosComisiones() {
 						$('#calendar').fullCalendar('addEventSource', my_events);
 				
 					});
-				ocultarEspera("esperahor");
+			
 	   }
 	});
 }
@@ -188,13 +188,12 @@ function cargamosEventos() {
 	
 
 	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
-	mostrarEspera("esperahor","grid_cal_calendario","Cargando Datos...");
+
 	$.ajax({
 		type: "POST",
 		data:parametros,
 		url:  "../base/getdatossqlSeg.php",
-		success: function(data){  
-				mostrarEspera("esperahor","grid_ci_vercitas","Cargando Datos...");
+		success: function(data){  				
 				jQuery.each(JSON.parse(data), function(clave, valor) {
 					
 					ini=fechaJava(valor.FECHA)+" "+valor.HORA;
