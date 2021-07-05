@@ -53,7 +53,7 @@
 							<div class="checkbox" style="padding:0px; margin: 0px;">
 								<label>
 								<input id="atendidos" type="checkbox" class="ace ace-switch ace-switch-6" />
-								<span class="lbl"> Autorizadas</span>										
+								<span class="lbl"> Atendidas</span>										
 							</div>
 
 						</div>
