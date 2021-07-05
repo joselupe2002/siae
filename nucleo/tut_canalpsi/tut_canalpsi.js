@@ -52,7 +52,7 @@ var miciclo="";
 			elsql="SELECT * FROM vtut_canalizaciones n where "+cadex+" AND TIPO='OPS' AND CICLO='"+$("#selCiclo").val()+"' ORDER BY ID DESC";
 		}
 		else {
-			elsql="SELECT * FROM vtut_canalizaciones n where "+cadex+" and TIPO='OPS' CARRERA in ("+carrera+") AND CICLO='"+$("#selCiclo").val()+"' ORDER BY ID DESC"			
+			elsql="SELECT * FROM vtut_canalizaciones n where "+cadex+" and TIPO='OPS' AND CARRERA in ("+carrera+") AND CICLO='"+$("#selCiclo").val()+"' ORDER BY ID DESC"			
 		}
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
