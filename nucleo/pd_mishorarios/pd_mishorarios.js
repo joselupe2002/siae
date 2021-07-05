@@ -40,7 +40,7 @@ contMat=1;
     function cargarInformacion(){
 
 		mostrarEspera("esperaInf","grid_tu_caltutorados","Cargando Datos...");
-		elsql="SELECT IDDETALLE, MATERIA, MATERIAD,SEMESTRE, HT, HP, CREDITOS, LUNES_1, MARTES_1, MIERCOLES_1, JUEVES_1, VIERNES_1, "+
+		elsql="SELECT IDDETALLE, CICLO, SIE, CERRADOCAL, SEMESTRE AS SEM, BASE, PROFESOR AS PROFESOR, PROFESORD AS PROFESORD, MATERIA, MATERIAD,SEMESTRE, HT, HP, CREDITOS, LUNES_1, MARTES_1, MIERCOLES_1, JUEVES_1, VIERNES_1, "+
 		"SABADO_1, DOMINGO_1, LUNES_A, MARTES_A, MIERCOLES_A, JUEVES_A, VIERNES_A, SABADO_A, DOMINGO_A, CARRERA, CARRERAD, MAPA "+
 		" FROM vedgrupos a where a.CICLO='"+$("#selCiclo").val()+"' and a.PROFESOR='"+usuario+"' ORDER BY SEMESTRE, MATERIAD";
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
@@ -72,6 +72,7 @@ function generaTablaInformacion(grid_data){
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 
 	$("#tabInformacion").append("<thead><tr id=\"headMaterias\">"+
+	"<th style=\"text-align: center;\">Boleta</th>"+ 
 	"<th style=\"text-align: center;\">Clave</th>"+ 
 	"<th style=\"text-align: center;\">Materia</th>"+
 	"<th style=\"text-align: center;\">SEM</th>"+
@@ -93,7 +94,16 @@ function generaTablaInformacion(grid_data){
 	
 	 jQuery.each(grid_data, function(clave, valor) { 	
 			 
-		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.IDDETALLE+"\">");    	
+		 $("#cuerpoInformacion").append("<tr id=\"row"+valor.IDDETALLE+"\">");    
+
+		if (valor.CERRADOCAL=='S') {
+		$("#row"+valor.IDDETALLE).append("<td style=\"text-align: center;\"><button title=\"Imprimir Boleta de Calificaci&oacute;n\" onclick=\"imprimirBoleta('"+valor.IDDETALLE+"','"+$("#selProfesores").val()+"','"+
+    	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"','"+valor.SEM+"');\""+
+											  " class=\"btn btn-xs btn-white btn-warning btn-round\"><i class=\"ace-icon blue fa fa-print bigger-140\"></i></button></td>");
+		} else {
+			$("#row"+valor.IDDETALLE).append("<td><span class=\"badge badge-warning\">Abierto</span></td>");
+		}
+
 		 $("#row"+valor.IDDETALLE).append("<td>"+valor.MATERIA+"</td>");    
 		 $("#row"+valor.IDDETALLE).append("<td>"+valor.MATERIAD+"</td>");         	    
 		 $("#row"+valor.IDDETALLE).append("<td>"+utf8Decode(valor.SEMESTRE)+"</td>");
@@ -143,6 +153,13 @@ function ImprimirReporte(){
 				    	    content:content,
 				    	    closable:true		    
 				    	});
-	   //window.open(enlace, '_blank'); 
 
+}
+
+
+function imprimirBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
+	console.log ("id:"+id+" prof:"+usuario+" mat:"+materia+" matd:"+materiad+" grupo"+grupo+" ciclo:"+ciclo+" base:"+base+" sem:"+semestre)
+	tit='Boleta';
+	abrirPesta("nucleo/cierreCal/boleta.php?tipo=0&grupo="+grupo+"&ciclo="+ciclo+"&profesor="+usuario+"&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre,tit);
 }

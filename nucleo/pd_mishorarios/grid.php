@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/chosen.min.css" />
-
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
         
 
 		<style type="text/css">
@@ -75,7 +75,7 @@
 							</div>
 				       </div>
 				       <div class="row">							   
-					       <div id="informacion" class="col-sm-12" style="overflow-x: auto; height:350px;" >    
+					       <div id="informacion" class="sigeaPrin fontRobotoB col-sm-12" style="overflow-x: auto; height:350px;" >    
 						   </div>
                        </div>
                     </div>
