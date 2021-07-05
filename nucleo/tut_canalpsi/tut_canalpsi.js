@@ -101,6 +101,7 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Hora</th>"+
 	"<th style=\"text-align: center;\">Teléfono</th>"+
 	"<th style=\"text-align: center;\">Correo</th>"+
+	"<th style=\"text-align: center;\">Tutor</th>"+
 	"<th style=\"text-align: center;\">Act. Apoyo</th>"+
 	"<th style=\"text-align: center;\">Observaciones</th>"
 	); 
@@ -132,7 +133,8 @@ function generaTablaInformacion(grid_data){
 		 $("#row"+valor.ID).append("<td>"+valor.FECHA+"</td>");
 		 $("#row"+valor.ID).append("<td>"+valor.HORA+"</td>");
 		 $("#row"+valor.ID).append("<td>"+valor.TELEFONO+"</td>");	
-		 $("#row"+valor.ID).append("<td>"+valor.CORREO+"</td>");			 
+		 $("#row"+valor.ID).append("<td>"+valor.CORREO+"</td>");
+		 $("#row"+valor.ID).append("<td>"+valor.TUTORD+"</td>");			 
 		 $("#row"+valor.ID).append("<td>"+valor.PROBLEMATICA+"</td>");
 		 $("#row"+valor.ID).append("<td>"+valor.ACTAPOYO+"</td>");
 		 $("#row"+valor.ID).append("<td>"+valor.OBSERVACIONES+"</td>");
