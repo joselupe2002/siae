@@ -54,7 +54,7 @@
 			     </li>
 
 				 <li >
-					 <a data-toggle="tab" href="#insPsi"><i class="red ace-icon fa fa-user-md bigger-120"></i>Firmar Asesoria Psic.</a>
+					 <a data-toggle="tab" href="#insPsi"><i class="red ace-icon fa fa-user-md bigger-120"></i>Firmar Canalizaciones</a>
 			     </li>
 
 				
@@ -156,7 +156,7 @@
 						<div id="insPsi" class="tab-pane">          
 							<div class="row" style="margin-left: 10px; margin-right: 10px; width: 98%;">
 								<h3 class="header smaller lighter fontRobotoB">
-								  	<i class="green ace-icon fa fa-retweet bigger-160"></i> Asesorías Psicológicas pendientes de confirmar
+								  	<i class="green ace-icon fa fa-retweet bigger-160"></i> Canalizaciones pendientes de confirmar
 								</h3>	
 								
 								<div style="overflow-y: auto;">
@@ -348,7 +348,7 @@ function generaTablaPsi(grid_data){
 			$("#rowFirmaPsi"+c).append("<td>"+valor.HORA+"</td>");
 		    $("#rowFirmaPsi"+c).append("<td>"+valor.TUTORD+"</td>");
 		    $("#rowFirmaPsi"+c).append("<td>"+valor.TIPO+"</td>");		
-			$("#rowFirmaPsi"+c).append("<td><button onclick=\"confirmaPsi('"+valor.ASES_ID+"','"+c+"');\" class=\"btn btn-xs btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i></button></td>");
+			$("#rowFirmaPsi"+c).append("<td><button onclick=\"confirmaPsi('"+valor.ID+"','"+c+"');\" class=\"btn btn-xs btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i></button></td>");
 			c++;
         });
 }	
@@ -360,7 +360,8 @@ function confirmaPsi(id, renglon){
 			 campollave:"ID",
 			 valorllave:id,
 			 bd:"Mysql",			
-			 ASES_STATUS:"S"
+			 CONFIRMADA:"S",
+			 FECHACONFIRMA:dameFecha("FECHAHORA")
 			};
 
 	 $.ajax({
@@ -370,7 +371,7 @@ function confirmaPsi(id, renglon){
          success: function(data){		                                	                      
              if (!(data.substring(0,1)=="0"))	
 	                 { 						                  
-            	       $("#rowFirma"+renglon).remove();
+            	       $("#rowFirmaPsi"+renglon).remove();
 	                  }	
              else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
          }					     
