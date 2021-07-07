@@ -321,7 +321,8 @@ function cargarAsesorias(){
 /*================================CANALIZACIONE S===========================*/
 
 function cargarAsesoriasPsi(){
-	    elsql="SELECT * from vtut_canalizaciones  where MATRICULA="+ "'<?php echo $_SESSION['usuario']?>' AND CONFIRMADA='N' order by ID";
+	    elsql="SELECT * from vtut_canalizaciones  where MATRICULA="+ "'<?php echo $_SESSION['usuario']?>' AND CONFIRMADA='N' AND ATENDIDO='S' order by ID";
+		
 	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
