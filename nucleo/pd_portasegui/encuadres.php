@@ -169,7 +169,7 @@
 			function loadDatosNotPol($tipo)
 			{
 				$miConex = new Conexion();
-				$resultado=$miConex->getConsulta("Mysql","SELECT ENCU_DESCRIP, ENCU_SECCION, ENCU_NUMERO FROM encuadrespol WHERE ENCU_TIPO='".$tipo."' order by ENCU_NUMERO");
+				$resultado=$miConex->getConsulta("Mysql","SELECT ENCU_DESCRIP, ENCU_SECCION, ENCU_NUMERO FROM encuadrespol WHERE ENCU_TIPO='".$tipo."' order by ENCU_SECCION, ENCU_NUMERO");
 				
 				foreach ($resultado as $row) {
 					$data[] = $row;

@@ -595,6 +595,12 @@ class UtilUser {
 			if ($campos["tipo"]==":FECHA"){
 				$cad=$campos["colum_name"].":\"".date("d-m-Y H:i")."\",\n";
 			}
+			if ($campos["tipo"]==":FECHA2"){
+				$cad=$campos["colum_name"].":\"".date("d/m/Y")."\",\n";
+			}
+			if ($campos["tipo"]==":HORA"){
+				$cad=$campos["colum_name"].":\"".date("H:i:s")."\",\n";
+			}
 			if ($campos["keys"]=="S"){
 				$llave=$campos["colum_name"];
 			}
