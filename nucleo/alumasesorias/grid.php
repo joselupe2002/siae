@@ -53,6 +53,10 @@
 					 <a data-toggle="tab" href="#ins"><i class="green ace-icon fa fa-pencil bigger-120"></i>Firmar Asesoria</a>
 			     </li>
 
+				 <li >
+					 <a data-toggle="tab" href="#insPsi"><i class="red ace-icon fa fa-user-md bigger-120"></i>Firmar Asesoria Psic.</a>
+			     </li>
+
 				
                 
 		     </ul>
@@ -148,6 +152,31 @@
 							
 							</div>
 						</div>
+
+						<div id="insPsi" class="tab-pane">          
+							<div class="row" style="margin-left: 10px; margin-right: 10px; width: 98%;">
+								<h3 class="header smaller lighter fontRobotoB">
+								  	<i class="green ace-icon fa fa-retweet bigger-160"></i> Asesorías Psicológicas pendientes de confirmar
+								</h3>	
+								
+								<div style="overflow-y: auto;">
+										<table id="tabHorariosPsi" class= "table table-sm table-condensed table-bordered table-hover" style="overflow-y: auto;">
+											<thead>  
+												<tr>
+													<th style="text-align: center;">Id</th> 
+													<th style="text-align: center;">Fecha</th> 
+													<th style="text-align: center;">Hora</th> 
+													<th style="text-align: center;">Tutor</th> 	
+													<th style="text-align: center;">Tipo</th>
+													<th style="text-align: center;">Confirmar</th> 																	
+												</tr> 
+											</thead> 
+										</table>	
+								</div>
+							
+							</div>
+						</div>
+
 				</div>
 		</div>
 
@@ -222,6 +251,7 @@
 			cargarAsesores();
 			cargarAsesorias();
 			cargarAsesoriasAge();
+			cargarAsesoriasPsi();
 
 			});
 
@@ -287,6 +317,69 @@ function cargarAsesorias(){
 	          });
 }
 
+
+/*================================CANALIZACIONE S===========================*/
+
+function cargarAsesoriasPsi(){
+	    elsql="SELECT * from vtut_canalizaciones  where MATRICULA="+ "'<?php echo $_SESSION['usuario']?>' AND CONFIRMADA='N' order by ID";
+	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
+	           success: function(data){
+		                    	   	        	
+	        	     generaTablaPsi(JSON.parse(data));
+	                 },
+	           error: function(data) {	                  
+	                      alert('ERROR: '+data);
+	                  }
+	          });
+}
+
+function generaTablaPsi(grid_data){
+       c=1;
+       $("#cuerpo").empty();
+	   $("#tabHorariosPsi").append("<tbody id=\"cuerpoPsi\">");
+       jQuery.each(grid_data, function(clave, valor) { 	
+    	    $("#cuerpoPsi").append("<tr id=\"rowFirmaPsi"+c+"\">");
+    	    $("#rowFirmaPsi"+c).append("<td>"+c+"</td>");
+			$("#rowFirmaPsi"+c).append("<td>"+valor.FECHA+"</td>");
+			$("#rowFirmaPsi"+c).append("<td>"+valor.HORA+"</td>");
+		    $("#rowFirmaPsi"+c).append("<td>"+valor.TUTORD+"</td>");
+		    $("#rowFirmaPsi"+c).append("<td>"+valor.TIPO+"</td>");		
+			$("#rowFirmaPsi"+c).append("<td><button onclick=\"confirmaPsi('"+valor.ASES_ID+"','"+c+"');\" class=\"btn btn-xs btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i></button></td>");
+			c++;
+        });
+}	
+
+
+function confirmaPsi(id, renglon){
+	 parametros={
+			 tabla:"tut_canalizaciones",
+			 campollave:"ID",
+			 valorllave:id,
+			 bd:"Mysql",			
+			 ASES_STATUS:"S"
+			};
+
+	 $.ajax({
+         type: "POST",
+         url:"../base/actualiza.php",
+         data: parametros,
+         success: function(data){		                                	                      
+             if (!(data.substring(0,1)=="0"))	
+	                 { 						                  
+            	       $("#rowFirma"+renglon).remove();
+	                  }	
+             else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
+         }					     
+     });      
+     
+}
+
+
+/*============================================================================================*/
 
 	
 /*=========================================================================*/
