@@ -6,6 +6,7 @@ contMat=1;
 var laCarrera="";
 var elalumno="";
 var miciclo="";
+var midepto="";
 
 var cargando=false;
 
@@ -22,10 +23,26 @@ var cargando=false;
 		$(".input-mask-horario").mask("99:99-99:99");
 		$(".input-mask-numero").mask("99");
 
+		$("#losdeptos").append("<span class=\"label label-warning\">Departamento</span>");
+		 
+		$.ajax({
+			type: "GET",
+			url:  "../base/getSesion.php?bd=Mysql&campo=depto",
+			success: function(data){  
+				addSELECT("selDepto","losdeptos","PROPIO", "SELECT URES_URES, URES_DESCRIP FROM fures where "+
+				"  URES_URES IN ("+data+")", "",""); 
+				},
+			error: function(data) {	                  
+					   alert('ERROR: '+data);
+					   $('#dlgproceso').modal("hide");  
+				   }
+		   });
+
+
 		
 	
 		$("#lostipos").append("<span class=\"label label-danger\">Tipo de Servicio</span>");
-		addSELECT("selTipos","lostipos","PROPIO", "SELECT IdTipo, DescripcionTipo FROM mtto_tipos  order by DescripcionTipo", "","");  	
+		addSELECT("selTipos","lostipos","PROPIO", "SELECT 0,0 FROM DUAL", "","");  	
 	
 		$("#lassituaciones").append("<span class=\"label label-danger\">Estatus</span>");
 		addSELECT("selSituacion","lassituaciones","PROPIO", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='SITUSOP' order by CATA_CLAVE", "","");  	
@@ -36,10 +53,17 @@ var cargando=false;
 		addSELECT("baseTipoMtto","losocultos","PROPIO", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='TIPOMTTOSOP' order by CATA_CLAVE", "",""); 
 	});
 	
+
+
 	
 		 
 	function change_SELECT(elemento) {
-		if (elemento=='selCiclo') {miciclo=$("#selCiclo").val(); $("#elciclo").html($("#selCiclo").val());}
+		if (elemento=='selDepto') {
+			midepto=$("#selDepto").val();
+			
+			elql="SELECT IdTipo, DescripcionTipo FROM mtto_tipos where ClaveDepto='"+$("#selDepto").val()+"'   order by DescripcionTipo ";
+			actualizaSelect("selTipos", elql, "BUSQUEDA","");  	
+		}
 	}  
 
 

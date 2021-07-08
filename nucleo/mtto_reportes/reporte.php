@@ -265,7 +265,9 @@
         $pdf->Cell(40,5,"","LRB",1,'L');
       
 
-        $nombre=$miutil->getJefe('421');//Nombre del puesto SOPORTE TECNICO
+        $nombre=$miutil->getJefe($data[0]["DEPTO"]);//Nombre del Jefe del Depto
+       
+        $firmaof=$miutil->getDatoEmpl($data[0]["JEFE"],"EMPL_FIRMAOF");
         $pdf->SetFont('Montserrat-ExtraBold','B',11);
 
 
@@ -278,7 +280,7 @@
         $pdf->Cell(40,5,$data[0]["FechaResultado"],"LR",1,'L');
 
         $pdf->SetFont('Montserrat-Medium','',11);
-        $pdf->Cell(130,5,utf8_decode("JEFE DE SOPORTE TÉCNICO"),"LRB",0,'L');
+        $pdf->Cell(130,5,utf8_decode($firmaof),"LRB",0,'L');
         $pdf->Cell(40,5,"","LRB",1,'L');
       
 

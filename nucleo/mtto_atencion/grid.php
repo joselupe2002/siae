@@ -44,12 +44,12 @@
 	<div class="widget-box widget-color-purple" id="principal">
 			  <div class="widget-header widget-header-small" style="padding:0px;">
 			      <div class="row" >	
-				         <div id="losciclos" class="col-sm-1">
-						</div> 	
-						<div id="lostipos" class="col-sm-5"></div>  
+				         	
+						<div id="losdeptos" class="col-sm-3"></div> 
+						<div id="lostipos" class="col-sm-3"></div>  
 						<div id="lassituaciones" class=" col-sm-3"></div>  
 
-						
+
 						<div id="losocultos" class="hidden col-sm-1"></div>  
 						
 			
