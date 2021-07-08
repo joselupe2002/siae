@@ -36,7 +36,7 @@ var miciclo="";
 	
 
 			elsqlc="select ifnull(MAX(PDOCVE),getcicloRes()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
-			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'')=''";
+			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'0')=0";
 
 			parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -61,7 +61,7 @@ var miciclo="";
 
 	function verCartaPresentacion(){
 		elsqlc="select ifnull(MAX(PDOCVE),getcicloRes()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
-			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'')=''";
+			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'')=0";
 
 		parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
