@@ -38,7 +38,7 @@ function changeMODALIDAD(DATO, usuario, institucion, campus){
      
    } else {
 
-      elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE FROM "+
+      elsql="SELECT distinct ALUM_MATRICULA, concat(ALUM_MATRICULA,' ',ALUM_APEPAT,' ',ALUM_APEMAT, ' ',ALUM_NOMBRE) AS NOMBRE FROM "+
 		" dlista a, falumnos b where a.ALUCTR=b.ALUM_MATRICULA and a.IDGRUPO ='"+$("#GRUPO").val()+"'";
 		" ORDER BY ALUM_APEPAT, ALUM_APEMAT, ALUM_NOMBRE"    
        
