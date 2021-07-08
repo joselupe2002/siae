@@ -364,8 +364,6 @@ function generaIndicadores(grid_data){
 	contAlum=1;
 	$("#con4").empty();
 	cont=1;
-
-
 	jQuery.each(grid_data, function(clave, valor) { 
 		papr=Math.round((valor.NUMAPR/valor.NUMALUM)*100);
 		$("#con4").append("<div style=\"border-bottom:1px dotted; border-color:#14418A;\"> "+
@@ -427,8 +425,8 @@ function generaIndicadores(grid_data){
 
 function verBoleta(grupo,materia,materiad,id,semestre){		
 	tit='Boleta';
-	abrirPesta("nucleo/cierreCal/boleta.php?tipo=0&grupo="+grupo+"&ciclo="+$("#selCiclo").val()+"&profesor="+$("#selProfesores").val()+"&materia="+
-								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre,tit);
+	enlace="nucleo/cierreCal/boleta.php?tipo=0&grupo="+grupo+"&ciclo="+$("#selCiclo").val()+"&profesor="+$("#selProfesores").val()+"&materia="+
+								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre;
 	abrirPesta(enlace,tit);
 }
 
