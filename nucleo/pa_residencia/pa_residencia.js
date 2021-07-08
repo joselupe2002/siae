@@ -36,7 +36,7 @@ var miciclo="";
 	
 
 			elsqlc="select ifnull(MAX(PDOCVE),getcicloRes()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
-			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP'";
+			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'')=''";
 
 			parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({
@@ -61,7 +61,7 @@ var miciclo="";
 
 	function verCartaPresentacion(){
 		elsqlc="select ifnull(MAX(PDOCVE),getcicloRes()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
-			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP'";
+			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'')=''";
 
 		parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
@@ -71,7 +71,7 @@ var miciclo="";
 			success: function(dataCic2){ 
 				losdatosCic=JSON.parse( dataCic2); 
 				elciclo=losdatosCic[0][0];
-				elsql="select ifnull(RUTA,'') as RUTA, count(*) as HAY FROM respropuestas a where MATRICULA='"+usuario+"' and CICLO='"+elciclo+"'";
+				elsql="select ifnull(RUTA,'') as RUTA, count(*) as HAY FROM respropuestas a where MATRICULA='"+usuario+"' and CICLO='"+elciclo+"' and CANCELADA='N'";
 				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		
 				$.ajax({
