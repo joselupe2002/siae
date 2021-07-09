@@ -495,7 +495,7 @@ function impEncuadre(id, materia, descrip, tipomat){
 				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_2\" value=\""+valor.EP+"\" class=\"form-control\" id=\"ep\"></input></td>");	
 				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_3\" value=\""+valor.ED+"\" class=\"form-control\" id=\"ep\"></input></td>");
 				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_4\" value=\""+valor.EC+"\" class=\"form-control\" id=\"ep\"></input></td>");	
-				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_5\" value=\""+"PORT. EVIDENCIA"+"\" class=\"form-control\" id=\"ep\"></input></td>");	       		   
+				 $("#rowe"+c).append("<td><input  style=\"width:150px;\" id=\"a_"+c+"_5\" value=\""+valor.EA+"\" class=\"form-control\" id=\"ep\"></input></td>");	       		   
 				 $("#rowe"+c).append("<td><input class=\"hidden\" id=\"a_"+c+"_6\" value=\""+valor.ENCU_ID+"\"></input></td>");	       		   
 				 c++;
 					global=c;
