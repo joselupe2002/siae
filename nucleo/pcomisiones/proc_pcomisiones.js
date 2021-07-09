@@ -198,7 +198,7 @@ function crearCopias(id,modulo){
         		original=JSON.parse(data);
         		 var loscampos = ["COMI_PROFESOR","COMI_FECHAINI","COMI_FECHAFIN","COMI_HORAINI","COMI_HORAFIN",
         		                  "COMI_LUGAR","COMI_RESPONSABLE","COMI_ACTIVIDAD","COMI_FECHAUS","COMI_USUARIO",
-        		                  "COMI_AUTORIZO","_INSTITUCION","_CAMPUS","COMI_GRUPO"];
+        		                  "COMI_AUTORIZO","_INSTITUCION","_CAMPUS","LEYENDA1","LEYENDA2","COMI_GRUPO"];
         		 
         		c=0;
         		cad="";
@@ -217,6 +217,8 @@ function crearCopias(id,modulo){
      		         original[0]["COMI_AUTORIZO"]+"|"+
      		         original[0]["_INSTITUCION"]+"|"+
      		         original[0]["_CAMPUS"]+"|"+
+					 original[0]["LEYENDA1"]+"|"+
+					 original[0]["LEYENDA2"]+"|"+
      		         original[0]["COMI_GRUPO"];
         			 losdatos[c]=cad;
         			 cad="";
