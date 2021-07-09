@@ -57,7 +57,7 @@ contMat=1;
 
 	
 		elsql="select y.ID, y.IDACT, ORDEN,ACTIVIDAD, ENTREGABLE, IFNULL(z.FECHA,'') AS FECHA "+
-			  " from edestipplan y left outer join edesfechas z on ( z.IDTIPOACT=y.ID) where  IDACT='"+$("#selActividades").val()+"' order by ORDEN";
+			  " from edestipplan y left outer join edesfechas z on ( z.IDTIPOACT=y.ID and CICLO='"+$("#selCiclos").val()+"') where  IDACT='"+$("#selActividades").val()+" order by ORDEN";
 
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	  
