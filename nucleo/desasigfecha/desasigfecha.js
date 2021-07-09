@@ -3,6 +3,7 @@ var estaseriando=false;
 var matser="";
 contR=1;
 contMat=1;
+var cargando=true;
 
 
     $(document).ready(function($) { var Body = $('container'); Body.addClass('preloader-site');});
@@ -81,11 +82,13 @@ contMat=1;
 
 function generaTablaInformacion(grid_data){
 	totegr=0;totdes=0;
+	cargando=true;
 	contR=1;
 	$("#cuerpoInformacion").empty();
 	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 	//$("#btnfiltrar").attr("disabled","disabled");
 	jQuery.each(grid_data, function(clave, valor) { 
+		
 		//alert ($("#rowM"+contR).html()+" "+valor.PROFESOR);   	
 		$("#cuerpoInformacion").append("<tr id=\"rowM"+contR+"\">");
 		$("#rowM"+contR).append("<td>"+contR+"</td>");
@@ -109,11 +112,13 @@ function generaTablaInformacion(grid_data){
 		
 	});	
 	ocultarEspera("esperaInf");  
+	cargando=false;
 } 
 
 
 function grabaFecha(id){
-		ciclo=$("#selCiclos").val();
+	if (!cargando) {
+ 		ciclo=$("#selCiclos").val();
 		lafecha=$("#fecha"+id).val();
 		var losdatos=[];
 		losdatos[0]=ciclo+"|"+id+"|"+lafecha;
@@ -138,6 +143,7 @@ function grabaFecha(id){
 			 }					     
 		 });    	 
 
+		}
 }
 
 
