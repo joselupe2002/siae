@@ -125,9 +125,9 @@ function grabaFecha(id){
     	var loscampos = ["CICLO","IDTIPOACT","FECHA",];
 		   parametros={
 			 tabla:"edesfechas",
-			 campollave:"IDTIPOACT",
+			 campollave:"concat(CICLO,IDTIPOACT)",
 			 bd:"Mysql",
-			 valorllave:id,
+			 valorllave:ciclo+id,
 			 eliminar: "S",
 			 separador:"|",
 			 campos: JSON.stringify(loscampos),
