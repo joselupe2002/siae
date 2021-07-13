@@ -71,7 +71,7 @@ var miciclo="";
 			success: function(dataCic2){ 
 				losdatosCic=JSON.parse( dataCic2); 
 				elciclo=losdatosCic[0][0];
-				elsql="select ifnull(RUTA,'') as RUTA, count(*) as HAY FROM respropuestas a where MATRICULA='"+usuario+"' and CICLO='"+elciclo+"' and CANCELADA='N'";
+				elsql="select ifnull(RUTA,'') as RUTA, count(*) as HAY FROM respropuestas a where MATRICULA='"+usuario+"' and CICLO='"+elciclo+"' and CANCELADO='N'";
 				parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		
 				$.ajax({
