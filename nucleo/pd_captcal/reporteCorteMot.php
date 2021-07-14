@@ -151,7 +151,7 @@
 				$miConex = new Conexion();
 				$elsql="SELECT c.ALUCTR as MATRICULA, concat(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE,".
 				"a.TIPO, a.OBS, b.DESCRIP FROM tut_motrepalum a, tut_catmotrep b, dlista c, ".
-				" falumnos d where a.TIPO=b.ID and a.IDCORTE=37 AND IDDETALLE=c.ID and ALUCTR=ALUM_MATRICULA ".
+				" falumnos d where a.TIPO=b.ID and a.IDCORTE='".$_GET["corte"]."'  AND IDDETALLE=c.ID and ALUCTR=ALUM_MATRICULA ".
 				" AND c.IDGRUPO='".$_GET["id"]."'";
 
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$elsql);				
@@ -167,7 +167,7 @@
 				$data=[];		
 				$miConex = new Conexion();
 				$elsql=" SELECT b.CORTO, b.DESCRIP, COUNT(*) AS TOTAL FROM tut_motrepalum a, tut_catmotrep b, dlista c, ".
-				" falumnos d where a.TIPO=b.ID and a.IDCORTE=37 AND IDDETALLE=c.ID and ALUCTR=ALUM_MATRICULA ".
+				" falumnos d where a.TIPO=b.ID and a.IDCORTE='".$_GET["corte"]."' AND IDDETALLE=c.ID and ALUCTR=ALUM_MATRICULA ".
 				" AND c.IDGRUPO='".$_GET["id"]."' GROUP BY b.CORTO, b.DESCRIP";
 			
 				$resultado=$miConex->getConsulta($_SESSION['bd'],$elsql);				
