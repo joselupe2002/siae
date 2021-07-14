@@ -145,7 +145,7 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 		        " and ABIERTO='S' and STR_TO_DATE(DATE_FORMAT(now(),'%d/%m/%Y'),'%d/%m/%Y') "+
 				" Between STR_TO_DATE(INICIA,'%d/%m/%Y') "+
 		        " AND STR_TO_DATE(TERMINA,'%d/%m/%Y') and CLASIFICACION='CALIFICACION' "+
-		        " order by STR_TO_DATE(TERMINA,'%d/%m/%Y')  DESC LIMIT 1";
+		        " order by STR_TO_DATE(TERMINA,'%d/%m/%Y') DESC LIMIT 1";
 			
 
 			parametros={sql:sqlCor,dato:sessionStorage.co,bd:"Mysql"}
@@ -164,7 +164,7 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 		
 		
 		$("#loscortes").append("<span class=\"label label-danger\">Corte de Calificación</span>");
-		addSELECT("selCortes","loscortes","PROPIO", "SELECT ID, concat(DESCRIPCION,'|',TIPO)FROM ecortescal  WHERE CICLO=getciclo() and CLASIFICACION='CALIFICACION' ORDER BY ID ", "","");  					
+		addSELECT("selCortes","loscortes","PROPIO", "SELECT ID, concat(DESCRIPCION,'|',TIPO)FROM ecortescal  WHERE CICLO=getciclo() and CLASIFICACION='CALIFICACION' order by STR_TO_DATE(INICIA,'%d/%m/%Y') ", "","");  					
 
 
 		//creamos select de tipos de motivos 
@@ -212,19 +212,20 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
      	   
             jQuery.each(grid_data, function(clave, valor) { 	
              	    
-         	    $("#cuerpo").append("<tr id=\"row"+valor.MATERIA+"\">");    	   
-         	    $("#row"+valor.MATERIA).append("<td>"+valor.MATERIA+"</td>");         	    
-         	    $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
-         	    $("#row"+valor.MATERIA).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");
-         	    $("#row"+valor.MATERIA).append("<td>"+valor.SEM+"</td>");
-         	    $("#row"+valor.MATERIA).append("<td>"+valor.NUMUNI+"</td>");
-				$("#row"+valor.MATERIA).append("<td>"+valor.GRUPO+"</td>");
-				$("#row"+valor.MATERIA).append("<td><select class=\"form-control text-success\" id=\"mot"+valor.MATERIA+"\" onchange=\"guardar('"+valor.ID+"','"+valor.MATERIA+"','"+valor.GRUPO+"');\"></select></td>");
-				$("#row"+valor.MATERIA).append("<td><input class=\"form-control text-success\" id=\"obs"+valor.MATERIA+"\" value=\""+valor.OBS+"\" onchange=\"guardar('"+valor.ID+"','"+valor.MATERIA+"','"+valor.GRUPO+"');\"></input></td>");
-				 $("#row"+valor.MATERIA).append("</tr>");
+         	    $("#cuerpo").append("<tr id=\"row"+valor.ID+"\">");    
+				 $("#row"+valor.ID).append("<td>"+valor.CICLO+"</td>"); 	   
+         	    $("#row"+valor.ID).append("<td>"+valor.MATERIA+"</td>");         	    
+         	    $("#row"+valor.ID).append("<td>"+utf8Decode(valor.MATERIAD)+"</td>");
+         	    $("#row"+valor.ID).append("<td>"+utf8Decode(valor.PROFESORD)+"</td>");
+         	    $("#row"+valor.MATERIAV+valor.CICLO).append("<td>"+valor.SEM+"</td>");
+         	    $("#row"+valor.ID).append("<td>"+valor.NUMUNI+"</td>");
+				$("#row"+valor.ID).append("<td>"+valor.GRUPO+"</td>");
+				$("#row"+valor.ID).append("<td><select class=\"form-control text-success\" id=\"mot"+valor.ID+"\" onchange=\"guardar('"+valor.ID+"','"+valor.MATERIA+"','"+valor.GRUPO+"');\"></select></td>");
+				$("#row"+valor.ID).append("<td><input class=\"form-control text-success\" id=\"obs"+valor.MATERIA+"\" value=\""+valor.OBS+"\" onchange=\"guardar('"+valor.ID+"','"+valor.MATERIA+"','"+valor.GRUPO+"');\"></input></td>");
+				 $("#row"+valor.ID).append("</tr>");
 				 
-				 $("#mot"+valor.MATERIA).html($("#selTipos").html());
-				 $("#mot"+valor.MATERIA).val(valor.TIPO); 
+				 $("#mot"+valor.ID).html($("#selTipos").html());
+				 $("#mot"+valor.ID).val(valor.TIPO); 
              });
 			$('#dlgproceso').modal("hide"); 
 			
@@ -322,7 +323,7 @@ var elcam="<?php echo $_SESSION["CAMPUS"];?>";
 		idcorte=$("#selCortes").val();
 		tipocorte=$("#selCortes option:selected").text().split("|")[1];
 
-		eltipo=$("#mot"+materia).val();
+		eltipo=$("#mot"+iddet).val();
 		laobs=$("#obs"+materia).val();
 		lafecha=dameFecha("FECHAHORA");
 		var losdatos=[];

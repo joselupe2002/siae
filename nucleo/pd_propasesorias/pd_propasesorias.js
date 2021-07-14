@@ -70,15 +70,16 @@ var miciclo="";
 		if ($("#atendidos").prop("checked")) {cadex="  ASES_STATUS='S'";} else {cadex+="  ASES_STATUS='N'";} 
 
 		cadFecha=""; if ($("#selFecha").val().length>1) {cadFecha=" and ASES_FECHA='"+$("#selFecha").val()+"'";}
-		cadHora=""; if ($("#selHora").val().length>1) {cadFecha=" and ASES_HORA='"+$("#selHora").val()+"'";}
+		cadHora=""; if ($("#selHora").val().length>1) {cadHora=" and ASES_HORA='"+$("#selHora").val()+"'";}
 	
 		elsql="select ASES_ID,ASES_CICLO, EMPL_LUGARAS, ASES_PROFESOR, ASES_TEMA,ASES_FECHA, ASES_HORA, ASES_MATRICULA AS MATRICULA,ASES_STATUS, "+
 		"CONCAT(ALUM_NOMBRE,' ',ALUM_APEPAT,' ',ALUM_APEMAT) AS NOMBRE, CARR_DESCRIP AS CARRERAD,"+
 		"ASES_ASIGNATURA AS MATERIA, MATE_DESCRIP AS MATERIAD from propasesorias, falumnos, cmaterias, ccarreras, pempleados where ASES_MATRICULA=ALUM_MATRICULA "+
-		"and ASES_ASIGNATURA=MATE_CLAVE  and ALUM_CARRERAREG=CARR_CLAVE and ASES_PROFESOR='"+usuario+"' and "+cadex+
+		"and ASES_ASIGNATURA=MATE_CLAVE  and ALUM_CARRERAREG=CARR_CLAVE and ASES_PROFESOR=EMPL_NUMERO and ASES_PROFESOR='"+usuario+"' and "+cadex+
 		cadFecha+cadHora
 		" and ASES_PROFESOR=EMPL_NUMERO";			
-	
+
+
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 		$.ajax({
 		type: "POST",
@@ -104,13 +105,12 @@ var miciclo="";
 function generaTablaInformacion(grid_data){
 	c=0;
 
+    $("#tabInformacion").empty();
 	script="<table id=\"tabInformacion\" name=\"tabInformacion\" class= \"fontRoboto table table-condensed table-bordered table-hover\" "+
 				">";
 	$("#informacion").empty();
 	$("#informacion").append(script);
 				
-	$("#cuerpoInformacion").empty();
-	$("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 
 	$("#tabInformacion").append("<thead><tr id=\"headMaterias\">"+
 	"<th style=\"text-align: center;\">Atendido</th>"+ 
@@ -127,11 +127,13 @@ function generaTablaInformacion(grid_data){
 	"<th style=\"text-align: center;\">Lugar</th>"
 	); 
 
+	$("#cuerpoInformacion").empty();
 	 $("#tabInformacion").append("<tbody id=\"cuerpoInformacion\">");
 	
 	 n=1;
 	 jQuery.each(grid_data, function(clave, valor) { 			
 		cadFile="";	
+	
 
 		btnAten="";
 		if (valor.ASES_STATUS=='N') {

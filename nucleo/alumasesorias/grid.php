@@ -54,8 +54,14 @@
 			     </li>
 
 				 <li >
+					 <a data-toggle="tab" href="#asesCorte"><i class="purple ace-icon fa fa-book bigger-120"></i>Asesorias Corte</a>
+			     </li>
+
+				 <li >
 					 <a data-toggle="tab" href="#insPsi"><i class="red ace-icon fa fa-user-md bigger-120"></i>Firmar Canalizaciones</a>
 			     </li>
+
+				 
 
 				
                 
@@ -108,7 +114,7 @@
 								</h3>	
 								
 								<div style="overflow-y: auto;">
-										<table id="tabHorarios" class= "table table-sm table-condensed table-bordered table-hover" style="overflow-y: auto;">
+										<table id="tabHorariosConfirma" class= "table table-sm table-condensed table-bordered table-hover" style="overflow-y: auto;">
 											<thead>  
 												<tr>
 													<th style="text-align: center;">Id</th> 
@@ -170,6 +176,29 @@
 													<th style="text-align: center;">Tipo</th>
 													<th style="text-align: center;">Confirmar</th> 																	
 												</tr> 
+											</thead> 
+										</table>	
+								</div>
+							
+							</div>
+						</div>
+
+
+						<div id="asesCorte" class="tab-pane">          
+							<div class="row" style="margin-left: 10px; margin-right: 10px; width: 98%;">
+								<h3 class="header smaller lighter fontRobotoB">
+								  	<i class="blue ace-icon fa fa-chevron-right bigger-160"></i> Asesorías por Cortes de Calificaciones
+								</h3>	
+								
+								<div style="overflow-y: auto;">
+										<table id="tabAsesoriasCorte" class= "table table-sm table-condensed table-bordered table-hover" style="overflow-y: auto;">
+											<thead >
+												<tr id="headAsesorias">
+													<th style="text-align: center;">No.</th> 
+													<th style="text-align: center;">Ciclo</th> 
+													<th style="text-align: center;">Materia</th> 
+													<th style="text-align: center;">Profesor</th> 	
+			   									</tr>									
 											</thead> 
 										</table>	
 								</div>
@@ -252,6 +281,7 @@
 			cargarAsesorias();
 			cargarAsesoriasAge();
 			cargarAsesoriasPsi();
+			cargarAsesoriasCorte();
 
 			});
 
@@ -260,17 +290,17 @@
 
  function generaTabla(grid_data){
        c=1;
-       $("#cuerpo").empty();
-	   $("#tabHorarios").append("<tbody id=\"cuerpo\">");
+       $("#cuerpoConfirma").empty();
+	   $("#tabHorariosConfirma").append("<tbody id=\"cuerpoConfirma\">");
        jQuery.each(grid_data, function(clave, valor) { 	
-    	    $("#cuerpo").append("<tr id=\"rowFirma"+c+"\">");
-    	    $("#rowFirma"+c).append("<td>"+c+"</td>");
-			$("#rowFirma"+c).append("<td>"+valor.ASES_FECHA+"</td>");
-			$("#rowFirma"+c).append("<td>"+valor.ASES_HORA+"</td>");
-		    $("#rowFirma"+c).append("<td>"+valor.ASES_PROFESORD+"</td>");
-		    $("#rowFirma"+c).append("<td>"+valor.ASES_ASIGNATURAD+"</td>");
-		    $("#rowFirma"+c).append("<td>"+valor.ASES_TEMA+"</td>");
-			$("#rowFirma"+c).append("<td><button onclick=\"confirma('"+valor.ASES_ID+"','"+c+"');\" class=\"btn btn-xs btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i></button></td>");
+    	    $("#cuerpoConfirma").append("<tr id=\"rowFirmaAses"+c+"\">");
+    	    $("#rowFirmaAses"+c).append("<td>"+c+"</td>");
+			$("#rowFirmaAses"+c).append("<td>"+valor.ASES_FECHA+"</td>");
+			$("#rowFirmaAses"+c).append("<td>"+valor.ASES_HORA+"</td>");
+		    $("#rowFirmaAses"+c).append("<td>"+valor.ASES_PROFESORD+"</td>");
+		    $("#rowFirmaAses"+c).append("<td>"+valor.ASES_ASIGNATURAD+"</td>");
+		    $("#rowFirmaAses"+c).append("<td>"+valor.ASES_TEMA+"</td>");
+			$("#rowFirmaAses"+c).append("<td><button onclick=\"confirma('"+valor.ASES_ID+"','"+c+"');\" class=\"btn btn-xs btn-primary\"><i class=\"ace-icon fa fa-thumbs-up bigger-120\"></i></button></td>");
 			c++;
         });
 }		
@@ -292,7 +322,7 @@ function confirma(id, renglon){
          success: function(data){		                                	                      
              if (!(data.substring(0,1)=="0"))	
 	                 { 						                  
-            	       $("#rowFirma"+renglon).remove();
+            	       $("#rowFirmaAses"+renglon).remove();
 	                  }	
              else {alert ("OCURRIO EL SIGUIENTE ERROR: "+data);}          					           
          }					     
@@ -737,8 +767,129 @@ function cargarAsesoriasAge(){
 	          });
 }
 
+/*===============================ASESORIAS POR CORTE DE CALIFICACIONS =============================*/
+
+function cargarAsesoriasCorte(){
+	    elsql="select e.ID,e.PDOCVE AS CICLO, e.MATCVE AS MATERIA, f.MATE_DESCRIP AS MATERIAD, "+
+              " e.GPOCVE AS GRUPO, e.LISTC15 as PROFESOR, concat(EMPL_NOMBRE,' ',EMPL_APEPAT,' ',EMPL_APEMAT) AS PROFESORD,"+        	
+        	  " ifnull(getcuatrimatxalum(e.MATCVE,ALUCTR),0) AS SEM "+
+        	  " from dlista e, cmaterias f, pempleados g  where  e.LISTC15=g.EMPL_NUMERO and e.MATCVE=f.MATE_CLAVE"+        	                      
+			  " AND e.ALUCTR='<?php echo $_SESSION['usuario']?>' and PDOCVE=getciclo() and e.BAJA='N' and e.IDGRUPO IN (select DGRU_ID FROM edgrupos where DGRU_CERRADOCAL='N') order by PDOCVE DESC";
+		
+	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
+	           success: function(data){
+		                    	   	        	
+	        	     generaTablaAsesCorte(JSON.parse(data));
+	                 },
+	           error: function(data) {	                  
+	                      alert('ERROR: '+data);
+	                  }
+	          });
+}
+
+
+function generaTablaAsesCorte(grid_data){
+       c=1;
+
+	    elsql="select @i := @i + 1 as IDLIN, a.* from ecortescal a cross join (select @i := 0) r "+
+		" where  CICLO=getciclo() and CLASIFICACION='CALIFICACION' order by STR_TO_DATE(INICIA,'%d/%m/%Y')";
+	    parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+	    $.ajax({
+			   type: "POST",
+			   data:parametros,
+	           url:  "../base/getdatossqlSeg.php",
+	           success: function(data){
+					$("#cuerpoAsesCorte").empty();
+	  				$("#tabAsesoriasCorte").append("<tbody id=\"cuerpoAsesCorte\">");
+					grid_cortes=JSON.parse(data);
+					cc=1;
+					jQuery.each(grid_cortes, function(clave, valorCor) { 
+						$("#headAsesorias").append("<th style=\"text-align: center;\">CORTE "+cc+"</th>");					
+						cc++;
+					});
+
+					jQuery.each(grid_data, function(clave, valor) { 	
+							$("#cuerpoAsesCorte").append("<tr id=\"rowAsesCor"+valor.ID+"\">");
+							$("#rowAsesCor"+valor.ID).append("<td>"+c+"</td>");
+							$("#rowAsesCor"+valor.ID).append("<td>"+valor.CICLO+"</td>");	
+							$("#rowAsesCor"+valor.ID).append("<td>"+valor.MATERIA+"-"+valor.MATERIAD+"</td>");		
+							$("#rowAsesCor"+valor.ID).append("<td>"+valor.PROFESORD+"</td>");
+
+							cc=1;
+							jQuery.each(grid_cortes, function(clave, valorCor) { 
+
+								elsql="select count(*) as num from asesorias WHERE ASES_MATRICULA='<?php echo $_SESSION['usuario']?>'"+
+                    			" AND ASES_ASIGNATURA='"+valor.MATERIA+"' AND STR_TO_DATE(ASES_FECHA,'%d/%m/%Y')  "+
+                   				 " Between STR_TO_DATE('"+valorCor.INICIA+"','%d/%m/%Y') AND "+
+                    			" STR_TO_DATE('"+valorCor.TERMINA+"','%d/%m/%Y')";
+
+								
+								parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+								$.ajax({
+									type: "POST",
+									data:parametros,
+									url:  "../base/getdatossqlSeg.php",
+									success: function(data){
+										numases=JSON.parse(data)[0][0];
+										tipob="danger"; if (numases>=3) {tipob="success"}									
+										$("#rowAsesCor"+valor.ID).append("<td><span class=\"badge badge-"+tipob+"\" style=\"cursor:pointer;\" onclick=\"verAsesorias('"+valor.MATERIA+"','"+valor.MATERIAD+"','"+valorCor.INICIA+"','"+valorCor.TERMINA+"','"+valorCor.IDLIN+"');\"  >"+numases+"</span></td>");
+									}
+
+									});
+								
+								cc++;
+							
+							});
+							c++;
+						});	   	        	
+	        	    
+	                 },
+	           error: function(data) {	                  
+	                      alert('ERROR: '+data);
+	                  }
+	          });
+      
+	}		
 
 		
+	function verAsesorias(materia,materiad,inicia,termina,numcorte){
+		$("#venasigcond").modal("hide");
+		$("#venasigcond").empty();
+	    dameVentana("venasigcond","grid_alumasesorias","Asesorías del Corte: "+numcorte+" "+materiad,"lg","bg-danger","fa blue bigger-160 fa-legal","300");
+	  
+		$("#body_venasigcond").append("<div class=\"row\">"+
+							"           <div class=\"col-sm-12\">"+
+							"                 <table id=\"tabcond\" class= \"table table-condensed table-bordered table-hover\" "+
+							"           </div>"+
+							"       </div>");
+
+		sql="SELECT '' as BTN, a.*  FROM vasesorias a where a.ASES_MATRICULA='<?php echo $_SESSION['usuario']?>'"+
+		" and ASES_ASIGNATURA='"+materia+"' AND STR_TO_DATE(ASES_FECHA,'%d/%m/%Y')  "+
+        " Between STR_TO_DATE('"+inicia+"','%d/%m/%Y') AND "+
+        " STR_TO_DATE('"+termina+"','%d/%m/%Y')  order by STR_TO_DATE(ASES_FECHA,'%d/%m/%Y')";
+
+
+		var titulos = [{titulo: "FECHA",estilo: "text-align: center;"},
+					   {titulo: "MATERIA",estilo: "text-align: center;"}, 
+					   {titulo: "PROFESOR",estilo: "text-align: center;"},
+					   {titulo: "TEMA",estilo: "text-align: center;"}
+					];
+
+		var campos = [{tipo:"campo", campo: "ASES_FECHA",estilo:"text-align:left;",antes:"<span class=\"pull-right badge badge-info\">",despues:"</span>"}, 
+					  {tipo:"campo", campo: "ASES_ASIGNATURAD",estilo:"text-align:justify;",antes:"<span class=\"fontRobotoB\">",despues:"</span>"}, 
+		              {tipo:"campo", campo: "ASES_PROFESORD",estilo:"",antes:"<span class=\"text-success\">",despues:"</span>"}, 
+					  {tipo:"campo", campo: "ASES_TEMA",estilo:"",antes:"<strong>",despues:"</strong>"}					  									
+					];
+
+		generaTablaDinBtn("tabcond",sql,titulos,campos);
+
+	}
+
+
 
 		</script>
 

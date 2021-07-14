@@ -67,6 +67,7 @@ contMat=1;
 		   "                <th>CveCarrera</th> "+	
 		   "                <th>Carrera</th> "+	
 		   "                <th>Rep</th> "+	
+		   "                <th>Mot</th> "+	
 		   "                <th>Cve_prof</th> "+	
 		   "                <th>Profesor</th> "+
 		   "                <th>Cve_Materia</th>"+
@@ -118,6 +119,11 @@ contMat=1;
 							            "class=\"btn btn-white btn-success btn-round bigger-100\">"+ 
 								        "<i class=\"ace-icon blue fa fa-file-text bigger-100\"></i><span class=\"btn-small\"></span> "+           
 							            "</button> ";
+
+									btnRepMot="<button title=\"Reporte de Motivos de Reprobación Alumnos\" onclick=\"verMotReprAlu('"+valor.IDDETALLE+"','"+valor.PROFESOR+"');\""+ 
+							            "class=\"btn btn-white btn-success btn-round bigger-100\">"+ 
+								        "<i class=\"ace-icon green fa fa-user bigger-100\"></i><span class=\"btn-small\"></span> "+           
+							            "</button> ";
 									
 									$("#cuerpoInformacion").append("<tr id=\"rowM"+contR+"\">");
 									$("#rowM"+contR).append("<td>"+contR+"</td>");
@@ -127,6 +133,7 @@ contMat=1;
 									$("#rowM"+contR).append("<td>"+valor.CARRERA+"</td>");
 									$("#rowM"+contR).append("<td>"+valor.CARRERAD+"</td>");
 									$("#rowM"+contR).append("<td>"+btnRep+"</td>");
+									$("#rowM"+contR).append("<td>"+btnRepMot+"</td>");
 									$("#rowM"+contR).append("<td>"+valor.PROFESOR+"</td>");
 									$("#rowM"+contR).append("<td>"+valor.PROFESORD+"</td>");
 									$("#rowM"+contR).append("<td>"+valor.MATERIA+"</td>");								
@@ -288,4 +295,12 @@ function verReporte(elprof){
 	"&depto="+$("#selDeptos").val();
 
 	abrirPesta(enlace,"Reporte");
+}
+
+
+function verMotReprAlu (id,elprof){
+
+	enlace="nucleo/pd_captcal/reporteCorteMot.php?id="+id+"&profesor="+elprof+"&ciclo="+$("#selCiclos").val()+"&corte="+$("#selCortes").val();
+
+	abrirPesta(enlace,"Motivos");
 }
