@@ -348,11 +348,14 @@
 
         $pdf->setX($margeniz);
         $pdf->Cell(0,0,"DIRECTOR GENERAL",0,1,'C');
-        $pdf->Ln(10);
-        $pdf->setX($margeniz);
+        $pdf->Ln(5);
+        //$pdf->setX($margeniz);
         
         //$pdf->Line(80,325,150,325);
-        $pdf->Cell(10,0,utf8_decode($nombre),"T",1,'C');
+      //  $pdf->setX(58);
+        $pdf->Cell(58,10,"","",0,'C');
+        $pdf->Cell(100,10,utf8_decode($nombre),"T",0,'C');
+        $pdf->Cell(58,10,"","",1,'C');
 
 
         $pdf->SetFont('Arial','',6);
