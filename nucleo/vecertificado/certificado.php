@@ -351,8 +351,8 @@
         $pdf->Ln(10);
         $pdf->setX($margeniz);
         
-        $pdf->Line(80,325,150,325);
-        $pdf->Cell(0,0,utf8_decode($nombre),0,1,'C');
+        //$pdf->Line(80,325,150,325);
+        $pdf->Cell(10,0,utf8_decode($nombre),"T",1,'C');
 
 
         $pdf->SetFont('Arial','',6);
