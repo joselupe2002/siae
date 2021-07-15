@@ -350,7 +350,7 @@
         $pdf->Cell(0,0,"DIRECTOR GENERAL",0,1,'C');
         $pdf->Ln(10);
         $pdf->setX($margeniz);
-        $pdf->Line(80,320,150,320);
+        $pdf->Line(80,330,150,330);
         $pdf->Cell(0,0,utf8_decode($nombre),0,1,'C');
 
 
