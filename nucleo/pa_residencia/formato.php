@@ -225,9 +225,13 @@
 		$pdf->SetAutoPageBreak(true,25); 
 		$pdf->AddPage();
 		
+		$pdf->SetY(40);
 		
-		$pdf->SetY(50);
+		$pdf->SetFont('Times','B',10);
+		$pdf->Cell(0,10,utf8_decode("SOLICITUD DE ANTEPROYECTO DE RESIDENCIA PROFESIONAL"),"",1,'C',false);
+
 		
+
 		$pdf->SetFont('Times','',11);
 
 		$data = $pdf->LoadData();
