@@ -169,7 +169,11 @@
 			function Header()
 			{
 				
+				
+				$miutil = new UtilUser();
+                $miutil->getEncabezado($this,'V');	
 
+				/*
 				$this->SetY(20);$this->SetX(20);
 				$this->Cell(45,18,"",1,0,'L',false); //donde esta el logo
 				$this->SetFont('Times','B',11);
@@ -199,9 +203,16 @@
 				$this->Cell(40,3,"18 DE ENERO 2021","",0,'C',false);
 				$this->SetY(35);$this->SetX(155);
 				$this->Cell(40,3,"VERSION 2015","BR",0,'C',false);
-				
+				*/
 			}
 		
+
+			function Footer()
+			{				
+				$miutil = new UtilUser();
+				$miutil->getPie($this,'V');
+				
+			}
 			
 			
    }
