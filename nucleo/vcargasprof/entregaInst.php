@@ -133,7 +133,7 @@
 			function LoadData()
 			{				
 
-
+				$data=[];
 				$cad=" and a.CARRERA='".$_GET["tipov"]."'";
 				if ($_GET["tipo"]=='DEPTO') { $cad=" and a.DEPTO='".$_GET["tipov"]."'";}
 
@@ -163,7 +163,9 @@
 			
 			function Header()
 			{
-				
+				$miutil = new UtilUser();
+                $miutil->getEncabezado($this,'V');			
+				/*
 
 				$this->SetY(20);$this->SetX(25);
 				$this->Cell(40,15,"",1,0,'L',false);
@@ -189,7 +191,7 @@
 				$this->Cell(40,3,"8 DE ENERO 2020","",0,'C',false);
 				$this->SetY(32);$this->SetX(155);
 				$this->Cell(40,3,utf8_decode("VERSIÓN 2015"),"",0,'C',false);
-				
+				*/
 				
 			}
 			
@@ -197,7 +199,9 @@
 			function Footer()
 			{
 				
-		
+				$miutil = new UtilUser();
+				$miutil->getPie($this,'V');
+
 				//249 ANCHO			
 				$this->SetDrawColor(0,0,0);
 				$this->SetX(10);
@@ -256,8 +260,12 @@
 		$pdf->AddPage();
 		
 		
-		$pdf->SetY(50);
-		
+		$pdf->SetY(40);
+
+		$pdf->SetFont('Times','B',11);
+		$pdf->Cell(0,5,utf8_decode("FORMATO DE AUTORIZACIÓN DE PLANEACIÓN E INSTRUMENTACIÓN DIDÁCTICA"),"0",0,'C',false);
+		$pdf->Ln(10);
+
 		$pdf->SetFont('Times','',11);
 		$pdf->Cell(0,0,utf8_decode("SUBDIRECCIÓN ACADÉMICA"),"",0,'C',false);
 		$pdf->Ln(5);
