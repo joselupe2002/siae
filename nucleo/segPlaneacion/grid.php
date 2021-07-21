@@ -102,6 +102,8 @@
 			   </div>
 		</div>
 
+	
+
 <!-- ============================================================================================================-->			
 		 							
 <!-- -------------------Primero ----------------------->
@@ -170,6 +172,11 @@
 	var usuario="<?php echo $_SESSION["usuario"];?>";
 	var carrera="<?php echo $_SESSION["carrera"];?>";
 	var essuper="<?php echo $_SESSION["super"];?>";
+
+	<?php  $botones=$miUtil->getPermisos($_SESSION['usuario'],$_SESSION['super'],$_GET['modulo']); 
+		   if (($botones[0]=='S') && ($_GET["automatico"]=='S')) { echo "var insertar='S'; "; }
+		   else { echo "var insertar='N';"; } ?>	
+
 
 </script>
 

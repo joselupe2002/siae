@@ -84,7 +84,9 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		"IFNULL(PGRFERI,PGRFEPI) AS FECHAINIREAL, IFNULL(PGRFERT,PGRFEPT) FECHAFINREAL, "+
 		"IFNULL(PGRFERIDA,PGRFEPI) AS FECHAINIREALDA, IFNULL(PGRFERTDA,PGRFEPT) FECHAFINREALDA, "+
 		" UNID_DESCRIP as TEMA, UNID_NUMERO AS SMACVE, "+
-	    " UNID_DESCRIP AS SUBTEMA, PGRFEPI AS FECHAINIPROG,  PGRFEPT AS FECHAFINPROG, TIPORETRASODA, OBSDA,TIPOCIERREDA,"+
+	    " UNID_DESCRIP AS SUBTEMA, PGRFEPI AS FECHAINIPROG,  PGRFEPT AS FECHAFINPROG, TIPORETRASODA, "+
+		" ifnull((select CATA_DESCRIP from scatalogos where CATA_TIPO='AVPROGTIPRET' AND CATA_CLAVE=TIPORETRASODA),'') AS TIPORETRASODAD,"+
+		" OBSDA,TIPOCIERREDA, ifnull((select CATA_DESCRIP from scatalogos where CATA_TIPO='AVPROGTIPTER' AND CATA_CLAVE=TIPOCIERREDA),'') AS TIPOCIERREDAD,"+
 		"ifnull(TIPORETRASO,'') as TIPORETRASO, ifnull((select CATA_DESCRIP from scatalogos where CATA_TIPO='AVPROGTIPRET' AND CATA_CLAVE=TIPORETRASO),'') AS TIPORETRASOD, "+
 		"ifnull(TIPOCIERRE,'') as TIPOCIERRE, ifnull((select CATA_DESCRIP from scatalogos where CATA_TIPO='AVPROGTIPTER' AND CATA_CLAVE=TIPOCIERRE),'') AS TIPOCIERRED, OBS "+
       	" FROM eunidades l left outer join pgrupo on "+
@@ -136,42 +138,50 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 					$("#rowProg"+c).append("<td>"+htmlfecfin+"</td>");	
 				
 
-					htmlfeciniR= "<div class=\"input-group\">"+
-							 "     <input onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','PGRFERIDA');\" "+
-							 "            value=\""+valor.FECHAINIREALDA+"\" class=\"form-control date-picker\" id=\"PGRFERIDA"+ciclo+materia+grupo+valor.ID+"\" "+
-				             "            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" style=\"width:85px;\"/> "+
-							 "     <span class=\"input-group-addon\"><i class=\"fa green fa-calendar bigger-110\"></i></span>"+
-							 "</div>";
 
+					if (insertar=='S') {
+							htmlfeciniR= "<div class=\"input-group\">"+
+									"     <input onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','PGRFERIDA');\" "+
+									"            value=\""+valor.FECHAINIREALDA+"\" class=\"form-control date-picker\" id=\"PGRFERIDA"+ciclo+materia+grupo+valor.ID+"\" "+
+									"            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" style=\"width:85px;\"/> "+
+									"     <span class=\"input-group-addon\"><i class=\"fa green fa-calendar bigger-110\"></i></span>"+
+									"</div>";
+
+									
+							htmlfecfinR= "<div class=\"input-group\">"+
+									"     <input onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','PGRFERTDA');\" "+
+									"            value=\""+valor.FECHAFINREALDA+"\" class=\"form-control date-picker\" id=\"PGRFERTDA"+ciclo+materia+grupo+valor.ID+"\" "+
+									"            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" style=\"width:85px;\"/> "+
+									"     <span class=\"input-group-addon\"><i class=\"fa green fa-calendar bigger-110\"></i></span>"+
+									"</div>";
+							$("#rowProg"+c).append("<td>"+htmlfeciniR+"</td>");
+							$("#rowProg"+c).append("<td>"+htmlfecfinR+"</td>");	
+
+
+							$("#rowProg"+c).append("<td><select style=\"width:180px;\" id=\"TIPOCIERREDA"+ciclo+materia+grupo+valor.ID+"\" "+
+							"onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','TIPOCIERREDA');\" class=\"form-control\"  id=\"selTipoCierre\"></select></td>");			                                   
 							
-					htmlfecfinR= "<div class=\"input-group\">"+
-							 "     <input onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','PGRFERTDA');\" "+
-							 "            value=\""+valor.FECHAFINREALDA+"\" class=\"form-control date-picker\" id=\"PGRFERTDA"+ciclo+materia+grupo+valor.ID+"\" "+
-				             "            type=\"text\" autocomplete=\"off\" data-date-format=\"dd/mm/yyyy\" style=\"width:85px;\"/> "+
-							 "     <span class=\"input-group-addon\"><i class=\"fa green fa-calendar bigger-110\"></i></span>"+
-							 "</div>";
+							$("#rowProg"+c).append("<td><select style=\"width:180px;\" id=\"TIPORETRASODA"+ciclo+materia+grupo+valor.ID+"\" "+
+							"onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','TIPORETRASODA');\" class=\"form-control\"  id=\"selTipoCierre\"></select></td>");			                                   
 
-			 		
-
-					$("#rowProg"+c).append("<td>"+htmlfeciniR+"</td>");
-					$("#rowProg"+c).append("<td>"+htmlfecfinR+"</td>");	
-
-
-					$("#rowProg"+c).append("<td><select style=\"width:180px;\" id=\"TIPOCIERREDA"+ciclo+materia+grupo+valor.ID+"\" "+
-					"onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','TIPOCIERREDA');\" class=\"form-control\"  id=\"selTipoCierre\"></select></td>");			                                   
-					
-					$("#rowProg"+c).append("<td><select style=\"width:180px;\" id=\"TIPORETRASODA"+ciclo+materia+grupo+valor.ID+"\" "+
-					"onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','TIPORETRASODA');\" class=\"form-control\"  id=\"selTipoCierre\"></select></td>");			                                   
-
-					$("#rowProg"+c).append("<td><textarea id=\"OBSDA"+ciclo+materia+grupo+valor.ID+"\" "+
-					"onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','OBSDA');\" class=\"form-control\"  id=\"selTipoCierre\" style=\"width:180px;\" >"+valor.OBSDA+"</textarea></td>");			                                   
+							$("#rowProg"+c).append("<td><textarea id=\"OBSDA"+ciclo+materia+grupo+valor.ID+"\" "+
+							"onchange=\"guardaAvance('"+ciclo+"','"+materia+"','"+grupo+"','"+valor.TMACVE+"','"+valor.SMACVE+"','"+valor.ID+"','OBSDA');\" class=\"form-control\"  id=\"selTipoCierre\" style=\"width:180px;\" >"+valor.OBSDA+"</textarea></td>");			                                   
+					}
+					else {
+						$("#rowProg"+c).append("<td><span class=\"text-primary\">"+valor.FECHAINIREALDA+"</td></span>");
+						$("#rowProg"+c).append("<td><span class=\"text-primary\">"+valor.FECHAFINREALDA+"</td></span>");	
+						$("#rowProg"+c).append("<td><span class=\"text-primary\">"+valor.TIPOCIERREDAD+"</td></span>");	
+						$("#rowProg"+c).append("<td><span class=\"text-primary\">"+valor.TIPORETRASODAD+"</td></span>");	
+						$("#rowProg"+c).append("<td><span class=\"text-primary\">"+valor.OBSDA+"</td></span>");			
+					}
 
 
-					$("#rowProg"+c).append("<td>"+valor.FECHAINIREAL+"</td>");
-					$("#rowProg"+c).append("<td>"+valor.FECHAFINREAL+"</td>");	
-					$("#rowProg"+c).append("<td>"+valor.TIPOCIERRED+"</td>");	
-					$("#rowProg"+c).append("<td>"+valor.TIPORETRASOD+"</td>");	
-					$("#rowProg"+c).append("<td>"+valor.OBS+"</td>");			
+
+					$("#rowProg"+c).append("<td><span class=\"text-success\">"+valor.FECHAINIREAL+"</td></span>");
+					$("#rowProg"+c).append("<td><span class=\"text-success\">"+valor.FECHAFINREAL+"</td></span>");	
+					$("#rowProg"+c).append("<td><span class=\"text-success\">"+valor.TIPOCIERRED+"</td></span>");	
+					$("#rowProg"+c).append("<td><span class=\"text-success\">"+valor.TIPORETRASOD+"</td></span>");	
+					$("#rowProg"+c).append("<td><span class=\"text-success\">"+valor.OBS+"</td></span>");			
 					$("#rowProg"+c).append("</tr>");    
 
 					
