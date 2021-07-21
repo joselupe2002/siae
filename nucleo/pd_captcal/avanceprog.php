@@ -279,7 +279,7 @@ function guardaAvance(ciclo,materia,grupo,tmacve, smacve,id,campo){
 		elvalor=$("#"+campo+ciclo+materia+grupo+id).val();
 		console.log(elvalor);
 			parametros={
-				tabla:"PGRUPO",
+				tabla:"pgrupo",
 				campollave:"concat(PDOCVE,MATCVE,GPOCVE,TMACVE,SMACVE)",
 				valorllave:ciclo+materia+grupo+tmacve+smacve,
 				nombreCampo:campo,
