@@ -60,7 +60,7 @@
 						  <th style="text-align: center;">RepxCorte</th> 
 						  <th style="text-align: center;">Mot. Rep.</th> 
 						  <th style="text-align: center;">Estratégias</th> 
-                                                            	   	  
+						  <th style="text-align: center;">Avance Prog.</th>                                                             	   	  
 					   </tr> 
 			     </thead> 
 	         </table>
@@ -192,11 +192,25 @@
 			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Plantear estratégias para el corte de calificaciones\" onclick=\"verEstrategias('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
     	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"');\""+
 											  " class=\"btn btn-xs btn-white btn-success btn-round\"><i class=\"ace-icon fa green fa-random bigger-120\"></i></button></td>");
+
+			//Boton de Estratégias a Realizar
+			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Plantear estratégias para el corte de calificaciones\" onclick=\"verAvanceProg('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
+    	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"');\""+
+											  " class=\"btn btn-xs btn-white btn-success btn-round\"><i class=\"ace-icon fa blue fa-calendar bigger-120\"></i></button></td>");
 							  
+    	      
     	    
 
         });
 }		
+
+
+/*=======================AVANCE PROGRAMÁTICO DEL PROFESOR ================================*/
+function verAvanceProg(id,profesor,materia,materiad,grupo,ciclo, base){
+	window.location="avanceprog.php?base="+base+"&termina_corte="+termina_corte+"&inicia_corte="+inicia_corte+"&idcorte="+
+								  idcorte+"&tipocorte="+tipocorte+"&id="+id+"&ciclo="+ciclo+"&profesor="+profesor+"&grupo="+
+								  grupo+"&materia="+materia+"&materiad="+materiad+"&modulo=<?php echo $_GET["modulo"];?>";
+}
 
 
 /*========================ESTRATEGIAS PARA MEJORAR EL RENDIMIENTO EN EL CORTE ========================*/
