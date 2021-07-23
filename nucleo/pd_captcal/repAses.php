@@ -302,7 +302,7 @@
         foreach($datamiCorte as $row) {
             $ancol[$i]=25;
             $alig[$i]="C";
-            $titulos[$i]=strtoupper($row["DESCRIPCION"]);
+            $titulos[$i]=strtoupper(utf8_decode($row["DESCRIPCION"]));
             $i++;
         }
         $pdf->SetWidths($ancol);

@@ -115,6 +115,7 @@
 <script src="<?php echo $nivel; ?>assets/js/jquery.jqGrid.min.js"></script>
 <script src="<?php echo $nivel; ?>assets/js/grid.locale-en.js"></script>
 
+<script src="<?php echo $nivel; ?>assets/js/jquery.easypiechart.min.js"></script>
 
 <!-- -------------------ultimos ----------------------->
 <script src="<?php echo $nivel; ?>assets/js/ace-elements.min.js"></script>
@@ -194,9 +195,33 @@
 											  " class=\"btn btn-xs btn-white btn-success btn-round\"><i class=\"ace-icon fa green fa-random bigger-120\"></i></button></td>");
 
 			//Boton de Estratégias a Realizar
-			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Plantear estratégias para el corte de calificaciones\" onclick=\"verAvanceProg('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
+
+			graf="<span class=\"infobox-progress\">"+
+				 "    <span id=\"elavance\" id=\"porcavance\" class=\"easy-pie-chart percentage\" "+
+				 "          data-color=\"green\" data-percent=\""+valor.AVANCE_PROG+"\" data-size=\"30\">"+
+				 "         <span id=\"etelavance\"  class=\"percent fontRoboto\" style=\"font-size:8px; color:black;\">"+valor.AVANCE_PROG+"%</span>"+
+				 "	  </span>"+
+				 "</span>";
+
+			$("#row"+valor.ID).append("<td style=\"text-align: center;\"><button title=\"Capturar avance Programático de la Asignatura\" onclick=\"verAvanceProg('"+valor.ID+"','<?php echo $_SESSION["usuario"]?>','"+
     	    	                       valor.MATERIA+"','"+valor.MATERIAD+"','"+valor.SIE+"','"+valor.CICLO+"','"+valor.BASE+"');\""+
-											  " class=\"btn btn-xs btn-white btn-success btn-round\"><i class=\"ace-icon fa blue fa-calendar bigger-120\"></i></button></td>");
+											  " class=\"btn btn-xs btn-white btn-success btn-round\"><i class=\"ace-icon fa blue fa-calendar bigger-120\"></i></button>"+
+											  "<span>"+graf+"</span></td>");
+
+			$('.easy-pie-chart.percentage').each(function(){
+			var barColor = $(this).data('color') || '#2979FF';
+			var trackColor = '#E2E2E2';
+			var size = parseInt($(this).data('size')) || 72;
+			$(this).easyPieChart({
+				barColor: barColor,
+				trackColor: trackColor,
+				scaleColor: false,
+				lineCap: 'butt',
+				lineWidth: parseInt(size/5),
+				animate:false,
+				size: size
+			}).css('color', barColor);
+			});
 							  
     	      
     	    
@@ -301,10 +326,15 @@ function verificarCorte(){
 
 function cargarAct(){
 		$('#dlgproceso').modal({show:true, backdrop: 'static'});
-		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE "+                
-					   " FROM vcargasprof a where PROFESOR='<?php echo $_SESSION['usuario']?>'"+
+		elsql="SELECT ID, MATERIA, MATERIAD, SIE, SEM, CICLO, BASE, "+  
+		      "     (select (ROUND((SELECT count(*) FROM pgrupo h where h.MATCVE=MATERIA "+
+			  "                     AND PDOCVE=CICLO AND GPOCVE=SIE AND h.TIPOCIERRE IN ('T','R'))/"+
+              "     (SELECT COUNT(*) FROM eunidades where UNID_MATERIA=MATERIA AND UNID_PRED<>'')*100,0) "+
+              "      ) from dual) as AVANCE_PROG  "+             
+			  " FROM vcargasprof a where PROFESOR='<?php echo $_SESSION['usuario']?>'"+
 					   //" and CICLO=getciclo() "+
-					   " and CERRADOCAL='N' order by CICLO DESC,MATERIA";
+			  " and CERRADOCAL='N' order by CICLO DESC,MATERIA";
+	
 		parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
 	    $.ajax({
 			   type: "POST",
@@ -341,7 +371,7 @@ function imprimirBoleta(id,profesor,materia,materiad,grupo,ciclo, base,semestre)
 function imprimirRepAses(id,profesor,materia,materiad,grupo,ciclo, base,semestre){
 	enlace="nucleo/pd_captcal/repAses.php?grupo="+grupo+"&ciclo="+ciclo+"&profesor=<?php echo $_SESSION["usuario"];?>&materia="+
 								  materia+"&materiad="+materiad+"&id="+id+"&semestre="+semestre;
-	abrirPesta(enlace,"Rep.Uni.");
+	abrirPesta(enlace,"Rep.Ases.");
 
 }
 
