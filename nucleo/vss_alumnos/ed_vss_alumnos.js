@@ -15,7 +15,7 @@ function calculaCalif(){
 
     
         prom=((cal1+cal2+cal3)/3).toFixed(0);
- 
+        console.log(cal1+"+"+cal2+"+"+cal3+"="+prom);
         if (isNaN(prom)) {prom=60;}
         
     $("#CALIFICACION").val(prom);
