@@ -4437,3 +4437,318 @@ function addSELECTMULT_CONVALORPes(nombre,contenedor,tipo, sql, tipoSelect, tipo
                }
        });
 }
+
+
+
+/*====================================MAESTRO DETALLE =======================================*/
+var MD_CAMPOS=[];
+var MD_ELSQLDET="";
+var MD_INSTITUCION="";
+var MD_CAMPUS="";
+var MD_USUARIO="";
+var MD_TITULO="";
+
+function generaMaestroDetalle(modulo,nombreTabla, IDPadre, CampoPadreenDetalle, campos,titulo,elsqlDet,nombrecampoiddetalle,institucion,campus,usuario) {
+	MD_CAMPOS=campos;MD_ELSQLDET=elsqlDet; MD_INSTITUCION=institucion; MD_CAMPUS=campus; MD_USUARIO=usuario; MD_TITULO=titulo;
+
+	table = $("#G_"+modulo).DataTable();
+	script="<div class=\"modal fade fontRoboto\" id=\"modalDocument"+nombreTabla+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
+       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
+	   "      <div class=\"modal-content\">"+
+	   "          <div class=\"modal-header widget-header  widget-color-green\">"+	 
+	   "             <span class=\"text-success\"><b> <i class=\"menu-icon blue fa fa-list-ul\"></i> <span class=\"fontRobotoB\">"+titulo+"</span></b> </span>"+
+	   "             <input type=\"hidden\" id=\"elid\" value=\""+IDPadre+"\"></input>"+
+	   "			  <br><a onclick=\"MD_insertar('"+modulo+"','"+nombreTabla+"','"+IDPadre+"','"+CampoPadreenDetalle+"','"+titulo+"','"+nombrecampoiddetalle+"','');\"  class=\"btn btn-white btn-success\" style=\"cursor:pointer;\">"+
+	   "			  <i class=\"icon-only ace-icon blue fa fa-plus-circle\"></i> Insertar Acción</a>"+
+	   "             <button type=\"button\" class=\"close\"  data-dismiss=\"modal\"   aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
+	   "                  <span aria-hidden=\"true\">&times;</span>"+
+	   "             </button>"+
+	   "          </div>"+  
+	   "          <div id=\"frmdescarga\" class=\"modal-body sigeaPrin\" style=\"overflow-x: auto; overflow-y: auto;\" >"+					  
+	   "             <div class=\"row\"> "+		
+       "                  <table id=\"tab"+nombreTabla+"\" class= \"table table-condensed table-bordered table-hover\">"+
+	   "                         <thead>  "+
+	   "                               <tr id=\"tabtit"+nombreTabla+"\">"+
+	   "                               		<th>Editar</th>"+
+	   "                               		<th>Eliminar</th>"+
+	   "                               </tr> "+
+	   "                         </thead>" +
+	   "                   </table>"+	
+	   "             </div> "+ //div del row
+	   "          </div>"+ //div del modal-body		 
+       "        </div>"+ //div del modal content		  
+	   "      </div>"+ //div del modal dialog
+	   "   </div>"+ //div del modal-fade
+	   "</div>";
+
+	 
+	   
+	    $("#modalDocument"+nombreTabla).remove();
+	   	$("#grid_"+modulo).append(script);
+
+
+		$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+ 		$('#modalDocument'+nombreTabla).modal({show:true, backdrop: 'static'});
+	
+	   jQuery.each(MD_CAMPOS, function(clave,valor) {          	   
+			$("#tabtit"+nombreTabla).append("<th>"+valor.titulo+"</th>");		
+		});
+
+	
+ 	parametros={sql:elsqlDet,dato:sessionStorage.co,bd:"Mysql"}
+
+ 	$.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
+        success: function(data){       
+				MD_generaTabla(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,data);
+
+              }
+	});
+	   
+}
+
+
+
+function MD_generaTabla(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,losdatos) {		
+	$("#cuerpo"+nombreTabla).empty();
+  	$("#tab"+nombreTabla).append("<tbody id=\"cuerpo"+nombreTabla+"\">");
+    c=0;
+    ladefault="..\\..\\imagenes\\menu\\pdf.png";
+    datos=JSON.parse(losdatos);
+  	jQuery.each(datos, function(clave, valor) { 
+		params="'"+modulo+"','"+nombreTabla+"','"+IDPadre+"','"+CampoPadreenDetalle+"','"+titulo+"','"+nombrecampoiddetalle+"','"+datos[clave][nombrecampoiddetalle]+"'";
+		
+		botonEdit= "<a onclick=\"MD_editar("+params+");\"  class=\"btn btn-white btn-success\" style=\"cursor:pointer;\">"+
+		"				<i class=\"icon-only ace-icon green fa fa-pencil\"></i></a>";
+	
+		botonElim= "<a onclick=\"MD_eliminar("+params+");\"  class=\"btn btn-white btn-danger\" style=\"cursor:pointer;\">"+
+		"				<i class=\"icon-only ace-icon red fa fa-trash-o\"></i></a>";
+  	      
+		idrow="row"+nombreTabla+datos[clave][nombrecampoiddetalle];
+	   	 $("#cuerpo"+nombreTabla).append("<tr id=\""+idrow+"\"></tr>");
+	   	 $("#"+idrow).append("<td>"+botonEdit+"</td>");
+	   	 $("#"+idrow).append("<td>"+botonElim+"</td>");
+		
+		jQuery.each(MD_CAMPOS, function(claveCam,valorCam) {  
+			addDesc=""; if (valorCam.descripselec!="") { addDesc=datos[clave][valorCam.descripselec];}  
+			
+			if (valorCam.tipo=='ARCHIVO') {
+				idfile=valorCam.campo+datos[clave][nombrecampoiddetalle];
+			
+				cadRuta=datos[clave][valorCam.campo];
+				if(typeof cadRuta === 'undefined'){ cadRuta="";}
+				activaEliminar="S";
+
+				$("#"+idrow).append("<td id=\""+idfile+"\" style=\"width:300px; white-space: normal;\"></td>");
+				dameSubirArchivoDrive(idfile,"","file"+idfile,'ISO_GENERAL','pdf',
+				'ID',datos[clave][nombrecampoiddetalle],'EVIDENCIA DE '+datos[clave][nombrecampoiddetalle],'eadjgenerales','alta','EVIDACCMEJ_'+datos[clave][nombrecampoiddetalle],cadRuta,activaEliminar);
+			}  else {  	   
+				$("#"+idrow).append("<td>"+datos[clave][valorCam.campo]+" "+addDesc+"</td>");
+			}	
+
+				
+		});
+
+  		c++;
+  	});
+}
+
+
+function MD_dameFormulario (modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle,titulo,op,datosRegistro) {
+	if (op=="EDITAR") {evento="MD_saveEditar('"+modulo+"','"+nombreTabla+"','"+IDPadre+"','"+CampoPadreenDetalle+"','"+titulo+"','"+nombrecampoiddetalle+"','"+valorcampoiddetalle+"')";}
+	if (op=="INSERTAR") {evento="MD_saveInsertar('"+modulo+"','"+nombreTabla+"','"+IDPadre+"','"+CampoPadreenDetalle+"','"+titulo+"','"+nombrecampoiddetalle+"','"+valorcampoiddetalle+"')";}
+
+	script="<div class=\"modal fontRoboto\" id=\"modalfrm"+nombreTabla+"\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\" > "+
+       "   <div class=\"modal-dialog modal-lg\" role=\"document\" >"+
+	   "      <div class=\"modal-content\">"+
+	   "          <div class=\"modal-header widget-header  widget-color-green\">"+	 
+	   "             <span class=\"text-success\"><b> <i class=\"menu-icon blue fa fa-pencil\"></i> <span class=\"fontRobotoB\">"+titulo+"</span></b> </span>"+	   
+	   "             <button type=\"button\" class=\"close\"  data-dismiss=\"modal\"   aria-label=\"Cancelar\" style=\"margin: 0 auto; top:0px;\">"+
+	   "                  <span aria-hidden=\"true\">&times;</span>"+
+	   "             </button>"+
+	   "          </div>"+  
+	   "          <div id=\"frm"+nombreTabla+"\" class=\"fontRobotoB modal-body sigeaPrin\" style=\"overflow-x: auto;\" >"+					  
+	   "				<div class=\"row\" id=\"frmcampos"+nombreTabla+"\" style=\"width:98%;\">"+
+	   "          </div>"+ //div del modal-body	
+	   "		  <div class=\"modal-footer\">"+
+	   "               <button type=\"button\" class=\"btn btn-white btn-secondary\" data-dismiss=\"modal\">Cerrar</button>"+
+	   "               <button type=\"button\" onclick=\""+evento+"\"class=\"btn btn-white btn-primary\">Guardar</button>"+
+	   "          </div>"+//div del modal header	
+       "        </div>"+ //div del modal content		  
+	   "      </div>"+ //div del modal dialog
+	   "   </div>"+ //div del modal-fade
+	   "</div>";
+
+	   
+	   	$("#modalfrm"+nombreTabla).remove(); if (! ( $("#modalfrm"+nombreTabla).length )) {$("#grid_"+modulo).append(script);}
+		$('#modalfrm'+nombreTabla).modal({show:true, backdrop: 'static'});
+
+		
+		jQuery.each(MD_CAMPOS, function(claveCam,valorCam) {  	
+			obligado=""; if (valorCam.obligatorio) {obligado="obligatorio";}
+			
+			if (datosRegistro=="") {mivalor="";} else {mivalor=datosRegistro[0][valorCam.campo];}
+			if (valorCam.tipo=="TEXTO") {
+			   $("#frmcampos"+nombreTabla).append("<label class=\"text-primary\">"+valorCam.etiqueta+"</label><input class=\"form-control "+obligado+"\" id=\""+valorCam.campo+"\" value=\""+mivalor+"\"></input>");
+			}
+
+			if (valorCam.tipo=="FECHA") {
+				$("#frmcampos"+nombreTabla).append("<label class=\"text-primary\">"+valorCam.etiqueta+"</label>"+
+				" <div class=\"input-group\"><input  class=\"form-control date-picker\"  id=\""+valorCam.campo+"\" "+
+				" type=\"text\" autocomplete=\"off\"  data-date-format=\"dd/mm/yyyy\" value=\""+mivalor+"\" /> "+
+				" <span class=\"input-group-addon\"><i class=\"fa fa-calendar bigger-110\"></i></span></div");
+			 }
+
+			 if (valorCam.tipo=="PARRAFO") {
+				$("#frmcampos"+nombreTabla).append("<label class=\"text-primary\">"+valorCam.etiqueta+"</label><textarea class=\"form-control "+obligado+"\" id=\""+valorCam.campo+"\" style=\"width:100% height:70px;\">"+mivalor+"</textarea>");
+			 }
+
+			 if (valorCam.tipo=="SELECTBUS") {	
+				$("#frmcampos"+nombreTabla).append("<label class=\"fontRobotoB \">"+valorCam.etiqueta+"</label><select class=\"chosen-select form-control "+obligado+" captProy\"  id=\""+valorCam.campo+"\"></select>");
+				actualizaSelectMarcar(valorCam.campo,valorCam.sql, "BUSQUEDA","",mivalor); 
+			 }
+
+			 if (valorCam.tipo=="SELECT") {	
+				$("#frmcampos"+nombreTabla).append("<label class=\"fontRobotoB \">"+valorCam.etiqueta+"</label><select class=\"form-control "+obligado+"\"  id=\""+valorCam.campo+"\"></select>");
+				actualizaSelectMarcar(valorCam.campo,valorCam.sql, "","",mivalor); 
+			 }
+
+		});
+
+		$('.date-picker').datepicker({autoclose: true,todayHighlight: true}).next().on(ace.click_event, function(){$(this).prev().focus();});
+ 	
+		$('.chosen-select').chosen({allow_single_deselect:true}); 			
+		$(window).off('resize.chosen').on('resize.chosen', function() {$('.chosen-select').each(function() {var $this = $(this); $this.next().css({'width': "100%"});})}).trigger('resize.chosen');
+		$(document).on('settings.ace.chosen', function(e, event_name, event_val) { if(event_name != 'sidebar_collapsed') return; $('.chosen-select').each(function() {  var $this = $(this); $this.next().css({'width': "100%"});})});	     		    
+			
+
+}
+
+
+function MD_editar(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle){
+		
+	elsql="select * from "+nombreTabla+" where "+nombrecampoiddetalle+"='"+valorcampoiddetalle+"'";
+	parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+ 	$.ajax({
+		type: "POST",
+		data:parametros,
+        url:  "../base/getdatossqlSeg.php",
+        success: function(data){       		
+				MD_dameFormulario(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle,"Editando: "+valorcampoiddetalle,'EDITAR',JSON.parse(data)); 
+              }
+	});
+}
+
+function MD_insertar(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle){
+	MD_dameFormulario(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle,"Editando: "+valorcampoiddetalle,'INSERTAR',""); 
+}
+
+
+function MD_eliminar(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle){
+	if(confirm("Seguro que desea eliminar el Registro: "+valorcampoiddetalle)) 
+		 {
+				 var parametros = {
+							tabla :nombreTabla,
+							bd:"Mysql",
+	    	                campollave : nombrecampoiddetalle,
+	    	                valorllave : valorcampoiddetalle
+	    	        };
+	    	        $.ajax({
+	    	            data:  parametros,
+	    	            url:   '../base/eliminar.php',
+	    	            type:  'post',          
+	    	            success:  function (response) {  
+							$("#modalDocument"+nombreTabla).modal("hide");
+							$("#modalfrm"+nombreTabla).modal("hide");					
+							$('.modal-backdrop').remove();																		
+							generaMaestroDetalle(modulo,nombreTabla, IDPadre, CampoPadreenDetalle, MD_CAMPOS,MD_TITULO,MD_ELSQLDET,nombrecampoiddetalle,MD_INSTITUCION,MD_CAMPUS,MD_USUARIO);
+	    	            }
+	    	    });
+		}
+}
+
+function MD_saveEditar(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle){
+	vacios=false;
+		$('.obligatorio').each(function(){
+			if($(this).val()==""){
+				$(this).css("border-color","red");
+				vacios=true;
+			}
+		 });
+		 if (!vacios) {
+			mostrarEspera("esperaInf",modulo,"Guardando Datos...");
+			fecha=dameFecha("FECHAHORA");
+			parametros={tabla:nombreTabla,
+					bd:"Mysql",
+					campollave:nombrecampoiddetalle,
+					valorllave:valorcampoiddetalle,					
+					USUARIO:MD_USUARIO,
+					FECHAUS:fecha,
+					_INSTITUCION: MD_INSTITUCION, 
+					_CAMPUS: MD_CAMPUS}		
+			
+			jQuery.each(MD_CAMPOS, function(claveCam,valorCam) {  
+			     Object.defineProperty(parametros, valorCam.campo, { value: $("#"+valorCam.campo).val(), enumerable: true });
+			});
+							
+			$.ajax({
+					type: "POST",
+					url:"../base/actualiza.php",
+					data: parametros,
+					success: function(data){ 
+						console.log(data);							
+							ocultarEspera("esperaInf"); 					
+						    $("#modalDocument"+nombreTabla).modal("hide");
+							$("#modalfrm"+nombreTabla).modal("hide");					
+							$('.modal-backdrop').remove();																		
+							generaMaestroDetalle(modulo,nombreTabla, IDPadre, CampoPadreenDetalle, MD_CAMPOS,MD_TITULO,MD_ELSQLDET,nombrecampoiddetalle,MD_INSTITUCION,MD_CAMPUS,MD_USUARIO);
+						}
+			});			
+		 }
+		 else {alert ("No ha capturado toda la información requerida");}		 
+}
+
+
+function MD_saveInsertar(modulo,nombreTabla, IDPadre, CampoPadreenDetalle,titulo,nombrecampoiddetalle,valorcampoiddetalle){
+	
+		vacios=false;
+		$('.obligatorio').each(function(){
+			if($(this).val()==""){
+				$(this).css("border-color","red");
+				vacios=true;
+			}
+		 });
+		 if (!vacios) {
+			mostrarEspera("esperaInf",modulo,"Guardando Datos...");
+			fecha=dameFecha("FECHAHORA");
+			parametros={tabla:nombreTabla,
+					bd:"Mysql",				
+					USUARIO:MD_USUARIO,
+					FECHAUS:fecha,
+					_INSTITUCION: MD_INSTITUCION, 
+					_CAMPUS: MD_CAMPUS};
+
+			Object.defineProperty(parametros, CampoPadreenDetalle, { value: IDPadre, enumerable: true });
+			
+			jQuery.each(MD_CAMPOS, function(claveCam,valorCam) { 
+			     Object.defineProperty(parametros, valorCam.campo, { value: $("#"+valorCam.campo).val(), enumerable: true });
+			});
+							
+			$.ajax({
+					type: "POST",
+					url:"../base/inserta.php",
+					data: parametros,
+					success: function(data){ 
+						console.log(data);							
+							ocultarEspera("esperaInf"); 					
+						    $("#modalDocument"+nombreTabla).modal("hide");
+							$("#modalfrm"+nombreTabla).modal("hide");					
+							$('.modal-backdrop').remove();																		
+							generaMaestroDetalle(modulo,nombreTabla, IDPadre, CampoPadreenDetalle, MD_CAMPOS,MD_TITULO,MD_ELSQLDET,nombrecampoiddetalle,MD_INSTITUCION,MD_CAMPUS,MD_USUARIO);
+						}
+			});			
+		 }
+		 else {alert ("No ha capturado toda la información requerida");}		 
+}

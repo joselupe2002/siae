@@ -98,7 +98,7 @@ function llamarSub(elid,nombre,op){
 						
 					});	}
 				else {
-					verSecciones(elid,"",1,nombre);
+					verSecciones(elid,"",1,nombre,elid);
 				}
 				ocultarEspera("esperaInf");
 			}
