@@ -159,7 +159,7 @@
                 $sql="select a.*, c.*, x.*,  b.*,s.*, t.LOCALIDAD AS ALUM_LOCALIDADD, o.MUNICIPIO AS ALUM_MUNINACD, p.ESTADO as ALUM_EDONACD, q.MUNICIPIO AS ALUM_MUNICIPIOD, r.ESTADO AS ALUM_ESTADOD, ".
                 "u.DESCRIP AS GPOINDD, v.DESCRIP AS LENINDD, y.MUNICIPIO AS ALUM_TUTORMUNICIPIOD,z.LOCALIDAD AS ALUM_TUTORLOCD,".
                 " round(getavanceCred('".$_GET["mat"]."'),0) as AVANCE, ".
-                "(  select COUNT(*) from est_integrantes where PARENTESCO=1 AND MATRICULA ='".$_GET["mat"]."') AS HIJOS,".
+                "(  select COUNT(*) from est_integrantes where PARENTESCO=8 AND MATRICULA ='".$_GET["mat"]."') AS HIJOS,".
                 " getPromedio('".$_GET["mat"]."','N') as PROMEDIO_SR,".
                 " getPromedioCiclo('".$_GET["mat"]."',(select MAX(ifnull(PDOCVE,0)) from dlista where ALUCTR='".$_GET["mat"]."'),'S') AS PROMEDIO_UC,".
                 " getPeriodos('".$_GET["mat"]."',(select MAX(ifnull(PDOCVE,0)) from dlista where ALUCTR='".$_GET["mat"]."')) AS PERIODOS,".
