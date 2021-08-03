@@ -151,13 +151,20 @@
 		
 		$pdf->SetFont('Montserrat-SemiBold','',10);
 		
-		$laetfecha ='del '.$fechaini.' al '.$fechafin; $etfin=utf8_decode(" en fechas y horas señaladas.");
-		if ($fechaini==$fechafin) {$laetfecha="el ".$fechaini; $etfin=utf8_decode(" en fecha y hora señalada.");}
-		
-		$pdf->MultiCell(0,8,utf8_decode('Por medio de la presente, se hace constar que usted CUMPLIO satisfactoriamente con la actividad "').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
-		utf8_decode('", la cual se llevó a cabo ').$laetfecha.', en horario de '.utf8_decode($data[0]["COMI_HORAINI"]).
-				' a '.$data[0]["COMI_HORAFIN"].utf8_decode(', agradecemos el interés empeñado en esta actividad y lo invitamos a '.
-				' continuar trabajando de la misma manera que lo ha demostrado en esta encomienda. '),0,'J', false);
+		$laetfecha ='del '.$fechaini.' al '.$fechafin; 
+		if ($fechaini==$fechafin) {$laetfecha="el ".$fechaini;}
+
+		if ($data[0]["COMI_LUGAR"]!='NA') {$ellugar=', favor de presentarse en '.utf8_decode($data[0]["COMI_LUGAR"]); } 
+		else {$ellugar='';}
+
+		if ($data[0]["COMI_HORAINI"]!='') {$lahora=', en horario de '.utf8_decode($data[0]["COMI_HORAINI"]).' a '.$data[0]["COMI_HORAFIN"]; } 
+		else {$lahora='';}
+
+
+		$pdf->MultiCell(0,8,utf8_decode('Por medio de la presente, se hace constar que usted CUMPLIO satisfactoriamente con la actividad: "').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
+		utf8_decode('", la cual se llevó a cabo ').$laetfecha.$ellugar.$lahora.", ".utf8_decode(' agradecemos el interés empeñado en esta actividad y lo invitamos a '.
+		' continuar trabajando de la misma manera que lo ha demostrado en esta encomienda. '),0,'J', false);
+
 		$pdf->Ln(5);
 		$pdf->Ln(5);
 		$pdf->MultiCell(0,8,utf8_decode('Sin más por el momento aprovecho para enviarle un cordial saludo.'),0,'J', false);
