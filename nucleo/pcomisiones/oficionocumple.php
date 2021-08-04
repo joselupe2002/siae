@@ -161,7 +161,7 @@
 		else {$lahora='';}
 
 
-		$pdf->MultiCell(0,8,utf8_decode('Por medio de la presente, se hace constar que usted NO CUMPLIO satisfactoriamente con la actividad: "').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
+		$pdf->MultiCell(0,8,utf8_decode('Por medio de la presente, se hace constar que usted NO CUMPLIO con la actividad: "').utf8_decode($data[0]["COMI_ACTIVIDAD"]).
 		utf8_decode('", la cual tenia como fechas para realizarse ').$laetfecha.$ellugar.$lahora.".",0,'J', false);
 
 		$pdf->Ln(5);
