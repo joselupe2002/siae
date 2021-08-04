@@ -186,7 +186,7 @@ function cargaComisiones() {
 	cadSql3="select YEAR(NOW()) as ANIO, COMI_ID, COMI_HORAINI, COMI_HORAFIN, DATEDIFF(STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y'),now()) AS DIF, "+
 	"COMI_ID, COMI_ACTIVIDAD, COMI_CUMPLIDA,COMI_FECHAINI,  COMI_FECHAFIN, COMI_LUGAR "+
     " from vpcomisiones a, ciclosesc b  where a.`COMI_PROFESOR`='"+$("#selProfesores").val()+"' and CICL_CLAVE='"+$("#selCiclo").val()+"'"+
-    " AND  STR_TO_DATE(a.COMI_FECHAINI,'%d/%m/%Y') between STR_TO_DATE(CICL_INICIO,'%d/%m/%Y') AND STR_TO_DATE(CICL_FIN,'%d/%m/%Y')"+
+    " AND  YEAR(STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y'))= YEAR(STR_TO_DATE(CICL_INICIO,'%d/%m/%Y')) "+
     " order by STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y') ";
 	
 	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
@@ -262,7 +262,7 @@ function cargaEventos() {
 	$('#con3').append("<img id=\"esperarcon2\" src=\"../../imagenes/menu/esperar.gif\" style=\"width:100%;height:100%;\">");
 	
 	cadSql3=" select * from veventos_ins a, ciclosesc b where a.PERSONA='"+$("#selProfesores").val()+"'"+
-	" AND STR_TO_DATE(FECHA,'%d/%m/%Y') between STR_TO_DATE(CICL_INICIO,'%d/%m/%Y') AND STR_TO_DATE(CICL_FIN,'%d/%m/%Y')"+
+	" AND YEAR(STR_TO_DATE(FECHA,'%d/%m/%Y'))= YEAR(STR_TO_DATE(CICL_INICIO,'%d/%m/%Y')) "+
 	" order by ID DESC";
 
 	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
