@@ -174,6 +174,14 @@
 	
 		$dataProf = $pdf->LoadProf($data[0]["COMI_PROFESOR"]);
 			
+		$cadena= "CUMPLIMIENTO|OF:".str_replace("/","|",$dataof[0]["CONT_NUMOFI"]) ."|FECHA:".str_replace("/","",$data[0]["COMI_FECHAINI"])."-".str_replace("/","",$data[0]["COMI_FECHAFIN"]).
+		"|".str_replace(" ","|",$data[0]["COMI_PROFESOR"])."|".
+		str_replace(" ","|",$data[0]["COMI_PROFESORD"]);
+		
+		$pdf->Image('https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$cadena.'&.png',30,30,35,35);     
+
+
+
 		if ($_GET["tipo"]=='0') { $pdf->Output(); }
 		
 		if ($_GET["tipo"]=='2') {
