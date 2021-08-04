@@ -187,7 +187,7 @@ function cargaComisiones() {
 	"COMI_ID, COMI_ACTIVIDAD, COMI_CUMPLIDA,COMI_FECHAINI,  COMI_FECHAFIN, COMI_LUGAR "+
     " from vpcomisiones a, ciclosesc b  where a.`COMI_PROFESOR`='"+$("#selProfesores").val()+"' and CICL_CLAVE='"+$("#selCiclo").val()+"'"+
     " AND  YEAR(STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y'))= YEAR(STR_TO_DATE(CICL_INICIO,'%d/%m/%Y')) "+
-    " order by STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y') ";
+    " order by STR_TO_DATE(COMI_FECHAFIN,'%d/%m/%Y') DESC";
 	
 	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
@@ -264,6 +264,8 @@ function cargaEventos() {
 	cadSql3=" select * from veventos_ins a, ciclosesc b where a.PERSONA='"+$("#selProfesores").val()+"'"+
 	" AND YEAR(STR_TO_DATE(FECHA,'%d/%m/%Y'))= YEAR(STR_TO_DATE(CICL_INICIO,'%d/%m/%Y')) "+
 	" order by ID DESC";
+
+	alert (cadSql3);
 
 	parametros3={sql:cadSql3,dato:sessionStorage.co,bd:"Mysql"}
 	$.ajax({
