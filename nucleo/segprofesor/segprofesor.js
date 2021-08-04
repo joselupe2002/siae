@@ -263,6 +263,7 @@ function cargaEventos() {
 	
 	cadSql3=" select * from veventos_ins a, ciclosesc b where a.PERSONA='"+$("#selProfesores").val()+"'"+
 	" AND YEAR(STR_TO_DATE(FECHA,'%d/%m/%Y'))= YEAR(STR_TO_DATE(CICL_INICIO,'%d/%m/%Y')) "+
+	" AND CICL_CLAVE='"+$("#selCiclo").val()+"'"+
 	" order by ID DESC";
 
 	alert (cadSql3);
