@@ -36,7 +36,7 @@ var miciclo="";
 	
 
 			elsqlc="select ifnull(MAX(PDOCVE),getcicloRes()), COUNT(*) from dlista, cmaterias where ALUCTR='"+usuario+
-			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'0')=0";
+			"' AND MATCVE=MATE_CLAVE AND IFNULL(MATE_TIPO,'0')='RP' AND IFNULL(LISCAL,'0')=0 and BAJA='N'";
 
 			parametros={sql:elsqlc,dato:sessionStorage.co,bd:"Mysql"}
 			$.ajax({

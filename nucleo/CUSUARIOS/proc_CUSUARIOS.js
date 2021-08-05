@@ -194,6 +194,7 @@ function agregarFiltros(modulo, nombre, latabla,elusuario){
 
 
 function addPermisos(modulo,usuario,essuper){
+
 table = $("#G_"+modulo).DataTable();
 if (table.rows('.selected').data().length>0) {   
 	  

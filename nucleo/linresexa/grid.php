@@ -49,13 +49,13 @@
 						     <span id="miciclo"></span> 
 						</div> 	
          				
-						<div id="losexamenes" class="col-sm-3">
+						<div id="losexamenes" class="col-sm-4">
 						</div>     
 
 						<div id="lascarreras" class="col-sm-3">
 						</div>			 
 					
-						<div class="col-sm-5" style="padding-top:14px;">
+						<div class="col-sm-4" style="padding-top:14px;">
 						    <button title="Ver Resultados por sección" onclick="cargarInformacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-crosshairs bigger-100"></i><span class="btn-small"> Resultados</span>            
 							</button>
