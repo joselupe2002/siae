@@ -1390,6 +1390,109 @@ class UtilUser {
 		return $sqlNew;
 		
 	}
+
+
+	/*====================================GRID SIN DATOS =============================================*/
+	public function getConsultaFiltroSD($usuario,$esSuper,$modulo,$bd) {
+		$util= new UtilUser();
+		$miConexU = new Conexion();
+		$laTabla=$util->getTablaModulo($modulo);
+		
+		$res=$miConexU->getConsulta("SQLite","select * from all_col_comment WHERE TABLE_NAME='".$laTabla."' and visgrid='S' order by numero");
+		$cad=""; $key="";
+		foreach ($res as $row) {
+			if (($row["tipo"]=="FECHA") && ($bd=="Oracle")) {$cad=$cad."to_char(".$row["colum_name"].",'dd/mm/yyyy') as ".$row["comments"].","; }
+			else {$cad=$cad.$row["colum_name"]." as ".$row["comments"].",";}
+			if ($row["keys"]=="S") $key=$row["colum_name"];
+		}
+		$cad=substr($cad,0,strlen($cad)-1);
+		
+		$sql="SELECT ".$cad." FROM ".$laTabla." where 'SIGEA2021'='NOSIGEA2021' ORDER BY ".$key. " DESC ";
+		
+		$misRoles=$util->losRoles($usuario);
+		if (!($misRoles=='')) {$us=$misRoles;} else {$us=$usuario;}
+		
+		$sql=$util->convSQLFiltro($sql,$us);
+		$res=$sql;
+		return $res;
+	}
+	
+
+	
+	public function getSQLfiltroSD($sq, $loscampos,$losdatos,$limite){
+		$o="";
+		$sqNew=$sq;
+		$cad="";
+
+		$sq=str_replace("'SIGEA2021'='NOSIGEA2021'","'SIGEA2021'='SIGEA2021'",$sq);
+	
+		
+		if (strpos(strtoupper ($sq),"ORDER BY")!==false) {
+			$o=substr(strtoupper($sq),strpos(strtoupper ($sq),"ORDER BY"),strlen($sq));
+			$sqNew=substr($sq,0,strpos(strtoupper ($sq),"ORDER BY"));
+		}
+		
+		$loscamposf= explode(",",$loscampos);
+		$losdatosf= explode(",",$losdatos);
+		
+		if (strlen($loscampos)>0) {
+			$operaciones = array("=", ">", "<", "<=",">=","!","<>","|");
+			for ($x=0; $x<=count($loscamposf)-1; $x++) {
+				$op1=substr($losdatosf[$x],0,1);
+				$op2=substr($losdatosf[$x],0,2);
+		
+				if ($op1=="|") {
+					$valor=str_replace("|","','",$losdatosf[$x]);
+					$valor=substr($valor,3,strlen($valor));
+					$cad.=" AND ".$loscamposf[$x]." in ('".$valor."')"; 
+				}
+				else if (in_array($op2,$operaciones)) {
+					$valor=substr($losdatosf[$x],2,strlen($losdatosf[$x]));
+					$cad.=" AND ".$loscamposf[$x].$op2."'".$valor."'"; 
+				} else if (in_array($op1,$operaciones)){
+					$valor=substr($losdatosf[$x],1,strlen($losdatosf[$x]));
+					$cad.=" AND ".$loscamposf[$x].$op1."'".$valor."'"; 
+				} 
+				else {
+				    $cad.=" AND ".$loscamposf[$x]." like '%".$losdatosf[$x]."%'"; 
+				}
+			}
+
+	        $cad=substr($cad,4,strlen($cad));
+		}
+		
+		if (strpos(strtoupper($sqNew),"WHERE")!==false) {
+			
+			$sq1=substr($sqNew,0,strpos(strtoupper($sqNew),"WHERE")+5);
+			$sq2=substr($sqNew,strpos(strtoupper($sqNew),"WHERE")+5, strlen($sqNew));
+			
+			
+			if (strlen($cad)>0) {
+				$res=$sq1." ".$cad." AND ".$sq2;
+			}
+			else {
+				$res=$sq1." ".$sq2;
+			}
+		}
+		else {
+			$sq1=$sqNew;
+			if (strlen($cad)>0) {
+				$res=$sq1." WHERE ".$cad;
+			}
+			else {
+				$res=$sq1;
+			}
+		}
+		$lim='';
+		if ($limite=="S") {$lim=' LIMIT 30';}
+		$res=$res." ".$o.$lim;
+		
+		return $res;
+		
+	}
 	
 	
-}
+	
+}//Fin de clase
+
+

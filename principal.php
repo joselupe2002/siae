@@ -443,7 +443,7 @@
 	    	      	   var url="nucleo/base/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=S"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;	    	      	 
 					  
 	    	      	   if (existeUrl("nucleo/"+modulo+"/grid.php?modulo="+modulo)) {
-	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=N"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;
+	    	      		  url="nucleo/"+modulo+"/grid.php?modulo="+modulo+"&nombre="+nombre+"&padre="+"SIGEA&limitar=S"+"&automatico="+automatico+"&bd="+bd+"&restr="+restr;
 	    	      	   }
 	    	      	  		
 	    	         var content = '<iframe scrolling = "auto" frameborder="0" id="FR'+modulo+'" src="'+url+'" style="overflow-x:hidden;overflow-y:hidden;width:100%;height:'+alto+';" class="sigeaPrin sigeaFrame"></iframe>';	

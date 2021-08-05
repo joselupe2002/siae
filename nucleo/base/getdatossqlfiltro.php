@@ -13,22 +13,27 @@
        $miUtil= new UtilUser();
        $datos = array();
    
-       
-       $sql=$miUtil->getConsultaFiltro($_SESSION['usuario'],$_SESSION['super'],$_POST['modulo'],$_POST["bd"]); 
-       
 
-       if (isset($_POST['loscamposf'])) {
-       	$sql=$miUtil->getSQLfiltro($sql,$_POST['loscamposf'],$_POST['losdatosf'],$_POST['limitar']);       
-       }
-   
-    
-       //echo $sql;
+       if (isset($_POST['sindatos'])) {
+            $sql=$miUtil->getConsultaFiltroSD($_SESSION['usuario'],$_SESSION['super'],$_POST['modulo'],$_POST["bd"]); 
+            if (isset($_POST['loscamposf'])) {
+                if (!empty($_POST['loscamposf'])) {
+                    $sql=$miUtil->getSQLfiltroSD($sql,$_POST['loscamposf'],$_POST['losdatosf'],$_POST['limitar']);       
+                }
+            }            
+        } else {
+            $sql=$miUtil->getConsultaFiltro($_SESSION['usuario'],$_SESSION['super'],$_POST['modulo'],$_POST["bd"]); 
+            if (isset($_POST['loscamposf'])) {
+                $sql=$miUtil->getSQLfiltro($sql,$_POST['loscamposf'],$_POST['losdatosf'],$_POST['limitar']);       
+            }
+        }
+
        $res=$miConex->getConsulta($_POST["bd"],$sql);
        
        foreach ($res as $lin) {       	  
           $datos[]=$lin;          
        }
-      // echo $sql;
+       //echo $sql;
 
        echo json_encode($datos);
 } else {header("Location: index.php");}
