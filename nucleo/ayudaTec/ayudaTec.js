@@ -70,7 +70,7 @@ $("#contenido").append("<div id=\"linea"+cont+"\" class=\"row\"></div>");
 jQuery.each(grid_data, function(clave, valor) { 
 
 	img1="<a href=\""+valor.DOCGEN_RUTA+"\" target=\"_blank\" > <img  id=\"img1\" src=\"../../imagenes/menu/ayuda1.png\"  style=\"width:60px; height:60px;\" /></a>";
-	if (valor.DOCGEN_RUTA=="../../imagenes/menu/default.png") {img1="";}
+	if ((valor.DOCGEN_RUTA=="../../imagenes/menu/default.png")||(valor.DOCGEN_RUTA=="")) {img1="";}
 	img2="<a href=\""+valor.ENLACEEXT+"\"  target=\"_blank\"> <img  id=\"img1\" src=\"../../imagenes/menu/ayuda2.png\"  style=\"width:60px; height:60px;\" /></a>";
 	if ((valor.ENLACEEXT=="") || (valor.ENLACEEXT==null)) {img2="";}
 	
