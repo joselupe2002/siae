@@ -197,7 +197,38 @@ function addPermisos(modulo,usuario,essuper){
 
 table = $("#G_"+modulo).DataTable();
 if (table.rows('.selected').data().length>0) {   
-	  
+
+ 
+	 sc="<div class=\"modal fade\" id=\"modalPermisos\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\"> "+
+		" 		<div class=\"modal-dialog modal-lg\"  role=\"document\">"+
+		"	 		<div class=\"modal-content\">"+
+		"		   		<div class=\"modal-header\">"+
+		"			 		<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Cancelar\">"+
+		"				  		 <span aria-hidden=\"true\">&times;</span>"+
+		"			  		</button>"+
+		"			  		<button title=\"Guardar todos los cambios\" type=\"button\" class=\"btn btn-white btn-warning btn-bold\" onclick=\"guardarPermisos();\">Guardar Cambios</button>	              "+
+		"		   		</div>"+
+		"		  		<div id=\"frmdocumentos\" class=\"modal-body\"  style=\"height:380px;\">"+
+		"			   		<div class=\"widget-box widget-color-green2\">"+
+		"				  		<div class=\"widget-header\"><h4 class=\"widget-title lighter smaller\">Permisos</h4></div>"+
+		"				  		<div class=\"widget-body\" style=\" max-height: calc(100vh - 210px); overflow-y: auto;\">"+
+		"						 	<div class=\"main-container ace-save-state\" id=\"main-container\">"+
+		"							   	<div id=\"sidebar\" style=\"width:100%;\" class=\"sidebar  ace-save-state\">	"+		
+		"								 	 <ul  style=\"width: 100%\" id=\"miMenu\" class=\"nav nav-list\" ></ul>"+
+		"							  	</div>"+
+		"						 	</div>"+
+		"				   		</div>"+
+		"			  		</div>	"+										 
+		"				</div>"+
+		"   		</div>"+
+		"		</div>"+
+		"</div>";
+
+
+		$("#modalPermisos").remove();
+	    if (! ( $("#modalPermisos").length )) {
+	        $("#grid_"+modulo).append(sc);
+	    }
 	    $('#modalPermisos').modal({show:true, backdrop: 'static'});
 			  
 		elsql="select distinct(modu_modulo) as modu_modulo, modu_pred, modu_descrip, "+
@@ -213,7 +244,7 @@ if (table.rows('.selected').data().length>0) {
 	           url:  "../base/getdatossqlSeg.php",
 	           success: function(data){  
 	           losdatos=JSON.parse(data);  
-	        	
+	        
 	    
 	            $("#miMenu").empty();
 	        	      jQuery.each(losdatos, function(clave, valor) { 
@@ -267,7 +298,7 @@ if (table.rows('.selected').data().length>0) {
 		                             if (valor.modu_pred==" ") { $("#miMenu").append(cad); }
 		                             else {$("#S_"+valor.modu_pred).append(cad);} 
 		                                 
-		                  
+		                
 		                      
 		                             
 		                  //Buscamos si tiene procesos 

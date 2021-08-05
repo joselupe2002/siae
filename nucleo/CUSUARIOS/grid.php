@@ -29,6 +29,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>estilos/preloader.css" type="text/css" media="screen">         
         <link href="imagenes/login/sigea.png" rel="image_src" />
+		<link rel="stylesheet" href="<?php echo $nivel; ?>css/sigea.css" />
         <link rel="stylesheet" href="<?php echo $nivel; ?>assets/css/ui.jqgrid.min.css" />
 
         <style type="text/css">table.dataTable tbody tr.selected {color: blue; font-weight:bold; }</style>
@@ -237,7 +238,7 @@
 						parametros={
 							modulo:"<?php echo $_GET['modulo'];?>",
 							bd:"<?php echo $_GET['bd'];?>",
-							loscamposf:loscamposf,
+							//loscamposf:loscamposf,
 							losdatosf:losdatosf,
 							limitar:"<?php echo $_GET['limitar'];?>",
 							dato:sessionStorage.co						
