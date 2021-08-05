@@ -89,7 +89,7 @@
 							</div>
 				       </div>
 				       <div class="row">							   
-					       <div id="informacion" class="col-sm-12" style="overflow-x: auto; height:350px;" >    
+					       <div id="informacion" class="sigeaPrin col-sm-12" style="overflow-x: auto; height:350px;" >    
 						   </div>
                        </div>
                     </div>
