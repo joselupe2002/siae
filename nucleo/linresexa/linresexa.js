@@ -112,6 +112,7 @@ var elexamen=0;
 						"                <th>Total</th> "+	
 						"                <th>CVE</th> "+	
 						"                <th>CARRERA</th> "+	
+						"                <th>OP</th> "+
 						"             </tr> "+
 						"            </thead>" +
 						"         </table>";
@@ -165,11 +166,52 @@ function generaTablaMaterias(grid_data,campos){
 		$("#rowM"+contAlum).append("<td><span "+evento+" class=\"badge badge-info\" style=\"cursor:pointer;\">"+valor.TOTAL+"</span></td>");
 		$("#rowM"+contAlum).append("<td>"+valor.CARRERA+"</td>");
 		$("#rowM"+contAlum).append("<td>"+valor.CARRERAD+"</td>");
+
+		if (eliminar=='S') {
+			$("#rowM"+contAlum).append("<td><i class=\"fa fa-trash red bigger-130\" style=\"cursor:pointer;\" "+
+			                           "onclick=\"eliminarPresenta('"+valor.MATRICULA+"','"+valor.IDEXAMEN+"','"+$("#selExamenes").val()+"');\"></i></td>");
+		}
 		
 	
 	    contAlum++;      			
 	});	
 } 
+
+/*==================ELIMINAR REGISTROS =================================*/
+function eliminarPresenta(curp,idexam,idaplica){
+
+
+	parametros={
+		tabla:"linrespuestas",
+		campollave:"CONCAT(IDAPLICA,IDPRESENTA)",
+		bd:"Mysql",
+		valorllave:idaplica+curp
+	};
+	$.ajax({
+		type: "POST",
+		url:"../base/eliminar.php",
+		data: parametros,
+		success: function(data){
+				parametros={
+					tabla:"lincontestar",
+					campollave:"CONCAT(IDAPLICA,IDPRESENTA)",
+					bd:"Mysql",
+					valorllave:idaplica+curp
+				};
+				$.ajax({
+					type: "POST",
+					url:"../base/eliminar.php",
+					data: parametros,
+					success: function(data){
+						cargarInformacion();						
+					}					     
+				});
+		}					     
+	});   
+	
+	
+
+}
 
 /*=================================================ALUMNOS QUE NO PRESENTARON ==============================================*/
 

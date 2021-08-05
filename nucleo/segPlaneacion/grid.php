@@ -48,14 +48,26 @@
 				         <div id="losciclos" class="col-sm-1">
 						</div> 	
 						<div id="losciclos2" class="col-sm-2"></div>  
-						<div id="losprofesores" class="col-sm-3"></div>
-						<div id="lasmaterias" class="col-sm-3"></div>
+						<div id="losprofesores" class="col-sm-2"></div>
+						<div id="lasmaterias" class="col-sm-2"></div>
 								
 						<div class="col-sm-2" style="padding-top:14px;">
 						    <button title="Ver Programación" onclick="cargarProgramacion();" class="btn btn-white btn-info btn-round" value="Agregar"> 
 								<i class="ace-icon green fa fa-calendar bigger-140"></i><span class="btn-small fontRoboto">Programación</span>            
 							</button>													 									
 						</div>
+
+						<div id="lasmaterias" class="col-sm-2" style="padding-top:5px;">
+							<span class="infobox-progress">
+				 				<span id="elavance" id="porcavance" class="easy-pie-chart percentage" 
+				 					 data-color="blue" data-percent="0" data-size="48">
+				 				<span id="etelavance"  class="percent fontRoboto" style="font-size:12px; color:white;">0%</span>
+				 				</span>
+							</span>
+						</div>
+
+						
+
 						
 		            </div> 
 

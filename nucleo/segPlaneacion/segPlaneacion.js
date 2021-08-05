@@ -18,6 +18,21 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 
 
     jQuery(function($) { 
+
+		$('.easy-pie-chart.percentage').each(function(){
+			var barColor = $(this).data('color') || '#2979FF';
+			var trackColor = '#E2E2E2';
+			var size = parseInt($(this).data('size')) || 72;
+			$(this).easyPieChart({
+				barColor: barColor,
+				trackColor: trackColor,
+				scaleColor: false,
+				lineCap: 'butt',
+				lineWidth: parseInt(size/5),
+				animate:false,
+				size: size
+			}).css('color', barColor);
+			});
 		
 		$(".input-mask-hora").mask("99:99");
 		$(".input-mask-horario").mask("99:99-99:99");
@@ -41,7 +56,6 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		actualizaSelect("selTipoCierre", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='AVPROGTIPTER' ORDER BY CATA_DESCRIP", "","");
 		actualizaSelect("selTipoRetraso", "SELECT CATA_CLAVE, CATA_DESCRIP FROM scatalogos where CATA_TIPO='AVPROGTIPRET' ORDER BY CATA_CLAVE", "","");
 	
-		
 	});
 	
 	
@@ -59,7 +73,29 @@ var colores=["4,53,252","238,18,8","238,210,7","5,223,5","7,240,191","240,7,223"
 		}
 		if (elemento=='selMaterias') {
 			materia=$("#selMaterias").val();				
-			grupo=$("#selMaterias option:selected").text().split("|")[1];				
+			grupo=$("#selMaterias option:selected").text().split("|")[1];	
+			
+			elsql="select (ROUND((SELECT count(*) FROM pgrupo h where h.MATCVE='"+$("#selMaterias").val()+"' "+
+			"                   AND PDOCVE="+$("#selCiclo").val()+
+			"                   AND GPOCVE='"+grupo+"' AND h.TIPOCIERRE IN ('T','R'))/"+
+			"     (SELECT COUNT(*) FROM eunidades where UNID_MATERIA='"+$("#selMaterias").val()+"' AND UNID_PRED<>'')*100,0) "+
+			"      ) from dual ";
+	
+			parametros={sql:elsql,dato:sessionStorage.co,bd:"Mysql"}
+			$.ajax({
+				type: "POST",
+				data:parametros,
+				url:  "../base/getdatossqlSeg.php",
+				success: function(data){  
+					porc=JSON.parse(data)[0][0]; 		
+					$("#etelavance").html(porc+"%");                               
+					$('#elavance').data('easyPieChart').update(porc);
+				}
+			});
+
+	
+
+
 		}
 		
 	}  

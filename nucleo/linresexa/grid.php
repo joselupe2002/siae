@@ -156,6 +156,11 @@
 <script type="text/javascript">
 	 var usuario="<?php echo $_SESSION["usuario"]?>";
 	 var essup="<?php echo $_SESSION["super"]?>";
+
+	 <?php  $botones=$miUtil->getPermisos($_SESSION['usuario'],$_SESSION['super'],$_GET['modulo']); 
+		   if ($botones[2]=='S') { echo "var eliminar='S'; "; }
+		   else { echo "var eliminar='N';"; } ?>	
+
 </script> 
 
 
